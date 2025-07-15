@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-category-section',
+  selector: 'category-section',
   imports: [],
   templateUrl: './category-section.html',
   styleUrl: './category-section.css'

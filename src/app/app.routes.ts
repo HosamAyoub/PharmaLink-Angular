@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { ClientLayout } from './shared/layout/client-layout/client-layout';
+import { ClientLayout } from './features/client-dashboard/client-layout/client-layout';
 
 export const routes: Routes = [
       { path: '', redirectTo: '/client', pathMatch: 'full' },
@@ -14,7 +14,7 @@ export const routes: Routes = [
     },
     {
       path: 'client',
-      loadComponent: () => import('./shared/layout/client-layout/client-layout').then(m => m.ClientLayout),
+      loadComponent: () => import('./features/client-dashboard/client-layout/client-layout').then(m => m.ClientLayout),
       loadChildren: () => import('./features/client-dashboard/client-dashboard-routing.module').then(m => m.ClientDashboardRoutingModule)
     },
     { path: '**', redirectTo: '/user' }
