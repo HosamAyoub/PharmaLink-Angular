@@ -1,0 +1,20 @@
+/* You can add global styles to this file, and also import other style files */
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css');
+:root {
+  --btn-background: #2563EB;
+}
+
+@keyframes upDown {
+  0% { transform: translateY(0); }
+  20% { transform: translateY(-12px); }
+  35% { transform: translateY(0); }
+  45% { transform: translateY(-6px); }
+  55% { transform: translateY(0); }
+  100% { transform: translateY(0); }
+}
+
+.icon{
+  width: 36px;
+  height: 36px;
+  animation: upDown 2s cubic-bezier(.68,-0.55,.27,1.55) infinite;
+}
