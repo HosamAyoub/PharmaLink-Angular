@@ -1,6 +1,6 @@
 .card {
-  max-width: 386px;
-  padding: 25px 92px !important;
+  max-width: 390px;
+  padding: 25px 30px !important;
   border: none;
   box-shadow: 0 4px 24px rgba(0,0,0,0.12), 0 1.5px 6px rgba(0,0,0,0.10);
   transition: transform 0.3s cubic-bezier(.25,.8,.25,1), box-shadow 0.3s cubic-bezier(.25,.8,.25,1);
@@ -17,62 +17,55 @@
   box-shadow: 0 8px 32px rgba(0,0,0,0.18), 0 3px 12px rgba(0,0,0,0.14);
 }
 
-/* Responsive Category Cards Layout */
-.category-cards-container {
+/* Responsive Pharmacy Cards Layout */
+.pharmacy-cards-container {
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-  gap: 1rem; /* Default gap for all screens */
 }
 
-.category-card-wrapper {
+.pharmacy-card-wrapper {
   display: flex;
   flex-direction: column;
 }
 
-/* Large screens (lg) - 4 cards in one row */
+/* Large screens (lg) - All cards in one row, fixed size */
 @media (min-width: 992px) {
-  .category-cards-container {
-    gap: 0.75rem; /* Smaller gap to fit 4 cards */
-  }
-
-  .category-card-wrapper {
-    flex: 0 0 calc(25% - 0.5625rem); /* 25% minus (3 gaps * 0.75rem / 4 cards) */
-    max-width: calc(25% - 0.5625rem);
+  .pharmacy-card-wrapper {
+    flex: 0 0 calc(33.333% - 1rem);
+    max-width: calc(33.333% - 1rem);
   }
 
   .card {
     height: 100%;
     max-width: none;
     width: 100%;
-    padding: 25px 10px !important; /* Reduced padding for 4 cards */
   }
 }
 
-/* Medium screens (md) - 2 cards per row with flex-grow */
+/* Medium screens (md) - Apply flex-grow */
 @media (min-width: 768px) and (max-width: 991px) {
-  .category-card-wrapper {
-    flex: 1 1 calc(50% - 0.5rem); /* Adjust for consistent gap */
-    min-width: 200px;
+  .pharmacy-card-wrapper {
+    flex: 1 1 calc(50% - 1rem);
+    min-width: 250px;
   }
 
   .card {
     height: 100%;
     max-width: none;
     width: 100%;
-    flex-grow: 1;
     padding: 25px 30px !important;
   }
 }
 
 /* Small screens (sm and below) - One card per row, full width */
 @media (max-width: 767px) {
-  .category-cards-container {
+  .pharmacy-cards-container {
     flex-direction: column;
     gap: 1rem;
   }
 
-  .category-card-wrapper {
+  .pharmacy-card-wrapper {
     flex: none;
     width: 100%;
   }
@@ -87,7 +80,7 @@
 
 /* Extra responsive adjustments */
 @media (max-width: 576px) {
-  .category-cards-container {
+  .pharmacy-cards-container {
     padding: 0 1rem;
   }
 
@@ -95,3 +88,4 @@
     padding: 20px 30px !important;
   }
 }
+
