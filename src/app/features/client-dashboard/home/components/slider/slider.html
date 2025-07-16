@@ -88,7 +88,10 @@
   <div class="position-absolute  start-50 translate-middle-x mb-5 w-100" style="max-width: 600px; z-index: 10; bottom: 110px;">
     <cleint-search></cleint-search>
     <div class="d-flex justify-content-center w-100">
-      <div class="d-flex align-items-center justify-content-center" style="width: 232px; background-color: var(--btn-background); margin-top: 32px; padding: 18px 0px;">
+      <div class="d-flex align-items-center justify-content-center shop-now-btn"
+           style="width: 232px; background-color: var(--primary-colora); margin-top: 32px; padding: 18px 0px; cursor: pointer; transition: all 0.3s ease; transform: scale(1);"
+           onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 8px 20px rgba(37, 99, 235, 0.4)'"
+           onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='none'">
         <img src="assets/images/icons/shopIcon.svg" alt="Search Icon" class="me-2" style="width: 24px; height: 24px; color: white;">
         <span style="font-size: 20px; font-weight: bold; color: white; margin-bottom: 5px;">shop now</span>
       </div>

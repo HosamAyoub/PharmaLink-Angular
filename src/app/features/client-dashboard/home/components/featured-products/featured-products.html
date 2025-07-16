@@ -1,0 +1,28 @@
+
+<div class="d-flex flex-column justify-content-center align-items-center text-center w-100" style="padding: 64px;">
+  <p style="font-weight: bold; font-size: 30px; margin-bottom: 32px;">Featured Products</p>
+  <!-- This section used to highlight the services offered by the pharmacy -->
+  <div class="d-flex justify-content-center align-items-stretch flex-wrap category-cards-container">
+    <!--Featured Product card -->
+    @for (product of products; track product.name) {
+      <div class="category-card-wrapper">
+        <div class="card">
+          <img [src]="product.image" [alt]="product.name" class="icon mx-auto d-block">
+          <div class="card-body text-start">
+            <h5>{{product.name}}</h5>
+            <p style="color: var(--primary-color);">pharmacy name</p>
+            <p style="font-size: 18px; font-weight: bold; color: var(--primary-color);">{{product.price}}</p>
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="d-flex justify-content-center align-items-center rounded-4 p-2" style="background-color: rgb(182, 219, 182);">
+                <p style="margin: 0; color: green;">In Stock</p>
+              </div>
+              <i class="fa-regular fa-heart fav-icon" style="font-size: 20px; cursor: pointer;" (click)="toggleFavorite($event)"></i>
+            </div>
+            <button class="btn btn-primary mt-3 rounded-0" style="width: 100%;">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+    }
+    <p class="view-all-link" (click)="viewAllProducts()">View All Products</p>
+  </div>
+ </div>
