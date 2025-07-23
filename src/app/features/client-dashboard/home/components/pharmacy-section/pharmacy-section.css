@@ -89,3 +89,26 @@
   }
 }
 
+/* View All Link Container - Responsive Fix */
+.view-all-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.view-all-link {
+  color: var(--primary-color);
+  font-weight: bold;
+  cursor: pointer;
+  text-decoration: underline;
+  margin: 0;
+  padding: 10px 20px;
+  transition: all 0.3s ease;
+}
+
+.view-all-link:hover {
+  color: #1d4ed8;
+  transform: translateY(-2px);
+}
+

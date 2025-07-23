@@ -4,17 +4,30 @@
   <!-- This section used to highlight the services offered by the pharmacy -->
   <div class="d-flex justify-content-center align-items-stretch flex-wrap category-cards-container">
     <!--Featured Product card -->
-    @for (product of products; track product.name) {
+    @for (product of products(); track $index) {
       <div class="category-card-wrapper">
         <div class="card">
-          <img [src]="product.image" [alt]="product.name" class="icon mx-auto d-block">
+          <div class="product-image-container">
+            <img 
+              [src]="getSafeImageUrl(product)" 
+              [alt]="product.drugName" 
+              class="product-image"
+              (error)="onImageError($event, $index)"
+              (load)="onImageLoad($event)"
+              [class.error]="hasImageError($index)">
+          </div>
           <div class="card-body text-start">
-            <h5>{{product.name}}</h5>
-            <p style="color: var(--primary-color);">pharmacy name</p>
-            <p style="font-size: 18px; font-weight: bold; color: var(--primary-color);">{{product.price}}</p>
+            <h5>{{product.drugName}}</h5>
+            <p style="color: var(--primary-color);">{{product.pharmacyName}}</p>
+            <p style="font-size: 18px; font-weight: bold; color: var(--primary-color);">{{product.price}}  EGP</p>
             <div class="d-flex justify-content-between align-items-center">
-              <div class="d-flex justify-content-center align-items-center rounded-4 p-2" style="background-color: rgb(182, 219, 182);">
-                <p style="margin: 0; color: green;">In Stock</p>
+              <!-- Dynamic stock status based on quantity -->
+              <div class="d-flex justify-content-center align-items-center rounded-4 p-2" 
+                   [style.background-color]="getStockBackgroundColor(product.quantityAvailable)">
+                <p style="margin: 0; font-size: 12px; font-weight: bold;" 
+                   [style.color]="getStockTextColor(product.quantityAvailable)">
+                  {{getStockStatus(product.quantityAvailable)}}
+                </p>
               </div>
               <i class="fa-regular fa-heart fav-icon" style="font-size: 20px; cursor: pointer;" (click)="toggleFavorite($event)"></i>
             </div>
@@ -23,6 +36,9 @@
         </div>
       </div>
     }
+  </div>
+  <!-- View All Link - Separate from flex container -->
+  <div class="view-all-container">
     <p class="view-all-link" (click)="viewAllProducts()">View All Products</p>
   </div>
  </div>

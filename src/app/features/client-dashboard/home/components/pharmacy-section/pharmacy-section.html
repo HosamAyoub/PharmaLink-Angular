@@ -4,7 +4,7 @@
   <!-- This section used to highlight the pharmacies in the area -->
   <div class="d-flex justify-content-center align-items-stretch gap-4 flex-wrap pharmacy-cards-container">
     <!--pharmacy card -->
-    @for (pharmacy of pharmacies; track pharmacy.name) {
+    @for (pharmacy of pharmacies(); track pharmacy.name) {
       <div class="pharmacy-card-wrapper">
         <div class="card">
           <div class="card-body text-start">
@@ -16,7 +16,7 @@
             <div class="d-flex justify-content-between align-items-center">
               <div class="d-flex align-items-center">
                 <i class="fa-solid fa-star text-warning me-1"></i>
-                <span style="font-weight: bold;">{{pharmacy.rating}}</span>
+                <span style="font-weight: bold;">{{pharmacy.rate}}</span>
               </div>
               <div class="d-flex justify-content-center align-items-center rounded-3 px-2 py-1"
                    [style.background-color]="pharmacy.isOpen ? 'rgb(182, 219, 182)' : 'rgb(255, 182, 182)'">
@@ -30,6 +30,9 @@
         </div>
       </div>
     }
+  </div>
+  <!-- View All Link - Separate from flex container -->
+  <div class="view-all-container">
     <p class="view-all-link" (click)="viewAllPharmacies()">View All Pharmacies</p>
   </div>
  </div>
