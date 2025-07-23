@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { Slider } from "../components/slider/slider";
 import { ServiceSection } from "../components/service-section/service-section";
-
 @Component({
   selector: 'app-home-screen',
   imports: [Slider, ServiceSection],

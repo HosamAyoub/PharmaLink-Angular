@@ -1,0 +1,81 @@
+<!-- Toggle Button (Visible only on small screens) - FIXED positioning and z-index -->
+<button
+  class="btn categories-toggle-btn d-md-none"
+  type="button"
+  (click)="toggleSidebar()"
+  [attr.aria-expanded]="sidebarVisible"
+  aria-label="Toggle categories menu"
+  [ngClass]="{
+    'd-none d-md-block': sidebarVisible ,
+    'd-block': !sidebarVisible 
+  }"
+  >
+  ☰ Categories
+</button>
+
+<!-- Mobile backdrop - FIXED z-index -->
+<div 
+  class="sidebar-backdrop d-md-none"
+  [ngClass]="{ 'show': sidebarVisible && isSmallScreen }"
+  (click)="closeSidebar()"
+  aria-hidden="true"
+></div>
+
+<!-- Sidebar -->
+<div
+  id="sidebar"
+  class="sidebar bg-light text-dark shadow rounded-0 rounded-md-3"
+  [ngClass]="{
+    'd-none d-md-block': !sidebarVisible && isSmallScreen,
+    'd-block': sidebarVisible || !isSmallScreen,
+    'position-fixed': isSmallScreen
+  }"
+  [attr.aria-hidden]="!sidebarVisible && isSmallScreen"
+  >
+    <!-- Sidebar Header - FIXED close button -->
+    <div class="sidebar-header">
+      <h4 
+        class="mb-0 border-bottom pb-2 flex-grow-1" 
+        (click)="onclickCategory()"
+      >
+        🧪 All Categories
+      </h4>
+      <!-- Close button for mobile - FIXED styling and event handling -->
+      <button 
+        class="sidebar-close-btn d-md-none"
+        type="button"
+        (click)="closeSidebar()"
+        (keydown.enter)="closeSidebar()"
+        (keydown.space)="closeSidebar()"
+        aria-label="Close sidebar"
+        tabindex="0"
+      >
+        ✕
+      </button>
+    </div>
+
+    <!-- Scrollable Category List -->
+    <div class="sidebar-scroll">
+      <ul class="nav flex-column">
+        @for (category of Categories; track $index) {
+          <li
+            class="navbar-item nav-hover cursor-pointer"
+            (click)="onclickCategory(category.name)"
+            [ngClass]="{ 'active': selectedCategory === category.name }"
+            role="button"
+            tabindex="0"
+            (keydown.enter)="onclickCategory(category.name)"
+            (keydown.space)="onclickCategory(category.name)"
+            [attr.aria-selected]="selectedCategory === category.name"
+          >
+            <img
+              [src]="category.icon"
+              [alt]="category.name + ' icon'"
+              loading="lazy"
+            />
+            <span class="nav-link text-dark">{{ category.name }}</span>
+          </li>
+        }
+      </ul>
+    </div>
+  </div>

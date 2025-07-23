@@ -1,0 +1,213 @@
+.drug-card {
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.drug-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+}
+
+.hover-shadow {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Enhanced responsive grid system */
+#pageContent {
+  padding: 0.5rem;
+}
+
+/* Mobile First Approach */
+@media (min-width: 576px) {
+  #pageContent {
+    padding: 1rem;
+  }
+}
+
+@media (min-width: 768px) {
+  #pageContent {
+    padding: 1.5rem;
+  }
+}
+
+@media (min-width: 992px) {
+  #pageContent {
+    padding: 2rem;
+  }
+}
+
+@media (min-width: 1200px) {
+  #pageContent {
+    padding: 2.5rem;
+  }
+}
+
+/* Drug card responsive adjustments */
+.drug-card .card-body {
+  padding: 1rem;
+}
+
+@media (min-width: 576px) {
+  .drug-card .card-body {
+    padding: 1.5rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .drug-card .card-body {
+    padding: 1.5rem;
+  }
+}
+
+@media (min-width: 992px) {
+  .drug-card .card-body {
+    padding: 2rem;
+  }
+}
+
+/* Image responsive sizing */
+.drug-card img {
+  height: 120px;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+@media (min-width: 576px) {
+  .drug-card img {
+    height: 140px;
+  }
+}
+
+@media (min-width: 768px) {
+  .drug-card img {
+    height: 150px;
+  }
+}
+
+@media (min-width: 992px) {
+  .drug-card img {
+    height: 160px;
+  }
+}
+
+/* Typography responsive scaling */
+.drug-card h5 {
+  font-size: 1.1rem;
+}
+
+@media (min-width: 576px) {
+  .drug-card h5 {
+    font-size: 1.15rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .drug-card h5 {
+    font-size: 1.25rem;
+  }
+}
+
+.drug-card .text-muted {
+  font-size: 0.85rem;
+}
+
+@media (min-width: 576px) {
+  .drug-card .text-muted {
+    font-size: 0.9rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .drug-card .text-muted {
+    font-size: 0.95rem;
+  }
+}
+
+/* Button responsive adjustments */
+.drug-card .btn {
+  font-size: 0.85rem;
+  padding: 0.5rem 1rem;
+}
+
+@media (min-width: 576px) {
+  .drug-card .btn {
+    font-size: 0.9rem;
+    padding: 0.6rem 1.2rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .drug-card .btn {
+    font-size: 0.95rem;
+    padding: 0.7rem 1.4rem;
+  }
+}
+
+/* Heart icon responsive sizing */
+.drug-card .fa-heart {
+  font-size: 1.2rem;
+}
+
+@media (min-width: 576px) {
+  .drug-card .fa-heart {
+    font-size: 1.3rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .drug-card .fa-heart {
+    font-size: 1.5rem;
+  }
+}
+
+/* Main wrapper adjustments */
+#mainWrapper {
+  min-height: 100vh;
+  width: 100%;
+}
+
+/* Ensure proper spacing on all devices */
+.row {
+  margin-left: -0.5rem;
+  margin-right: -0.5rem;
+}
+
+.row > * {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+@media (min-width: 768px) {
+  .row {
+    margin-left: -1rem;
+    margin-right: -1rem;
+  }
+  
+  .row > * {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+/* Fix for very small screens */
+@media (max-width: 375px) {
+  .drug-card .card-body {
+    padding: 0.75rem;
+  }
+  
+  .drug-card img {
+    height: 100px;
+  }
+  
+  .drug-card h5 {
+    font-size: 1rem;
+  }
+  
+  .drug-card .text-muted {
+    font-size: 0.8rem;
+  }
+  
+  .drug-card .btn {
+    font-size: 0.8rem;
+    padding: 0.4rem 0.8rem;
+  }
+}
