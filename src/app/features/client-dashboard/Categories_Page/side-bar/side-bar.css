@@ -79,14 +79,14 @@
   outline-offset: 2px;
 }
 
-/* FIXED: Close button styling and positioning */
+/* Close button styling and positioning */
 .sidebar-close-btn {
   background: transparent !important;
   border: 1px solid #6c757d !important;
   color: #6c757d !important;
   width: 30px;
   height: 30px;
-  display: flex !important;
+  display: flex ;
   align-items: center;
   justify-content: center;
   border-radius: 0.25rem;

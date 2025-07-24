@@ -262,20 +262,13 @@ export class SideBar implements OnInit, OnDestroy
     this.checkScreenSize();
   }
 
-  // Listen for escape key to close sidebar
-  @HostListener('document:keydown.escape', ['$event'])
-  onEscapeKey(event: Event) {
-    if (this.isSmallScreen && this.sidebarVisible) {
-      this.closeSidebar();
-    }
-  }
 
   checkScreenSize() {
     this.isSmallScreen = window.innerWidth < 768;
     if (!this.isSmallScreen) {
       this.sidebarVisible = true;
     } else {
-      this.sidebarVisible = false; // Hide sidebar by default on small screens
+      this.sidebarVisible = false; 
     }
   }
 

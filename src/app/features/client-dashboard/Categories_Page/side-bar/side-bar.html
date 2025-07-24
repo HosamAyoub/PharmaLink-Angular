@@ -1,10 +1,8 @@
-<!-- Toggle Button (Visible only on small screens) - FIXED positioning and z-index -->
+<!-- Toggle Button (Visible only on small screens)-->
 <button
   class="btn categories-toggle-btn d-md-none"
   type="button"
   (click)="toggleSidebar()"
-  [attr.aria-expanded]="sidebarVisible"
-  aria-label="Toggle categories menu"
   [ngClass]="{
     'd-none d-md-block': sidebarVisible ,
     'd-block': !sidebarVisible 
@@ -13,7 +11,7 @@
   ☰ Categories
 </button>
 
-<!-- Mobile backdrop - FIXED z-index -->
+<!-- Mobile backdrop-->
 <div 
   class="sidebar-backdrop d-md-none"
   [ngClass]="{ 'show': sidebarVisible && isSmallScreen }"
@@ -30,9 +28,8 @@
     'd-block': sidebarVisible || !isSmallScreen,
     'position-fixed': isSmallScreen
   }"
-  [attr.aria-hidden]="!sidebarVisible && isSmallScreen"
   >
-    <!-- Sidebar Header - FIXED close button -->
+    <!-- Sidebar Header  -->
     <div class="sidebar-header">
       <h4 
         class="mb-0 border-bottom pb-2 flex-grow-1" 
@@ -40,14 +37,11 @@
       >
         🧪 All Categories
       </h4>
-      <!-- Close button for mobile - FIXED styling and event handling -->
+      <!-- Close button for mobile  -->
       <button 
         class="sidebar-close-btn d-md-none"
         type="button"
         (click)="closeSidebar()"
-        (keydown.enter)="closeSidebar()"
-        (keydown.space)="closeSidebar()"
-        aria-label="Close sidebar"
         tabindex="0"
       >
         ✕
@@ -64,15 +58,8 @@
             [ngClass]="{ 'active': selectedCategory === category.name }"
             role="button"
             tabindex="0"
-            (keydown.enter)="onclickCategory(category.name)"
-            (keydown.space)="onclickCategory(category.name)"
-            [attr.aria-selected]="selectedCategory === category.name"
           >
-            <img
-              [src]="category.icon"
-              [alt]="category.name + ' icon'"
-              loading="lazy"
-            />
+            <img [src]="category.icon"/>
             <span class="nav-link text-dark">{{ category.name }}</span>
           </li>
         }
