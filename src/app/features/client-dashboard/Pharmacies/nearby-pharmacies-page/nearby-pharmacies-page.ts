@@ -3,10 +3,11 @@ import { PharmacyCard } from '../pharmacy-card/pharmacy-card';
 import { PharmacyService } from '../Service/pharmacy-service';
 import { Ipharmacy } from '../Interface/ipharmacy';
 import { HttpClient } from '@angular/common/http';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-nearby-pharmacies-page',
-  imports: [PharmacyCard],
+  imports: [PharmacyCard,],
   templateUrl: './nearby-pharmacies-page.html',
   styleUrl: './nearby-pharmacies-page.css'
 })

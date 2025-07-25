@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Injectable, Input, OnInit } from '@angular/core';
 import { PharmacyService } from '../Service/pharmacy-service';
 import { Ipharmacy } from '../Interface/ipharmacy';
 import { DecimalPipe } from '@angular/common';
@@ -8,6 +8,9 @@ import { DecimalPipe } from '@angular/common';
   imports: [DecimalPipe],
   templateUrl: './pharmacy-card.html',
   styleUrl: './pharmacy-card.css'
+})
+@Injectable({
+  providedIn: 'root'
 })
 export class PharmacyCard {
   

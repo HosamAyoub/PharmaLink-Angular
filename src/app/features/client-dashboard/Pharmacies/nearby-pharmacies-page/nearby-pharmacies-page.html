@@ -25,14 +25,12 @@
       <div class="alert alert-info text-center">
         No pharmacies found in your area.
       </div>
-      } @else {
-      <div class="">
+      } @else {      
         @for (pharmacy of pharmacies; track pharmacy.name) {
         <div class="col">
           <app-pharmacy-card [pharmacy]="pharmacy"></app-pharmacy-card>
         </div>
         }
-      </div>
       }
       }
     </div>
