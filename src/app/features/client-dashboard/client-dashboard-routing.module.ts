@@ -3,14 +3,11 @@ import { RouterModule, Routes } from '@angular/router';
 import { HomeScreen } from './home/home-screen/home-screen';
 
 const routes: Routes = [
-
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   {
     path: 'home',
-    component: HomeScreen
-
+    component: HomeScreen,
   },
-
 ];
 
 @NgModule({
