@@ -8,6 +8,8 @@ export const routes: Routes = [
   {
     path: 'auth',
     component: Auth,
+    // loadComponent: () =>
+    //   import('./features/auth/auth.component').then((m) => m.Auth),
   },
 
   {
