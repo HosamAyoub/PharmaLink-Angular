@@ -1,0 +1,11 @@
+.bg-gray{
+    background-color: #f8fafc;;
+}
+.nearby-pharmacies-btn {
+  margin: 10px;
+  padding: 10px 20px;
+}
+
+.nearby-pharmacies-btn i {
+  margin-right: 8px;
+}
