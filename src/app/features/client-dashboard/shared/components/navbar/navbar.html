@@ -1,44 +1,76 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
   <div class="container-fluid">
-
     <!-- Logo Section -->
     <a class="navbar-brand d-flex align-items-center">
-      <img src="assets/images/logos/logo.svg" alt="Logo" class="me-2" style="width: 40px; height: 40px;">
-      <span style="font-weight: bold; font-size: 20px; margin-left: 12px; padding-bottom: 6px;">pharma</span>
+      <img
+        src="assets/images/logos/logo.svg"
+        alt="Logo"
+        class="me-2"
+        style="width: 40px; height: 40px"
+      />
+      <span
+        style="
+          font-weight: bold;
+          font-size: 20px;
+          margin-left: 12px;
+          padding-bottom: 6px;
+        "
+        >pharma</span
+      >
     </a>
 
     <!-- Search Section for MD screens (visible in navbar, not collapsed) -->
     <div class="d-none d-md-block d-lg-none flex-grow-1 mx-3">
-      <div class="position-relative" style="height: 50px; max-width: 400px;">
+      <div class="position-relative" style="height: 50px; max-width: 400px">
         <input
           type="text"
           class="form-control border-2 rounded-end ps-5"
           placeholder="Search medicines, pharmacies..."
-          style="border-color: #dee2e6; height: 100%;">
-        <span class="position-absolute top-50 start-0 translate-middle-y ms-3" style="pointer-events: none; color: #888;">
+          style="border-color: #dee2e6; height: 100%"
+        />
+        <span
+          class="position-absolute top-50 start-0 translate-middle-y ms-3"
+          style="pointer-events: none; color: #888"
+        >
           <i class="fa-solid fa-magnifying-glass"></i>
         </span>
       </div>
     </div>
 
     <!-- Collapse Button -->
-    <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+    <button
+      class="navbar-toggler d-lg-none"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarContent"
+      aria-controls="navbarContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
       <span class="navbar-toggler-icon"></span>
     </button>
 
     <!-- Collapsible Content -->
     <div class="collapse navbar-collapse" id="navbarContent">
-      <div class="d-flex flex-column flex-lg-row align-items-start align-items-lg-center justify-content-start justify-content-lg-center w-100 mt-3 mt-lg-0">
-
+      <div
+        class="d-flex flex-column flex-lg-row align-items-start align-items-lg-center justify-content-start justify-content-lg-center w-100 mt-3 mt-lg-0"
+      >
         <!-- Search Section for LG+ screens -->
         <div class="d-none d-lg-block flex-grow-1 mx-lg-4 mb-3 mb-lg-0">
-          <div class="position-relative" style="height: 64px; max-width: 600px; margin: 0 auto;">
+          <div
+            class="position-relative"
+            style="height: 64px; max-width: 600px; margin: 0 auto"
+          >
             <input
               type="text"
               class="form-control border-2 rounded-end ps-5"
               placeholder="Search medicines, pharmacies, or health products..."
-              style="border-color: #dee2e6; height: 100%; min-height: 64px;">
-            <span class="position-absolute top-50 start-0 translate-middle-y ms-3" style="pointer-events: none; color: #888;">
+              style="border-color: #dee2e6; height: 100%; min-height: 64px"
+            />
+            <span
+              class="position-absolute top-50 start-0 translate-middle-y ms-3"
+              style="pointer-events: none; color: #888"
+            >
               <i class="fa-solid fa-magnifying-glass"></i>
             </span>
           </div>
@@ -46,100 +78,163 @@
 
         <!-- Search Section - Mobile (visible when collapsed on sm screens only) -->
         <div class="d-md-none w-100 mb-3">
-          <div class="position-relative" style="height: 50px;">
+          <div class="position-relative" style="height: 50px">
             <input
               type="text"
               class="form-control border-2 rounded-end ps-5"
               placeholder="Search medicines, pharmacies..."
-              style="border-color: #dee2e6; height: 100%; width: 100%;">
-            <span class="position-absolute top-50 start-0 translate-middle-y ms-3" style="pointer-events: none; color: #888;">
+              style="border-color: #dee2e6; height: 100%; width: 100%"
+            />
+            <span
+              class="position-absolute top-50 start-0 translate-middle-y ms-3"
+              style="pointer-events: none; color: #888"
+            >
               <i class="fa-solid fa-magnifying-glass"></i>
             </span>
           </div>
         </div>
 
         <!-- Navigation Icons -->
-        <ul class="navbar-nav d-flex flex-row flex-lg-row align-items-start align-items-lg-center mb-0 ms-lg-auto">
+        <ul
+          class="navbar-nav d-flex flex-row flex-lg-row align-items-start align-items-lg-center mb-0 ms-lg-auto"
+        >
+          <!-- Home Icon -->
+          <li class="nav-item me-3 me-lg-3 mb-2 mb-lg-0">
+            <a
+              class="nav-link p-2 position-relative d-flex align-items-center"
+              [routerLink]="'home'"
+              data-bs-toggle="tooltip"
+              title="Home"
+            >
+              <img
+                src="assets/images/icons/home.svg"
+                alt="Home"
+                class="me-2 me-lg-0"
+                [routerLink]="['/client/home']"
+              />
+              <span class="d-lg-none">Home</span>
+            </a>
+          </li>
 
-        <!-- Home Icon -->
-        <li class="nav-item me-3 me-lg-3 mb-2 mb-lg-0">
-          <a class="nav-link p-2 position-relative d-flex align-items-center"
-             data-bs-toggle="tooltip"
-             title="Home">
-             <img src="assets/images/icons/home.svg" alt="Home" class="me-2 me-lg-0" [routerLink]="['/client/home']">
-             <span class="d-lg-none">Home</span>
-          </a>
-        </li>
+          <!-- Wishlist Icon -->
+          <li class="nav-item me-3">
+            <a
+              class="nav-link p-2 rounded-circle position-relative"
+              data-bs-toggle="tooltip"
+              title="Wishlist"
+            >
+              <img
+                src="assets/images/icons/fav.svg"
+                alt="favorite"
+                class="me-2 me-lg-0"
+              />
+              <span class="d-lg-none">Wishlist</span>
+            </a>
+          </li>
 
-        <!-- Wishlist Icon -->
-        <li class="nav-item me-3 me-lg-3 mb-2 mb-lg-0">
-          <a class="nav-link p-2 position-relative d-flex align-items-center"
-             data-bs-toggle="tooltip"
-             title="Wishlist">
-             <img src="assets/images/icons/fav.svg" alt="favorite" class="me-2 me-lg-0">
-             <span class="d-lg-none">Wishlist</span>
-          </a>
-        </li>
+          <!-- Cart Icon with Badge -->
+          <li class="nav-item me-3">
+            <a
+              class="nav-link p-2 rounded-circle position-relative"
+              [routerLink]="'favorites'"
+              data-bs-toggle="tooltip"
+              title="Cart"
+            >
+              <img
+                src="assets/images/icons/cart.svg"
+                alt="Cart"
+                class="me-2 me-lg-0"
+              />
+              <span
+                class="position-absolute badge rounded-pill bg-danger"
+                style="
+                  font-size: 0.6rem;
+                  top: -2px;
+                  right: -2px;
+                  min-width: 18px;
+                  height: 18px;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                "
+              >
+                1
+              </span>
+              <span class="d-lg-none">Cart</span>
+            </a>
+          </li>
 
-        <!-- Cart Icon with Badge -->
-        <li class="nav-item me-3 me-lg-3 mb-2 mb-lg-0">
-          <a class="nav-link p-2 position-relative d-flex align-items-center justify-content-center"
-             data-bs-toggle="tooltip"
-             title="Cart">
-            <img src="assets/images/icons/cart.svg" alt="Cart" class="me-2 me-lg-0">
-            <span class="position-absolute badge rounded-pill bg-danger"
-                  style="font-size: 0.6rem; top: -2px; right: -2px; min-width: 18px; height: 18px; display: flex; align-items: center; justify-content: center;">
-              1
-            </span>
-            <span class="d-lg-none">Cart</span>
-          </a>
-        </li>
+          <!-- Notifications Icon -->
+          <li class="nav-item me-3 me-lg-3 mb-2 mb-lg-0">
+            <a
+              class="nav-link p-2 position-relative d-flex align-items-center justify-content-center"
+              data-bs-toggle="tooltip"
+              title="Notifications"
+            >
+              <img
+                src="assets/images/icons/notification.svg"
+                alt="Notifications"
+                class="me-2 me-lg-0"
+              />
+              <span
+                class="position-absolute badge rounded-pill bg-warning"
+                style="
+                  font-size: 0.6rem;
+                  top: -2px;
+                  right: -2px;
+                  min-width: 18px;
+                  height: 18px;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                "
+              >
+                2
+              </span>
+              <span class="d-lg-none">Notifications</span>
+            </a>
+          </li>
 
-        <!-- Notifications Icon -->
-        <li class="nav-item me-3 me-lg-3 mb-2 mb-lg-0">
-          <a class="nav-link p-2 position-relative d-flex align-items-center justify-content-center"
-             data-bs-toggle="tooltip"
-             title="Notifications">
-            <img src="assets/images/icons/notification.svg" alt="Notifications" class="me-2 me-lg-0">
-            <span class="position-absolute badge rounded-pill bg-warning"
-                  style="font-size: 0.6rem; top: -2px; right: -2px; min-width: 18px; height: 18px; display: flex; align-items: center; justify-content: center;">
-              2
-            </span>
-            <span class="d-lg-none">Notifications</span>
-          </a>
-        </li>
+          <!-- Profile Dropdown -->
+          <li class="nav-item dropdown">
+            <a
+              class="nav-link p-2 d-flex align-items-center dropdown-toggle"
+              href="#"
+              id="profileDropdown"
+              role="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+              title="Profile"
+            >
+              <img
+                src="assets/images/icons/profile.svg"
+                alt="Profile"
+                class="me-2 me-lg-0"
+              />
+              <span class="d-lg-none">Profile</span>
+            </a>
 
-        <!-- Profile Dropdown -->
-        <li class="nav-item dropdown">
-          <a class="nav-link p-2 d-flex align-items-center dropdown-toggle"
-             href="#"
-             id="profileDropdown"
-             role="button"
-             data-bs-toggle="dropdown"
-             aria-expanded="false"
-             title="Profile">
-            <img src="assets/images/icons/profile.svg" alt="Profile" class="me-2 me-lg-0">
-            <span class="d-lg-none">Profile</span>
-          </a>
+            <!-- Dropdown Menu -->
+            <ul
+              class="dropdown-menu dropdown-menu-end shadow border-0 mt-2"
+              style="min-width: 200px"
+            >
+              <!-- Not Logged In Menu (Login/Register) -->
+              <li>
+                <a class="dropdown-item py-2">
+                  <i class="bi bi-box-arrow-in-right me-2 text-primary"></i>
+                  Login
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item py-2">
+                  <i class="bi bi-person-plus me-2 text-success"></i>
+                  Sign Up
+                </a>
+              </li>
 
-          <!-- Dropdown Menu -->
-          <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2" style="min-width: 200px;">
-            <!-- Not Logged In Menu (Login/Register) -->
-            <li>
-              <a class="dropdown-item py-2">
-                <i class="bi bi-box-arrow-in-right me-2 text-primary"></i>
-                Login
-              </a>
-            </li>
-            <li>
-              <a class="dropdown-item py-2">
-                <i class="bi bi-person-plus me-2 text-success"></i>
-                Sign Up
-              </a>
-            </li>
-
-            <!-- Logged In User Menu (commented out for now) -->
-            <!--
+              <!-- Logged In User Menu (commented out for now) -->
+              <!--
             <ng-container>
               <li class="dropdown-header">
                 <div class="d-flex align-items-center">
@@ -186,11 +281,9 @@
                 </a>
               </li>
             </ng-container>
-            -->
-          </ul>
-        </li>
-
-      </ul>
+            --></ul>
+          </li>
+        </ul>
       </div>
     </div>
   </div>
