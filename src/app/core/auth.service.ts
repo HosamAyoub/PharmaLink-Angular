@@ -1,12 +1,12 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { API_BASE_URL } from './api.constants';
-import { catchError, Subject, tap, throwError } from 'rxjs';
+import { BehaviorSubject, catchError, tap, throwError } from 'rxjs';
 import { ResponseData, User } from './user.model';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  user = new Subject<User>();
+  user = signal<User | null>(null);
   http = inject(HttpClient);
   signUp(userName: string, email: string, password: string) {
     // return this.http.post(API_BASE_URL + 'Account/Register', {
@@ -51,7 +51,7 @@ export class AuthService {
             new Date(resData.value.expiration),
             resData.value.userName
           );
-          this.user.next(user);
+          this.user.set(user);
         })
       );
   }

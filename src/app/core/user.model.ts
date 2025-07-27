@@ -5,7 +5,6 @@ export class User {
     public userName: string
   ) {}
 
-  /////////////////////////////// check _expiration result if string or Date
   get token() {
     if (!this._expiration || new Date() > this._expiration) {
       return null;

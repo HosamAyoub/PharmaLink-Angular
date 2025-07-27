@@ -3,6 +3,7 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { AuthService } from '../../core/auth.service';
 import { LoadingSpinner } from '../../shared/components/loading-spinner/loading-spinner';
 import { ResponseData, User } from '../../core/user.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-auth',
@@ -16,7 +17,8 @@ export class Auth {
   isLoading = signal(false);
   displayedError = '';
 
-  authService = inject(AuthService);
+  private authService = inject(AuthService);
+  private router = inject(Router);
   // userModel = inject(User);
 
   onSwitchMode() {
@@ -38,6 +40,7 @@ export class Auth {
           console.log(resData);
           this.isLoading.set(false);
           form.reset();
+          this.router.navigate(['/client/home']);
           // console.log(this.userModel.token);
           // console.log(resData.value.expiration > new Date());
         },
