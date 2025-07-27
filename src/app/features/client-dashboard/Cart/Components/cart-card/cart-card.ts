@@ -1,4 +1,5 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, input, Input, Output } from '@angular/core';
+import { CartItem } from '../../Interfaces/cart-item';
 
 @Component({
   selector: 'app-cart-card',
@@ -7,7 +8,8 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   styleUrl: './cart-card.css'
 })
 export class CartCard {
-  @Input() item: any;
+  item = input<CartItem>();
+
   @Output() increment = new EventEmitter<void>();
   @Output() decrement = new EventEmitter<void>();
   @Output() remove = new EventEmitter<void>();

@@ -4,15 +4,15 @@
     <!-- Left: Image and Drug Info -->
     <div class="d-flex align-items-center flex-grow-1 min-w-0">
       <img 
-        [src]="'assets/' + item.imageUrl" 
+        [src]="'assets/' + item()?.imageUrl" 
         width="64" height="64" 
         class="me-3 rounded-3 bg-light" 
         style="object-fit: cover;"
       />
       <div class="text-truncate">
-        <h6 class="mb-0 fw-semibold text-primary text-truncate">{{ item.drugName }}</h6>
-        <small class="text-muted d-block text-truncate">{{ item.pharmacyName }}</small>
-        <span class="text-success fw-bold">${{ item.unitPrice }}</span>
+        <h6 class="mb-0 fw-semibold text-primary text-truncate">{{ item()?.drugName }}</h6>
+        <small class="text-muted d-block text-truncate">{{ item()?.pharmacyName }}</small>
+        <span class="text-success fw-bold">${{ item()?.unitPrice }}</span>
       </div>
     </div>
 
@@ -21,7 +21,7 @@
       <button class="btn btn-outline-secondary btn-sm me-2 rounded-circle" (click)="decrement.emit()">
         <i class="bi bi-dash"></i>
       </button>
-      <span class="mx-1 fw-bold">{{ item.quantity }}</span>
+      <span class="mx-1 fw-bold">{{ item()?.quantity }}</span>
       <button class="btn btn-outline-secondary btn-sm ms-2 rounded-circle" (click)="increment.emit()">
         <i class="bi bi-plus"></i>
       </button>
@@ -29,7 +29,7 @@
 
     <!-- Right: Total and Remove -->
     <div class="text-end ms-3">
-      <div class="fw-bold text-dark">${{ item.totalPrice }}</div>
+      <div class="fw-bold text-dark">${{ item()?.totalPrice }}</div>
       <i 
         class="bi bi-trash3-fill text-danger cursor-pointer fs-5 mt-1 d-inline-block hover-trash" 
         (click)="remove.emit()" 

@@ -29,6 +29,7 @@ export class CartStore {
       next: (data) => {
         this.cartItems.set(data.cartItems);
         this.orderSummary.set(data.orderSummary);
+        this.updateTotals();
       },
       error: (err) => {
         console.error('Failed to load cart:', err);
@@ -81,22 +82,22 @@ export class CartStore {
   }
 
   clearCart() {
-  this.cartService.clearCart().subscribe({
-    next: () => {
-      this.cartItems.set([]);
-      const summary = this.orderSummary();
-      if (summary) {
-        summary.subtotal = 0;
-        summary.total = summary.deliveryFee;
-        this.orderSummary.set({ ...summary });
+    this.cartService.clearCart().subscribe({
+      next: () => {
+        this.cartItems.set([]);
+        const summary = this.orderSummary();
+        if (summary) {
+          summary.subtotal = 0;
+          summary.total = summary.deliveryFee;
+          this.orderSummary.set({ ...summary });
+        }
+      },
+      error: (err) => {
+        console.error('Clear cart failed', err);
+        alert('Failed to clear the cart.');
       }
-    },
-    error: (err) => {
-      console.error('Clear cart failed', err);
-      alert('Failed to clear the cart.');
-    }
-  });
-}
+    });
+  }
 
 
   // Recalculate totals
@@ -113,41 +114,41 @@ export class CartStore {
   }
 
   checkout(paymentMethod: string) {
-  const orderRequest: SubmitOrderRequest = {
-    items: this.cartItems().map(item => ({
-      drugId: item.drugId,
-      pharmacyId: item.pharmacyId,
-      quantity: item.quantity
-    }))
-  };
+    const orderRequest: SubmitOrderRequest = {
+      items: this.cartItems().map(item => ({
+        drugId: item.drugId,
+        pharmacyId: item.pharmacyId,
+        quantity: item.quantity
+      }))
+    };
 
-  this.http.post<any>('http://localhost:5278/api/Orders/submit', { paymentMethod }).subscribe({
-    next: (res) => {
-      if (paymentMethod === 'cash') {
-        this.router.navigate(['/client/success'], { queryParams: { orderId: res.orderId } });
-      } else {
-        this.createStripeSession(res.orderId);
+    this.http.post<any>('http://localhost:5278/api/Orders/submit', { paymentMethod }).subscribe({
+      next: (res) => {
+        if (paymentMethod === 'cash') {
+          this.router.navigate(['/client/success'], { queryParams: { orderId: res.orderId } });
+        } else {
+          this.createStripeSession(res.orderId);
+        }
+      },
+      error: (err) => {
+        console.error('Order submission failed', err);
+        alert("Order submission failed");
       }
-    },
-    error: (err) => {
-      console.error('Order submission failed', err);
-      alert("Order submission failed");
-    }
-  });
-}
+    });
+  }
 
-private createStripeSession(orderId: number) {
-  this.http.post<any>('http://localhost:5278/api/Orders/CreateCheckoutSession', orderId).subscribe({
-    next: (sessionRes) => {
-      if (sessionRes?.url) {
-        window.location.href = sessionRes.url;
+  private createStripeSession(orderId: number) {
+    this.http.post<any>('http://localhost:5278/api/Orders/CreateCheckoutSession', orderId).subscribe({
+      next: (sessionRes) => {
+        if (sessionRes?.url) {
+          window.location.href = sessionRes.url;
+        }
+      },
+      error: (err) => {
+        console.error('Stripe session creation failed', err);
+        alert("Failed to create Stripe session");
       }
-    },
-    error: (err) => {
-      console.error('Stripe session creation failed', err);
-      alert("Failed to create Stripe session");
-    }
-  });
-}
+    });
+  }
 
 }

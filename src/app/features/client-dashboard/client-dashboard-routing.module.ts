@@ -18,7 +18,7 @@ const routes: Routes = [
   { path: 'cart', component: CartPage },
   { path: 'success', component: SuccessPage },
   { path: 'cancel', component: CancelPage },
-{path: 'favorites', component: FavoritePage}
+  { path: 'favorites', component: FavoritePage }
 
 ];
 
