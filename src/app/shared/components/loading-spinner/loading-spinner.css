@@ -1,0 +1,55 @@
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.8);
+  z-index: 9999;
+}
+
+.loader {
+  /* width: 60px; */
+  /* height: 60px; */
+  position: relative;
+}
+
+.loader-pill {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px;
+  height: 16px;
+  background: linear-gradient(
+    90deg,
+    #2dd4bf 0%,
+    #2dd4bf 50%,
+    #06b6d4 50%,
+    #06b6d4 100%
+  );
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(45, 212, 191, 0.3);
+  animation: pillSequence 3s ease-in-out infinite;
+}
+
+@keyframes pillSequence {
+  /* First spin cycle */
+  0% {
+    transform: translate(-50%, -50%) rotate(-90deg) translateX(0px);
+  }
+  60% {
+    transform: translate(-50%, -50%) rotate(630deg) translateX(0px);
+  }
+
+  /* First jump - stays centered horizontally */
+  75% {
+    transform: translate(-50%, -50%) rotate(630deg) translateX(20px);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(630deg) translateX(0px);
+  }
+}

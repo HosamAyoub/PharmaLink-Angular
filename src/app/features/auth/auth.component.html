@@ -1,5 +1,12 @@
 <div class="row m-auto">
   <div class="col-xs-12 col-md-6">
+    @if (displayedError) {
+    <div class="alert alert-danger">
+      <p>{{ displayedError }}</p>
+    </div>
+    } @if (isLoading()) {
+    <app-loading-spinner />
+    } @else {
     <form #authForm="ngForm" (ngSubmit)="onSubmit(authForm)">
       @if (!isLoginMode) {
       <div class="form-group">
@@ -51,5 +58,6 @@
         </button>
       </div>
     </form>
+    }
   </div>
 </div>
