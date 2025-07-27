@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, computed, inject, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { AuthService } from '../../../../../core/auth.service';
+import { AuthService } from '../../../../../core/auth/auth.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -26,5 +26,8 @@ export class Navbar {
   // }
   get isAuthenticated() {
     return Boolean(this.authService.user());
+  }
+  onLogout() {
+    this.authService.logout();
   }
 }

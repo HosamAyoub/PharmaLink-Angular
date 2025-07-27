@@ -1,8 +1,8 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
-import { AuthService } from '../../core/auth.service';
+import { AuthService } from '../../core/auth/auth.service';
 import { LoadingSpinner } from '../../shared/components/loading-spinner/loading-spinner';
-import { ResponseData, User } from '../../core/user.model';
+import { ResponseData, User } from '../../core/auth/user.model';
 import { Router } from '@angular/router';
 
 @Component({

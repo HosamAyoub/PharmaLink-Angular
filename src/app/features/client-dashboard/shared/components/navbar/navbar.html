@@ -122,7 +122,11 @@
           <ul class="dropdown-menu">
             @if (isAuthenticated){
             <li><a class="dropdown-item" routerLink="">Profile</a></li>
-            <li><a class="dropdown-item" routerLink="">Logout</a></li>
+            <li>
+              <a class="dropdown-item" (click)="onLogout()" routerLink=""
+                >Logout</a
+              >
+            </li>
             } @else {
             <li><a class="dropdown-item" routerLink="/auth">Login</a></li>
             <li><a class="dropdown-item" routerLink="/auth">Sign Up</a></li>

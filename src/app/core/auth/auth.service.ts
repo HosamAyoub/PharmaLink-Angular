@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
-import { API_BASE_URL } from './api.constants';
+import { API_BASE_URL } from '../api.constants';
 import { BehaviorSubject, catchError, tap, throwError } from 'rxjs';
 import { ResponseData, User } from './user.model';
 
@@ -54,6 +54,10 @@ export class AuthService {
           this.user.set(user);
         })
       );
+  }
+
+  logout() {
+    this.user.set(null);
   }
 
   private handleError(errorResponse: HttpErrorResponse) {

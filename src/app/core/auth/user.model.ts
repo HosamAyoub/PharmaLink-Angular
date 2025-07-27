@@ -15,9 +15,9 @@ export class User {
 
 export interface ResponseData {
   value: {
-    token: 'string';
-    expiration: 'string';
-    userName: 'string';
+    token: string;
+    expiration: string;
+    userName: string;
   };
-  statusCode: 200;
+  statusCode: number;
 }
