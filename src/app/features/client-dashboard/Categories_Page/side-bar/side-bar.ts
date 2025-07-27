@@ -301,10 +301,10 @@ export class SideBar implements OnInit, OnDestroy
       this.selectedCategory = '';
         this.drugservice.getRandomDrugs().subscribe(
         {
-          next: (data) => {
-            this.CategoryDrugs = data;
+          next: (data)=>{
+            this.CategoryDrugs = data; // Handle both array and object responses
             this.categorySelected.emit(this.CategoryDrugs);
-            console.log('Random Drugs:', this.CategoryDrugs);
+            console.log('Random Drugs:', data);
           },
           error: (err) => {
             console.error('Error fetching random drugs:', err);

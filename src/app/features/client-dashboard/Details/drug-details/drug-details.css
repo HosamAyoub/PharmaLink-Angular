@@ -1,0 +1,220 @@
+.drug-details-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 20px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: #f8f9fa;
+      min-height: 100vh;
+    }
+
+    .drug-header {
+      display: flex;
+      align-items: flex-start;
+      background: white;
+      padding: 24px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      margin-bottom: 24px;
+      gap: 20px;
+    }
+
+    .drug-icon {
+      flex-shrink: 0;
+    }
+
+    .pill-icon {
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, #ff4444 0%, #ff4444 50%, #ffaa00 50%, #ffaa00 100%);
+      border-radius: 30px;
+      position: relative;
+    }
+
+    .pill-icon::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: rgba(0, 0, 0, 0.1);
+      transform: translateY(-50%);
+    }
+
+    .drug-info {
+      flex: 1;
+    }
+
+    .drug-name {
+      font-size: 28px;
+      font-weight: 700;
+      color: #1a1a1a;
+      margin: 0 0 8px 0;
+    }
+
+    .scientific-name {
+      color: #666;
+      margin: 0 0 8px 0;
+      font-size: 16px;
+    }
+
+    .category {
+      color: #666;
+      margin: 0 0 12px 0;
+      font-size: 16px;
+    }
+
+    .category-tag {
+      color: #3b82f6;
+      font-weight: 500;
+    }
+
+    .rating {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .star {
+      color: #fbbf24;
+      font-size: 18px;
+    }
+
+    .rating-value {
+      font-weight: 600;
+      color: #1a1a1a;
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: 1fr 400px;
+      gap: 24px;
+    }
+
+    .drug-info-section {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .info-card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+    }
+
+    .card-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid #e5e7eb;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background-color 0.2s;
+    }
+
+    .card-header:hover {
+      background-color: #f9fafb;
+    }
+
+    .card-header h3 {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 600;
+      color: #1a1a1a;
+    }
+
+    .toggle-icon {
+      transition: transform 0.2s;
+      color: #9ca3af;
+      font-size: 14px;
+    }
+
+    .toggle-icon.rotated {
+      transform: rotate(180deg);
+    }
+
+    .card-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-out;
+    }
+
+    .card-content.expanded {
+      max-height: 200px;
+      padding: 0 24px 20px 24px;
+    }
+
+    .card-content p {
+      margin: 16px 0 0 0;
+      color: #4b5563;
+      line-height: 1.6;
+    }
+
+    .pharmacy-section {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    @media (max-width: 1024px) {
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .pharmacy-section {
+        order: -1;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .drug-details-container {
+        padding: 16px;
+      }
+
+      .drug-header {
+        padding: 20px;
+        flex-direction: column;
+        text-align: center;
+        gap: 16px;
+      }
+
+      .drug-name {
+        font-size: 24px;
+      }
+
+      .card-header {
+        padding: 16px 20px;
+      }
+
+      .card-content.expanded {
+        padding: 0 20px 16px 20px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .drug-details-container {
+        padding: 12px;
+      }
+
+      .drug-header {
+        padding: 16px;
+      }
+
+      .drug-name {
+        font-size: 20px;
+      }
+
+      .card-header {
+        padding: 12px 16px;
+      }
+
+      .card-header h3 {
+        font-size: 16px;
+      }
+
+      .card-content.expanded {
+        padding: 0 16px 12px 16px;
+      }
+    }
