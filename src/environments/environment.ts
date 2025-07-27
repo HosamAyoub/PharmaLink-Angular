@@ -6,11 +6,11 @@ export const environment = {
   features: {
     enableNotifications: true,
     enableGeolocation: true,
-    maxNearbyPharmacies: 10
+    maxNearbyPharmacies: 10,
   },
   ui: {
     itemsPerPage: 12,
     carouselInterval: 5000,
-    animationDuration: 300
-  }
+    animationDuration: 300,
+  },
 };
