@@ -1,0 +1,95 @@
+<div class="pharmacy-available-container" *ngIf="pharmacies?.length">
+  <h2 class="section-title">Available at Pharmacies</h2>
+
+  <div class="pharmacy-table-container">
+    <div class="table-header">
+      <div class="header-cell pharmacy-col">Pharmacy</div>
+      <div class="header-cell price-col">Price</div>
+      <div class="header-cell status-col">Quantity</div>
+      <div class="header-cell action-col">Action</div>
+    </div>
+
+    <div class="pharmacy-list">
+      <div
+        class="pharmacy-row"
+        *ngFor="let pharmacy of pharmacies; index as i"
+        [class.low-stock]="pharmacy.quantityAvailable <= 10"
+      >
+        <!-- Desktop Layout -->
+        <div class="desktop-layout">
+          <div class="pharmacy-info">
+            <div class="pharmacy-name">{{ pharmacy.pharma_Name }}</div>
+            <div class="pharmacy-location">
+              <span class="location-icon">📍</span>
+              {{ pharmacy.pharma_Location }}
+            </div>
+          </div>
+
+          <div class="pharmacy-price">
+            <span class="currency">$</span>{{ pharmacy.price }}
+          </div>
+
+          <div class="pharmacy-status">
+            <span
+              class="status-badge"
+              [class.in-stock]="pharmacy.quantityAvailable > 10"
+              [class.low-stock]="pharmacy.quantityAvailable <= 10 && pharmacy.quantityAvailable > 0"
+              [class.out-of-stock]="pharmacy.quantityAvailable === 0"
+            >
+              {{ pharmacy.quantityAvailable }}
+            </span>
+          </div>
+
+          <div class="pharmacy-action">
+            <button
+              class="buy-button"
+              [disabled]="pharmacy.quantityAvailable === 0"
+              (click)="buyNow(pharmacy)"
+            >
+              Buy Now
+            </button>
+          </div>
+        </div>
+
+        <!-- Mobile Layout -->
+        <div class="mobile-layout">
+          <div class="pharmacy-info">
+            <div class="pharmacy-name">{{ pharmacy.pharma_Name }}</div>
+            <div class="pharmacy-location">
+              <span class="location-icon">📍</span>
+              {{ pharmacy.pharma_Location }}
+            </div>
+          </div>
+
+          <div class="mobile-row">
+            <span class="mobile-label">Price:</span>
+            <div class="pharmacy-price">
+              {{ pharmacy.price }}
+              <span class="currency">$</span>
+            </div>
+          </div>
+
+          <div class="mobile-row">
+            <span class="mobile-label">Status:</span>
+            <span
+              class="status-badge"
+              [class.in-stock]="pharmacy.quantityAvailable > 10"
+              [class.low-stock]="pharmacy.quantityAvailable <= 10 && pharmacy.quantityAvailable > 0"
+              [class.out-of-stock]="pharmacy.quantityAvailable === 0"
+            >
+              {{ pharmacy.quantityAvailable }}
+            </span>
+          </div>
+
+          <button
+            class="buy-button"
+            [disabled]="pharmacy.quantityAvailable === 0"
+            (click)="buyNow(pharmacy)"
+          >
+            Buy Now
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,53 @@
+<div class="nearby-pharmacies-container">
+      <h2 class="section-title">Nearby Pharmacies</h2>
+      
+      <div class="pharmacies-grid">
+          <div  
+          class="pharmacy-card"
+          [class.low-stock]="pharmacy.status === 'low-stock'"
+          [class.out-of-stock]="pharmacy.status === 'out-of-stock'">
+
+          <div class="pharmacy-header">
+            <h3 class="pharmacy-name">{{ pharmacy.name }}</h3>
+            <div class="pharmacy-distance">
+              <span class="location-icon">📍</span>
+              {{ pharmacy.distance }}
+            </div>
+          </div>
+          
+          <div class="pharmacy-details">
+            <div class="price-section">
+              <span class="price">
+                <span class="currency">$</span>{{ pharmacy.price }}
+              </span>
+            </div>
+            
+            <div class="status-section">
+              <span 
+                class="status-badge"
+                [class]="pharmacy.status"
+              >
+                {{ pharmacy.statusText }}
+              </span>
+            </div>
+          </div>
+          
+          <button 
+            class="buy-button"
+            [disabled]="pharmacy.status === 'out-of-stock'"
+          >
+            {{ pharmacy.status === 'out-of-stock' ? 'Out of Stock' : 'Buy Now' }}
+          </button>
+        </div> 
+      </div>
+      <!-- Google Maps Integration Placeholder -->
+      <div class="map-integration">
+        <div class="map-placeholder">
+          <div class="map-icon">🗺️</div>
+          <div class="map-text">
+            <h4>Google Maps Integration</h4>
+            <p>Showing pharmacies with this product</p>
+          </div>
+        </div>
+      </div>
+    </div>
