@@ -1,13 +1,13 @@
 import { Component, Input, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IPharmaStock } from '../../../../core/IPharmaDrug';
+import { IPharmaStock } from '../../../../core/drug/IPharmaDrug';
 
 @Component({
   selector: 'app-pharmacy-available',
   standalone: true,
   imports: [CommonModule],
   templateUrl: './pharmacy-available.html',
-  styleUrls: ['./pharmacy-available.css']
+  styleUrls: ['./pharmacy-available.css'],
 })
 export class PharmacyAvailable {
   private _pharmacies: IPharmaStock[] = [];

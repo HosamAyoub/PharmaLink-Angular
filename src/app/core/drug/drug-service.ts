@@ -5,24 +5,24 @@ import { Observable } from 'rxjs';
 import { IPharmaDrug } from './IPharmaDrug';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-export class DrugService 
-{
+export class DrugService {
   constructor(private http: HttpClient) {}
 
   getDrugsByCategory(categoryName: string): Observable<IDrug[]> {
-    return this.http.get<IDrug[]>(`http://localhost:5278/api/Drug/Category?Cname=${categoryName}`);
+    return this.http.get<IDrug[]>(
+      `http://localhost:5278/api/Drug/Category?Cname=${categoryName}`
+    );
   }
 
-  getRandomDrugs(): Observable<IDrug[]> 
-  {
+  getRandomDrugs(): Observable<IDrug[]> {
     return this.http.get<IDrug[]>(`http://localhost:5278/api/Drug/2`);
   }
 
-  getDrugById(DrugID : number):Observable<IPharmaDrug>
-  {
-    return  this.http.get<IPharmaDrug>(`http://localhost:5278/api/Drug?DrugID=${DrugID}`);
+  getDrugById(DrugID: number): Observable<IPharmaDrug> {
+    return this.http.get<IPharmaDrug>(
+      `http://localhost:5278/api/Drug?DrugID=${DrugID}`
+    );
   }
-  
 }
