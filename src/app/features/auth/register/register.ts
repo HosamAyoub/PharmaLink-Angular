@@ -1,18 +1,16 @@
 import { Component, inject, signal } from '@angular/core';
+import { LoadingSpinner } from '../../../shared/components/loading-spinner/loading-spinner';
 import { FormsModule, NgForm } from '@angular/forms';
-import { AuthService } from '../../core/auth/auth.service';
-import { LoadingSpinner } from '../../shared/components/loading-spinner/loading-spinner';
-import { ResponseData, User } from '../../core/auth/user.model';
+import { AuthService } from '../../../core/auth/auth.service';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-auth',
-  standalone: true,
-  imports: [FormsModule, LoadingSpinner],
-  templateUrl: './auth.component.html',
-  styleUrls: ['./auth.component.css'],
+  selector: 'app-register',
+  imports: [LoadingSpinner, FormsModule],
+  templateUrl: './register.html',
+  styleUrl: './register.css',
 })
-export class Auth {
+export class Register {
   isLoginMode = true;
   isLoading = signal(false);
   displayedError = '';

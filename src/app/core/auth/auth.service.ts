@@ -8,31 +8,25 @@ import { ResponseData, User } from './user.model';
 export class AuthService {
   user = signal<User | null>(null);
   http = inject(HttpClient);
-  signUp(userName: string, email: string, password: string) {
-    // return this.http.post(API_BASE_URL + 'Account/Register', {
-    //   userName: userName,
-    //   email: email,
-    //   passwordHash: password,
-    //   confirmPassword: password,
-    //   phoneNumber: '123423425',
-    //   patient: {
-    //     name: 'angular',
-    //     gender: 0,
-    //     dateOfBirth: '2020-07-26',
-    //     country: 'Egypt',
-    //     address: 'Fayoum',
-    //     patientDiseases: 'Clear',
-    //     patientDrugs: 'Clear',
-    //   },
-    // });
+  signUp(
+    userName: string,
+    email: string,
+    password: string,
+    phoneNumber: string
+  ) {
+    const payload = {
+      userName: userName,
+      email: email,
+      passwordHash: password,
+      confirmPassword: password,
+      phoneNumber: phoneNumber || '1234567890',
+    };
+
+    console.log('🚀 Sending signup payload:', payload);
+    console.log('📍 To URL:', API_BASE_URL + 'Account/Register');
+
     return this.http
-      .post(API_BASE_URL + 'Account/Register', {
-        userName: userName,
-        email: email,
-        passwordHash: password,
-        confirmPassword: password,
-        phoneNumber: '45678',
-      })
+      .post(API_BASE_URL + 'Account/Register', payload)
       .pipe(catchError(this.handleError));
   }
 
@@ -61,15 +55,19 @@ export class AuthService {
   }
 
   private handleError(errorResponse: HttpErrorResponse) {
-    let errorMessage = 'An unknown error occurred!';
-    if (!errorResponse.error || !errorResponse.error.error) {
-      return throwError(errorMessage);
+    console.log('🔥 HTTP Error Details:', errorResponse);
+    console.log('Status:', errorResponse.status);
+    console.log('Error body:', errorResponse.error);
+
+    // Log specific validation errors
+    if (errorResponse.error && errorResponse.error.errors) {
+      console.log('🚨 Detailed validation errors:');
+      Object.keys(errorResponse.error.errors).forEach((field) => {
+        console.log(`❌ ${field}:`, errorResponse.error.errors[field]);
+      });
     }
-    switch (errorResponse.error.error.message) {
-      // add logic of error messages here
-      case 'EMAIL_EXISTS':
-        errorMessage = 'This email already exists';
-    }
-    return throwError(errorMessage);
+
+    // Return the full error response so we can see what's happening
+    return throwError(() => errorResponse);
   }
 }

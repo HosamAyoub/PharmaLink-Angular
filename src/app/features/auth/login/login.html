@@ -8,30 +8,6 @@
     <app-loading-spinner />
     } @else {
     <form #authForm="ngForm" (ngSubmit)="onSubmit(authForm)">
-      @if (!isLoginMode) {
-      <div class="form-group">
-        <label for="userName">User Name</label>
-        <input
-          type="text"
-          id="userName"
-          class="form-control"
-          name="userName"
-          ngModel
-          required
-        />
-      </div>
-      <div class="form-group">
-        <label for="phoneNumber">Phone Number</label>
-        <input
-          type="text"
-          id="phoneNumber"
-          class="form-control"
-          name="phoneNumber"
-          ngModel
-          required
-        />
-      </div>
-      }
       <div class="form-group">
         <label for="email">Email</label>
         <input
