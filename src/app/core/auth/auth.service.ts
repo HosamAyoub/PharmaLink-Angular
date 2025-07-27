@@ -59,22 +59,6 @@ export class AuthService {
       );
   }
 
-  logout() {
-    this.user.set(null);
-    this.router.navigate(['/client/home']);
-    localStorage.removeItem('userData');
-    if (this.tokenExpirationDuration) {
-      clearTimeout(this.tokenExpirationDuration);
-    }
-    this.tokenExpirationDuration = null;
-  }
-
-  autoLogout(expirationDuration: number) {
-    this.tokenExpirationDuration = setTimeout(() => {
-      this.logout();
-    }, expirationDuration);
-  }
-
   autoLogin() {
     const userDataString = localStorage.getItem('userData');
     if (!userDataString) {
@@ -94,6 +78,22 @@ export class AuthService {
         this.autoLogout(expirationDuration);
       }
     }
+  }
+
+  logout() {
+    this.user.set(null);
+    this.router.navigate(['/client/home']);
+    localStorage.removeItem('userData');
+    if (this.tokenExpirationDuration) {
+      clearTimeout(this.tokenExpirationDuration);
+    }
+    this.tokenExpirationDuration = null;
+  }
+
+  autoLogout(expirationDuration: number) {
+    this.tokenExpirationDuration = setTimeout(() => {
+      this.logout();
+    }, expirationDuration);
   }
 
   private handleError(errorResponse: HttpErrorResponse) {
