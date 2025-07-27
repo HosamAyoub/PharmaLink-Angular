@@ -24,31 +24,6 @@ export class ConfigService {
     return environment.production;
   }
 
-  // Feature flags
-  get enableNotifications(): boolean {
-    return environment.features.enableNotifications;
-  }
-
-  get enableGeolocation(): boolean {
-    return environment.features.enableGeolocation;
-  }
-
-  get maxNearbyPharmacies(): number {
-    return environment.features.maxNearbyPharmacies;
-  }
-
-  // UI Configuration
-  get itemsPerPage(): number {
-    return environment.ui.itemsPerPage;
-  }
-
-  get carouselInterval(): number {
-    return environment.ui.carouselInterval;
-  }
-
-  get animationDuration(): number {
-    return environment.ui.animationDuration;
-  }
 
   // API URL builders
   getApiUrl(endpoint: string): string {

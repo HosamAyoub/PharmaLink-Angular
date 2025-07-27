@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { ConfigService } from '../../../../shared/services/config.service';
 import { APP_CONSTANTS } from '../../../../shared/constants/app.constants';
 import { HOME_CONSTANTS } from '../constants/home.constants';
-import { IProduct, IPharmacy, Category, SearchResponse, ApiResponse } from '../models/home.types';
+import { IProduct, IPharmacy, Category, SearchResponse, ApiResponse, UserLocation } from '../models/home.types';
 
 @Injectable({
   providedIn: 'root'
@@ -57,8 +57,7 @@ export class HomeService {
     const url = this.configService.getFullApiUrl('SEARCH');
     const params = new HttpParams()
       .set('q', query)
-      .set('page', page.toString())
-      .set('limit', this.configService.itemsPerPage.toString());
+      .set('page', page.toString());
 
     return this.http.get<SearchResponse<IProduct>>(url, { params });
   }
@@ -67,8 +66,7 @@ export class HomeService {
   getAllProducts(page: number = 1): Observable<SearchResponse<IProduct>> {
     const url = this.configService.getFullApiUrl('PRODUCTS');
     const params = new HttpParams()
-      .set('page', page.toString())
-      .set('limit', this.configService.itemsPerPage.toString());
+      .set('page', page.toString());
 
     return this.http.get<SearchResponse<IProduct>>(url, { params });
   }
@@ -77,10 +75,35 @@ export class HomeService {
   getAllPharmacies(page: number = 1): Observable<SearchResponse<IPharmacy>> {
     const url = this.configService.getFullApiUrl('PHARMACIES');
     const params = new HttpParams()
-      .set('page', page.toString())
-      .set('limit', this.configService.itemsPerPage.toString());
-
+      .set('page', page.toString());
     return this.http.get<SearchResponse<IPharmacy>>(url, { params });
+  }
+
+  getUserLocation(): Observable<UserLocation> {
+    return new Observable<UserLocation>((observer) => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            observer.next({
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude
+            });
+            observer.complete();
+          },
+          (error) => {
+            console.error('Geolocation error:', error);
+            observer.error(error);
+          },
+          {
+            enableHighAccuracy: true,
+            timeout: 10000,
+            maximumAge: 300000 // 5 minutes
+          }
+        );
+      } else {
+        observer.error(new Error('Geolocation is not supported by this browser'));
+      }
+    });
   }
 
   // Helper methods for constants
