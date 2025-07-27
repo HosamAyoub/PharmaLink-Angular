@@ -42,16 +42,34 @@ export class AuthService {
         tap((resData) => {
           const user = new User(
             resData.value.token,
-            new Date(resData.value.expiration),
+            resData.value.expiration,
             resData.value.userName
           );
           this.user.set(user);
+          localStorage.setItem('userData', JSON.stringify(user));
         })
       );
   }
 
   logout() {
     this.user.set(null);
+  }
+
+  autoLogin() {
+    const userDataString = localStorage.getItem('userData');
+    if (!userDataString) {
+      return;
+    } else {
+      const userData = JSON.parse(userDataString);
+      const loadedUser = new User(
+        userData._token,
+        userData._expiration,
+        userData.userName
+      );
+      if (loadedUser.token) {
+        this.user.set(loadedUser);
+      }
+    }
   }
 
   private handleError(errorResponse: HttpErrorResponse) {
