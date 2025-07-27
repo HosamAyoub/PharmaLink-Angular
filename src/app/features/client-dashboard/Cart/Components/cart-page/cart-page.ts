@@ -19,6 +19,10 @@ export class CartPage {
   http = inject(HttpClient);
   router = inject(Router);
 
+   ngOnInit(): void {
+    this.cartStore.loadCart();
+  }
+
   getTotalPrice(item: CartItem): number {
     return item.unitPrice * item.quantity;
   }

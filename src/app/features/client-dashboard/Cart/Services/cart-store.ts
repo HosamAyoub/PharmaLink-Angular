@@ -19,9 +19,7 @@ export class CartStore {
   router = inject(Router);
 
 
-  constructor(private cartService: CartService) {
-    this.loadCart();
-  }
+  constructor(private cartService: CartService) {}
 
   // Load cart summary from API
   loadCart() {
