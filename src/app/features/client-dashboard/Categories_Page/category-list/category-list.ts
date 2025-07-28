@@ -31,4 +31,7 @@ export class CategoryList {
   SendDrugSelected(drug: IDrug) {
     console.log('Selected Drug:', drug);
   }
+  
+
+  
 }

@@ -10,12 +10,13 @@ import {
 import { DrugService } from '../../../../core/drug/drug-service';
 import { IDrug } from '../../../../core/drug/IDrug';
 import { NgClass } from '@angular/common';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-side-bar',
-  imports: [NgClass],
+  imports: [NgClass , RouterLink],
   templateUrl: './side-bar.html',
-  styleUrl: './side-bar.css',
+  styleUrls: ['./side-bar.css']
 })
 export class SideBar implements OnInit, OnDestroy {
   Categories = [
@@ -253,6 +254,11 @@ export class SideBar implements OnInit, OnDestroy {
   sidebarVisible = false;
   isSmallScreen = false;
 
+  constructor(private route : ActivatedRoute , private path: Router) 
+  {
+    this.selectedCategory = this.route.snapshot.paramMap.get('categoryName') || '';
+  }
+
   ngOnInit() {
     this.onclickCategory();
     this.checkScreenSize();
@@ -287,7 +293,7 @@ export class SideBar implements OnInit, OnDestroy {
     }
   }
 
-  onclickCategory(category: string = 'All') {
+  onclickCategory(category: string = this.route.snapshot.paramMap.get('categoryName') || '') {
     console.log('Selected Category:', category);
 
     // Close sidebar on mobile after category selection
@@ -297,15 +303,16 @@ export class SideBar implements OnInit, OnDestroy {
       }, 150);
     }
 
-    if (category === 'All') {
+    if (category === '') {
       this.selectedCategory = '';
       this.drugservice.getRandomDrugs().subscribe({
         next: (data) => {
-          this.CategoryDrugs = data; // Handle both array and object responses
+          this.CategoryDrugs = data; 
           this.categorySelected.emit(this.CategoryDrugs);
           console.log('Random Drugs:', data);
         },
-        error: (err) => {
+        error: (err) => 
+        {
           console.error('Error fetching random drugs:', err);
         },
       });
@@ -315,6 +322,7 @@ export class SideBar implements OnInit, OnDestroy {
         next: (data) => {
           this.CategoryDrugs = data;
           this.categorySelected.emit(this.CategoryDrugs);
+          this.path.navigate(['/client/category', category]);
           console.log('Drugs in category:', data);
         },
         error: (err) => {
