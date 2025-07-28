@@ -1,0 +1,24 @@
+<div class="card pharmacy-card mb-3 ps-2">
+    <div class="card-body">
+        <h5 class="card-title fs-3 mb-1">{{pharmacy.name}}</h5>
+        <p class="card-text text-muted mb-1">
+          <i class="bi bi-geo-alt-fill me-1"></i>{{ pharmacy.address }}
+        </p>
+        @if (pharmacy.rate) {
+            <p class="card-text text-muted mb-1">
+                <i style="color: darkorange;" class="bi bi-star-fill me-1"></i>{{pharmacy.rate}}
+            </p>
+        }
+        @if(isOpenNow(pharmacy.startHour,pharmacy.endHour)){
+            <span class="badge bg-success me-2 rounded-3">
+            <!-- <i class="bi bi-clock me-1"></i> -->
+            Open Now
+            </span>
+        }@else {
+            <span class="badge bg-danger me-2">
+            <!-- <i class="bi bi-clock me-1"></i>-->
+             Closed 
+            </span>
+        }
+    </div>
+</div>

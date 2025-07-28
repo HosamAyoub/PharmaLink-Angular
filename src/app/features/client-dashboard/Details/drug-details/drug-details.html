@@ -1,0 +1,135 @@
+<div class="drug-details-container">
+      <!-- Header Section -->
+      <div class="drug-header">
+        <div class="drug-icon">
+          <div class="pill-icon"></div>
+        </div>
+        <div class="drug-info" *ngIf="drugDetails">
+          <h1 class="drug-name">{{ drugDetails.drug_Info.commonName }}</h1>
+          <p class="scientific-name">Scientific Name: {{ drugDetails.drug_Info.activeIngredient }}</p>
+          <p class="category">Category: <span class="category-tag">{{ drugDetails.drug_Info.category }}</span></p>
+        </div>
+      </div>
+
+      <!-- Main Content Grid -->
+      <div class="content-grid" *ngIf="drugDetails" >
+        <!-- Left Column - Drug Information -->
+        <div class="drug-info-section">
+          <!-- Indications and Usage -->
+          <div class="info-card">
+            <div class="card-header" (click)="toggleSection('indications_and_usage')">
+              <h3>Indications and Usage</h3>
+              <span class="toggle-icon" [class.rotated]="expandedSections.indications_and_usage">▼</span>
+            </div>
+            <div class="card-content" [class.expanded]="expandedSections.indications_and_usage">
+              <p>{{ drugDetails.drug_Info.indications_and_usage }}</p>
+            </div>
+          </div>
+
+          <!-- Dosage and Administration -->
+          <div class="info-card">
+            <div class="card-header" (click)="toggleSection('dosage_and_administration')">
+              <h3>Dosage and Administration</h3>
+              <span class="toggle-icon" [class.rotated]="expandedSections.dosage_and_administration">▼</span>
+            </div>
+            <div class="card-content" [class.expanded]="expandedSections.dosage_and_administration">
+              <p>{{ drugDetails.drug_Info.dosage_and_administration }}</p>
+            </div>
+          </div>
+
+          <!-- Dosage Forms and Strengths -->
+          <div class="info-card">
+            <div class="card-header" (click)="toggleSection('dosage_forms_and_strengths')">
+              <h3>Dosage Forms and Strengths</h3>
+              <span class="toggle-icon" [class.rotated]="expandedSections.dosage_forms_and_strengths">▼</span>
+            </div>
+            <div class="card-content" [class.expanded]="expandedSections.dosage_forms_and_strengths">
+              <p>{{ drugDetails.drug_Info.dosage_forms_and_strengths }}</p>
+            </div>
+          </div>
+
+          <!-- Contraindications -->
+          <div class="info-card">
+            <div class="card-header" (click)="toggleSection('contraindications')">
+              <h3>Contraindications</h3>
+              <span class="toggle-icon" [class.rotated]="expandedSections.contraindications">▼</span>
+            </div>
+            <div class="card-content" [class.expanded]="expandedSections.contraindications">
+              <p>{{drugDetails.drug_Info.contraindications }}</p>
+            </div>
+          </div>
+
+          <!-- Warnings and Cautions -->
+          <div class="info-card">
+            <div class="card-header" (click)="toggleSection('warnings_and_cautions')">
+              <h3>Warnings and Cautions</h3>
+              <span class="toggle-icon" [class.rotated]="expandedSections.warnings_and_cautions">▼</span>
+            </div>
+            <div class="card-content" [class.expanded]="expandedSections.warnings_and_cautions">
+              <p>{{ drugDetails.drug_Info.warnings_and_cautions }}</p>
+            </div>
+          </div>
+
+          <!-- Drug Interactions -->
+          <div class="info-card">
+            <div class="card-header" (click)="toggleSection('drug_interactions')">
+              <h3>Drug Interactions</h3>
+              <span class="toggle-icon" [class.rotated]="expandedSections.drug_interactions">▼</span>
+            </div>
+            <div class="card-content" [class.expanded]="expandedSections.drug_interactions">
+              <p>{{ drugDetails.drug_Info.drug_interactions }}</p>
+            </div>
+          </div>
+
+          <!-- Description -->
+          <div class="info-card">
+            <div class="card-header" (click)="toggleSection('description')">
+              <h3>Description</h3>
+              <span class="toggle-icon" [class.rotated]="expandedSections.description">▼</span>
+            </div>
+            <div class="card-content" [class.expanded]="expandedSections.description">
+              <p>{{ drugDetails.drug_Info.description }}</p>
+            </div>
+          </div>
+
+          <!-- Storage and Handling -->
+          <div class="info-card">
+            <div class="card-header" (click)="toggleSection('storage_and_handling')">
+              <h3>Storage and Handling</h3>
+              <span class="toggle-icon" [class.rotated]="expandedSections.storage_and_handling">▼</span>
+            </div>
+            <div class="card-content" [class.expanded]="expandedSections.storage_and_handling">
+              <p>{{ drugDetails.drug_Info.storage_and_handling }}</p>
+            </div>
+          </div>
+
+          <!-- Adverse Reactions -->
+          <div class="info-card">
+            <div class="card-header" (click)="toggleSection('adverse_reactions')">
+              <h3>Adverse Reactions</h3>
+              <span class="toggle-icon" [class.rotated]="expandedSections.adverse_reactions">▼</span>
+            </div>
+            <div class="card-content" [class.expanded]="expandedSections.adverse_reactions">
+              <p>{{ drugDetails.drug_Info.adverse_reactions }}</p>
+            </div>
+          </div>
+
+          <!-- Alternatives Names -->
+          <div class="info-card">
+            <div class="card-header" (click)="toggleSection('alternatives_names')">
+              <h3>Alternatives Names</h3>
+              <span class="toggle-icon" [class.rotated]="expandedSections.alternatives_names">▼</span>
+            </div>
+            <div class="card-content" [class.expanded]="expandedSections.alternatives_names">
+              <p>{{ drugDetails.drug_Info.alternatives_names }}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column - Pharmacy Information -->
+      <div class="pharmacy-section">
+          <app-pharmacy-available [pharmacies]="drugDetails.pharma_Info"></app-pharmacy-available>
+          <app-nearby-pharmacies></app-nearby-pharmacies>
+      </div>
+  </div>
+</div>

@@ -1,0 +1,52 @@
+<div class="card pharmacy-card mb-3">
+  <div class="card-body">
+    <div class="d-flex justify-content-between align-items-start mb-2">
+      <div>
+        <h5 class="card-title fs-3 mb-1">{{ pharmacy.name }}</h5>
+        <p class="card-text text-muted mb-1">
+          <i class="bi bi-geo-alt-fill me-1"></i>{{ pharmacy.address }}
+        </p>
+        @if (pharmacy.phoneNumber) {
+        <p class="card-text text-muted mb-1">
+          <i class="bi bi-telephone-fill me-1"></i>{{ pharmacy.phoneNumber }}
+        </p>
+        }
+      </div>
+
+      @if (pharmacy.rate) {
+      <div class="badge bg-success text-white p-2">
+        <div class="fs-5">{{ pharmacy.rate | number:'1.1-1' }}</div>
+        <div class="star-rating fs-7" [innerHTML]="getStars(pharmacy.rate)"></div>
+      </div>
+      }
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mt-3">
+      <div>
+        @if (pharmacy.startHour && pharmacy.endHour) {
+        @if (isOpenNow(pharmacy.startHour, pharmacy.endHour)) {
+        <span class="badge bg-success me-2">
+          <i class="bi bi-clock me-1"></i>Open Now
+        </span>
+        } @else {
+        <span class="badge bg-danger me-2">
+          <i class="bi bi-clock me-1"></i>Closed
+        </span>
+        }
+        <span class="text-muted small">
+          {{ pharmacy.startHour.slice(0,5)}} - {{ pharmacy.endHour.slice(0,5) }}
+        </span>
+
+        } @else {
+        <span class="badge bg-info">
+          <i class="bi bi-clock me-1"></i>24/7
+        </span>
+        }
+      </div>
+
+      <button class="btn btn-outline-primary btn-sm">
+        View Products
+      </button>
+    </div>
+  </div>
+</div>

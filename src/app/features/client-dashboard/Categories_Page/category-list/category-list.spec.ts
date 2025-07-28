@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SharedComponents } from './shared-components';
+import { CategoryList } from './category-list';
 
-describe('SharedComponents', () => {
-  let component: SharedComponents;
-  let fixture: ComponentFixture<SharedComponents>;
+describe('CategoryList', () => {
+  let component: CategoryList;
+  let fixture: ComponentFixture<CategoryList>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SharedComponents]
+      imports: [CategoryList]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(SharedComponents);
+    fixture = TestBed.createComponent(CategoryList);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,0 +1,223 @@
+.pharmacy-available-container {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+    }
+
+    .section-title {
+      font-size: 20px;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin: 0;
+      padding: 20px 24px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .pharmacy-table-container {
+      padding: 0;
+    }
+
+    .table-header {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 16px;
+      padding: 16px 24px;
+      background-color: #f9fafb;
+      border-bottom: 1px solid #e5e7eb;
+      font-weight: 600;
+      color: #374151;
+      font-size: 14px;
+    }
+
+    .header-cell {
+      text-align: left;
+    }
+
+    .price-col,
+    .status-col,
+    .action-col {
+      text-align: center;
+    }
+
+    .pharmacy-list {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .pharmacy-row {
+      display: block;
+      padding: 16px 24px;
+      border-bottom: 1px solid #f3f4f6;
+      transition: background-color 0.2s;
+    }
+
+    .pharmacy-row:hover {
+      background-color: #f9fafb;
+    }
+
+    .pharmacy-row:last-child {
+      border-bottom: none;
+    }
+
+    .desktop-layout {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .mobile-layout {
+      display: none;
+    }
+
+    .pharmacy-info {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .pharmacy-name {
+      font-weight: 500;
+      color: #1a1a1a;
+      font-size: 15px;
+    }
+
+    .pharmacy-location {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      color: #6b7280;
+      font-size: 13px;
+    }
+
+    .location-icon {
+      font-size: 12px;
+    }
+
+    .pharmacy-price {
+      text-align: center;
+      font-weight: 600;
+      color: #1a1a1a;
+      font-size: 16px;
+    }
+
+    .currency {
+      color: #6b7280;
+      font-size: 14px;
+    }
+
+    .pharmacy-status {
+      text-align: center;
+    }
+
+    .status-badge {
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
+      text-transform: uppercase;
+    }
+
+    .status-badge.in-stock {
+      background-color: #dcfce7;
+      color: #166534;
+    }
+
+    .status-badge.low-stock {
+      background-color: #fef3c7;
+      color: #92400e;
+    }
+
+    .status-badge.out-of-stock {
+      background-color: #fecaca;
+      color: #991b1b;
+    }
+
+    .pharmacy-action {
+      text-align: center;
+    }
+
+    .buy-button {
+      background-color: #3b82f6;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-weight: 500;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .buy-button:hover:not(:disabled) {
+      background-color: #2563eb;
+    }
+
+    .buy-button:disabled {
+      background-color: #d1d5db;
+      color: #9ca3af;
+      cursor: not-allowed;
+    }
+
+    /* Mobile Styles */
+    @media (max-width: 768px) {
+      .table-header {
+        display: none;
+      }
+
+      .desktop-layout {
+        display: none;
+      }
+
+      .mobile-layout {
+        display: block;
+      }
+
+      .pharmacy-row {
+        padding: 16px 20px;
+      }
+
+      .pharmacy-info {
+        margin-bottom: 12px;
+      }
+
+      .pharmacy-name {
+        font-size: 16px;
+      }
+
+      .mobile-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 8px 0;
+      }
+
+      .mobile-label {
+        font-weight: 500;
+        color: #6b7280;
+        font-size: 14px;
+      }
+
+      .pharmacy-price {
+        text-align: left;
+        font-size: 18px;
+      }
+
+      .buy-button {
+        width: 100%;
+        padding: 12px;
+        margin-top: 12px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .section-title {
+        padding: 16px 20px;
+        font-size: 18px;
+      }
+
+      .pharmacy-row {
+        padding: 16px;
+      }
+    }

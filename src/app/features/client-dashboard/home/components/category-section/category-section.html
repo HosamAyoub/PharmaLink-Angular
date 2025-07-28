@@ -5,7 +5,9 @@
   <div class="d-flex justify-content-center align-items-stretch flex-wrap category-cards-container">
     <!--category card -->
     @for (category of categories; track category.title) {
-      <div class="category-card-wrapper">
+      <div class="category-card-wrapper"
+      [routerLink]="['/client/category', category.title]"
+      >
         <div class="card text-center">
           <img [src]="category.image" [alt]="category.title" class="icon mx-auto d-block">
           <div class="card-body">
@@ -15,6 +17,6 @@
         </div>
       </div>
     }
-    <p class="view-all-link" (click)="viewAllCategories()">View All Categories</p>
+    <p class="view-all-link" (click)="viewAllCategories()" [routerLink]="['/client/category']" >View All Categories</p>
   </div>
  </div>
