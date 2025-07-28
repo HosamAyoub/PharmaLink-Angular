@@ -20,6 +20,10 @@ const routes: Routes = [
     component: CategoryList,
   },
   {
+    path: 'category/:categoryName',
+    component: CategoryList,
+  },
+  {
     path: 'DrugDetails/:id',
     component: DrugDetails,
   },

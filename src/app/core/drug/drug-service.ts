@@ -25,4 +25,9 @@ export class DrugService {
       `http://localhost:5278/api/Drug?DrugID=${DrugID}`
     );
   }
+
+  toggleFavorite(drugId: number): Observable<any> {
+    return this.http.post(`http://localhost:5278/api/Drug/Favorite?DrugID=${drugId}`, {});
+  }
+
 }

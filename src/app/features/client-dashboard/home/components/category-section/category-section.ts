@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'category-section',
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './category-section.html',
   styleUrls: ['./category-section.css', '../../shared/styles/shared-home.css']
 })
@@ -11,22 +12,22 @@ export class CategorySection {
   // Categories array for the loop
   categories = [
     {
-      title: 'Pain Relief',
+      title: 'Antibiotic',
       description: '150+ medicines',
       image: 'assets/images/icons/drug.svg'
     },
     {
-      title: 'Vitamins',
+      title: 'Vaccine',
       description: '80+ supplements',
       image: 'assets/images/icons/drug.svg'
     },
     {
-      title: 'First Aid',
+      title: 'Antifungals',
       description: '120+ supplies',
       image: 'assets/images/icons/delivery.svg'
     },
     {
-      title: 'Health Care',
+      title: 'Muscle relaxants',
       description: '200+ products',
       image: 'assets/images/icons/delivery.svg'
     }
