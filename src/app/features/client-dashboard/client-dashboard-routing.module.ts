@@ -7,6 +7,7 @@ import { CartPage } from './Cart/Components/cart-page/cart-page';
 import { SuccessPage } from './Cart/Components/success-page/success-page';
 import { CancelPage } from './Cart/Components/cancel-page/cancel-page';
 import { FavoritePage } from './Favorites/Components/favorite-page/favorite-page';
+import { AuthGuard } from '../../core/auth/auth.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -22,10 +23,10 @@ const routes: Routes = [
     path: 'DrugDetails/:id',
     component: DrugDetails,
   },
-  { path: 'cart', component: CartPage },
+  { path: 'cart', component: CartPage, canActivate: [AuthGuard] },
   { path: 'success', component: SuccessPage },
   { path: 'cancel', component: CancelPage },
-  { path: 'favorites', component: FavoritePage },
+  { path: 'favorites', component: FavoritePage, canActivate: [AuthGuard] },
 ];
 
 @NgModule({
