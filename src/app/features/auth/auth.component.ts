@@ -64,6 +64,7 @@ export class Auth {
             this.isLoading.set(false);
             form.reset();
             this.onSwitchMode();
+            this.router.navigate(['/auth']);
           },
           error: (error) => {
             console.log('❌ Signup error details:');
