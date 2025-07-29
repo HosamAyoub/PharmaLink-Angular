@@ -2,8 +2,9 @@
   max-width: 386px;
   padding: 12px !important;
   border: none;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.12), 0 1.5px 6px rgba(0,0,0,0.10);
-  transition: transform 0.3s cubic-bezier(.25,.8,.25,1), box-shadow 0.3s cubic-bezier(.25,.8,.25,1);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12), 0 1.5px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+    box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
 /* Product Image Styling */
@@ -72,7 +73,7 @@
 
 /* Default placeholder background */
 .product-image-container::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
@@ -89,13 +90,12 @@
 
 .card p {
   font-size: 14px;
-  color: #2563EB;
-
+  color: #2563eb;
 }
 
 .card:hover {
   transform: translateY(-8px) scale(1.04);
-  box-shadow: 0 8px 32px rgba(0,0,0,0.18), 0 3px 12px rgba(0,0,0,0.14);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18), 0 3px 12px rgba(0, 0, 0, 0.14);
 }
 
 /* Responsive Category Cards Layout */
@@ -180,7 +180,7 @@
 /* Font Awesome Heart Icon Styling */
 .fav-icon {
   transition: all 0.3s ease;
-  color: var(--fav-icon-color)
+  color: var(--fav-icon-color);
 }
 
 .fav-icon:hover {
@@ -191,8 +191,6 @@
 .fav-icon.active {
   color: #dc3545 !important;
 }
-
-
 
 /* Switch to solid heart when active */
 .fav-icon.active::before {
@@ -209,16 +207,14 @@
 }
 
 .view-all-link {
-  color: var(--primary-color);
-  font-weight: bold;
+  color: var(--primary-blue) !important;
+  text-decoration: none;
+  font-weight: 500;
   cursor: pointer;
-  text-decoration: underline;
-  margin: 0;
-  padding: 10px 20px;
-  transition: all 0.3s ease;
+  transition: color 0.3s ease;
 }
 
 .view-all-link:hover {
-  color: #1d4ed8;
-  transform: translateY(-2px);
+  color: var(--primary-blue-light) !important;
+  text-decoration: underline;
 }
