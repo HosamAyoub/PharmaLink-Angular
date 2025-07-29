@@ -6,6 +6,7 @@ import { APP_CONSTANTS } from '../constants/app.constants';
   providedIn: 'root'
 })
 export class ConfigService {
+  apiUrl: any;
 
   // Environment getters
   get apiBaseUrl(): string {

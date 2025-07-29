@@ -4,6 +4,7 @@ export const APP_CONSTANTS = {
       PRODUCTS: 'products',
       PHARMACIES: 'pharmacies',
       CATEGORIES: 'categories',
+      PHARMACY: 'pharmacy',
       PHARMACY_STOCK_ALL: 'PharmacyStock/allPharmaciesStock',
       SEARCH: 'search',
     },

@@ -1,10 +1,11 @@
 import { Component, inject, signal } from '@angular/core';
 import { HomeService } from '../../services/home-service';
 import { IProduct } from '../../models/home.types';
+import { Product } from "../product/product";
 
 @Component({
   selector: 'featured-products',
-  imports: [],
+  imports: [Product],
   templateUrl: './featured-products.html',
   styleUrls: ['./featured-products.css', '../../shared/styles/shared-home.css']
 })
@@ -19,7 +20,7 @@ export class FeaturedProducts {
     this.getProducts();
   }
 
-  
+
   getProducts() {
     this.homeSerivice.getFeaturedProducts().subscribe(response => {
       console.log('Featured Products Response:', response);
@@ -39,49 +40,7 @@ export class FeaturedProducts {
     target.classList.toggle('active');
   }
 
-  // Handle image loading errors
-  onImageError(event: Event, productIndex?: number) {
-    const imgElement = event.target as HTMLImageElement;
-    
-    // Set fallback image
-    //imgElement.src = 'assets/images/error-placeholder.jpg';
-    imgElement.classList.add('error');
-    
-    // Track error for this product
-    if (productIndex !== undefined) {
-      this.imageErrors.add(productIndex);
-    }
-    
-  }
 
-  // Handle successful image loading
-  onImageLoad(event: Event) {
-    const imgElement = event.target as HTMLImageElement;
-    imgElement.classList.remove('error');
-  }
-
-  // Check if image has error
-  hasImageError(index: number): boolean {
-    return this.imageErrors.has(index);
-  }
-
-  // Get safe image URL
-  getSafeImageUrl(product: IProduct): string {
-    return product.drugImageUrl || 'assets/images/error-placeholder.jpg';
-  }
-
-  // Stock status methods
-  getStockStatus(quantity: number): string {
-    return quantity > 0 ? 'In Stock' : 'Out of Stock';
-  }
-
-  getStockBackgroundColor(quantity: number): string {
-    return quantity > 0 ? 'rgb(182, 219, 182)' : 'rgb(255, 182, 182)';
-  }
-
-  getStockTextColor(quantity: number): string {
-    return quantity > 0 ? 'green' : 'red';
-  }
 
   viewAllProducts() {
     // TODO: Navigate to all products page or implement desired functionality

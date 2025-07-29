@@ -25,10 +25,17 @@
       <div class="alert alert-info text-center">
         No pharmacies found in your area.
       </div>
-      } @else {      
+      } @else {
         @for (pharmacy of pharmacies; track pharmacy.name) {
         <div class="col">
-          <app-pharmacy-card [pharmacy]="pharmacy"></app-pharmacy-card>
+        @if (pharmacy?.pharmacyID) {
+      <a
+        class="card pharmacy-card mb-3 text-decoration-none"
+        [routerLink]="['/client/pharmacyStock', pharmacy.pharmacyID]"
+        routerLinkActive="router-link-active">
+        <client-pharmacy-card [pharmacy]="pharmacy"></client-pharmacy-card>
+      </a>
+    }
         </div>
         }
       }

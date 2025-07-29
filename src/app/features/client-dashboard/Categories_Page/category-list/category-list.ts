@@ -7,7 +7,7 @@ import {
   Output,
   viewChild,
 } from '@angular/core';
-import { SideBar } from '../side-bar/side-bar';
+import { SideBar } from  '../../shared/components/side-bar/side-bar';
 import { IDrug } from '../../../../core/drug/IDrug';
 import { DrugService } from '../../../../core/drug/drug-service';
 import { CommonModule } from '@angular/common';
@@ -31,7 +31,7 @@ export class CategoryList {
   SendDrugSelected(drug: IDrug) {
     console.log('Selected Drug:', drug);
   }
-  
 
-  
+
+
 }

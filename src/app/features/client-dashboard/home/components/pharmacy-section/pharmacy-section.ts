@@ -1,10 +1,11 @@
 import { Component, inject, signal, input, effect } from '@angular/core';
 import { IPharmacy, UserLocation } from '../../models/home.types';
 import { HomeService } from '../../services/home-service';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'pharmacy-section',
-  imports: [],
+  imports: [RouterModule],
   templateUrl: './pharmacy-section.html',
   styleUrls: ['./pharmacy-section.css', '../../shared/styles/shared-home.css']
 })

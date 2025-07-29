@@ -1,10 +1,10 @@
 import { Component, Injectable, Input, OnInit } from '@angular/core';
-import { PharmacyService } from '../Service/pharmacy-service';
-import { Ipharmacy } from '../Interface/ipharmacy';
+import { PharmacyService } from '../../../Pharmacies/Service/pharmacy-service';
+import { Ipharmacy } from '../../../shared/models/ipharmacy';
 import { DecimalPipe } from '@angular/common';
 
 @Component({
-  selector: 'app-pharmacy-card',
+  selector: 'client-pharmacy-card',
   imports: [DecimalPipe],
   templateUrl: './pharmacy-card.html',
   styleUrl: './pharmacy-card.css'
@@ -13,16 +13,16 @@ import { DecimalPipe } from '@angular/common';
   providedIn: 'root'
 })
 export class PharmacyCard {
-  
+
   @Input() pharmacy!: Ipharmacy;
 
 getStars(rate: number | undefined): string {
   if (!rate) return '';
-  
+
   const fullStars = Math.floor(rate);
   const hasHalfStar = rate % 1 >= 0.5;
   const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
-  
+
   return (
     '<span class="full-star">★</span>'.repeat(fullStars) +
     (hasHalfStar ? '<span class="half-star">✫</span>' : '') +
@@ -32,18 +32,18 @@ getStars(rate: number | undefined): string {
 
   isOpenNow(startHour?: string, endHour?: string): boolean {
     if (!startHour || !endHour) return false;
-    
+
     const now = new Date();
     const currentHour = now.getHours();
     const currentMinute = now.getMinutes();
-    
+
     const [startH, startM] = startHour.split(':').map(Number);
     const [endH, endM] = endHour.split(':').map(Number);
-    
+
     const currentTime = currentHour * 60 + currentMinute;
     const startTime = startH * 60 + startM;
     const endTime = endH * 60 + endM;
-    
+
     return currentTime >= startTime && currentTime <= endTime;
   }
 }

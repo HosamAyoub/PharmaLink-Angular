@@ -7,13 +7,14 @@ import {
   OnDestroy,
   HostListener,
 } from '@angular/core';
-import { DrugService } from '../../../../core/drug/drug-service';
-import { IDrug } from '../../../../core/drug/IDrug';
+// import { DrugService } from '../../../../core/drug/drug-service';
+import { DrugService } from '../../../../../core/drug/drug-service';
+import { IDrug } from '../../../../../core//drug/IDrug';
 import { NgClass } from '@angular/common';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 
 @Component({
-  selector: 'app-side-bar',
+  selector: 'client-side-bar',
   imports: [NgClass , RouterLink],
   templateUrl: './side-bar.html',
   styleUrls: ['./side-bar.css']
@@ -254,7 +255,7 @@ export class SideBar implements OnInit, OnDestroy {
   sidebarVisible = false;
   isSmallScreen = false;
 
-  constructor(private route : ActivatedRoute , private path: Router) 
+  constructor(private route : ActivatedRoute , private path: Router)
   {
     this.selectedCategory = this.route.snapshot.paramMap.get('categoryName') || '';
   }
@@ -307,11 +308,11 @@ export class SideBar implements OnInit, OnDestroy {
       this.selectedCategory = '';
       this.drugservice.getRandomDrugs().subscribe({
         next: (data) => {
-          this.CategoryDrugs = data; 
+          this.CategoryDrugs = data;
           this.categorySelected.emit(this.CategoryDrugs);
           console.log('Random Drugs:', data);
         },
-        error: (err) => 
+        error: (err) =>
         {
           console.error('Error fetching random drugs:', err);
         },

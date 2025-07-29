@@ -1,9 +1,9 @@
 <!-- Wrapper with responsive flex-direction -->
 <div class="d-flex flex-column flex-md-row" id="mainWrapper">
   <!-- Sidebar -->
-  <app-side-bar
+  <client-side-bar
     (categorySelected)="ReceiveCategoryDrugs($event)">
-  </app-side-bar>
+  </client-side-bar>
 
   <!-- Main Content -->
   <div class="flex-grow-1" id="pageContent">
@@ -34,7 +34,7 @@
 
               <div class="d-flex flex-column flex-sm-row justify-content-between align-items-stretch align-items-sm-center gap-2 mt-auto">
                 <button class="btn btn-primary flex-grow-1 me-sm-2"
-                [routerLink]="['/client/DrugDetails', drug.drugID]" 
+                [routerLink]="['/client/DrugDetails', drug.drugID]"
                 >View Details</button>
                 <button class="btn bg-transparent border-0 align-self-center p-2">
                   <i class="fa-regular fa-heart text-danger"></i>
