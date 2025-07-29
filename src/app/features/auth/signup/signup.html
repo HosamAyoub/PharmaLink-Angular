@@ -1,1 +1,220 @@
-<p>signup works!</p>
+<div class="signup-container">
+  <div class="signup-card">
+    <!-- Logo Section -->
+    <div class="logo-section">
+      <img
+        src="assets/images/logos/logo.svg"
+        alt="PharmaLink Logo"
+        class="logo"
+      />
+    </div>
+
+    <!-- Title & Subtitle -->
+    <h1 class="signup-title">Create Account</h1>
+    <p class="signup-subtitle">Join PharmaLink for better medicin management</p>
+
+    <!-- Stepper -->
+    <div class="stepper">
+      <div class="step" [class.active]="step === 1">
+        <span>1</span>
+        <span class="step-label">Account Info</span>
+      </div>
+      <div class="step-separator"></div>
+      <div class="step" [class.active]="step === 2">
+        <span>2</span>
+        <span class="step-label">Medical Info</span>
+      </div>
+    </div>
+
+    <!-- Error Message -->
+    @if (displayedError) {
+    <div class="error-alert">
+      <p>{{ displayedError }}</p>
+    </div>
+    }
+
+    <!-- Signup Form with Stepper Logic -->
+    <form #signupForm="ngForm" class="signup-form" autocomplete="off">
+      <!-- Step 1: Account Info -->
+      @if (step === 1) {
+      <div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="name">Full Name</label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              [(ngModel)]="formModel.name"
+              required
+              placeholder="Enter your full name"
+            />
+          </div>
+          <div class="form-group">
+            <label for="userName">User Name</label>
+            <input
+              type="text"
+              id="userName"
+              name="userName"
+              [(ngModel)]="formModel.userName"
+              required
+              placeholder="Enter a user name"
+            />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              [(ngModel)]="formModel.password"
+              required
+              minlength="6"
+              placeholder="Create a password"
+            />
+          </div>
+          <div class="form-group">
+            <label for="confirmPassword">Confirm Password</label>
+            <input
+              type="password"
+              id="confirmPassword"
+              name="confirmPassword"
+              [(ngModel)]="formModel.confirmPassword"
+              required
+              minlength="6"
+              placeholder="Confirm your password"
+            />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              [(ngModel)]="formModel.email"
+              required
+              email
+              placeholder="Enter your email"
+            />
+          </div>
+          <div class="form-group">
+            <label for="phoneNumber">Mobile Number</label>
+            <input
+              type="tel"
+              id="phoneNumber"
+              name="phoneNumber"
+              [(ngModel)]="formModel.phoneNumber"
+              required
+              placeholder="Enter your mobile number"
+            />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="gender">Gender</label>
+            <select
+              id="gender"
+              name="gender"
+              [(ngModel)]="formModel.gender"
+              required
+            >
+              <option value="" disabled selected>Select gender</option>
+              <option value="0">Male</option>
+              <option value="1">Female</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="dateOfBirth">Date of Birth</label>
+            <input
+              type="date"
+              id="dateOfBirth"
+              name="dateOfBirth"
+              [(ngModel)]="formModel.dateOfBirth"
+              required
+              placeholder="dd/mm/yyyy"
+            />
+          </div>
+          <div class="form-group">
+            <label for="country">Country</label>
+            <select
+              id="country"
+              name="country"
+              [(ngModel)]="formModel.country"
+              required
+            >
+              <option value="" disabled selected>Select country</option>
+              <option value="egypt">Egypt</option>
+              <option value="ksa">KSA</option>
+              <option value="uae">UAE</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="address">Address</label>
+          <input
+            type="text"
+            id="address"
+            name="address"
+            [(ngModel)]="formModel.address"
+            placeholder="Enter your full address"
+          />
+        </div>
+        <button
+          type="button"
+          class="signup-btn"
+          [disabled]="!signupForm.valid"
+          (click)="step = 2"
+        >
+          Next Step
+        </button>
+      </div>
+      }
+      <!-- Step 2: Medical Info -->
+      @else if (step === 2) {
+      <div>
+        <!-- Add your medical info fields here -->
+        <!-- Example: -->
+        <div class="form-group">
+          <label for="patientDiseases">Patient Diseases</label>
+          <input
+            type="text"
+            id="patientDiseases"
+            name="patientDiseases"
+            [(ngModel)]="formModel.patientDiseases"
+            placeholder="List any diseases"
+          />
+        </div>
+        <div class="form-group">
+          <label for="patientDrugs">Patient Drugs</label>
+          <input
+            type="text"
+            id="patientDrugs"
+            name="patientDrugs"
+            [(ngModel)]="formModel.patientDrugs"
+            placeholder="List any drugs"
+          />
+        </div>
+        <button type="button" class="signup-btn" (click)="step = 1">
+          Back
+        </button>
+        <button
+          type="submit"
+          class="signup-btn"
+          [disabled]="!signupForm.valid || isLoading()"
+          (click)="onSubmit(signupForm)"
+        >
+          {{ isLoading() ? "Creating Account..." : "Create Account" }}
+        </button>
+      </div>
+      }
+    </form>
+    <div class="signin-link">
+      Already have an account? <a routerLink="/login">Sign in</a>
+    </div>
+  </div>
+</div>

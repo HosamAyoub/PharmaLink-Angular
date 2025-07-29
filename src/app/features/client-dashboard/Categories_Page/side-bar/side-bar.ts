@@ -10,13 +10,13 @@ import {
 import { DrugService } from '../../../../core/drug/drug-service';
 import { IDrug } from '../../../../core/drug/IDrug';
 import { NgClass } from '@angular/common';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-side-bar',
-  imports: [NgClass , RouterLink],
+  imports: [NgClass],
   templateUrl: './side-bar.html',
-  styleUrls: ['./side-bar.css']
+  styleUrls: ['./side-bar.css'],
 })
 export class SideBar implements OnInit, OnDestroy {
   Categories = [
@@ -254,9 +254,9 @@ export class SideBar implements OnInit, OnDestroy {
   sidebarVisible = false;
   isSmallScreen = false;
 
-  constructor(private route : ActivatedRoute , private path: Router) 
-  {
-    this.selectedCategory = this.route.snapshot.paramMap.get('categoryName') || '';
+  constructor(private route: ActivatedRoute, private path: Router) {
+    this.selectedCategory =
+      this.route.snapshot.paramMap.get('categoryName') || '';
   }
 
   ngOnInit() {
@@ -293,7 +293,9 @@ export class SideBar implements OnInit, OnDestroy {
     }
   }
 
-  onclickCategory(category: string = this.route.snapshot.paramMap.get('categoryName') || '') {
+  onclickCategory(
+    category: string = this.route.snapshot.paramMap.get('categoryName') || ''
+  ) {
     console.log('Selected Category:', category);
 
     // Close sidebar on mobile after category selection
@@ -307,12 +309,11 @@ export class SideBar implements OnInit, OnDestroy {
       this.selectedCategory = '';
       this.drugservice.getRandomDrugs().subscribe({
         next: (data) => {
-          this.CategoryDrugs = data; 
+          this.CategoryDrugs = data;
           this.categorySelected.emit(this.CategoryDrugs);
           console.log('Random Drugs:', data);
         },
-        error: (err) => 
-        {
+        error: (err) => {
           console.error('Error fetching random drugs:', err);
         },
       });

@@ -20,7 +20,7 @@ import { SlicePipe } from '@angular/common';
     RouterLink,
     SlicePipe,
     FeaturedProducts,
-    PharmacySection,
+    // PharmacySection,
   ],
   templateUrl: './home-screen.html',
   styleUrl: './home-screen.css',
