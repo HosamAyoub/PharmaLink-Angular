@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { CartItem } from '../../Interfaces/cart-item';
 import { CartCard } from "../cart-card/cart-card";
 import { CommonModule } from '@angular/common';
-
+declare var bootstrap: any;
 @Component({
   selector: 'app-cart-page',
   imports: [CartCard, CommonModule],
@@ -19,7 +19,7 @@ export class CartPage {
   http = inject(HttpClient);
   router = inject(Router);
 
-   ngOnInit(): void {
+  ngOnInit(): void {
     this.cartStore.loadCart();
   }
 
@@ -39,8 +39,29 @@ export class CartPage {
     this.cartStore.remove(item);
   }
 
+  clearCart(){
+    if (this.cartItems().length === 0) {
+      const modalElement = document.getElementById('emptyCartModal');
+      if (modalElement) {
+        const modal = new bootstrap.Modal(modalElement);
+        modal.show();
+      }
+      return;
+    }
+    this.cartStore.clearCart()
+  }
+
 
   checkout() {
+    if (this.cartItems().length === 0) {
+      const modalElement = document.getElementById('emptyCartModal');
+      if (modalElement) {
+        const modal = new bootstrap.Modal(modalElement);
+        modal.show();
+      }
+      return;
+    }
+
     const paymentMethod = (document.querySelector('input[name="paymentMethod"]:checked') as HTMLInputElement)?.value;
     this.cartStore.checkout(paymentMethod);
   }

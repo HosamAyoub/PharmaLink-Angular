@@ -7,7 +7,7 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { SubmitOrderRequest } from '../Interfaces/submit-order-request';
 
-declare var bootstrap: any;
+
 @Injectable({
   providedIn: 'root'
 })
@@ -96,9 +96,6 @@ export class CartStore {
       },
       error: (err) => {
         console.error('Clear cart failed', err);
-        const modalElement = document.getElementById('emptyCartModal');
-        const modal = new bootstrap.Modal(modalElement);
-        modal.show();
       }
     });
   }
