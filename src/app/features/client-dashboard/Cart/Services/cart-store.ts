@@ -39,7 +39,8 @@ export class CartStore {
   increment(item: CartItem) {
     const dto: CartUpdateDto = {
       drugId: item.drugId,
-      pharmacyId: item.pharmacyId
+      pharmacyId: item.pharmacyId,
+      quantity: item.quantity
     };
 
     this.cartService.incrementItem(dto).subscribe({
@@ -51,7 +52,8 @@ export class CartStore {
   decrement(item: CartItem) {
     const dto: CartUpdateDto = {
       drugId: item.drugId,
-      pharmacyId: item.pharmacyId
+      pharmacyId: item.pharmacyId,
+      quantity: item.quantity
     };
 
     this.cartService.decrementItem(dto).subscribe({
@@ -63,7 +65,8 @@ export class CartStore {
   remove(item: CartItem) {
     const dto: CartUpdateDto = {
       drugId: item.drugId,
-      pharmacyId: item.pharmacyId
+      pharmacyId: item.pharmacyId,
+      quantity: item.quantity
     };
 
     this.cartService.removeItemFromCart(dto).subscribe({

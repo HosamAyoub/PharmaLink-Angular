@@ -1,6 +1,6 @@
 import { Component, EventEmitter, input, Output } from '@angular/core';
-import { FavoriteDrug } from '../../Services/favorite-service';
 import { CommonModule } from '@angular/common';
+import { IFavDrug } from '../../../../../core/drug/IFavDrug';
 
 @Component({
   selector: 'app-favorite-card',
@@ -9,10 +9,11 @@ import { CommonModule } from '@angular/common';
   styleUrl: './favorite-card.css'
 })
 export class FavoriteCard {
-  drug = input<FavoriteDrug>(); 
+  drug = input<IFavDrug>(); 
+  
   @Output() remove = new EventEmitter<number>();
-
-  onRemoveClick() {
+  onRemoveClick() 
+  {
     this.remove.emit(this.drug()?.drugId);
   }
 }
