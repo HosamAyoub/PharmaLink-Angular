@@ -4,6 +4,7 @@ import {
   CanActivate,
   GuardResult,
   MaybeAsync,
+  Router,
   RouterStateSnapshot,
 } from '@angular/router';
 import { AuthService } from './auth.service';
@@ -13,11 +14,18 @@ import { AuthService } from './auth.service';
 })
 export class AuthGuard implements CanActivate {
   authService = inject(AuthService);
+  router = inject(Router);
 
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): MaybeAsync<GuardResult> {
-    return Boolean(this.authService.user());
+    const isAuth = this.authService.user();
+    if (isAuth) {
+      return true;
+    }
+    return this.router.createUrlTree(['/login'], {
+      queryParams: { returnUrl: state.url },
+    });
   }
 }
