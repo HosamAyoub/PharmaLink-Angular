@@ -8,14 +8,14 @@ import {
   HostListener,
 } from '@angular/core';
 import { DrugService } from '../../../../core/drug/drug-service';
-import { IDrug } from '../../../../core/drug/IDrug';
 import { NgClass } from '@angular/common';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { IFavDrug } from '../../../../core/drug/IFavDrug';
 
-@Component({
+@Component({  
   selector: 'app-side-bar',
-  imports: [NgClass , RouterLink],
-  templateUrl: './side-bar.html',
+  imports: [NgClass],
+templateUrl: './side-bar.html',
   styleUrls: ['./side-bar.css']
 })
 export class SideBar implements OnInit, OnDestroy {
@@ -247,9 +247,9 @@ export class SideBar implements OnInit, OnDestroy {
   ];
 
   drugservice: DrugService = inject(DrugService);
-  CategoryDrugs: IDrug[] = [];
+  CategoryDrugs: IFavDrug[] = [];
   selectedCategory: string = '';
-  @Output() categorySelected = new EventEmitter<IDrug[]>();
+  @Output() categorySelected = new EventEmitter<IFavDrug[]>();
 
   sidebarVisible = false;
   isSmallScreen = false;
@@ -310,11 +310,7 @@ export class SideBar implements OnInit, OnDestroy {
           this.CategoryDrugs = data; 
           this.categorySelected.emit(this.CategoryDrugs);
           console.log('Random Drugs:', data);
-        },
-        error: (err) => 
-        {
-          console.error('Error fetching random drugs:', err);
-        },
+        }
       });
     } else {
       this.selectedCategory = category;
@@ -324,10 +320,7 @@ export class SideBar implements OnInit, OnDestroy {
           this.categorySelected.emit(this.CategoryDrugs);
           this.path.navigate(['/client/category', category]);
           console.log('Drugs in category:', data);
-        },
-        error: (err) => {
-          console.error('Error fetching drugs by category:', err);
-        },
+        }
       });
     }
   }

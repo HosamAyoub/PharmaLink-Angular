@@ -1,17 +1,18 @@
 import { Component, inject, Input } from '@angular/core';
-import { IDrug } from '../../../../core/drug/IDrug';
+import { IDrug } from '../../../../core/drug/IDrug'
 import { PharmacyAvailable } from '../pharmacy-available/pharmacy-available';
 import { NearbyPharmacies } from '../nearby-pharmacies/nearby-pharmacies';
 import { DrugService } from '../../../../core/drug/drug-service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { IPharmaDrug } from '../../../../core/drug/IPharmaDrug';
 import { map } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef } from '@angular/core';
+import { FavoriteService } from '../../Favorites/Services/favorite-service';
 
 @Component({
   selector: 'app-drug-details',
-  imports: [PharmacyAvailable, NearbyPharmacies, CommonModule],
+  imports: [PharmacyAvailable, NearbyPharmacies, CommonModule,RouterLink],
   templateUrl: './drug-details.html',
   styleUrl: './drug-details.css',
 })
@@ -19,6 +20,7 @@ export class DrugDetails {
   drugId: any;
   drugDetails!: IPharmaDrug;
   drugservice: DrugService = inject(DrugService);
+  FavService: FavoriteService = inject(FavoriteService);
   constructor(private route: ActivatedRoute, private cdr: ChangeDetectorRef) {
     this.drugId = this.route.snapshot.paramMap.get('id');
   }
@@ -57,4 +59,14 @@ export class DrugDetails {
   toggleSection(section: keyof typeof this.expandedSections) {
     this.expandedSections[section] = !this.expandedSections[section];
   }
+
+  Details_ToggleFavorites(drugId: number) 
+  {
+    this.FavService.ToggleFavorites(drugId);
+  }
+
+  Details_isFavorite(drugId: number): boolean {
+    return this.FavService.isFavorite(drugId);
+  }
+
 }

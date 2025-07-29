@@ -1,7 +1,8 @@
 import { Component, inject, signal } from '@angular/core';
-import { FavoriteDrug, FavoriteService } from '../../Services/favorite-service';
+import { FavoriteService } from '../../Services/favorite-service';
 import { FavoriteCard } from '../favorite-card/favorite-card';
 import { CommonModule } from '@angular/common';
+import { computed } from '@angular/core';
 
 @Component({
   selector: 'app-favorite-page',
@@ -9,26 +10,25 @@ import { CommonModule } from '@angular/common';
   templateUrl: './favorite-page.html',
   styleUrl: './favorite-page.css'
 })
-export class FavoritePage {
+export class FavoritePage 
+{
   private favoriteService = inject(FavoriteService);
 
-  favoriteDrugs = signal<FavoriteDrug[]>([]);
+  favoriteDrugs = computed(() => this.favoriteService.favoriteDrugs());
 
-  ngOnInit() {
-    this.favoriteService.getFavorites().subscribe((data) => {
-      this.favoriteDrugs.set(data);
-    });
+  ngOnInit() 
+  {
+    this.favoriteService.getFavorites();
   }
 
-  onRemove(drugId: number) {
-    this.favoriteService.removeFromFavorites(drugId).subscribe(() => {
-      this.favoriteDrugs.set(this.favoriteDrugs().filter(d => d.drugId !== drugId));
-    });
+  onRemove(drugId: number) 
+  {
+    this.favoriteService.removeFromFavorites(drugId);
   }
 
   onClear() {
-    this.favoriteService.clearFavorites().subscribe(() => {
-      this.favoriteDrugs.set([]);
-    });
+    this.favoriteService.clearFavorites();
+    location.reload();
   }
+
 }
