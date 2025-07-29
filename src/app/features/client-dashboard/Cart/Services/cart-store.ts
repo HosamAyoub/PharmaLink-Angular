@@ -7,6 +7,7 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { SubmitOrderRequest } from '../Interfaces/submit-order-request';
 
+declare var bootstrap: any;
 @Injectable({
   providedIn: 'root'
 })
@@ -19,7 +20,7 @@ export class CartStore {
   router = inject(Router);
 
 
-  constructor(private cartService: CartService) {}
+  constructor(private cartService: CartService) { }
 
   // Load cart summary from API
   loadCart() {
@@ -95,12 +96,12 @@ export class CartStore {
       },
       error: (err) => {
         console.error('Clear cart failed', err);
-        alert('Failed to clear the cart.');
+        const modalElement = document.getElementById('emptyCartModal');
+        const modal = new bootstrap.Modal(modalElement);
+        modal.show();
       }
     });
   }
-
-
   // Recalculate totals
   updateTotals() {
     const items = this.cartItems();
