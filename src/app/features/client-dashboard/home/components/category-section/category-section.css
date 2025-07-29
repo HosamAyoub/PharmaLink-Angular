@@ -29,6 +29,20 @@
 .category-card-wrapper {
   display: flex;
   flex-direction: column;
+  cursor: pointer;
+}
+
+.view-all-link {
+  color: var(--primary-blue) !important;
+  text-decoration: none;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.view-all-link:hover {
+  color: var(--primary-blue-light) !important;
+  text-decoration: underline;
 }
 
 /* Large screens (lg) - 4 cards in one row */
