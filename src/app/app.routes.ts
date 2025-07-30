@@ -1,15 +1,21 @@
 import { Routes } from '@angular/router';
 import { ClientLayout } from './features/client-dashboard/client-layout/client-layout';
-import { Auth } from './features/auth/auth.component';
+
+import { LoadingSpinner } from './shared/components/loading-spinner/loading-spinner';
+import { Login } from './features/auth/login/login';
+import { SignUp } from './features/auth/signup/signup';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/client', pathMatch: 'full' },
   {
-    path: 'auth',
-    component: Auth,
-    // loadComponent: () =>
-    //   import('./features/auth/auth.component').then((m) => m.Auth),
+    path: 'login',
+    component: Login,
   },
+  {
+    path: 'signup',
+    component: SignUp,
+  },
+  { path: 'loading', component: LoadingSpinner },
   {
     path: 'admin',
     loadChildren: () =>

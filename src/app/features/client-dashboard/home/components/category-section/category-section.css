@@ -2,19 +2,20 @@
   max-width: 386px;
   padding: 25px 92px !important;
   border: none;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.12), 0 1.5px 6px rgba(0,0,0,0.10);
-  transition: transform 0.3s cubic-bezier(.25,.8,.25,1), box-shadow 0.3s cubic-bezier(.25,.8,.25,1);
+  box-shadow: 0 4px 24px var(--shadow-dark), 0 1.5px 6px var(--shadow-dark);
+  transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
+    box-shadow 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  background: var(--background-white);
 }
 
 .card p {
   font-size: 14px;
-  color: #2563EB;
-
+  color: var(--primary-blue);
 }
 
 .card:hover {
   transform: translateY(-8px) scale(1.04);
-  box-shadow: 0 8px 32px rgba(0,0,0,0.18), 0 3px 12px rgba(0,0,0,0.14);
+  box-shadow: 0 8px 32px var(--shadow-dark), 0 3px 12px var(--shadow-dark);
 }
 
 /* Responsive Category Cards Layout */
@@ -28,6 +29,20 @@
 .category-card-wrapper {
   display: flex;
   flex-direction: column;
+  cursor: pointer;
+}
+
+.view-all-link {
+  color: var(--primary-blue) !important;
+  text-decoration: none;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.view-all-link:hover {
+  color: var(--primary-blue-light) !important;
+  text-decoration: underline;
 }
 
 /* Large screens (lg) - 4 cards in one row */

@@ -30,4 +30,5 @@ export class Navbar {
   onLogout() {
     this.authService.logout();
   }
+  LoggedUserName = computed(() => this.authService.user()?.userName);
 }

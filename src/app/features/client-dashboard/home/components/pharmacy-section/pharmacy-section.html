@@ -1,38 +1,50 @@
-
-<div class="d-flex flex-column justify-content-center align-items-center text-center w-100" style="padding: 64px; background-color: rgba(205, 205, 205, 0.055);">
-  <p style="font-weight: bold; font-size: 30px; margin-bottom: 32px;">Nearby Pharmacies</p>
+<div
+  class="d-flex flex-column justify-content-center align-items-center text-center w-100"
+  style="padding: 64px; background-color: rgba(205, 205, 205, 0.055)"
+>
+  <p style="font-weight: bold; font-size: 30px; margin-bottom: 32px">
+    Nearby Pharmacies
+  </p>
   <!-- This section used to highlight the pharmacies in the area -->
-  <div class="d-flex justify-content-center align-items-stretch gap-4 flex-wrap pharmacy-cards-container">
+  <div
+    class="d-flex justify-content-center align-items-stretch gap-4 flex-wrap pharmacy-cards-container"
+  >
     <!--pharmacy card -->
     @for (pharmacy of pharmacies(); track pharmacy.name) {
-      <div class="pharmacy-card-wrapper">
-        <div class="card">
-          <div class="card-body text-start">
-            <h5 class="card-title mb-3">{{pharmacy.name}}</h5>
-            <div class="d-flex align-items-center mb-3">
-              <i class="fa-solid fa-location-dot text-muted me-2"></i>
-              <p class="card-text text-muted mb-0">{{pharmacy.address}}</p>
+    <div class="pharmacy-card-wrapper">
+      <div class="card">
+        <div class="card-body text-start">
+          <h5 class="card-title mb-3">{{ pharmacy.name }}</h5>
+          <div class="d-flex align-items-center mb-3">
+            <i class="fa-solid fa-location-dot text-muted me-2"></i>
+            <p class="card-text text-muted mb-0">{{ pharmacy.address }}</p>
+          </div>
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center">
+              <i class="fa-solid fa-star text-warning me-1"></i>
+              <span style="font-weight: bold">{{ pharmacy.rate }}</span>
             </div>
-            <div class="d-flex justify-content-between align-items-center">
-              <div class="d-flex align-items-center">
-                <i class="fa-solid fa-star text-warning me-1"></i>
-                <span style="font-weight: bold;">{{pharmacy.rate}}</span>
-              </div>
-              <div class="d-flex justify-content-center align-items-center rounded-3 px-2 py-1"
-                   [style.background-color]="pharmacy.isOpen ? 'rgb(182, 219, 182)' : 'rgb(255, 182, 182)'">
-                <p style="margin: 0; font-size: 12px; font-weight: bold;"
-                   [style.color]="pharmacy.isOpen ? 'green' : 'red'">
-                  {{pharmacy.isOpen ? 'Open Now' : 'Closed'}}
-                </p>
-              </div>
+            <div
+              class="d-flex justify-content-center align-items-center rounded-3 px-2 py-1"
+              [style.background-color]="
+                pharmacy.isOpen ? 'rgb(182, 219, 182)' : 'rgb(255, 182, 182)'
+              "
+            >
+              <p
+                style="margin: 0; font-size: 12px; font-weight: bold"
+                [style.color]="pharmacy.isOpen ? 'green' : 'red'"
+              >
+                {{ pharmacy.isOpen ? "Open Now" : "Closed" }}
+              </p>
             </div>
           </div>
         </div>
       </div>
+    </div>
     }
   </div>
   <!-- View All Link - Separate from flex container -->
   <div class="view-all-container">
     <a class="view-all-link" [routerLink]="['/client/pharmacies']">View All Pharmacies</a>
   </div>
- </div>
+</div>

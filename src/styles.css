@@ -1,25 +1,54 @@
-/* You can add global styles to this file, and also import other style files */
-@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css');
-:root {
-  --primary-color: #2563EB;
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css");
 
-  --primary-hover: #1d4ed8;
-  --primary-light: #3b82f6;
-  --primary-dark: #1e40af;
-  --fav-icon-color: #F87171;
+:root {
+  --primary-blue: #2563eb;
+  --primary-blue-light: #347cef;
+  --primary-blue-dark: #4267b9;
+  --background-mint: #f0fdf4;
+  --background-white: #ffffff;
+  --surface-white: #fff;
+  --text-dark: #1a1a1a;
+  --text-primary: #1f2937;
+  --text-secondary: #374151;
+  --text-muted: #6b7280;
+  --text-placeholder: #9ca3af;
+  --border-light: #e5e7eb;
+  --border-gray: #d1d5db;
+  --success-green: #10b981;
+  --success-green-light: rgba(16, 185, 129, 0.1);
+  --error-red: #ef4444;
+  --error-red-light: rgba(239, 68, 68, 0.1);
+  --error-background: #fef2f2;
+  --error-border: #fecaca;
+  --error-text: #dc2626;
+  --disabled-gray: #d1d5db;
+  --shadow-primary: rgba(102, 126, 234, 0.3);
+  --shadow-dark: rgba(0, 0, 0, 0.1);
 }
 
 @keyframes upDown {
-  0% { transform: translateY(0); }
-  20% { transform: translateY(-12px); }
-  35% { transform: translateY(0); }
-  45% { transform: translateY(-6px); }
-  55% { transform: translateY(0); }
-  100% { transform: translateY(0); }
+  0% {
+    transform: translateY(0);
+  }
+  20% {
+    transform: translateY(-12px);
+  }
+  35% {
+    transform: translateY(0);
+  }
+  45% {
+    transform: translateY(-6px);
+  }
+  55% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(0);
+  }
 }
 
-.icon{
+.icon {
   /* width: 36px;
   height: 36px; */
-  animation: upDown 3s cubic-bezier(.68,-0.55,.27,1.55) infinite;
+  animation: upDown 3s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
 }

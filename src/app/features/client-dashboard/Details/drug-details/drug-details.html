@@ -1,15 +1,39 @@
 <div class="drug-details-container">
       <!-- Header Section -->
-      <div class="drug-header">
-        <div class="drug-icon">
-          <div class="pill-icon"></div>
-        </div>
-        <div class="drug-info" *ngIf="drugDetails">
-          <h1 class="drug-name">{{ drugDetails.drug_Info.commonName }}</h1>
-          <p class="scientific-name">Scientific Name: {{ drugDetails.drug_Info.activeIngredient }}</p>
-          <p class="category">Category: <span class="category-tag">{{ drugDetails.drug_Info.category }}</span></p>
-        </div>
+      <div class="drug-header d-flex align-items-center gap-3">
+       <div class="drug-icon">
+        <img 
+          [src]="drugDetails.drug_Info.drug_UrlImg" 
+          alt="Drug Image" 
+          class="img-fluid shadow" 
+          style="width: 200px; object-fit: cover; border-radius: 12px;">
       </div>
+       <div class="drug-info" *ngIf="drugDetails">
+        <h1 class="drug-name">{{ drugDetails.drug_Info.commonName }}</h1>
+
+        <p class="scientific-name fw-bold text-dark">
+          Scientific Name: 
+          <span class="fw-normal text-secondary">{{ drugDetails.drug_Info.activeIngredient }}</span>
+        </p>
+
+        <p class="category fw-bold text-dark">
+          Category: 
+          <a [routerLink]="['/client/category', drugDetails.drug_Info.category]" 
+            class="category-tag text-decoration-none fw-normal text-primary">
+            {{ drugDetails.drug_Info.category }}
+          </a>
+        </p>
+      </div>
+        <button class="btn bg-transparent border-0 align-self-center p-3 ms-auto"
+                (click)="Details_ToggleFavorites(drugDetails.drug_Info.drugID)">
+          <i class="fa-2xl"
+            [ngClass]="Details_isFavorite(drugDetails.drug_Info.drugID) 
+                        ? 'fa-solid fa-heart text-danger' 
+                        : 'fa-regular fa-heart text-secondary'">
+          </i>
+        </button>
+      </div>
+
 
       <!-- Main Content Grid -->
       <div class="content-grid" *ngIf="drugDetails" >
@@ -128,7 +152,7 @@
 
         <!-- Right Column - Pharmacy Information -->
       <div class="pharmacy-section">
-          <app-pharmacy-available [pharmacies]="drugDetails.pharma_Info"></app-pharmacy-available>
+          <app-pharmacy-available [pharmacies]="drugDetails.pharma_Info"  [drugId]="drugDetails.drug_Info.drugID"></app-pharmacy-available>
           <app-nearby-pharmacies></app-nearby-pharmacies>
       </div>
   </div>

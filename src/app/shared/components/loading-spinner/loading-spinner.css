@@ -28,12 +28,12 @@
     90deg,
     #2dd4bf 0%,
     #2dd4bf 50%,
-    #06b6d4 50%,
-    #06b6d4 100%
+    #035a94 50%,
+    #035a94 100%
   );
   border-radius: 20px;
-  box-shadow: 0 4px 12px rgba(45, 212, 191, 0.3);
-  animation: pillSequence 3s ease-in-out infinite;
+  /* filter: drop-shadow(4px 1px rgba(45, 212, 191, 0.3)); */
+  animation: pillSequence 4s ease-in-out infinite;
 }
 
 @keyframes pillSequence {

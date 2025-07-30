@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { IDrug } from './IDrug';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { IPharmaDrug } from './IPharmaDrug';
+import { IFavDrug } from './IFavDrug';
 
 @Injectable({
   providedIn: 'root',
@@ -10,24 +10,20 @@ import { IPharmaDrug } from './IPharmaDrug';
 export class DrugService {
   constructor(private http: HttpClient) {}
 
-  getDrugsByCategory(categoryName: string): Observable<IDrug[]> {
-    return this.http.get<IDrug[]>(
+  getDrugsByCategory(categoryName: string): Observable<IFavDrug[]> {
+    return this.http.get<IFavDrug[]>(
       `http://localhost:5278/api/Drug/Category?Cname=${categoryName}`
     );
   }
 
-  getRandomDrugs(): Observable<IDrug[]> {
-    return this.http.get<IDrug[]>(`http://localhost:5278/api/Drug/2`);
+  getRandomDrugs(): Observable<IFavDrug[]> {
+    return this.http.get<IFavDrug[]>(`http://localhost:5278/api/Drug/2`);
   }
 
   getDrugById(DrugID: number): Observable<IPharmaDrug> {
     return this.http.get<IPharmaDrug>(
       `http://localhost:5278/api/Drug?DrugID=${DrugID}`
     );
-  }
-
-  toggleFavorite(drugId: number): Observable<any> {
-    return this.http.post(`http://localhost:5278/api/Drug/Favorite?DrugID=${drugId}`, {});
   }
 
 }

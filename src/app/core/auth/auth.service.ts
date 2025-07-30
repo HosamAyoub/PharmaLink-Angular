@@ -1,8 +1,9 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { inject, Injectable, signal } from '@angular/core';
+import { Injectable, signal, inject } from '@angular/core';
+import { ResponseData, SignUpData, User } from './user.model';
 import { API_BASE_URL } from '../api.constants';
-import { BehaviorSubject, catchError, tap, throwError } from 'rxjs';
-import { ResponseData, User } from './user.model';
+import { catchError, tap } from 'rxjs/operators';
+import { throwError } from 'rxjs';
+import { HttpErrorResponse, HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 
 @Injectable({ providedIn: 'root' })
@@ -12,23 +13,26 @@ export class AuthService {
   router = inject(Router);
   private tokenExpirationDuration: any;
 
-  signUp(
-    userName: string,
-    email: string,
-    password: string,
-    phoneNumber: string
-  ) {
+  signUp(signUpData: SignUpData) {
+    // Adapt payload to backend expectations (with nested patient object)
     const payload = {
-      userName: userName,
-      email: email,
-      passwordHash: password,
-      confirmPassword: password,
-      phoneNumber: phoneNumber || '1234567890',
+      userName: signUpData.userName,
+      email: signUpData.email,
+      passwordHash: signUpData.passwordHash,
+      confirmPassword: signUpData.confirmPassword,
+      phoneNumber: signUpData.phoneNumber,
+      patient: {
+        name: signUpData.patient.name,
+        gender: Number(signUpData.patient.gender), // 0=Male, 1=Female
+        dateOfBirth: signUpData.patient.dateOfBirth,
+        country: signUpData.patient.country,
+        address: signUpData.patient.address,
+        patientDiseases: signUpData.patient.patientDiseases,
+        patientDrugs: signUpData.patient.patientDrugs,
+      },
     };
-
-    console.log('🚀 Sending signup payload:', payload);
-    console.log('📍 To URL:', API_BASE_URL + 'Account/Register');
-
+    console.log('Sending signup payload:', payload);
+    console.log('To URL:', API_BASE_URL + 'Account/Register');
     return this.http
       .post(API_BASE_URL + 'Account/Register', payload)
       .pipe(catchError(this.handleError));
@@ -103,9 +107,9 @@ export class AuthService {
 
     // Log specific validation errors
     if (errorResponse.error && errorResponse.error.errors) {
-      console.log('🚨 Detailed validation errors:');
+      console.log('Detailed validation errors:');
       Object.keys(errorResponse.error.errors).forEach((field) => {
-        console.log(`❌ ${field}:`, errorResponse.error.errors[field]);
+        console.log(`${field}:`, errorResponse.error.errors[field]);
       });
     }
 

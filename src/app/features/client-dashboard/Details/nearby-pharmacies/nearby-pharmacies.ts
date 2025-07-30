@@ -32,15 +32,6 @@ export class NearbyPharmacies implements OnInit {
     }
   }
 
-  pharmacy : NearbyPharmacy = {
-    id: 1,
-    name:'Pharmacy A',
-    distance: '2 miles',
-    price: 10.99,
-    status: 'in-stock',
-    statusText: 'In Stock'
-  }
-
   getDirections(pharmacy: NearbyPharmacy) 
   {
   

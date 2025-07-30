@@ -15,6 +15,11 @@ export class CartService {
     return this.http.get<CartSummary>(`${this.baseUrl}/summary`);
   }
 
+  addToCart(dto : CartUpdateDto): Observable<void>
+  {
+    return this.http.post<void>(`${this.baseUrl}/AddToCart`, dto);
+  }
+
   incrementItem(dto: CartUpdateDto) {
     return this.http.post(`${this.baseUrl}/plus`, dto);
   }
