@@ -8,14 +8,14 @@ import {
   HostListener,
 } from '@angular/core';
 import { DrugService } from '../../../../core/drug/drug-service';
-import { NgClass } from '@angular/common';
+import { CommonModule, NgClass, NgIf } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IFavDrug } from '../../../../core/drug/IFavDrug';
 
 
 @Component({  
   selector: 'app-side-bar',
-  imports: [NgClass],
+  imports: [NgClass , CommonModule],
   templateUrl: './side-bar.html',
   styleUrls: ['./side-bar.css']
 })
@@ -252,7 +252,7 @@ export class SideBar implements OnInit, OnDestroy {
   selectedCategory: string = '';
   @Output() categorySelected = new EventEmitter<IFavDrug[]>();
 
-  sidebarVisible = false;
+  sidebarVisible = true;
   isSmallScreen = false;
 
   constructor(private route: ActivatedRoute, private path: Router) {
@@ -282,17 +282,13 @@ export class SideBar implements OnInit, OnDestroy {
   }
 
   toggleSidebar() {
-    this.sidebarVisible = !this.sidebarVisible;
-    console.log('Sidebar toggled:', this.sidebarVisible);
+    this.sidebarVisible = true;
   }
 
-  // Separate method for closing sidebar
   closeSidebar() {
-    if (this.isSmallScreen) {
-      this.sidebarVisible = false;
-      console.log('Sidebar closed');
-    }
+    this.sidebarVisible = false;
   }
+
 
   onclickCategory(
     category: string = this.route.snapshot.paramMap.get('categoryName') || ''
