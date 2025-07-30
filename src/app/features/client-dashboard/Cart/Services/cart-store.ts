@@ -57,11 +57,32 @@ export class CartStore {
       quantity: item.quantity
     };
 
-    this.cartService.decrementItem(dto).subscribe({
-      next: () => this.loadCart(),
-      error: (err) => console.error('Decrement error:', err)
-    });
+    if (item.quantity === 1) {
+      const updated = this.cartItems().filter(x =>
+        !(x.drugId === item.drugId && x.pharmacyId === item.pharmacyId)
+      );
+      this.cartItems.set(updated);
+
+      this.cartService.decrementItem(dto).subscribe({
+        next: () => this.updateTotals(),
+        error: (err) => console.error('Decrement error:', err)
+      });
+    } else {
+      const updated = this.cartItems().map(x => {
+        if (x.drugId === item.drugId && x.pharmacyId === item.pharmacyId) {
+          return { ...x, quantity: x.quantity - 1 };
+        }
+        return x;
+      });
+      this.cartItems.set(updated);
+
+      this.cartService.decrementItem(dto).subscribe({
+        next: () => this.updateTotals(),
+        error: (err) => console.error('Decrement error:', err)
+      });
+    }
   }
+
 
   remove(item: CartItem) {
     const dto: CartUpdateDto = {
