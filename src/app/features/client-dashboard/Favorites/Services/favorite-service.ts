@@ -43,7 +43,7 @@ export class FavoriteService {
   }
 
 
-  clearFavorites(callback?: () => void) {
+  clearFavorites() {
     this.http.delete(`${this.apiUrl}/ClearFavorites`).subscribe(() => {
       this.getFavorites();
     });
