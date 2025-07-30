@@ -4,6 +4,8 @@ import { FavoriteCard } from '../favorite-card/favorite-card';
 import { CommonModule } from '@angular/common';
 import { computed } from '@angular/core';
 
+declare var bootstrap: any;
+
 @Component({
   selector: 'app-favorite-page',
   imports: [CommonModule, FavoriteCard],
@@ -27,8 +29,15 @@ export class FavoritePage
   }
 
   onClear() {
+    if (this.favoriteDrugs().length === 0) {
+    const modalElement = document.getElementById('emptyFavoritesModal');
+    if (modalElement) {
+      const modal = new bootstrap.Modal(modalElement);
+      modal.show();
+    }
+    return;
+  }
     this.favoriteService.clearFavorites();
-    location.reload();
   }
 
 }

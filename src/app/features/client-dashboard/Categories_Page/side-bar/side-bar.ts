@@ -12,12 +12,11 @@ import { CommonModule, NgClass, NgIf } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IFavDrug } from '../../../../core/drug/IFavDrug';
 
-
-@Component({  
+@Component({
   selector: 'app-side-bar',
   imports: [NgClass , CommonModule],
   templateUrl: './side-bar.html',
-  styleUrls: ['./side-bar.css']
+  styleUrls: ['./side-bar.css'],
 })
 export class SideBar implements OnInit, OnDestroy {
   Categories = [
@@ -43,7 +42,7 @@ export class SideBar implements OnInit, OnDestroy {
     },
     {
       name: 'Antibiotic',
-      icon: 'https://cdn-icons-png.flaticon.com/512/4320/4320337.png',
+      icon: '/assets/images/icons/antibiotic.png',
     },
     {
       name: 'Anticancer',
@@ -147,7 +146,7 @@ export class SideBar implements OnInit, OnDestroy {
     },
     {
       name: 'Cough suppressants',
-      icon: 'https://cdn-icons-png.flaticon.com/512/616/616408.png',
+      icon: 'assets/images/icons/lungs-svgrepo-com.svg',
     },
     {
       name: 'Dermatological drugs',
@@ -199,7 +198,7 @@ export class SideBar implements OnInit, OnDestroy {
     },
     {
       name: 'Muscle relaxants',
-      icon: 'https://cdn-icons-png.flaticon.com/512/254/254022.png',
+      icon: 'assets/images/icons/muscle.png',
     },
     {
       name: 'NSAID',
@@ -227,7 +226,7 @@ export class SideBar implements OnInit, OnDestroy {
     },
     {
       name: 'Sleep aids',
-      icon: 'https://cdn-icons-png.flaticon.com/512/616/616408.png',
+      icon: 'assets/images/icons/sleeping-pills.png',
     },
     {
       name: 'Thyroid medications',
@@ -239,7 +238,7 @@ export class SideBar implements OnInit, OnDestroy {
     },
     {
       name: 'Vaccine',
-      icon: 'https://cdn-icons-png.flaticon.com/512/2884/2884565.png',
+      icon: 'assets/images/icons/syringe-svgrepo-com.svg',
     },
     {
       name: 'Vasodilators',
@@ -309,7 +308,7 @@ export class SideBar implements OnInit, OnDestroy {
           this.CategoryDrugs = data;
           this.categorySelected.emit(this.CategoryDrugs);
           console.log('Random Drugs:', data);
-        }
+        },
       });
     } else {
       this.selectedCategory = category;
@@ -319,7 +318,7 @@ export class SideBar implements OnInit, OnDestroy {
           this.categorySelected.emit(this.CategoryDrugs);
           this.path.navigate(['/client/category', category]);
           console.log('Drugs in category:', data);
-        }
+        },
       });
     }
   }

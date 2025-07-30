@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import {effect, Injectable } from '@angular/core';
+import { effect, Injectable } from '@angular/core';
 import { IFavDrug } from '../../../../core/drug/IFavDrug';
 import { signal } from '@angular/core';
 
@@ -17,16 +17,18 @@ export class FavoriteService {
     });
   }
 
-  getFavorites(){
-     this.http.get<IFavDrug[]>(this.apiUrl).subscribe(data => 
-    {
-      this.favoriteDrugs.set(data);
+  getFavorites() {
+    this.http.get<IFavDrug[]>(this.apiUrl).subscribe(data => {
+      if (Array.isArray(data)) {
+        this.favoriteDrugs.set(data);
+      } else {
+        this.favoriteDrugs.set([]);
+      }
       console.log('Favorites updated:', this.favoriteDrugs());
     });
   }
 
-  addToFavorites(drugId: number) 
-  {
+  addToFavorites(drugId: number) {
     this.http.post(`${this.apiUrl}`, { drugId }).subscribe(() => {
       this.getFavorites();
     });
@@ -38,28 +40,24 @@ export class FavoriteService {
       this.getFavorites();
     });
 
-}
+  }
 
 
- clearFavorites(callback?: () => void) 
- {
-  this.http.delete(`${this.apiUrl}/ClearFavorites`).subscribe(() => {
-    this.getFavorites();
-  });
- }
+  clearFavorites(callback?: () => void) {
+    this.http.delete(`${this.apiUrl}/ClearFavorites`).subscribe(() => {
+      this.getFavorites();
+    });
+  }
 
 
- isFavorite(drugId: number): boolean 
-{
-  if (!Array.isArray(this.favoriteDrugs())) return false;
-  return this.favoriteDrugs().some(d => d.drugId === drugId);
-}
+  isFavorite(drugId: number): boolean {
+    if (!Array.isArray(this.favoriteDrugs())) return false;
+    return this.favoriteDrugs().some(d => d.drugId === drugId);
+  }
 
-  
-  ToggleFavorites(drugId: number) 
-  {
-    if(this.isFavorite(drugId))
-    {
+
+  ToggleFavorites(drugId: number) {
+    if (this.isFavorite(drugId)) {
       console.log('Removing from favorites:', drugId);
       this.removeFromFavorites(drugId);
     } else {
