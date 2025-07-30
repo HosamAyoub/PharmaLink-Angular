@@ -1,22 +1,40 @@
-
-<div class="d-flex flex-column justify-content-center align-items-center text-center w-100" style="padding: 64px; background-color: rgba(205, 205, 205, 0.055);">
-  <p style="font-weight: bold; font-size: 30px; margin-bottom: 32px;">Shop by Category</p>
+<div
+  class="d-flex flex-column justify-content-center align-items-center text-center w-100"
+  style="padding: 64px; background-color: rgba(205, 205, 205, 0.055)"
+>
+  <p style="font-weight: bold; font-size: 30px; margin-bottom: 32px">
+    Shop by Category
+  </p>
   <!-- This section used to highlight the services offered by the pharmacy -->
-  <div class="d-flex justify-content-center align-items-stretch flex-wrap category-cards-container">
+  <div
+    class="d-flex justify-content-center align-items-stretch flex-wrap category-cards-container"
+  >
     <!--category card -->
     @for (category of categories; track category.title) {
-      <div class="category-card-wrapper"
+    <div
+      class="category-card-wrapper"
       [routerLink]="['/client/category', category.title]"
-      >
-        <div class="card text-center">
-          <img [src]="category.image" [alt]="category.title" class="icon mx-auto d-block">
-          <div class="card-body">
-            <h5 class="card-title">{{category.title}}</h5>
-            <p class="card-text">{{category.description}}</p>
-          </div>
+    >
+      <div class="card text-center">
+        <img
+          [src]="category.image"
+          [alt]="category.title"
+          class="mx-auto d-block"
+          width="30%"
+        />
+        <div class="card-body">
+          <h5 class="card-title">{{ category.title }}</h5>
+          <p class="card-text">{{ category.description }}</p>
         </div>
       </div>
+    </div>
     }
-    <p class="view-all-link" (click)="viewAllCategories()" [routerLink]="['/client/category']" >View All Categories</p>
+    <p
+      class="view-all-link"
+      (click)="viewAllCategories()"
+      [routerLink]="['/client/category']"
+    >
+      View All Categories
+    </p>
   </div>
- </div>
+</div>

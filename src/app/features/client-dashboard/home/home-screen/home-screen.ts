@@ -19,8 +19,9 @@ import { SlicePipe } from '@angular/common';
     HomePharmacyCard,
     RouterLink,
     SlicePipe,
-    FeaturedProducts
-  ],
+    FeaturedProducts,
+    PharmacySection
+],
   templateUrl: './home-screen.html',
   styleUrl: './home-screen.css',
 })

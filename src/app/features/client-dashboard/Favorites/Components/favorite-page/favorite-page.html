@@ -17,3 +17,32 @@
     No favorites yet. Start exploring and add some!
   </div>
 </div>
+
+<!-- Empty Favorites Modal -->
+<div class="modal fade" id="emptyFavoritesModal" tabindex="-1" aria-labelledby="emptyFavoritesModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow-lg rounded-4">
+      <div class="modal-header border-0 bg-light rounded-top-4 px-4 pt-4">
+        <h5 class="modal-title d-flex align-items-center" id="emptyFavoritesModalLabel">
+          <i class="bi bi-heartbreak-fill text-danger fs-3 me-2"></i>
+          No Favorites to Clear
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body text-center px-4 pb-0">
+        <p class="fs-6 text-muted mb-3">
+          You currently don't have any favorite drugs to remove.
+        </p>
+        <i class="bi bi-emoji-frown-fill text-secondary fs-1 mb-3"></i>
+      </div>
+
+      <div class="modal-footer border-0 justify-content-center pb-4">
+        <button type="button" class="btn btn-secondary rounded-pill px-4 py-2" data-bs-dismiss="modal">
+          <i class="bi bi-arrow-left me-1"></i>Back
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,108 @@
+<div class="login-container">
+  <div class="login-card">
+    <!-- Logo Section -->
+    <div class="logo-section">
+      <a routerLink="/client/home">
+        <img
+          src="assets/images/logos/logo.svg"
+          alt="PharmaLink Logo"
+          class="logo"
+        />
+      </a>
+    </div>
+
+    <!-- Welcome Text -->
+    <div class="welcome-section">
+      <h1 class="welcome-title">Welcome Back</h1>
+      <p class="welcome-subtitle">Sign in to your PharmaLink account</p>
+    </div>
+
+    <!-- Error Message -->
+    @if (displayedError) {
+    <div class="error-alert">
+      <p>{{ displayedError }}</p>
+    </div>
+    }
+
+    <!-- Loading Spinner -->
+    @if (isLoading()) {
+    <div class="loading-container">
+      <app-loading-spinner />
+    </div>
+    } @else {
+
+    <!-- Login Form -->
+    <form #authForm="ngForm" (ngSubmit)="onSubmit(authForm)" class="login-form">
+      <!-- Email Field -->
+      <div class="form-group">
+        <label for="email" class="form-label">Email</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          class="form-input"
+          placeholder="Enter your email"
+          ngModel
+          required
+          email
+          (input)="clearError()"
+          #emailField="ngModel"
+          [class.invalid]="isEmailInvalid(emailField)"
+        />
+        @if (isEmailInvalid(emailField)) {
+        <div class="field-error">
+          {{ getEmailErrorMessage(emailField) }}
+        </div>
+        }
+      </div>
+
+      <!-- Password Field -->
+      <div class="form-group">
+        <label for="password" class="form-label">Password</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          class="form-input"
+          placeholder="Enter your password"
+          ngModel
+          required
+          minlength="6"
+          (input)="clearError()"
+          #passwordField="ngModel"
+          [class.invalid]="isPasswordInvalid(passwordField)"
+        />
+        @if (isPasswordInvalid(passwordField)) {
+        <div class="field-error">
+          {{ getPasswordErrorMessage(passwordField) }}
+        </div>
+        }
+      </div>
+
+      <!-- Remember Me & Forgot Password -->
+      <div class="form-options">
+        <div class="remember-me">
+          <input type="checkbox" id="rememberMe" class="checkbox" />
+          <label for="rememberMe" class="checkbox-label">Remember me</label>
+        </div>
+        <a href="#" class="forgot-password">Forgot Password?</a>
+      </div>
+
+      <!-- Sign In Button -->
+      <button
+        type="submit"
+        class="signin-btn"
+        [disabled]="!authForm.valid || isLoading()"
+      >
+        {{ isLoading() ? "Signing in..." : "Sign In" }}
+      </button>
+
+      <!-- Sign Up Link -->
+      <div class="signup-section">
+        <span class="signup-text">Don't have an account? </span>
+        <a class="signup-link" routerLink="/signup">Sign up</a>
+      </div>
+    </form>
+    }
+  </div>
+</div>

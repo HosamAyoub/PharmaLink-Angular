@@ -223,13 +223,13 @@
               <!-- Not Logged In Menu (Login/Register) -->
               @if (!isAuthenticated){
               <li>
-                <a class="dropdown-item py-2" routerLink="/auth">
+                <a class="dropdown-item py-2" routerLink="/login">
                   <i class="bi bi-box-arrow-in-right me-2 text-primary"></i>
                   Login
                 </a>
               </li>
               <li>
-                <a class="dropdown-item py-2" routerLink="/auth">
+                <a class="dropdown-item py-2" routerLink="/signup">
                   <i class="bi bi-person-plus me-2 text-success"></i>
                   Sign Up
                 </a>
@@ -241,7 +241,7 @@
                 <li class="dropdown-header">
                   <div class="d-flex align-items-center">
                     <i class="bi bi-person-circle me-2"></i>
-                    <span class="fw-semibold">am7815</span>
+                    <span class="fw-semibold">{{ LoggedUserName() }}</span>
                   </div>
                 </li>
                 <li><hr class="dropdown-divider" /></li>

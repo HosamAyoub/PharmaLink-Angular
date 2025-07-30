@@ -8,15 +8,15 @@ import {
   HostListener,
 } from '@angular/core';
 import { DrugService } from '../../../../core/drug/drug-service';
-import { NgClass } from '@angular/common';
+import { CommonModule, NgClass, NgIf } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IFavDrug } from '../../../../core/drug/IFavDrug';
 
-@Component({  
+@Component({
   selector: 'app-side-bar',
-  imports: [NgClass],
-templateUrl: './side-bar.html',
-  styleUrls: ['./side-bar.css']
+  imports: [NgClass , CommonModule],
+  templateUrl: './side-bar.html',
+  styleUrls: ['./side-bar.css'],
 })
 export class SideBar implements OnInit, OnDestroy {
   Categories = [
@@ -42,7 +42,7 @@ export class SideBar implements OnInit, OnDestroy {
     },
     {
       name: 'Antibiotic',
-      icon: 'https://cdn-icons-png.flaticon.com/512/4320/4320337.png',
+      icon: '/assets/images/icons/antibiotic.png',
     },
     {
       name: 'Anticancer',
@@ -146,7 +146,7 @@ export class SideBar implements OnInit, OnDestroy {
     },
     {
       name: 'Cough suppressants',
-      icon: 'https://cdn-icons-png.flaticon.com/512/616/616408.png',
+      icon: 'assets/images/icons/lungs-svgrepo-com.svg',
     },
     {
       name: 'Dermatological drugs',
@@ -198,7 +198,7 @@ export class SideBar implements OnInit, OnDestroy {
     },
     {
       name: 'Muscle relaxants',
-      icon: 'https://cdn-icons-png.flaticon.com/512/254/254022.png',
+      icon: 'assets/images/icons/muscle.png',
     },
     {
       name: 'NSAID',
@@ -226,7 +226,7 @@ export class SideBar implements OnInit, OnDestroy {
     },
     {
       name: 'Sleep aids',
-      icon: 'https://cdn-icons-png.flaticon.com/512/616/616408.png',
+      icon: 'assets/images/icons/sleeping-pills.png',
     },
     {
       name: 'Thyroid medications',
@@ -238,7 +238,7 @@ export class SideBar implements OnInit, OnDestroy {
     },
     {
       name: 'Vaccine',
-      icon: 'https://cdn-icons-png.flaticon.com/512/2884/2884565.png',
+      icon: 'assets/images/icons/syringe-svgrepo-com.svg',
     },
     {
       name: 'Vasodilators',
@@ -251,12 +251,12 @@ export class SideBar implements OnInit, OnDestroy {
   selectedCategory: string = '';
   @Output() categorySelected = new EventEmitter<IFavDrug[]>();
 
-  sidebarVisible = false;
+  sidebarVisible = true;
   isSmallScreen = false;
 
-  constructor(private route : ActivatedRoute , private path: Router) 
-  {
-    this.selectedCategory = this.route.snapshot.paramMap.get('categoryName') || '';
+  constructor(private route: ActivatedRoute, private path: Router) {
+    this.selectedCategory =
+      this.route.snapshot.paramMap.get('categoryName') || '';
   }
 
   ngOnInit() {
@@ -281,19 +281,17 @@ export class SideBar implements OnInit, OnDestroy {
   }
 
   toggleSidebar() {
-    this.sidebarVisible = !this.sidebarVisible;
-    console.log('Sidebar toggled:', this.sidebarVisible);
+    this.sidebarVisible = true;
   }
 
-  // Separate method for closing sidebar
   closeSidebar() {
-    if (this.isSmallScreen) {
-      this.sidebarVisible = false;
-      console.log('Sidebar closed');
-    }
+    this.sidebarVisible = false;
   }
 
-  onclickCategory(category: string = this.route.snapshot.paramMap.get('categoryName') || '') {
+
+  onclickCategory(
+    category: string = this.route.snapshot.paramMap.get('categoryName') || ''
+  ) {
     console.log('Selected Category:', category);
 
     // Close sidebar on mobile after category selection
@@ -307,10 +305,10 @@ export class SideBar implements OnInit, OnDestroy {
       this.selectedCategory = '';
       this.drugservice.getRandomDrugs().subscribe({
         next: (data) => {
-          this.CategoryDrugs = data; 
+          this.CategoryDrugs = data;
           this.categorySelected.emit(this.CategoryDrugs);
           console.log('Random Drugs:', data);
-        }
+        },
       });
     } else {
       this.selectedCategory = category;
@@ -320,7 +318,7 @@ export class SideBar implements OnInit, OnDestroy {
           this.categorySelected.emit(this.CategoryDrugs);
           this.path.navigate(['/client/category', category]);
           console.log('Drugs in category:', data);
-        }
+        },
       });
     }
   }

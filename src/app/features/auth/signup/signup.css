@@ -1,0 +1,437 @@
+/* Signup Page Modern Styles */
+.signup-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--background-mint);
+  padding: 20px;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+.signup-card {
+  background: var(--surface-white);
+  border-radius: 24px;
+  padding: 48px 40px;
+  width: 100%;
+  max-width: 700px;
+  box-shadow: 0 20px 60px var(--shadow-dark);
+  text-align: center;
+  animation: slideIn 0.5s ease-out;
+}
+
+/* Animation for smooth transitions */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Step content animation */
+.step-content {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Loading container */
+.loading-container {
+  padding: 40px 0;
+  text-align: center;
+}
+
+.logo-section {
+  margin-bottom: 24px;
+}
+
+.logo {
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px var(--shadow-primary);
+}
+
+.signup-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin: 0 0 8px 0;
+}
+
+.signup-subtitle {
+  font-size: 15px;
+  color: var(--text-muted);
+  margin: 0 0 24px 0;
+}
+
+/* Stepper */
+.stepper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 32px;
+  gap: 16px;
+}
+.step {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--primary-blue-light);
+  font-weight: 600;
+}
+.step:not(.active) {
+  color: var(--text-muted);
+  font-weight: 400;
+}
+.step > span:first-child {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--background-mint);
+  color: var(--primary-blue);
+  font-size: 15px;
+  font-weight: 600;
+  border: 2px solid var(--primary-blue-light);
+}
+.step:not(.active) > span:first-child {
+  background: var(--background-white);
+  color: var(--text-muted);
+  border: 2px solid var(--border-light);
+}
+.step-label {
+  font-size: 14px;
+}
+.step-separator {
+  width: 48px;
+  height: 2px;
+  background: var(--border-light);
+  border-radius: 1px;
+}
+
+/* Form Layout */
+.signup-form {
+  text-align: left;
+}
+.form-row {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 20px;
+}
+.form-row > .form-group {
+  min-width: 0;
+}
+.form-group {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0;
+}
+
+.form-group label,
+.form-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+  display: block;
+}
+
+/* Required and Optional field indicators */
+.form-label.required::after {
+  content: " *";
+  color: var(--error-red);
+  font-weight: 700;
+}
+
+.form-label.optional::after {
+  content: " (optional)";
+  color: var(--text-muted);
+  font-weight: 400;
+  font-size: 12px;
+}
+
+.form-group input,
+.form-group select,
+.form-input {
+  padding: 16px 20px;
+  border: 2px solid var(--border-light);
+  border-radius: 12px;
+  font-size: 16px;
+  color: var(--text-primary);
+  background: var(--background-white);
+  transition: all 0.2s ease;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-input:focus {
+  border-color: var(--primary-blue-light);
+  outline: none;
+}
+
+.form-group input::placeholder,
+.form-input::placeholder {
+  color: var(--text-placeholder);
+}
+
+/* Angular form validation states - matching login styles */
+.form-input:invalid {
+  border-color: var(--border-light);
+}
+
+.form-input.ng-invalid.ng-touched {
+  border-color: var(--error-red);
+}
+
+/* Validation States */
+.form-input.invalid {
+  border-color: var(--error-red);
+}
+
+.form-input.ng-valid.ng-dirty {
+  border-color: var(--border-light);
+}
+
+.form-input.ng-valid.ng-dirty:focus {
+  border-color: var(--primary-blue-light);
+}
+
+/* Custom validation states for specific requirements */
+.form-input.password-weak {
+  border-color: var(--error-red);
+}
+
+.form-input.password-strong {
+  border-color: var(--border-light);
+}
+
+.form-input.password-mismatch {
+  border-color: var(--error-red);
+}
+
+.form-input.password-match {
+  border-color: var(--border-light);
+}
+
+.form-input.username-invalid {
+  border-color: var(--error-red);
+}
+
+.form-input.username-valid {
+  border-color: var(--border-light);
+}
+
+/* Password requirements component */
+.password-requirements {
+  margin-top: 8px;
+  padding: 12px;
+  background: var(--background-mint);
+  border-radius: 8px;
+  border: 1px solid var(--border-light);
+}
+
+.password-requirements h4 {
+  margin: 0 0 8px 0;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.requirement {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  margin-bottom: 4px;
+  color: var(--text-muted);
+}
+
+.requirement:last-child {
+  margin-bottom: 0;
+}
+
+.requirement.met {
+  color: var(--success-green);
+}
+
+.requirement.not-met {
+  color: var(--error-red);
+}
+
+.requirement::before {
+  content: "×";
+  font-weight: bold;
+  font-size: 12px;
+}
+
+.requirement.met::before {
+  content: "✓";
+  color: var(--success-green);
+}
+
+.requirement.not-met::before {
+  content: "×";
+  color: var(--error-red);
+}
+
+/* Field Error Messages */
+.field-error {
+  color: var(--error-red);
+  font-size: 12px;
+  margin-top: 6px;
+  text-align: left;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.field-error::before {
+  content: "⚠";
+  font-size: 12px;
+}
+.signup-btn {
+  width: 100%;
+  padding: 16px;
+  background: linear-gradient(
+    135deg,
+    var(--primary-blue-dark) 0%,
+    var(--primary-blue) 100%
+  );
+  color: var(--surface-white);
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 24px;
+}
+
+.signup-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 25px var(--primary-blue-light-alpha);
+}
+
+.signup-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.signup-btn:disabled {
+  background: var(--disabled-gray);
+  cursor: not-allowed;
+  transform: none;
+}
+
+.signup-btn.secondary {
+  background: var(--border-light);
+  color: var(--text-secondary);
+  margin-right: 12px;
+  width: auto;
+  min-width: 120px;
+}
+
+.signup-btn.secondary:hover:not(:disabled) {
+  background: var(--text-muted);
+  color: var(--surface-white);
+}
+
+/* Button group for step 2 */
+.button-group {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-top: 24px;
+}
+
+.button-group .signup-btn {
+  margin-top: 0;
+}
+.signin-link {
+  text-align: center;
+  margin-top: 24px;
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+.signin-link a {
+  color: var(--primary-blue);
+  text-decoration: none;
+  font-weight: 600;
+  margin-left: 4px;
+  transition: color 0.2s ease;
+}
+
+.signin-link a:hover {
+  color: var(--primary-blue-light);
+  text-decoration: underline;
+}
+
+.error-alert {
+  background: var(--error-background);
+  border: 1px solid var(--error-border);
+  border-radius: 12px;
+  padding: 12px 16px;
+  margin-bottom: 24px;
+  text-align: left;
+}
+
+.error-alert p {
+  color: var(--error-text);
+  margin: 0;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* Focus states for accessibility */
+.form-input:focus,
+.signup-btn:focus,
+.signin-link a:focus {
+  outline: 2px solid var(--primary-blue-light);
+  outline-offset: -2px;
+}
+
+/* Responsive Design */
+@media (max-width: 800px) {
+  .signup-card {
+    padding: 32px 24px;
+  }
+
+  .form-row {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .form-row .form-group {
+    margin-bottom: 20px;
+  }
+
+  .button-group {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .button-group .signup-btn {
+    width: 100%;
+  }
+}
