@@ -2,16 +2,20 @@
   <div class="signup-card">
     <!-- Logo Section -->
     <div class="logo-section">
+      <a routerLink="/client/home">
       <img
         src="assets/images/logos/logo.svg"
         alt="PharmaLink Logo"
         class="logo"
       />
+      </a>
     </div>
 
     <!-- Title & Subtitle -->
     <h1 class="signup-title">Create Account</h1>
-    <p class="signup-subtitle">Join PharmaLink for better medicin management</p>
+    <p class="signup-subtitle">
+      Join PharmaLink for better medicine management
+    </p>
 
     <!-- Stepper -->
     <div class="stepper">
@@ -33,118 +37,269 @@
     </div>
     }
 
+    <!-- Loading Spinner -->
+    @if (isLoading()) {
+    <div class="loading-container">
+      <app-loading-spinner />
+    </div>
+    } @else {
+
     <!-- Signup Form with Stepper Logic -->
     <form #signupForm="ngForm" class="signup-form" autocomplete="off">
       <!-- Step 1: Account Info -->
       @if (step === 1) {
-      <div>
+      <div class="step-content">
         <div class="form-row">
           <div class="form-group">
-            <label for="name">Full Name</label>
+            <label for="name" class="form-label required">Full Name</label>
             <input
               type="text"
               id="name"
               name="name"
+              class="form-input"
               [(ngModel)]="formModel.name"
               required
               placeholder="Enter your full name"
+              (input)="clearError()"
+              #nameField="ngModel"
+              [class.invalid]="isNameInvalid(nameField)"
             />
+            @if (isNameInvalid(nameField)) {
+            <div class="field-error">
+              {{ getNameErrorMessage(nameField) }}
+            </div>
+            }
           </div>
           <div class="form-group">
-            <label for="userName">User Name</label>
+            <label for="userName" class="form-label required">User Name</label>
             <input
               type="text"
               id="userName"
               name="userName"
+              class="form-input"
               [(ngModel)]="formModel.userName"
               required
               placeholder="Enter a user name"
+              (input)="clearError()"
+              #userNameField="ngModel"
+              [class.invalid]="getUserNameInvalid(userNameField)"
+              [class]="getUsernameCssClass()"
             />
+            @if (getUserNameInvalid(userNameField)) {
+            <div class="field-error">
+              {{ getUserNameErrorMessage(userNameField) }}
+            </div>
+            }
           </div>
         </div>
         <div class="form-row">
           <div class="form-group">
-            <label for="password">Password</label>
+            <label for="password" class="form-label required">Password</label>
             <input
               type="password"
               id="password"
               name="password"
-              [(ngModel)]="formModel.password"
+              class="form-input"
+              [(ngModel)]="formModel.passwordHash"
               required
               minlength="6"
               placeholder="Create a password"
+              (input)="clearError()"
+              #passwordField="ngModel"
+              [class.invalid]="isPasswordInvalid(passwordField)"
+              [class]="getPasswordCssClass()"
             />
+            @if (isPasswordInvalid(passwordField)) {
+            <div class="field-error">
+              {{ getPasswordErrorMessage(passwordField) }}
+            </div>
+            }
+
+            <!-- Password Requirements -->
+            @if (isPasswordInvalid(passwordField)) {
+            <div class="password-requirements">
+              <h4>Password Requirements:</h4>
+              <div
+                class="requirement"
+                [class.met]="
+                  getPasswordRequirements(formModel.passwordHash).minLength
+                "
+                [class.not-met]="
+                  !getPasswordRequirements(formModel.passwordHash).minLength
+                "
+              >
+                At least 6 characters
+              </div>
+              <div
+                class="requirement"
+                [class.met]="
+                  getPasswordRequirements(formModel.passwordHash).hasLower
+                "
+                [class.not-met]="
+                  !getPasswordRequirements(formModel.passwordHash).hasLower
+                "
+              >
+                Lowercase letter (a-z)
+              </div>
+              <div
+                class="requirement"
+                [class.met]="
+                  getPasswordRequirements(formModel.passwordHash).hasUpper
+                "
+                [class.not-met]="
+                  !getPasswordRequirements(formModel.passwordHash).hasUpper
+                "
+              >
+                Uppercase letter (A-Z)
+              </div>
+              <div
+                class="requirement"
+                [class.met]="
+                  getPasswordRequirements(formModel.passwordHash).hasNumber
+                "
+                [class.not-met]="
+                  !getPasswordRequirements(formModel.passwordHash).hasNumber
+                "
+              >
+                Number (0-9)
+              </div>
+              <div
+                class="requirement"
+                [class.met]="
+                  getPasswordRequirements(formModel.passwordHash).hasSymbol
+                "
+                [class.not-met]="
+                  !getPasswordRequirements(formModel.passwordHash).hasSymbol
+                "
+              >
+                Special character (!&#64;#$%^&*...)
+              </div>
+            </div>
+            }
           </div>
           <div class="form-group">
-            <label for="confirmPassword">Confirm Password</label>
+            <label for="confirmPassword" class="form-label required"
+              >Confirm Password</label
+            >
             <input
               type="password"
               id="confirmPassword"
               name="confirmPassword"
+              class="form-input"
               [(ngModel)]="formModel.confirmPassword"
               required
               minlength="6"
               placeholder="Confirm your password"
+              (input)="clearError()"
+              #confirmPasswordField="ngModel"
+              [class.invalid]="isConfirmPasswordInvalid(confirmPasswordField)"
+              [class]="getConfirmPasswordCssClass()"
             />
+            @if (isConfirmPasswordInvalid(confirmPasswordField)) {
+            <div class="field-error">
+              {{ getConfirmPasswordErrorMessage(confirmPasswordField) }}
+            </div>
+            }
           </div>
         </div>
         <div class="form-row">
           <div class="form-group">
-            <label for="email">Email</label>
+            <label for="email" class="form-label required">Email</label>
             <input
               type="email"
               id="email"
               name="email"
+              class="form-input"
               [(ngModel)]="formModel.email"
               required
               email
               placeholder="Enter your email"
+              (input)="clearError()"
+              #emailField="ngModel"
+              [class.invalid]="isEmailInvalid(emailField)"
             />
+            @if (isEmailInvalid(emailField)) {
+            <div class="field-error">
+              {{ getEmailErrorMessage(emailField) }}
+            </div>
+            }
           </div>
           <div class="form-group">
-            <label for="phoneNumber">Mobile Number</label>
+            <label for="phoneNumber" class="form-label required"
+              >Mobile Number</label
+            >
             <input
               type="tel"
               id="phoneNumber"
               name="phoneNumber"
+              class="form-input"
               [(ngModel)]="formModel.phoneNumber"
               required
               placeholder="Enter your mobile number"
+              (input)="clearError()"
+              #phoneField="ngModel"
+              [class.invalid]="isPhoneInvalid(phoneField)"
             />
+            @if (isPhoneInvalid(phoneField)) {
+            <div class="field-error">
+              {{ getPhoneErrorMessage(phoneField) }}
+            </div>
+            }
           </div>
         </div>
         <div class="form-row">
           <div class="form-group">
-            <label for="gender">Gender</label>
+            <label for="gender" class="form-label required">Gender</label>
             <select
               id="gender"
               name="gender"
+              class="form-input"
               [(ngModel)]="formModel.gender"
               required
+              #genderField="ngModel"
+              [class.invalid]="isGenderInvalid(genderField)"
             >
               <option value="" disabled selected>Select gender</option>
               <option value="0">Male</option>
               <option value="1">Female</option>
             </select>
+            @if (isGenderInvalid(genderField)) {
+            <div class="field-error">
+              {{ getGenderErrorMessage(genderField) }}
+            </div>
+            }
           </div>
           <div class="form-group">
-            <label for="dateOfBirth">Date of Birth</label>
+            <label for="dateOfBirth" class="form-label required"
+              >Date of Birth</label
+            >
             <input
               type="date"
               id="dateOfBirth"
               name="dateOfBirth"
+              class="form-input"
               [(ngModel)]="formModel.dateOfBirth"
               required
               placeholder="dd/mm/yyyy"
+              #dateField="ngModel"
+              [class.invalid]="isDateOfBirthInvalid(dateField)"
             />
+            @if (isDateOfBirthInvalid(dateField)) {
+            <div class="field-error">
+              {{ getDateOfBirthErrorMessage(dateField) }}
+            </div>
+            }
           </div>
           <div class="form-group">
-            <label for="country">Country</label>
+            <label for="country" class="form-label required">Country</label>
             <select
               id="country"
               name="country"
+              class="form-input"
               [(ngModel)]="formModel.country"
               required
+              #countryField="ngModel"
+              [class.invalid]="isCountryInvalid(countryField)"
             >
               <option value="" disabled selected>Select country</option>
               <option value="egypt">Egypt</option>
@@ -152,16 +307,22 @@
               <option value="uae">UAE</option>
               <option value="other">Other</option>
             </select>
+            @if (isCountryInvalid(countryField)) {
+            <div class="field-error">
+              {{ getCountryErrorMessage(countryField) }}
+            </div>
+            }
           </div>
         </div>
         <div class="form-group">
-          <label for="address">Address</label>
+          <label for="address" class="form-label optional">Address</label>
           <input
             type="text"
             id="address"
             name="address"
+            class="form-input"
             [(ngModel)]="formModel.address"
-            placeholder="Enter your full address"
+            placeholder="Enter your full address (optional)"
           />
         </div>
         <button
@@ -176,43 +337,50 @@
       }
       <!-- Step 2: Medical Info -->
       @else if (step === 2) {
-      <div>
-        <!-- Add your medical info fields here -->
-        <!-- Example: -->
+      <div class="step-content">
         <div class="form-group">
-          <label for="patientDiseases">Patient Diseases</label>
+          <label for="patientDiseases" class="form-label optional"
+            >Patient Diseases</label
+          >
           <input
             type="text"
             id="patientDiseases"
             name="patientDiseases"
+            class="form-input"
             [(ngModel)]="formModel.patientDiseases"
-            placeholder="List any diseases"
+            placeholder="List any diseases (optional)"
           />
         </div>
         <div class="form-group">
-          <label for="patientDrugs">Patient Drugs</label>
+          <label for="patientDrugs" class="form-label optional"
+            >Patient Drugs</label
+          >
           <input
             type="text"
             id="patientDrugs"
             name="patientDrugs"
+            class="form-input"
             [(ngModel)]="formModel.patientDrugs"
-            placeholder="List any drugs"
+            placeholder="List any drugs (optional)"
           />
         </div>
-        <button type="button" class="signup-btn" (click)="step = 1">
-          Back
-        </button>
-        <button
-          type="submit"
-          class="signup-btn"
-          [disabled]="!signupForm.valid || isLoading()"
-          (click)="onSubmit(signupForm)"
-        >
-          {{ isLoading() ? "Creating Account..." : "Create Account" }}
-        </button>
+        <div class="button-group">
+          <button type="button" class="signup-btn secondary" (click)="step = 1">
+            Back
+          </button>
+          <button
+            type="submit"
+            class="signup-btn"
+            [disabled]="!signupForm.valid || isLoading()"
+            (click)="onSubmit(signupForm)"
+          >
+            {{ isLoading() ? "Creating Account..." : "Create Account" }}
+          </button>
+        </div>
       </div>
       }
     </form>
+    }
     <div class="signin-link">
       Already have an account? <a routerLink="/login">Sign in</a>
     </div>

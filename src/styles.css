@@ -1,4 +1,11 @@
 @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+
+html,
+body {
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, sans-serif;
+}
 
 :root {
   --primary-blue: #2563eb;
@@ -24,6 +31,12 @@
   --disabled-gray: #d1d5db;
   --shadow-primary: rgba(102, 126, 234, 0.3);
   --shadow-dark: rgba(0, 0, 0, 0.1);
+
+  /* Loading spinner colors */
+  --pill-left-color: #14cad0;
+  --pill-right-color: #035a94;
+  --loading-overlay-bg: rgba(255, 255, 255, 0.7);
+  --loader-shadow-color: rgba(0, 0, 0, 0.15);
 }
 
 @keyframes upDown {
