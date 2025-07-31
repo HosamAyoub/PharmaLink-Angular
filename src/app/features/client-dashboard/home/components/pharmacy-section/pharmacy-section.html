@@ -1,6 +1,5 @@
 <div
-  class="d-flex flex-column justify-content-center align-items-center text-center w-100"
-  style="padding: 64px; background-color: rgba(205, 205, 205, 0.055)"
+  class="d-flex flex-column justify-content-center align-items-center text-center w-100 section-bg"
 >
   <p style="font-weight: bold; font-size: 30px; margin-bottom: 32px">
     Nearby Pharmacies
@@ -27,12 +26,16 @@
             <div
               class="d-flex justify-content-center align-items-center rounded-3 px-2 py-1"
               [style.background-color]="
-                pharmacy.isOpen ? 'var(--background-mint)' : 'var(--status-red-background)'
+                pharmacy.isOpen
+                  ? 'var(--background-mint)'
+                  : 'var(--status-red-background)'
               "
             >
               <p
-                style="margin: 0; font-size: 12px;"
-                [style.color]="pharmacy.isOpen ? 'var(--success-green)' : 'var(--error-red)'"
+                style="margin: 0; font-size: 12px"
+                [style.color]="
+                  pharmacy.isOpen ? 'var(--success-green)' : 'var(--error-red)'
+                "
               >
                 {{ pharmacy.isOpen ? "Open Now" : "Closed" }}
               </p>
@@ -45,6 +48,8 @@
   </div>
   <!-- View All Link - Separate from flex container -->
   <div class="view-all-container">
-    <a class="view-all-link" [routerLink]="['/client/pharmacies']">View All Pharmacies</a>
+    <a class="view-all-link" [routerLink]="['/client/pharmacies']"
+      >View All Pharmacies</a
+    >
   </div>
 </div>
