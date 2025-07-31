@@ -1,8 +1,9 @@
-import { IDrug } from "./IDrug"
+import { IDrug } from "../../Categories_Page/models/IDrug"
+import { IDrugDetails } from "./IDrugDetials"
 
 export interface IPharmaDrug
 {
-    drug_Info:IDrug,
+    drug_Info:IDrugDetails,
     pharma_Info :IPharmaStock[]
 }
 
@@ -14,5 +15,5 @@ export interface IPharmaStock
     pharma_Address: string,
     price: number,
     quantityAvailable: number
-} 
+}
 

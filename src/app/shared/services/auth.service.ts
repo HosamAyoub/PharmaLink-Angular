@@ -1,10 +1,11 @@
 import { Injectable, signal, inject } from '@angular/core';
-import { ResponseData, SignUpData, User } from './user.model';
-import { API_BASE_URL } from '../api.constants';
 import { catchError, tap } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { HttpErrorResponse, HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { ResponseData, SignUpData, User } from '../models/user.model';
+import { ConfigService } from './config.service';
+import { APP_CONSTANTS } from '../constants/app.constants';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -12,6 +13,8 @@ export class AuthService {
   http = inject(HttpClient);
   router = inject(Router);
   private tokenExpirationDuration: any;
+  config = inject(ConfigService);
+  private ENDPOINTS = APP_CONSTANTS.API.ENDPOINTS;
 
   signUp(signUpData: SignUpData) {
     // Adapt payload to backend expectations (with nested patient object)
@@ -31,16 +34,18 @@ export class AuthService {
         patientDrugs: signUpData.patient.patientDrugs,
       },
     };
+    const url = this.config.getApiUrl(this.ENDPOINTS.ACCOUNT_REGISTER);
     console.log('Sending signup payload:', payload);
-    console.log('To URL:', API_BASE_URL + 'Account/Register');
+    console.log('To URL:', url);
     return this.http
-      .post(API_BASE_URL + 'Account/Register', payload)
+      .post(url, payload)
       .pipe(catchError(this.handleError));
   }
 
   login(email: string, password: string) {
+    const url = this.config.getApiUrl(this.ENDPOINTS.ACCOUNT_LOGIN);
     return this.http
-      .post<ResponseData>(API_BASE_URL + 'Account/Login', {
+      .post<ResponseData>(url, {
         email: email,
         password: password,
         rememberMe: true,

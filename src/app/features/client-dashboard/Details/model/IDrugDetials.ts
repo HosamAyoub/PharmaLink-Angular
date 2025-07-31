@@ -1,4 +1,4 @@
-export interface IDrug 
+export interface IDrugDetails
 {
         drugID:number ,
         commonName: string,

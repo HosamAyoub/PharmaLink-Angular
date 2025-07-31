@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { environment } from '../../../environments/environment';
 import { APP_CONSTANTS } from '../constants/app.constants';
 
 @Injectable({
@@ -10,19 +9,19 @@ export class ConfigService {
 
   // Environment getters
   get apiBaseUrl(): string {
-    return environment.apiBaseUrl;
+    return APP_CONSTANTS.environment.apiBaseUrl;
   }
 
   get apiVersion(): string {
-    return environment.apiVersion;
+    return APP_CONSTANTS.environment.apiVersion;
   }
 
   get appName(): string {
-    return environment.appName;
+    return APP_CONSTANTS.environment.appName;
   }
 
   get isProduction(): boolean {
-    return environment.production;
+    return APP_CONSTANTS.environment.production;
   }
 
 
@@ -36,12 +35,5 @@ export class ConfigService {
     return this.getApiUrl(apiEndpoint || endpoint);
   }
 
-  // Timeout configurations
-  get apiTimeout(): number {
-    return APP_CONSTANTS.API.TIMEOUT;
-  }
 
-  get retryAttempts(): number {
-    return APP_CONSTANTS.API.RETRY_ATTEMPTS;
-  }
 }

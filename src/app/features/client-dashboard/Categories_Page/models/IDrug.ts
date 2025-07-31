@@ -1,4 +1,4 @@
-export interface IFavDrug 
+export interface IDrug
 {
     drugId: number,
     name: string,

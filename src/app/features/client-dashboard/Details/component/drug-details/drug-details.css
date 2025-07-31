@@ -51,6 +51,14 @@
       color: #1a1a1a;
       margin: 0 0 8px 0;
     }
+    /* Hide broken images */
+    .product-image.error {
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    /* Ensures the image still takes up space even if hidden */
+  }
+
 
     .scientific-name {
       color: #666;
@@ -158,11 +166,14 @@
       gap: 24px;
     }
 
+
+
+
     @media (max-width: 1024px) {
       .content-grid {
         grid-template-columns: 1fr;
       }
-      
+
       .pharmacy-section {
         order: -1;
       }

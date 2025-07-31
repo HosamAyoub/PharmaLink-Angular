@@ -26,13 +26,12 @@ export class HomeService {
     return this.http.get<any>(url, { params });
   }
 
-  // Categories
-  getCategories(): Observable<Category[]> {
-    const url = this.configService.getFullApiUrl('CATEGORIES');
-    const params = new HttpParams().set('limit', HOME_CONSTANTS.PRODUCTS.CATEGORIES_COUNT.toString());
-
-    return this.http.get<Category[]>('http://localhost:5278/api/PharmacyStock', { params });
-  }
+  // // Categories
+  // getCategories(): Observable<Category[]> {
+  //   const url = this.configService.getFullApiUrl('PHARMACY_STOCK');
+  //   const params = new HttpParams().set('limit', HOME_CONSTANTS.PRODUCTS.CATEGORIES_COUNT.toString());
+  //   return this.http.get<Category[]>(url, { params });
+  // }
 
   // Nearby Pharmacies
   getNearbyPharmacies(latitude?: number, longitude?: number): Observable<IPharmacy[]> {
@@ -106,12 +105,4 @@ export class HomeService {
     });
   }
 
-  // Helper methods for constants
-  getHomeConstants() {
-    return HOME_CONSTANTS;
-  }
-
-  getAppConstants() {
-    return APP_CONSTANTS;
-  }
 }

@@ -7,12 +7,11 @@ import {
   OnDestroy,
   HostListener,
 } from '@angular/core';
-// import { DrugService } from '../../../../core/drug/drug-service';
-import { DrugService } from '../../../../../core/drug/drug-service';
-import { IDrug } from '../../../../../core//drug/IDrug';
+
 import { NgClass } from '@angular/common';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { IFavDrug } from '../../../../../core/drug/IFavDrug';
+import { DrugService } from '../../../Categories_Page/service/drug-service';
+import { IDrug } from '../../../Categories_Page/models/IDrug';
 
 @Component({
   selector: 'client-side-bar',
@@ -249,9 +248,9 @@ export class SideBar implements OnInit, OnDestroy {
   ];
 
   drugservice: DrugService = inject(DrugService);
-  CategoryDrugs: IFavDrug[] = [];
+  CategoryDrugs: IDrug[] = [];
   selectedCategory: string = '';
-  @Output() categorySelected = new EventEmitter<IFavDrug[]>();
+  @Output() categorySelected = new EventEmitter<IDrug[]>();
 
   sidebarVisible = false;
   isSmallScreen = false;

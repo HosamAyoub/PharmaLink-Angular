@@ -1,14 +1,14 @@
 import { Component, inject, Input } from '@angular/core';
-import { IDrug } from '../../../../core/drug/IDrug'
 import { PharmacyAvailable } from '../pharmacy-available/pharmacy-available';
 import { NearbyPharmacies } from '../nearby-pharmacies/nearby-pharmacies';
-import { DrugService } from '../../../../core/drug/drug-service';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { IPharmaDrug } from '../../../../core/drug/IPharmaDrug';
 import { map } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef } from '@angular/core';
-import { FavoriteService } from '../../Favorites/Services/favorite-service';
+import { FavoriteService } from '../../../Favorites/Services/favorite-service';
+import { IPharmaDrug } from '../../model/IPharmaDrug';
+import { DrugService } from '../../../Categories_Page/service/drug-service';
+import { DrugDetailsService } from '../../service/drug-details-service';
 
 @Component({
   selector: 'app-drug-details',
@@ -19,8 +19,9 @@ import { FavoriteService } from '../../Favorites/Services/favorite-service';
 export class DrugDetails {
   drugId: any;
   drugDetails!: IPharmaDrug;
-  drugservice: DrugService = inject(DrugService);
+  drugservice: DrugDetailsService = inject(DrugDetailsService);
   FavService: FavoriteService = inject(FavoriteService);
+  private imageError = false;
   constructor(private route: ActivatedRoute, private cdr: ChangeDetectorRef) {
     this.drugId = this.route.snapshot.paramMap.get('id');
   }
@@ -60,7 +61,7 @@ export class DrugDetails {
     this.expandedSections[section] = !this.expandedSections[section];
   }
 
-  Details_ToggleFavorites(drugId: number) 
+  Details_ToggleFavorites(drugId: number)
   {
     this.FavService.ToggleFavorites(drugId);
   }
@@ -68,5 +69,30 @@ export class DrugDetails {
   Details_isFavorite(drugId: number): boolean {
     return this.FavService.isFavorite(drugId);
   }
+
+     // Handle successful image loading
+  onImageLoad(event: Event) {
+    const imgElement = event.target as HTMLImageElement;
+    imgElement.classList.remove('error');
+  }
+
+  // Check if image has error
+  hasImageError(): boolean {
+    return this.imageError;
+  }
+
+    onImageError(event: Event) {
+    const imgElement = event.target as HTMLImageElement;
+
+    // Set fallback image
+    //imgElement.src = 'assets/images/error-placeholder.jpg';
+    imgElement.classList.add('error');
+
+    // Track error for this product
+      this.imageError = true;
+      this.cdr.detectChanges(); // Ensure change detection runs to update the view
+
+  }
+
 
 }
