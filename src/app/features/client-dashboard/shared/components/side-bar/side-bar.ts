@@ -7,15 +7,16 @@ import {
   OnDestroy,
   HostListener,
 } from '@angular/core';
-
-import { NgClass } from '@angular/common';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+// import { IFavDrug } from '../../../../core/drug/IFavDrug';
+// import { DrugService } from '../../../../core/drug/drug-service';
+import { CommonModule, NgClass } from '@angular/common';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DrugService } from '../../../Categories_Page/service/drug-service';
 import { IDrug } from '../../../Categories_Page/models/IDrug';
 
 @Component({
-  selector: 'client-side-bar',
-  imports: [NgClass , RouterLink],
+  selector: 'app-side-bar',
+  imports: [NgClass, CommonModule],
   templateUrl: './side-bar.html',
   styleUrls: ['./side-bar.css'],
 })
@@ -255,9 +256,9 @@ export class SideBar implements OnInit, OnDestroy {
   sidebarVisible = true;
   isSmallScreen = false;
 
-  constructor(private route : ActivatedRoute , private path: Router)
-  {
-    this.selectedCategory = this.route.snapshot.paramMap.get('categoryName') || '';
+  constructor(private route: ActivatedRoute, private path: Router) {
+    this.selectedCategory =
+      this.route.snapshot.paramMap.get('categoryName') || '';
   }
 
   ngOnInit() {
@@ -289,7 +290,6 @@ export class SideBar implements OnInit, OnDestroy {
     this.sidebarVisible = false;
   }
 
-
   onclickCategory(
     category: string = this.route.snapshot.paramMap.get('categoryName') || ''
   ) {
@@ -307,13 +307,8 @@ export class SideBar implements OnInit, OnDestroy {
       this.drugservice.getRandomDrugs().subscribe({
         next: (data) => {
           this.CategoryDrugs = data;
-          this.CategoryDrugs = data;
           this.categorySelected.emit(this.CategoryDrugs);
           console.log('Random Drugs:', data);
-        },
-        error: (err) =>
-        {
-          console.error('Error fetching random drugs:', err);
         },
       });
     } else {

@@ -8,11 +8,10 @@
   ☰ Categories
 </button>
 
-
 <!-- Mobile backdrop-->
-<div 
+<div
   class="sidebar-backdrop d-md-none"
-  [ngClass]="{ 'show': sidebarVisible && isSmallScreen }"
+  [ngClass]="{ show: sidebarVisible && isSmallScreen }"
   (click)="closeSidebar()"
   aria-hidden="true"
 ></div>
@@ -27,17 +26,13 @@
     'position-fixed': isSmallScreen
   }"
 >
-
-    <!-- Sidebar Header  -->
-    <div class="sidebar-header">
-      <h4 
-        class="mb-0 border-bottom pb-2 flex-grow-1" 
-        (click)="onclickCategory()"
-      >
-        🧪 All Categories
-      </h4>
-   <!-- داخل sidebar-header -->
-    <button 
+  <!-- Sidebar Header  -->
+  <div class="sidebar-header">
+    <h4 class="mb-0 border-bottom pb-2 flex-grow-1" (click)="onclickCategory()">
+      🧪 All Categories
+    </h4>
+    <!-- داخل sidebar-header -->
+    <button
       class="sidebar-close-btn"
       type="button"
       (click)="closeSidebar()"
@@ -45,25 +40,25 @@
     >
       ✕
     </button>
-    </div>
-
-    <!-- Scrollable Category List -->
-    <div class="sidebar-scroll">
-      <ul class="nav flex-column">
-        @for (category of Categories; track $index) {
-          <li
-            class="navbar-item nav-hover cursor-pointer"
-            (click)="onclickCategory(category.name)"
-            [ngClass]="{ 'active': selectedCategory === category.name }"
-            role="button"
-            tabindex="0"
-          >
-          <a class="nav-link d-flex align-items-center">
-            <img [src]="category.icon"/>
-            <span class="nav-link text-dark">{{ category.name }}</span>
-          </a>
-        </li>
-        }
-      </ul>
-    </div>
   </div>
+
+  <!-- Scrollable Category List -->
+  <div class="sidebar-scroll">
+    <ul class="nav flex-column">
+      @for (category of Categories; track $index) {
+      <li
+        class="navbar-item nav-hover cursor-pointer"
+        (click)="onclickCategory(category.name)"
+        [ngClass]="{ active: selectedCategory === category.name }"
+        role="button"
+        tabindex="0"
+      >
+        <a class="nav-link d-flex align-items-center">
+          <img [src]="category.icon" />
+          <span class="nav-link text-dark">{{ category.name }}</span>
+        </a>
+      </li>
+      }
+    </ul>
+  </div>
+</div>

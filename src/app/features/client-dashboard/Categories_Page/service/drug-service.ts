@@ -1,4 +1,3 @@
-
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -15,7 +14,11 @@ export class DrugService {
   constructor(private http: HttpClient, private config: ConfigService) {}
 
   getDrugsByCategory(categoryName: string): Observable<IDrug[]> {
-    const url = this.config.getApiUrl(`${this.ENDPOINTS.DRUG_CATEGORY}?Cname=${categoryName}`);
+    const url = this.config.getApiUrl(
+      `${this.ENDPOINTS.DRUG_CATEGORY}?Cname=${categoryName}`
+    );
+    console.log(url);
+
     return this.http.get<IDrug[]>(url);
   }
 
@@ -23,6 +26,4 @@ export class DrugService {
     const url = this.config.getApiUrl(this.ENDPOINTS.DRUG_RANDOM);
     return this.http.get<IDrug[]>(url);
   }
-
-
 }

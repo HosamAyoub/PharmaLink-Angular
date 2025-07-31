@@ -30,13 +30,13 @@
     transform: translateX(-100%);
     left: 0;
     top: 0;
-    box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
   }
 
   #sidebar.d-block {
     transform: translateX(0);
   }
-  
+
   #sidebar.d-none {
     transform: translateX(-100%);
   }
@@ -55,7 +55,7 @@
   position: fixed !important;
   top: 220px;
   left: 15px;
-  z-index: 1060 !important; 
+  z-index: 1060 !important;
   border: 2px solid #6c757d;
   color: #6c757d;
   background-color: white !important;
@@ -63,7 +63,7 @@
   font-weight: 500;
   transition: all 0.3s ease;
   border-radius: 0.375rem;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   font-size: 0.875rem;
 }
 
@@ -71,7 +71,7 @@
   background-color: #6c757d !important;
   color: white !important;
   transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .categories-toggle-btn:focus {
@@ -86,7 +86,7 @@
   color: #6c757d !important;
   width: 30px;
   height: 30px;
-  display: flex ;
+  display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 0.25rem;
@@ -117,9 +117,8 @@
   padding: 10px 16px;
   font-size: 18px;
   border-radius: 6px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
-
 
 /* Active state styling */
 .Active {
@@ -137,7 +136,7 @@
 .nav-hover:hover {
   background-color: #e2e6ea;
   transform: translateX(5px);
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .nav-hover.active,
@@ -236,19 +235,19 @@
 }
 
 .sidebar-scroll::-webkit-scrollbar-thumb {
-  background-color: rgba(0,0,0,0.2);
+  background-color: rgba(0, 0, 0, 0.2);
   border-radius: 10px;
   transition: background-color 0.3s ease;
 }
 
 .sidebar-scroll::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(0,0,0,0.4);
+  background-color: rgba(0, 0, 0, 0.4);
 }
 
 /* Firefox scrollbar */
 .sidebar-scroll {
   scrollbar-width: thin;
-  scrollbar-color: rgba(0,0,0,0.2) transparent;
+  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
 }
 
 /* Main wrapper */
@@ -335,7 +334,7 @@
     visibility: hidden;
     transition: all 0.3s ease;
   }
-  
+
   .sidebar-backdrop.show {
     opacity: 1;
     visibility: visible;
@@ -349,7 +348,7 @@
 
 @media (max-width: 767.98px) {
   .sidebar.shadow {
-    box-shadow: 2px 0 10px rgba(0,0,0,0.15) !important;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.15) !important;
   }
 }
 
