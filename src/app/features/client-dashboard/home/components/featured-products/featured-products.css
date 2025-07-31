@@ -1,4 +1,4 @@
-.card {
+/* .card {
   max-width: 386px;
   padding: 12px !important;
   border: none;
@@ -7,7 +7,6 @@
     box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
-/* Product Image Styling */
 .product-image-container {
   position: relative;
   width: 100%;
@@ -42,7 +41,6 @@
   opacity: 0;
 }
 
-/* Image Placeholder Styling */
 .image-placeholder {
   position: absolute;
   top: 0;
@@ -71,7 +69,6 @@
   color: #adb5bd;
 }
 
-/* Default placeholder background */
 .product-image-container::before {
   content: "";
   position: absolute;
@@ -98,12 +95,11 @@
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18), 0 3px 12px rgba(0, 0, 0, 0.14);
 }
 
-/* Responsive Category Cards Layout */
 .category-cards-container {
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-  gap: 1rem; /* Default gap for all screens */
+  gap: 1rem;
 }
 
 .category-card-wrapper {
@@ -111,14 +107,13 @@
   flex-direction: column;
 }
 
-/* Large screens (lg) - 4 cards in one row */
 @media (min-width: 992px) {
   .category-cards-container {
-    gap: 0.75rem; /* Smaller gap to fit 4 cards */
+    gap: 0.75rem;
   }
 
   .category-card-wrapper {
-    flex: 0 0 calc(25% - 0.5625rem); /* 25% minus (3 gaps * 0.75rem / 4 cards) */
+    flex: 0 0 calc(25% - 0.5625rem);
     max-width: calc(25% - 0.5625rem);
   }
 
@@ -126,14 +121,13 @@
     height: 100%;
     max-width: none;
     width: 100%;
-    padding: 15px 8px !important; /* Reduced padding for 4 cards */
+    padding: 15px 8px !important;
   }
 }
 
-/* Medium screens (md) - 2 cards per row with flex-grow */
 @media (min-width: 768px) and (max-width: 991px) {
   .category-card-wrapper {
-    flex: 1 1 calc(50% - 0.5rem); /* Adjust for consistent gap */
+    flex: 1 1 calc(50% - 0.5rem);
     min-width: 200px;
   }
 
@@ -166,7 +160,6 @@
   }
 }
 
-/* Extra responsive adjustments */
 @media (max-width: 576px) {
   .category-cards-container {
     padding: 0 1rem;
@@ -177,7 +170,6 @@
   }
 }
 
-/* Font Awesome Heart Icon Styling */
 .fav-icon {
   transition: all 0.3s ease;
   color: var(--fav-icon-color);
@@ -190,7 +182,7 @@
 
 .fav-icon.active {
   color: #dc3545 !important;
-}
+} */
 
 /* Switch to solid heart when active */
 .fav-icon.active::before {

@@ -47,3 +47,9 @@ export interface ApiResponse<T> {
   message?: string;
   error?: string;
 }
+
+// Location interface for geolocation
+export interface UserLocation {
+  latitude: number;
+  longitude: number;
+}

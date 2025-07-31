@@ -4,6 +4,8 @@ import { OrderSummary } from '../Interfaces/order-summary';
 import { CartService } from './cart-service';
 import { CartUpdateDto } from '../Interfaces/cart-update-dto';
 import { HttpClient } from '@angular/common/http';
+import { ConfigService } from '../../../../shared/services/config.service';
+import { APP_CONSTANTS } from '../../../../shared/constants/app.constants';
 import { Router } from '@angular/router';
 import { SubmitOrderRequest } from '../Interfaces/submit-order-request';
 
@@ -18,6 +20,8 @@ export class CartStore {
 
   http = inject(HttpClient);
   router = inject(Router);
+  config = inject(ConfigService);
+  private ENDPOINTS = APP_CONSTANTS.API.ENDPOINTS;
 
 
   constructor(private cartService: CartService) { }
@@ -142,7 +146,8 @@ export class CartStore {
       }))
     };
 
-    this.http.post<any>('http://localhost:5278/api/Orders/submit', { paymentMethod }).subscribe({
+    const url = this.config.getApiUrl(this.ENDPOINTS.ORDERS_SUBMIT);
+    this.http.post<any>(url, { paymentMethod }).subscribe({
       next: (res) => {
         if (paymentMethod === 'cash') {
           this.router.navigate(['/client/success'], { queryParams: { orderId: res.orderId } });
@@ -158,7 +163,8 @@ export class CartStore {
   }
 
   private createStripeSession(orderId: number) {
-    this.http.post<any>('http://localhost:5278/api/Orders/CreateCheckoutSession', orderId).subscribe({
+    const url = this.config.getApiUrl(this.ENDPOINTS.ORDERS_CREATE_CHECKOUT_SESSION);
+    this.http.post<any>(url, orderId).subscribe({
       next: (sessionRes) => {
         if (sessionRes?.url) {
           window.location.href = sessionRes.url;
