@@ -71,10 +71,10 @@ export class SignUp {
     );
   }
 
-  // Username validation (only letters and underscore)
+  // Username validation (letters, numbers, and underscore)
   isUsernameValid(username: string): boolean {
     if (!username) return false;
-    return /^[a-zA-Z_]+$/.test(username);
+    return /^[a-zA-Z0-9_]+$/.test(username);
   }
 
   // Get password CSS class
@@ -163,7 +163,7 @@ export class SignUp {
       this.formModel.userName &&
       !this.isUsernameValid(this.formModel.userName)
     ) {
-      return 'Username can only contain letters (a-z, A-Z) and underscores (_)';
+      return 'Username can only contain letters (a-z, A-Z), numbers (0-9), and underscores (_)';
     }
     return '';
   }
