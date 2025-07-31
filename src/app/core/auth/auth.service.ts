@@ -38,12 +38,12 @@ export class AuthService {
       .pipe(catchError(this.handleError));
   }
 
-  login(email: string, password: string) {
+  login(email: string, password: string, rememberMe: boolean) {
     return this.http
       .post<ResponseData>(API_BASE_URL + 'Account/Login', {
         email: email,
         password: password,
-        rememberMe: true,
+        rememberMe: rememberMe,
       })
       .pipe(
         catchError(this.handleError),
@@ -65,6 +65,7 @@ export class AuthService {
 
   autoLogin() {
     const userDataString = localStorage.getItem('userData');
+
     if (!userDataString) {
       return;
     } else {

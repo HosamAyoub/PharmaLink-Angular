@@ -56,9 +56,9 @@ export class Login {
     this.isLoading.set(true);
     const email = form.value.email;
     const password = form.value.password;
-    this.authService.login(email, password).subscribe({
+    const rememberMe = Boolean(form.value.rememberMe);
+    this.authService.login(email, password, rememberMe).subscribe({
       next: (resData) => {
-        console.log(resData);
         this.isLoading.set(false);
         form.reset();
 

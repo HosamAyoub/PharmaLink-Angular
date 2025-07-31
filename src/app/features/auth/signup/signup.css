@@ -315,8 +315,8 @@
   padding: 16px;
   background: linear-gradient(
     135deg,
-    var(--primary-blue-dark) 0%,
-    var(--primary-blue) 100%
+    var(--primary-blue) 0%,
+    var(--primary-blue-dark) 100%
   );
   color: var(--surface-white);
   border: none;
@@ -405,8 +405,7 @@
 
 /* Focus states for accessibility */
 .form-input:focus,
-.signup-btn:focus,
-.signin-link a:focus {
+.signup-btn:focus {
   outline: 2px solid var(--primary-blue-light);
   outline-offset: -2px;
 }
