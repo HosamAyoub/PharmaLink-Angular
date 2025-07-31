@@ -10,7 +10,7 @@
 
         <div class="d-flex justify-content-end">
           <button class="btn btn-outline-danger btn-sm rounded-pill mb-3" style="width: 100%; max-width: 160px"
-            (click)="cartStore.clearCart()">
+            (click)="clearCart()">
             <i class="bi bi-trash3-fill me-1"></i>Clear Cart
           </button>
         </div>
@@ -26,35 +26,6 @@
         </div>
       </div>
     </div>
-
-    <!-- Empty Cart Modal -->
-    <div class="modal fade" id="emptyCartModal" tabindex="-1" aria-labelledby="emptyCartModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border-0 shadow-lg rounded-4">
-          <div class="modal-header border-0 bg-light rounded-top-4 px-4 pt-4">
-            <h5 class="modal-title d-flex align-items-center" id="emptyCartModalLabel">
-              <i class="bi bi-exclamation-circle-fill text-warning fs-3 me-2"></i>
-              Your Cart is Empty
-            </h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-
-          <div class="modal-body text-center px-4 pb-0">
-            <p class="fs-6 text-muted mb-3">
-              There are no items to clear from your cart.
-            </p>
-            <i class="bi bi-cart-x-fill text-danger fs-1 mb-3"></i>
-          </div>
-
-          <div class="modal-footer border-0 justify-content-center pb-4">
-            <button type="button" class="btn btn-secondary rounded-pill px-4 py-2" data-bs-dismiss="modal">
-              <i class="bi bi-arrow-left me-1"></i>Back to Cart
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-
 
 
     <!-- Summary Section -->
@@ -132,3 +103,31 @@
     </div>
   </div>
 </div>
+
+<!-- Empty Cart Modal -->
+    <div class="modal fade" id="emptyCartModal" tabindex="-1" aria-labelledby="emptyCartModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg rounded-4">
+          <div class="modal-header border-0 bg-light rounded-top-4 px-4 pt-4">
+            <h5 class="modal-title d-flex align-items-center" id="emptyCartModalLabel">
+              <i class="bi bi-exclamation-circle-fill text-warning fs-3 me-2"></i>
+              Your Cart is Empty
+            </h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <div class="modal-body text-center px-4 pb-0">
+            <p class="fs-6 text-muted mb-3">
+              There are no items to clear from your cart.
+            </p>
+            <i class="bi bi-cart-x-fill text-danger fs-1 mb-3"></i>
+          </div>
+
+          <div class="modal-footer border-0 justify-content-center pb-4">
+            <button type="button" class="btn btn-secondary rounded-pill px-4 py-2" data-bs-dismiss="modal">
+              <i class="bi bi-arrow-left me-1"></i>Back to Cart
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>

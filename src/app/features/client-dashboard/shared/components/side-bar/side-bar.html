@@ -1,15 +1,13 @@
-<!-- Toggle Button (Visible only on small screens)-->
+<!-- Toggle Button (☰) يظهر لما الـ sidebar مقفول -->
 <button
-  class="btn categories-toggle-btn d-md-none"
+  class="btn btn-primary sidebar-toggle-btn"
+  *ngIf="!sidebarVisible"
   type="button"
   (click)="toggleSidebar()"
-  [ngClass]="{
-    'd-none d-md-block': sidebarVisible ,
-    'd-block': !sidebarVisible 
-  }"
-  >
+>
   ☰ Categories
 </button>
+
 
 <!-- Mobile backdrop-->
 <div 
@@ -24,11 +22,12 @@
   id="sidebar"
   class="sidebar bg-light text-dark shadow rounded-0 rounded-md-3"
   [ngClass]="{
-    'd-none d-md-block': !sidebarVisible && isSmallScreen,
-    'd-block': sidebarVisible || !isSmallScreen,
+    'd-block': sidebarVisible,
+    'd-none': !sidebarVisible,
     'position-fixed': isSmallScreen
   }"
-  >
+>
+
     <!-- Sidebar Header  -->
     <div class="sidebar-header">
       <h4 
@@ -37,15 +36,15 @@
       >
         🧪 All Categories
       </h4>
-      <!-- Close button for mobile  -->
-      <button 
-        class="sidebar-close-btn d-md-none"
-        type="button"
-        (click)="closeSidebar()"z
-        tabindex="0"
-      >
-        ✕
-      </button>
+   <!-- داخل sidebar-header -->
+    <button 
+      class="sidebar-close-btn"
+      type="button"
+      (click)="closeSidebar()"
+      tabindex="0"
+    >
+      ✕
+    </button>
     </div>
 
     <!-- Scrollable Category List -->

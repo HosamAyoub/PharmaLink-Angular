@@ -9,7 +9,7 @@ import { APP_CONSTANTS } from '../../../../shared/constants/app.constants';
 import { Router } from '@angular/router';
 import { SubmitOrderRequest } from '../Interfaces/submit-order-request';
 
-declare var bootstrap: any;
+
 @Injectable({
   providedIn: 'root'
 })
@@ -61,11 +61,32 @@ export class CartStore {
       quantity: item.quantity
     };
 
-    this.cartService.decrementItem(dto).subscribe({
-      next: () => this.loadCart(),
-      error: (err) => console.error('Decrement error:', err)
-    });
+    if (item.quantity === 1) {
+      const updated = this.cartItems().filter(x =>
+        !(x.drugId === item.drugId && x.pharmacyId === item.pharmacyId)
+      );
+      this.cartItems.set(updated);
+
+      this.cartService.decrementItem(dto).subscribe({
+        next: () => this.updateTotals(),
+        error: (err) => console.error('Decrement error:', err)
+      });
+    } else {
+      const updated = this.cartItems().map(x => {
+        if (x.drugId === item.drugId && x.pharmacyId === item.pharmacyId) {
+          return { ...x, quantity: x.quantity - 1 };
+        }
+        return x;
+      });
+      this.cartItems.set(updated);
+
+      this.cartService.decrementItem(dto).subscribe({
+        next: () => this.updateTotals(),
+        error: (err) => console.error('Decrement error:', err)
+      });
+    }
   }
+
 
   remove(item: CartItem) {
     const dto: CartUpdateDto = {
@@ -100,9 +121,6 @@ export class CartStore {
       },
       error: (err) => {
         console.error('Clear cart failed', err);
-        const modalElement = document.getElementById('emptyCartModal');
-        const modal = new bootstrap.Modal(modalElement);
-        modal.show();
       }
     });
   }

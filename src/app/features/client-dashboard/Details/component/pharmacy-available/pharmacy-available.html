@@ -1,3 +1,6 @@
+<div class="pharmacy-available-container" *ngIf="!pharmacies?.length">
+  <h2 class="section-title">Not Available at Pharmacies</h2>
+</div>
 <div class="pharmacy-available-container" *ngIf="pharmacies?.length">
   <h2 class="section-title">Available at Pharmacies</h2>
 

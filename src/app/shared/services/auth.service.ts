@@ -48,7 +48,7 @@ export class AuthService {
       .post<ResponseData>(url, {
         email: email,
         password: password,
-        rememberMe: true,
+        rememberMe: rememberMe,
       })
       .pipe(
         catchError(this.handleError),
@@ -70,6 +70,7 @@ export class AuthService {
 
   autoLogin() {
     const userDataString = localStorage.getItem('userData');
+
     if (!userDataString) {
       return;
     } else {

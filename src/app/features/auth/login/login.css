@@ -6,8 +6,8 @@
   justify-content: center;
   background: var(--background-mint);
   padding: 20px;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-    Ubuntu, Cantarell, sans-serif;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, sans-serif;
 }
 
 /* Login Card */
@@ -165,8 +165,8 @@
   padding: 16px;
   background: linear-gradient(
     135deg,
-    var(--primary-blue-dark) 0%,
-    var(--primary-blue) 100%
+    var(--primary-blue) 0%,
+    var(--primary-blue-dark) 100%
   );
   color: var(--surface-white);
   border: none;
@@ -263,9 +263,7 @@
 
 /* Focus states for accessibility */
 .form-input:focus,
-.signin-btn:focus,
-.forgot-password:focus,
-.signup-link:focus {
+.signin-btn:focus {
   outline: 2px solid var(--primary-blue-light);
   outline-offset: -2px;
 }

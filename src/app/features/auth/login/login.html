@@ -2,11 +2,14 @@
   <div class="login-card">
     <!-- Logo Section -->
     <div class="logo-section">
-      <img
-        src="assets/images/logos/logo.svg"
-        alt="PharmaLink Logo"
-        class="logo"
-      />
+      <a routerLink="/client/home">
+        <img
+          src="assets/images/logos/logo.png"
+          alt="PharmaLink Logo"
+          class="logo"
+          style="width: 80px; height: 80px"
+        />
+      </a>
     </div>
 
     <!-- Welcome Text -->
@@ -80,7 +83,13 @@
       <!-- Remember Me & Forgot Password -->
       <div class="form-options">
         <div class="remember-me">
-          <input type="checkbox" id="rememberMe" class="checkbox" />
+          <input
+            type="checkbox"
+            id="rememberMe"
+            name="rememberMe"
+            class="checkbox"
+            ngModel
+          />
           <label for="rememberMe" class="checkbox-label">Remember me</label>
         </div>
         <a href="#" class="forgot-password">Forgot Password?</a>

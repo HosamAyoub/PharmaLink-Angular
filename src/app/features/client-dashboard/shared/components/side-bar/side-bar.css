@@ -109,6 +109,18 @@
   outline-offset: 2px;
 }
 
+.sidebar-toggle-btn {
+  position: fixed;
+  top: 90px;
+  left: 20px;
+  z-index: 1050;
+  padding: 10px 16px;
+  font-size: 18px;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+
 /* Active state styling */
 .Active {
   background-color: #f0f0f0;
