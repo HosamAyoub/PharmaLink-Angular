@@ -56,11 +56,11 @@ export class Product {
   }
 
   getStockBackgroundColor(quantity: number): string {
-    return quantity > 0 ? 'rgb(182, 219, 182)' : 'rgb(255, 182, 182)';
+    return quantity > 0 ? 'var(--background-mint)' : 'var(--status-red-background)';
   }
 
   getStockTextColor(quantity: number): string {
-    return quantity > 0 ? 'green' : 'red';
+    return quantity > 0 ? 'var(--success-green)' : 'var(--status-red)';
   }
 
 }

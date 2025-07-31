@@ -42,7 +42,7 @@ export class AuthService {
       .pipe(catchError(this.handleError));
   }
 
-  login(email: string, password: string) {
+  login(email: string, password: string , rememberMe: boolean) {
     const url = this.config.getApiUrl(this.ENDPOINTS.ACCOUNT_LOGIN);
     return this.http
       .post<ResponseData>(url, {

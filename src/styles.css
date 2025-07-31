@@ -8,10 +8,13 @@ body {
 }
 
 :root {
+  /* General status/error/alert red */
+  --status-red-background: #FEE2E2;
+  --status-red: #991B1B;
   --primary-blue: #2563eb;
   --primary-blue-light: #347cef;
   --primary-blue-dark: #4267b9;
-  --background-mint: #f0fdf4;
+  --background-mint: #DCFCE7;
   --background-white: #ffffff;
   --surface-white: #fff;
   --text-dark: #1a1a1a;
@@ -21,7 +24,7 @@ body {
   --text-placeholder: #9ca3af;
   --border-light: #e5e7eb;
   --border-gray: #d1d5db;
-  --success-green: #10b981;
+  --success-green: #166534;
   --success-green-light: rgba(16, 185, 129, 0.1);
   --error-red: #ef4444;
   --error-red-light: rgba(239, 68, 68, 0.1);
@@ -37,7 +40,27 @@ body {
   --pill-right-color: #035a94;
   --loading-overlay-bg: rgba(255, 255, 255, 0.7);
   --loader-shadow-color: rgba(0, 0, 0, 0.15);
+
+  /* Blue */
+  --blue-100: #eff6ff;
+  --blue-200: #3b82f6;
+  --blue-300: #1f2937;
+
+  /* Gray */
+  --gray-100: #ffffff;
+  --gray-200: #f8fafc;
+  --gray-300: #f3f4f6;
+  --gray-400: #f1f1f1;
+  --gray-500: #e5e7eb;
+  --gray-600: #c1c1c1;
+  --gray-700: #a8a8a8;
+  --gray-800: #000000;
+
+  /* Blue violet */
+  /* Removed duplicated color variables below, as they are already defined above with different names or values. */
+
 }
+
 
 @keyframes upDown {
   0% {
