@@ -1,15 +1,22 @@
 import { HttpInterceptorFn } from '@angular/common/http';
+import { inject } from '@angular/core';
+import { AuthService } from '../services/auth.service';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
-  const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6Ijg3NDVmYWQyLWVmOWYtNGI2NS05NDRlLWJlOTU2ZjY4MmQyMCIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6Ikhvc3NhbUBleGFtcGxlLmNvbSIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWUiOiJIb3NzYW0iLCJqdGkiOiI0M2VkNjc3OC1jOGM2LTRmYWEtYjM0YS0xMDU0NmYzYTAyYWQiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJQYXRpZW50IiwiZXhwIjoxNzUzNjU4NjkwLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjUyNzgvIiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo0MjAwLyJ9.ZfWjJw7-H9YeGxCzqzGnklMYGzqkg8NjVjuOZsqeqDc'; 
+  const authService = inject(AuthService);
 
-  if (token) {
+  // Get the current user from the signal
+  const user = authService.user();
+
+  // If user exists and has a valid token, attach it to the request
+  if (user && user.token) {
     const authReq = req.clone({
-      setHeaders: {
-        Authorization: `Bearer ${token}`
-      }
+      headers: req.headers.set('Authorization', `Bearer ${user.token}`),
     });
+
     return next(authReq);
   }
+
+  // If no user or token, proceed with the original request
   return next(req);
 };

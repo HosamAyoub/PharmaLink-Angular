@@ -116,8 +116,11 @@
   z-index: 1050;
   padding: 10px 16px;
   font-size: 18px;
+  border: 1px solid;
   border-radius: 6px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  /* box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); */
+  /* outline: 2px solid var(--primary-blue-light); */
+  /* color: var(--primary-blue-light); */
 }
 
 /* Active state styling */
