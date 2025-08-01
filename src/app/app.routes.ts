@@ -23,7 +23,7 @@ export const routes: Routes = [
         (m) => m.AdminDashboardModule
       ),
   },
-  {
+   {
     path: 'pharmacy',
     loadChildren: () =>
       import('./features/pharmacy-dashboard/pharmacy-dashboard.module').then(

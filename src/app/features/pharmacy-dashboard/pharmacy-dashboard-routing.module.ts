@@ -5,7 +5,12 @@ const routes: Routes = [
   {
     path: 'inventory',
     loadChildren: () =>
-      import('./inventory/inventory.module').then((m) => m.InventoryModule),
+      import('./inventory/inventory.module').then((m) => m.InventoryModule)
+  },
+  {
+    path: '',
+    redirectTo: 'inventory/medicine-management',
+    pathMatch: 'full'
   },
   {
     path: 'orders',
