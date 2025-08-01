@@ -48,7 +48,7 @@ export class FavoriteService {
   }
 
   clearFavorites() {
-    this.http.delete(`${this.apiUrl}/ClearFavorites`).subscribe(() => {
+    this.http.delete(`${this.ENDPOINTS.FAVORITES}/ClearFavorites`).subscribe(() => {
       this.getFavorites();
     });
   }

@@ -13,11 +13,12 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 export class CartStore {
+  private ENDPOINTS = APP_CONSTANTS.API.ENDPOINTS;
   // Signals
   cartItems = signal<CartItem[]>([]);
   orderSummary = signal<OrderSummary | null>(null);
 
-  constructor(private cartService: CartService, private http: HttpClient, private router: Router) { }
+  constructor(private cartService: CartService, private http: HttpClient, private router: Router, private config: ConfigService) { }
 
   // Load cart summary from API
   loadCart() {
