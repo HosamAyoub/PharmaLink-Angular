@@ -113,9 +113,9 @@
   height: 10px;
   background: radial-gradient(
     ellipse 50px 10px,
-    rgba(0, 0, 0, 0.2) 0%,
-    rgba(0, 0, 0, 0.1) 40%,
-    rgba(0, 0, 0, 0.05) 70%,
+    var(--shadow-overlay-2) 0%,
+    var(--shadow-overlay-1) 40%,
+    var(--pharmacy-card-shadow6) 70%,
     transparent 100%
   );
   border-radius: 50%;

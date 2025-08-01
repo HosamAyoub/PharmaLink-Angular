@@ -1,0 +1,19 @@
+/* Shop Now Button Styling */
+.shop-now-btn {
+  width: 232px;
+  background-color: var(
+    --primary-blue,
+    #2563eb
+  ); /* fallback to blue if var not set */
+  margin-top: 32px;
+  padding: 18px 0px;
+  cursor: pointer;
+  border-radius: 8px;
+  box-shadow: none;
+  transition: all 0.3s ease;
+  transform: scale(1);
+}
+.shop-now-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px var(--shadow-overlay-4);
+}

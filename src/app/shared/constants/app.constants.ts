@@ -4,36 +4,28 @@ export const APP_CONSTANTS = {
       PRODUCTS: 'products',
       PHARMACIES: 'pharmacies',
       CATEGORIES: 'categories',
+      PHARMACY: 'pharmacy',
       PHARMACY_STOCK_ALL: 'PharmacyStock/allPharmaciesStock',
       SEARCH: 'search',
+      ACCOUNT_REGISTER: 'Account/Register',
+      ACCOUNT_LOGIN: 'Account/Login',
+      DRUG_CATEGORY: 'Drug/Category',
+      DRUG_RANDOM: 'Drug/2',
+      DRUG_BY_ID: 'Drug',
+      FAVORITES: 'favorites',
+      ORDERS_SUBMIT: 'Orders/submit',
+      ORDERS_CREATE_CHECKOUT_SESSION: 'Orders/CreateCheckoutSession',
     },
-    TIMEOUT: 30000,
-    RETRY_ATTEMPTS: 3,
   },
-  UI: {
-    ITEMS_PER_PAGE: 10,
-    MAX_FILE_SIZE: 5 * 1024 * 1024, // 5MB
-    DEBOUNCE_TIME: 300, // ms
-    ANIMATION_DURATION: 300, // ms
+  environment: {
+    production: true,
+    apiBaseUrl: 'http://localhost:5278/api',
+    apiVersion: 'v1',
+    appName: 'PharmaLink',
+    features: {
+    enableNotifications: true,
+    enableGeolocation: true,
+    maxNearbyPharmacies: 10
   },
-  ROUTES: {
-    HOME: '/',
-    PRODUCTS: '/products',
-    PHARMACIES: '/pharmacies',
-    CATEGORIES: '/categories',
-    CART: '/cart',
-    PROFILE: '/profile',
-  },
-  STORAGE_KEYS: {
-    USER_PREFERENCES: 'user_preferences',
-    CART_ITEMS: 'cart_items',
-    FAVORITES: 'favorites',
-    RECENT_SEARCHES: 'recent_searches',
-  },
-  VALIDATION: {
-    MIN_SEARCH_LENGTH: 2,
-    MAX_SEARCH_LENGTH: 100,
-    PHONE_REGEX: /^[\+]?[1-9][\d]{0,15}$/,
-    EMAIL_REGEX: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-  },
+ }
 };

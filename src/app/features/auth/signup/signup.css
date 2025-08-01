@@ -4,7 +4,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--background-mint);
+  background: var(--background-off-white);
   padding: 20px;
   font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     Oxygen, Ubuntu, Cantarell, sans-serif;
@@ -105,7 +105,6 @@
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  background: var(--background-mint);
   color: var(--primary-blue);
   font-size: 15px;
   font-weight: 600;
@@ -245,7 +244,7 @@
 .password-requirements {
   margin-top: 8px;
   padding: 12px;
-  background: var(--background-mint);
+  background: var(--background-light-mint);
   border-radius: 8px;
   border: 1px solid var(--border-light);
 }
@@ -315,8 +314,8 @@
   padding: 16px;
   background: linear-gradient(
     135deg,
-    var(--primary-blue-dark) 0%,
-    var(--primary-blue) 100%
+    var(--primary-blue) 0%,
+    var(--primary-blue-dark) 100%
   );
   color: var(--surface-white);
   border: none;
@@ -405,8 +404,7 @@
 
 /* Focus states for accessibility */
 .form-input:focus,
-.signup-btn:focus,
-.signin-link a:focus {
+.signup-btn:focus {
   outline: 2px solid var(--primary-blue-light);
   outline-offset: -2px;
 }

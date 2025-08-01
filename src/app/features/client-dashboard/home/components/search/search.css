@@ -1,0 +1,10 @@
+/* Use CSS variables for extracted colors */
+.search-input {
+  border-color: var(--border-gray-light) !important;
+  height: 100%;
+  min-height: 64px;
+}
+
+.search-icon {
+  color: var(--icon-muted);
+}

@@ -1,0 +1,30 @@
+<div class="category-card-wrapper">
+        <div class="card">
+          <div class="product-image-container">
+            <img
+              [src]="hasImageError(index) ? 'assets/images/error-image.jpg' : getSafeImageUrl(product)"
+              [alt]="product.drugName"
+              class="product-image"
+              (error)="onImageError($event, index)"
+              (load)="onImageLoad($event)"
+              [class.error]="hasImageError(index)">
+          </div>
+          <div class="card-body text-start">
+            <h5>{{product.drugName}}</h5>
+            <p style="color: var(--primary-color);">{{product.pharmacyName}}</p>
+            <p style="font-size: 18px; font-weight: bold; color: var(--primary-color);">{{product.price}}  EGP</p>
+            <div class="d-flex justify-content-between align-items-center">
+              <!-- Dynamic stock status based on quantity -->
+              <div class="d-flex justify-content-center align-items-center rounded-3 px-2 py-1"
+                   [style.background-color]="getStockBackgroundColor(product.quantityAvailable)">
+                <p style="margin: 0; font-size: 12px;"
+                   [style.color]="getStockTextColor(product.quantityAvailable)">
+                  {{getStockStatus(product.quantityAvailable)}}
+                </p>
+              </div>
+              <i class="fa-regular fa-heart fav-icon" style="font-size: 20px; cursor: pointer;" (click)="toggleFavorite($event)"></i>
+            </div>
+            <button class="btn btn-primary mt-3 rounded-0" style="width: 100%;">Add to Cart</button>
+          </div>
+        </div>
+      </div>

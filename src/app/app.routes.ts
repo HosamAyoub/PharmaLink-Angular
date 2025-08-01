@@ -37,14 +37,14 @@ export const routes: Routes = [
         (m) => m.ClientLayout
       ),
     children: [
-      // Add the nearby-pharmacies route as a child of client
-      {
-        path: 'nearby-pharmacies',
-        loadComponent: () =>
-          import(
-            './features/client-dashboard/Pharmacies/nearby-pharmacies-page/nearby-pharmacies-page'
-          ).then((m) => m.NearbyPharmaciesPage),
-      },
+      // // Add the nearby-pharmacies route as a child of client
+      // {
+      //   path: 'nearby-pharmacies',
+      //   loadComponent: () =>
+      //     import(
+      //       './features/client-dashboard/Pharmacies/nearby-pharmacies-page/nearby-pharmacies-page'
+      //     ).then((m) => m.NearbyPharmaciesPage),
+      // },
       // You can add more client child routes here
       {
         path: '',

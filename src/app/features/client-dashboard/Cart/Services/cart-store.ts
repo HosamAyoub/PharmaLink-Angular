@@ -4,6 +4,8 @@ import { OrderSummary } from '../Interfaces/order-summary';
 import { CartService } from './cart-service';
 import { CartUpdateDto } from '../Interfaces/cart-update-dto';
 import { HttpClient } from '@angular/common/http';
+import { ConfigService } from '../../../../shared/services/config.service';
+import { APP_CONSTANTS } from '../../../../shared/constants/app.constants';
 import { Router } from '@angular/router';
 
 
@@ -145,7 +147,8 @@ export class CartStore {
   }
 
   private createStripeSession(orderId: number) {
-    this.http.post<any>('http://localhost:5278/api/Orders/CreateCheckoutSession', orderId).subscribe({
+    const url = this.config.getApiUrl(this.ENDPOINTS.ORDERS_CREATE_CHECKOUT_SESSION);
+    this.http.post<any>(url, orderId).subscribe({
       next: (sessionRes) => {
         if (sessionRes?.url) {
           window.location.href = sessionRes.url;

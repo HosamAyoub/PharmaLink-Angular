@@ -1,24 +1,29 @@
+
 import { HttpClient } from '@angular/common/http';
 import { effect, Injectable } from '@angular/core';
-import { IFavDrug } from '../../../../core/drug/IFavDrug';
 import { signal } from '@angular/core';
+import { IDrug } from '../../Categories_Page/models/IDrug';
+import { ConfigService } from '../../../../shared/services/config.service';
+import { APP_CONSTANTS } from '../../../../shared/constants/app.constants';
+
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class FavoriteService {
-  private apiUrl = 'http://localhost:5278/api/favorites';
-  public favoriteDrugs = signal<IFavDrug[]>([]);
+  private ENDPOINTS = APP_CONSTANTS.API.ENDPOINTS;
+  public favoriteDrugs = signal<IDrug[]>([]);
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private config: ConfigService) {
     effect(() => {
       this.getFavorites();
     });
   }
 
   getFavorites() {
-    this.http.get<IFavDrug[]>(this.apiUrl).subscribe(data => {
+    const url = this.config.getApiUrl(this.ENDPOINTS.FAVORITES);
+    this.http.get<IDrug[]>(url).subscribe(data => {
       if (Array.isArray(data)) {
         this.favoriteDrugs.set(data);
       } else {
@@ -29,19 +34,18 @@ export class FavoriteService {
   }
 
   addToFavorites(drugId: number) {
-    this.http.post(`${this.apiUrl}`, { drugId }).subscribe(() => {
+    const url = this.config.getApiUrl(this.ENDPOINTS.FAVORITES);
+    this.http.post(url, { drugId }).subscribe(() => {
       this.getFavorites();
     });
   }
-
 
   removeFromFavorites(drugId: number) {
-    this.http.delete(`${this.apiUrl}/${drugId}`).subscribe(() => {
+    const url = this.config.getApiUrl(`${this.ENDPOINTS.FAVORITES}/${drugId}`);
+    this.http.delete(url).subscribe(() => {
       this.getFavorites();
     });
-
   }
-
 
   clearFavorites() {
     this.http.delete(`${this.apiUrl}/ClearFavorites`).subscribe(() => {
@@ -49,12 +53,10 @@ export class FavoriteService {
     });
   }
 
-
   isFavorite(drugId: number): boolean {
     if (!Array.isArray(this.favoriteDrugs())) return false;
     return this.favoriteDrugs().some(d => d.drugId === drugId);
   }
-
 
   ToggleFavorites(drugId: number) {
     if (this.isFavorite(drugId)) {
