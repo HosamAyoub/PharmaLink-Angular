@@ -32,13 +32,13 @@ const routes: Routes = [
   },
   {
     path: 'pharmacies',
-    component: NearbyPharmaciesPage
+    component: NearbyPharmaciesPage,
   },
   {
     path: 'pharmacyStock/:id',
     component: PharmacyStock,
   },
-  { path: 'cart', component: CartPage },
+  { path: 'cart', component: CartPage, canActivate: [AuthGuard] },
   { path: 'success', component: SuccessPage },
   { path: 'cancel', component: CancelPage },
   { path: 'favorites', component: FavoritePage, canActivate: [AuthGuard] },
