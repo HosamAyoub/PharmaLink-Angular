@@ -18,13 +18,11 @@ body {
   --background-light-mint: #f0fdf4;
   --background-off-white: #eeeeee;
   --background-white: #ffffff;
-  --surface-white: #fff;
   --text-dark: #1a1a1a;
   --text-primary: #1f2937;
   --text-secondary: #374151;
   --text-muted: #6b7280;
   --text-placeholder: #9ca3af;
-  --border-light: #e5e7eb;
   --border-gray: #d1d5db;
   --success-green: #166534;
   --success-green-light: rgba(16, 185, 129, 0.1);
@@ -49,7 +47,6 @@ body {
   --blue-300: #1f2937;
 
   /* Gray */
-  --gray-100: #ffffff;
   --gray-200: #f8fafc;
   --gray-300: #f3f4f6;
   --gray-400: #f1f1f1;
@@ -101,7 +98,6 @@ body {
   --shadow-overlay-4: rgba(0, 0, 0, 0.4);
   --shadow-overlay-5: rgba(0, 0, 0, 0.5);
   --danger-red: #dc3545;
-  --accent-blue-upper: #2563eb;
 }
 
 @keyframes upDown {
