@@ -48,10 +48,13 @@ export class FavoriteService {
   }
 
   clearFavorites() {
-    this.http.delete(`${this.ENDPOINTS.FAVORITES}/ClearFavorites`).subscribe(() => {
-      this.getFavorites();
-    });
-  }
+  const url = this.config.getApiUrl(`${this.ENDPOINTS.FAVORITES}/ClearFavorites`);
+  this.http.delete(url).subscribe({
+    next: () => this.getFavorites(),
+    error: err => console.error('Clear Favorites failed:', err)
+  });
+}
+
 
   isFavorite(drugId: number): boolean {
     if (!Array.isArray(this.favoriteDrugs())) return false;
