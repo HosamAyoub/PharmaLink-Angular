@@ -8,10 +8,8 @@
   <div class="flex-grow-1" id="pageContent">
     <div class="container-fluid px-0">
       <div class="row g-2 g-sm-3 g-md-4 justify-content-start">
-        <div
-          *ngFor="let drug of Drugs; let index = index"
-          class="col-12 col-sm-6 col-lg-4 col-xl-4 col-xxl-4 d-flex align-items-stretch"
-        >
+        @for (drug of Drugs; track $index) {
+        <div class="card col-xl-2 col-lg-3 col-md-6 col-sm-12 card border-0">
           <div
             class="card drug-card border-0 shadow-sm w-100 h-100 rounded-3 rounded-md-4 transition hover-shadow position-relative"
           >
@@ -19,16 +17,16 @@
               <div class="text-center mb-3">
                 <img
                   [src]="
-                    hasImageError(index)
+                    hasImageError($index)
                       ? 'assets/images/error-image.jpg'
                       : drug.imageUrl
                   "
                   alt="Drug Image"
                   class="img-fluid product-image"
                   style="max-width: 100%"
-                  (error)="onImageError($event, index)"
+                  (error)="onImageError($event, $index)"
                   (load)="onImageLoad($event)"
-                  [class.error]="hasImageError(index)"
+                  [class.error]="hasImageError($index)"
                 />
               </div>
               <h5 class="fw-bold text-dark mb-2 text-center text-md-start">
@@ -63,6 +61,7 @@
             </div>
           </div>
         </div>
+        }
       </div>
     </div>
   </div>
