@@ -32,8 +32,8 @@ body {
   --error-border: #fecaca;
   --error-text: #dc2626;
   --disabled-gray: #d1d5db;
-  --shadow-primary: rgba(102, 126, 234, 0.3);
-  --shadow-dark: rgba(0, 0, 0, 0.1);
+  --shadow-primary: #667eea4d;
+  --shadow-dark: #0000001a;
 
   /* Loading spinner colors */
   --pill-left-color: #14cad0;
@@ -47,13 +47,16 @@ body {
   --blue-300: #1f2937;
 
   /* Gray */
+  --gray-100: #f9fafb;
   --gray-200: #f8fafc;
   --gray-300: #f3f4f6;
   --gray-400: #f1f1f1;
   --gray-500: #e5e7eb;
   --gray-600: #c1c1c1;
   --gray-700: #a8a8a8;
-  --gray-800: #000000;
+  --gray-800: #64748b;
+
+  --black: #000000;
 
   /* Blue violet */
   /* Removed duplicated color variables below, as they are already defined above with different names or values. */
@@ -62,12 +65,7 @@ body {
   /* The following variables were extracted from inline HTML/CSS for maintainability. Use these for any new color usage instead of hardcoding. */
   --border-gray-light: #dee2e6;
   --icon-muted: #888888; /* Used for muted icons, extracted from inline HTML */
-  --section-bg-light: rgba(
-    205,
-    205,
-    205,
-    0.055
-  ); /* Used for section backgrounds, extracted from inline HTML */
+  --section-bg-light: #cdcdcd0e; /* Used for section backgrounds, extracted from inline HTML */
   /* Additional extracted colors from all CSS/HTML */
   --gray-navbar-bg: #f8f9fa;
   --gray-navbar-border: #adb5bd;
