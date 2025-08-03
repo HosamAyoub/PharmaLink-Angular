@@ -27,7 +27,7 @@
   "extensions.autoUpdate": false,
   "extensions.autoCheckUpdates": false,
   "workbench.settings.enableNaturalLanguageSearch": false,
-  "editor.formatOnSave": false,
+  "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {},
   "git.autofetch": false,
   "git.autorefresh": false

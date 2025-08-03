@@ -11,7 +11,7 @@
     <div class="col m-5 navigation-links">
       <h5>Navigation Links</h5>
       <div class="links-container">
-        <a routerLink="/home" data-bs-toggle="tooltip" title="Home">
+        <a routerLink="home" data-bs-toggle="tooltip" title="Home">
           <img
             src="assets/images/icons/home.svg"
             alt="Home"
@@ -22,10 +22,10 @@
       </div>
 
       <div class="links-container2">
-        <a routerLink="/home" data-bs-toggle="tooltip" title="Home">
+        <a routerLink="category" data-bs-toggle="tooltip" title="products">
           <img
             src="assets/images/icons/cart.svg"
-            alt="Home"
+            alt="Cart"
             class="footer-icons2"
           />
           <span>Shop</span>
@@ -33,51 +33,87 @@
       </div>
 
       <div class="links-container3">
-        <a routerLink="/home" data-bs-toggle="tooltip" title="Home">
+        <a routerLink="favorites" data-bs-toggle="tooltip" title="favorites">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="20"
-            height="20"
+            width="15"
+            height="16"
+            viewBox="0 0 15 16"
             fill="none"
             class="bi bi-bag footer-icons3"
-            viewBox="0 0 16 16"
+            class="footer-icons3"
           >
             <path
               d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z"
               stroke="var(--gray-800)"
-              stroke-width="0.3"
-              fill="var(--gray-800)"
+              stroke-width="0.7"
+              fill="var(--black)"
             />
           </svg>
           <!-- <i class="bi-bag footer-icons3 fw-bold"></i> -->
-          <span>Orders</span>
+          <span>Favorites</span>
         </a>
       </div>
 
-      <div class="links-container">
-        <a routerLink="/home" data-bs-toggle="tooltip" title="Home">
-          <img
-            src="assets/images/icons/home.svg"
-            alt="Home"
-            class="footer-icons"
-          />
+      <div class="links-container4">
+        <a routerLink="FAQs" data-bs-toggle="tooltip" title="FAQs">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="18"
+            height="18"
+            fill="currentColor"
+            class="bi bi-question-circle footer-icons4"
+            viewBox="0 0 18 18"
+          >
+            <path
+              d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"
+              stroke="var(--gray-800)"
+              stroke-width="0.8"
+              fill="var(--black)"
+            />
+            <path
+              d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286m1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94"
+            />
+          </svg>
           <span>FAQs</span>
         </a>
       </div>
 
-      <div class="links-container">
-        <a routerLink="/home" data-bs-toggle="tooltip" title="Home">
-          <img
-            src="assets/images/icons/home.svg"
-            alt="Home"
-            class="footer-icons"
-          />
+      <div class="links-container5">
+        <a routerLink="contact-us" data-bs-toggle="tooltip" title="Contact Us">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="18"
+            fill="currentColor"
+            class="bi bi-chat-right footer-icons5"
+            viewBox="0 0 18 20"
+          >
+            <path
+              d="M2 1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h9.586a2 2 0 0 1 1.414.586l2 2V2a1 1 0 0 0-1-1zm12-1a2 2 0 0 1 2 2v12.793a.5.5 0 0 1-.854.353l-2.853-2.853a1 1 0 0 0-.707-.293H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2z"
+              stroke="var(--gray-800)"
+              stroke-width="0.8"
+              fill="var(--black)"
+            />
+          </svg>
           <span>Contact Us</span>
         </a>
       </div>
     </div>
     <div class="col m-5">
       <h5>Contact Info</h5>
+      <div class="">
+        <a class="mobile-container">
+          <i class="bi bi-telephone"></i>
+          <p>+20 123 4567 890</p>
+        </a>
+      </div>
+      <div class="">
+        <a class="email-container">
+          <i class="bi bi-envelope"></i>
+          <p>support&#64;PharmaLink.com</p>
+        </a>
+      </div>
     </div>
   </div>
 </div>

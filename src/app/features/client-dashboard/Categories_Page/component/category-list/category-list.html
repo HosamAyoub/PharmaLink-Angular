@@ -7,11 +7,11 @@
   <!-- Main Content -->
   <div class="flex-grow-1" id="pageContent">
     <div class="container-fluid px-0">
-      <div class="row g-2 g-sm-3 g-md-4 justify-content-start">
+      <div class="card-list-grid">
         @for (drug of Drugs; track $index) {
-        <div class="card col-xl-2 col-lg-3 col-md-6 col-sm-12 card border-0">
+        <div class="card card-grid-item border-0">
           <div
-            class="card drug-card border-0 shadow-sm w-100 h-100 rounded-3 rounded-md-4 transition hover-shadow position-relative"
+            class="card drug-card border-0 shadow-sm w-100 h-100 rounded-3 transition hover-shadow position-relative"
           >
             <div class="card-body d-flex flex-column">
               <div class="text-center mb-3">
