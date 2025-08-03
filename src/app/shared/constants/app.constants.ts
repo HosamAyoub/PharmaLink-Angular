@@ -5,6 +5,7 @@ export const APP_CONSTANTS = {
       PHARMACIES: 'pharmacies',
       CATEGORIES: 'categories',
       PHARMACY: 'pharmacy',
+      PHARMACY_STOCK: 'PharmacyStock',
       PHARMACY_STOCK_ALL: 'PharmacyStock/allPharmaciesStock',
       SEARCH: 'search',
       ACCOUNT_REGISTER: 'Account/Register',

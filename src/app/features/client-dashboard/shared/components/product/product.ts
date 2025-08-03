@@ -1,5 +1,5 @@
 import { Component, Input, input, signal } from '@angular/core';
-import { IProduct } from '../../models/home.types';
+import { IProduct } from '../../models/IProduct';
 
 @Component({
   selector: 'app-product',

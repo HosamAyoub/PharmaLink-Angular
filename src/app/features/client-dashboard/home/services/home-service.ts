@@ -4,7 +4,8 @@ import { Observable } from 'rxjs';
 import { ConfigService } from '../../../../shared/services/config.service';
 import { APP_CONSTANTS } from '../../../../shared/constants/app.constants';
 import { HOME_CONSTANTS } from '../constants/home.constants';
-import { IProduct, IPharmacy, Category, SearchResponse, ApiResponse, UserLocation } from '../models/home.types';
+import { IPharmacy, Category, SearchResponse, ApiResponse, UserLocation } from '../models/home.types';
+import { IProduct } from '../../shared/models/IProduct';
 
 @Injectable({
   providedIn: 'root'

@@ -13,8 +13,20 @@ export class PharmacyProductsService {
   configService = inject(ConfigService);
   private ENDPOINTS = APP_CONSTANTS.API.ENDPOINTS;
 
-  getPharmacyProduct(id: number): Observable<Ipharmacy> {
+  getPharmacy(id: number): Observable<Ipharmacy> {
     const url = this.configService.getFullApiUrl(this.ENDPOINTS.PHARMACY);
     return this.http.get<Ipharmacy>(`${url}/${id}`);
+  }
+
+  getPharmacyProducts(pharmacyId: number, pageNumber: number, pageSize: number): Observable<any> {
+    const url = this.configService.getFullApiUrl(this.ENDPOINTS.PHARMACY_STOCK);
+    var params = { pharmacyId: pharmacyId , pageNumber: pageNumber, pageSize: pageSize};
+    return this.http.get<any>(url, { params });
+  }
+
+  getPharmacyProductsByCategory(pharmacyId: number, categoryName: string, pageNumber: number, pageSize: number): Observable<any> {
+    const url = this.configService.getFullApiUrl(`${this.ENDPOINTS.PHARMACY_STOCK}/${categoryName}`);
+    var params = { pharmacyId: pharmacyId,pageNumber: pageNumber, pageSize: pageSize };
+    return this.http.get<any>(url, { params });
   }
 }

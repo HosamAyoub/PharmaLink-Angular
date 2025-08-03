@@ -1,7 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { HomeService } from '../../services/home-service';
-import { IProduct } from '../../models/home.types';
-import { Product } from "../product/product";
+import { Product } from "../../../shared/components/product/product";
+import { IProduct } from '../../../shared/models/IProduct';
 
 @Component({
   selector: 'featured-products',

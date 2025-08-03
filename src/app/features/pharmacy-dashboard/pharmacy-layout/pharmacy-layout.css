@@ -1,0 +1,21 @@
+.pharmacy-dashboard {
+  min-height: 100vh;
+  background-color: #f8f9fa;
+}
+
+.pharmacy-header {
+  background: white;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.pharmacy-header h1 {
+  margin: 0;
+  color: #1a1a1a;
+  font-weight: 600;
+}
+
+.pharmacy-content {
+  padding: 0 20px;
+}

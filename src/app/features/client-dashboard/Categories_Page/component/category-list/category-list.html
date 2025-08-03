@@ -1,7 +1,7 @@
 <!-- Wrapper with responsive flex-direction -->
 <div class="d-flex flex-column flex-md-row" id="mainWrapper">
   <!-- Sidebar -->
-  <app-side-bar (categorySelected)="ReceiveCategoryDrugs($event)">
+  <app-side-bar (categoryNameSelected)="onCategoryNameSelected($event)">
   </app-side-bar>
 
   <!-- Main Content -->
@@ -9,7 +9,7 @@
     <div class="container-fluid px-0">
       <div class="row g-2 g-sm-3 g-md-4 justify-content-start">
         <div
-          *ngFor="let drug of Drugs; let index = index"
+          *ngFor="let drug of Drugs(); let index = index"
           class="col-12 col-sm-6 col-lg-4 col-xl-4 col-xxl-4 d-flex align-items-stretch"
         >
           <div
@@ -42,7 +42,7 @@
                 class="d-flex flex-column flex-sm-row justify-content-between align-items-stretch align-items-sm-center gap-2 mt-auto"
               >
                 <button
-                  class="btn btn-primary flex-grow-1 me-sm-2"
+                  class="btn btn-modern-primary btn-modern-square flex-grow-1 me-sm-2"
                   [routerLink]="['/client/DrugDetails', drug.drugId]"
                 >
                   View Details

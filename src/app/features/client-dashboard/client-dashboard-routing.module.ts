@@ -11,6 +11,7 @@ import { AuthGuard } from '../../shared/guards/auth.guard';
 import { NearbyPharmacies } from './Details/component/nearby-pharmacies/nearby-pharmacies';
 import { NearbyPharmaciesPage } from './Pharmacies/nearby-pharmacies-page/nearby-pharmacies-page';
 import { PharmacyStock } from './Pharmacy-Products/components/pharmacy-stock-page/pharmacy-stock';
+import { PharamcyProductDetails } from './pharamcy-product-details/pharamcy-product-details';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -37,6 +38,10 @@ const routes: Routes = [
   {
     path: 'pharmacyStock/:id',
     component: PharmacyStock,
+  },
+  {
+    path:'pharmacyProduct/:id',
+    component: PharamcyProductDetails
   },
   { path: 'cart', component: CartPage },
   { path: 'success', component: SuccessPage },
