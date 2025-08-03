@@ -2,7 +2,7 @@
   max-width: 386px;
   padding: 12px !important;
   border: none;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12), 0 1.5px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 24px var(--pharmacy-card-shadow1), 0 1.5px 6px var(--pharmacy-card-shadow2);
   transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
     box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
@@ -14,7 +14,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #f8f9fa;
+  background-color: var(--gray-navbar-bg);
   border-radius: 8px 8px 0 0;
   overflow: hidden;
   padding: 0;
@@ -52,7 +52,7 @@
   justify-content: center;
   align-items: center;
   background-color: #f8f9fa;
-  color: #6c757d;
+  color: var(--gray-sidebar-border);
   font-size: 14px;
   opacity: 0;
   transition: opacity 0.3s ease;
@@ -66,7 +66,7 @@
 .image-placeholder i {
   font-size: 40px;
   margin-bottom: 8px;
-  color: #adb5bd;
+  color: var(--gray-navbar-border);
 }
 
 .product-image-container::before {
@@ -76,7 +76,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: #f8f9fa;
+  background-color: var(--gray-navbar-bg);
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' fill='%23adb5bd' viewBox='0 0 24 24'%3E%3Cpath d='M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: center;
@@ -87,12 +87,13 @@
 
 .card p {
   font-size: 14px;
-  color: #2563eb;
+  color: var(--primary-blue);
 }
 
 .card:hover {
   transform: translateY(-8px) scale(1.04);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18), 0 3px 12px rgba(0, 0, 0, 0.14);
+  box-shadow: 0 8px 32px var(--pharmacy-card-shadow3),
+    0 3px 12px var(--pharmacy-card-shadow4);
 }
 
 .category-cards-container {
@@ -176,13 +177,14 @@
 }
 
 .fav-icon:hover {
-  color: #dc3545 !important;
+  color: var(--danger-red) !important;
   transform: scale(1.2);
 }
 
 .fav-icon.active {
   color: #dc3545 !important;
-} */
+}
+*/
 
 /* Switch to solid heart when active */
 .fav-icon.active::before {

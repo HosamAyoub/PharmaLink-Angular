@@ -33,7 +33,7 @@ const routes: Routes = [
   },
   {
     path: 'pharmacies',
-    component: NearbyPharmaciesPage
+    component: NearbyPharmaciesPage,
   },
   {
     path: 'pharmacyStock/:id',
@@ -43,7 +43,7 @@ const routes: Routes = [
     path:'pharmacyProduct/:id',
     component: PharamcyProductDetails
   },
-  { path: 'cart', component: CartPage },
+  { path: 'cart', component: CartPage, canActivate: [AuthGuard] },
   { path: 'success', component: SuccessPage },
   { path: 'cancel', component: CancelPage },
   { path: 'favorites', component: FavoritePage, canActivate: [AuthGuard] },

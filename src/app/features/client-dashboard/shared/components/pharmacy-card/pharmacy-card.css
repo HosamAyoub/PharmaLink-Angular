@@ -1,20 +1,19 @@
 .pharmacy-card {
   transition: transform 0.2s, box-shadow 0.2s;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 15px var(--pharmacy-card-shadow2);
   border-radius: 0 0 12px 12px;
 }
 
 .pharmacy-card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 12px 20px var(--pharmacy-card-shadow2);
 }
 
 .card-title {
   font-weight: 600;
-  color: #2c3e50;
+  color: var(--pharmacy-card-title);
 }
 
 .bi {
   font-size: 0.9rem;
 }
-

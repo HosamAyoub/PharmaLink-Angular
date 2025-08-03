@@ -9,20 +9,20 @@ body {
 
 :root {
   /* General status/error/alert red */
-  --status-red-background: #FEE2E2;
-  --status-red: #991B1B;
+  --status-red-background: #fee2e2;
+  --status-red: #991b1b;
   --primary-blue: #2563eb;
   --primary-blue-light: #347cef;
   --primary-blue-dark: #4267b9;
-  --background-mint: #DCFCE7;
+  --background-mint: #dcfce7;
+  --background-light-mint: #f0fdf4;
+  --background-off-white: #eeeeee;
   --background-white: #ffffff;
-  --surface-white: #fff;
   --text-dark: #1a1a1a;
   --text-primary: #1f2937;
   --text-secondary: #374151;
   --text-muted: #6b7280;
   --text-placeholder: #9ca3af;
-  --border-light: #e5e7eb;
   --border-gray: #d1d5db;
   --success-green: #166534;
   --success-green-light: rgba(16, 185, 129, 0.1);
@@ -32,8 +32,8 @@ body {
   --error-border: #fecaca;
   --error-text: #dc2626;
   --disabled-gray: #d1d5db;
-  --shadow-primary: rgba(102, 126, 234, 0.3);
-  --shadow-dark: rgba(0, 0, 0, 0.1);
+  --shadow-primary: #667eea4d;
+  --shadow-dark: #0000001a;
 
   /* Loading spinner colors */
   --pill-left-color: #14cad0;
@@ -47,20 +47,56 @@ body {
   --blue-300: #1f2937;
 
   /* Gray */
-  --gray-100: #ffffff;
+  --gray-100: #f9fafb;
   --gray-200: #f8fafc;
   --gray-300: #f3f4f6;
   --gray-400: #f1f1f1;
   --gray-500: #e5e7eb;
   --gray-600: #c1c1c1;
   --gray-700: #a8a8a8;
-  --gray-800: #000000;
+  --gray-800: #64748b;
+
+  --black: #000000;
 
   /* Blue violet */
   /* Removed duplicated color variables below, as they are already defined above with different names or values. */
 
-}
+  /* Extracted from inline HTML */
+  /* The following variables were extracted from inline HTML/CSS for maintainability. Use these for any new color usage instead of hardcoding. */
+  --border-gray-light: #dee2e6;
+  --icon-muted: #888888; /* Used for muted icons, extracted from inline HTML */
+  --section-bg-light: #cdcdcd0e; /* Used for section backgrounds, extracted from inline HTML */
+  /* Additional extracted colors from all CSS/HTML */
+  --gray-navbar-bg: #f8f9fa;
+  --gray-navbar-border: #adb5bd;
+  --gray-navbar-light: #f0f0f0;
+  --gray-navbar-hover: #e2e6ea;
+  --gray-navbar-active: #d1ecf1;
+  --gray-navbar-text: #495057;
+  --gray-navbar-dark: #333333;
+  --blue-navbar: #007bff;
+  --gray-sidebar-border: #6c757d;
+  --pharmacy-card-title: #2c3e50;
+  --pharmacy-card-border: #f0f0f0;
+  --pharmacy-card-shadow1: rgba(0, 0, 0, 0.12);
+  --pharmacy-card-shadow2: rgba(0, 0, 0, 0.1);
+  --pharmacy-card-shadow3: rgba(0, 0, 0, 0.18);
+  --pharmacy-card-shadow4: rgba(0, 0, 0, 0.14);
+  --pharmacy-card-shadow5: rgba(0, 0, 0, 0.2);
+  --pharmacy-card-shadow6: rgba(0, 0, 0, 0.05);
 
+  /* Final extracted colors from all CSS/HTML (shadows, overlays, accents) */
+  --shadow-overlay-075: rgba(0, 0, 0, 0.075);
+  --shadow-overlay-1: rgba(0, 0, 0, 0.1);
+  --shadow-overlay-12: rgba(0, 0, 0, 0.12);
+  --shadow-overlay-14: rgba(0, 0, 0, 0.14);
+  --shadow-overlay-15: rgba(0, 0, 0, 0.15);
+  --shadow-overlay-18: rgba(0, 0, 0, 0.18);
+  --shadow-overlay-2: rgba(0, 0, 0, 0.2);
+  --shadow-overlay-4: rgba(0, 0, 0, 0.4);
+  --shadow-overlay-5: rgba(0, 0, 0, 0.5);
+  --danger-red: #dc3545;
+}
 
 @keyframes upDown {
   0% {

@@ -255,8 +255,8 @@ export class SideBar implements OnInit, OnDestroy {
   @Output() categorySelected = new EventEmitter<IDrug[]>();
   @Output() categoryNameSelected: EventEmitter<string> = new EventEmitter<string>();
 
-  sidebarVisible = true;
-  isSmallScreen = false;
+  sidebarVisible = false;
+  isSmallScreen = window.innerWidth < 768;
 
   constructor(private route: ActivatedRoute, private path: Router) {
     this.selectedCategory =
@@ -265,24 +265,11 @@ export class SideBar implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.onclickCategory();
-    this.checkScreenSize();
   }
 
   ngOnDestroy() {}
 
-  @HostListener('window:resize', ['$event'])
-  onResize(event: any) {
-    this.checkScreenSize();
-  }
-
-  checkScreenSize() {
-    this.isSmallScreen = window.innerWidth < 768;
-    if (!this.isSmallScreen) {
-      this.sidebarVisible = true;
-    } else {
-      this.sidebarVisible = false;
-    }
-  }
+  // Removed automatic sidebar collapse/expand logic. Only user clicks control sidebarVisible.
 
   toggleSidebar() {
     this.sidebarVisible = true;

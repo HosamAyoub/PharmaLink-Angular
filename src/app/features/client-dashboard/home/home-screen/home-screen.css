@@ -1,5 +1,5 @@
-.bg-gray{
-    background-color: #f8fafc;;
+.bg-gray {
+  background-color: var(--gray-200);
 }
 .nearby-pharmacies-btn {
   margin: 10px;

@@ -1,3 +1,18 @@
+/* Use CSS variables for navbar search input and icon colors */
+.navbar-search-input {
+  border-color: var(--border-gray-light) !important;
+  height: 100%;
+}
+.navbar-search-input-lg {
+  min-height: 64px;
+}
+.navbar-search-input-full {
+  width: 100%;
+}
+.navbar-search-icon {
+  color: var(--icon-muted);
+  pointer-events: none;
+}
 /* Responsive Navbar - Only CSS to make existing structure responsive */
 
 /* Mobile adjustments for search */
@@ -131,15 +146,15 @@
     padding: 0.5rem 0.75rem;
     border-radius: 0.375rem;
     background-color: transparent !important;
-    border: 1px solid #dee2e6;
+    border: 1px solid var(--border-gray-light);
     white-space: nowrap;
     transition: all 0.2s ease;
   }
 
   .navbar-collapse.show .nav-link:hover,
   .navbar-collapse.collapsing .nav-link:hover {
-    background-color: #f8f9fa !important;
-    border-color: #adb5bd;
+    background-color: var(--gray-navbar-bg) !important;
+    border-color: var(--gray-navbar-border);
   }
 }
 
@@ -198,7 +213,7 @@
     padding: 0.5rem 0.75rem;
     border-radius: 0.375rem;
     background-color: transparent !important;
-    border: 1px solid #dee2e6;
+    border: 1px solid var(--border-gray-light);
     margin-bottom: 0.25rem;
     justify-content: flex-start;
     white-space: nowrap;
@@ -207,8 +222,8 @@
 
   .navbar-collapse.show .nav-link:hover,
   .navbar-collapse.collapsing .nav-link:hover {
-    background-color: #f8f9fa !important;
-    border-color: #adb5bd;
+    background-color: var(--gray-navbar-bg) !important;
+    border-color: var(--gray-navbar-border);
   }
 
   /* Logo adjustments for small screens */
@@ -238,7 +253,7 @@
 /* Badge styling improvements */
 .nav-item .badge {
   z-index: 10;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 1px 3px var(--pharmacy-card-shadow5);
 }
 
 /* Badge positioning for large screens */

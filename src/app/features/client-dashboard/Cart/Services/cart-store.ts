@@ -7,24 +7,18 @@ import { HttpClient } from '@angular/common/http';
 import { ConfigService } from '../../../../shared/services/config.service';
 import { APP_CONSTANTS } from '../../../../shared/constants/app.constants';
 import { Router } from '@angular/router';
-import { SubmitOrderRequest } from '../Interfaces/submit-order-request';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class CartStore {
+  private ENDPOINTS = APP_CONSTANTS.API.ENDPOINTS;
   // Signals
   cartItems = signal<CartItem[]>([]);
   orderSummary = signal<OrderSummary | null>(null);
 
-  http = inject(HttpClient);
-  router = inject(Router);
-  config = inject(ConfigService);
-  private ENDPOINTS = APP_CONSTANTS.API.ENDPOINTS;
-
-
-  constructor(private cartService: CartService) { }
+  constructor(private cartService: CartService, private http: HttpClient, private router: Router, private config: ConfigService) { }
 
   // Load cart summary from API
   loadCart() {
@@ -138,16 +132,7 @@ export class CartStore {
   }
 
   checkout(paymentMethod: string) {
-    const orderRequest: SubmitOrderRequest = {
-      items: this.cartItems().map(item => ({
-        drugId: item.drugId,
-        pharmacyId: item.pharmacyId,
-        quantity: item.quantity
-      }))
-    };
-
-    const url = this.config.getApiUrl(this.ENDPOINTS.ORDERS_SUBMIT);
-    this.http.post<any>(url, { paymentMethod }).subscribe({
+    this.http.post<any>('http://localhost:5278/api/Orders/submit', { paymentMethod }).subscribe({
       next: (res) => {
         if (paymentMethod === 'cash') {
           this.router.navigate(['/client/success'], { queryParams: { orderId: res.orderId } });

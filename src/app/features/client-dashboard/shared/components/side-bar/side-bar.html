@@ -1,11 +1,11 @@
 <!-- Toggle Button (☰) يظهر لما الـ sidebar مقفول -->
 <button
-  class="btn btn-primary sidebar-toggle-btn"
+  class="btn sidebar-toggle-btn"
   *ngIf="!sidebarVisible"
   type="button"
   (click)="toggleSidebar()"
 >
-  ☰ Categories
+  ☰
 </button>
 
 <!-- Mobile backdrop-->
@@ -19,11 +19,11 @@
 <!-- Sidebar -->
 <div
   id="sidebar"
-  class="sidebar bg-light text-dark shadow rounded-0 rounded-md-3"
+  class="sidebar custom-sidebar shadow rounded-0 rounded-md-3"
   [ngClass]="{
     'd-block': sidebarVisible,
     'd-none': !sidebarVisible,
-    'position-fixed': isSmallScreen
+    'position-fixed': isSmallScreen && sidebarVisible
   }"
 >
   <!-- Sidebar Header  -->
@@ -55,7 +55,9 @@
       >
         <a class="nav-link d-flex align-items-center">
           <img [src]="category.icon" />
-          <span class="nav-link text-dark">{{ category.name }}</span>
+          <span class="nav-link sidebar-category-name">{{
+            category.name
+          }}</span>
         </a>
       </li>
       }
