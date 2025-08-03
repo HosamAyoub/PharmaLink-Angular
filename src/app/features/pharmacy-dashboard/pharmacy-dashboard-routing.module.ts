@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { PharmacyLayout } from './pharmacy-layout/pharmacy-layout';
+import { Home } from './home/home';
 
 const routes: Routes = [
   {
@@ -16,6 +18,10 @@ const routes: Routes = [
     path: 'profile',
     loadChildren: () =>
       import('./profile/profile.module').then((m) => m.ProfileModule),
+  },
+  {
+    path: 'home',
+    component: Home,
   },
   { path: '', redirectTo: 'inventory', pathMatch: 'full' },
 ];

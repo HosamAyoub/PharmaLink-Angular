@@ -62,9 +62,21 @@ export class Login {
         this.isLoading.set(false);
         form.reset();
 
+        const role = resData.value.role;
+
+        // Redirect based on role
+        let redirectUrl = '/client/home'; // default
+        if (role == 'Admin') {
+          redirectUrl = '/admin/home';
+        } else if (role == 'Pharmacy') {
+          redirectUrl = '/pharmacy/home';
+        }
+        console.log(`redirectUrl: ${redirectUrl}`);
+        console.log(this.route.snapshot.queryParams['returnUrl']);
+
         // Redirect to return URL or default to home
         const returnUrl =
-          this.route.snapshot.queryParams['returnUrl'] || '/client/home';
+          this.route.snapshot.queryParams['returnUrl'] || redirectUrl;
         this.router.navigate([returnUrl]);
       },
       error: (error) => {

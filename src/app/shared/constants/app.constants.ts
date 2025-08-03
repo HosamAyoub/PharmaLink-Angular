@@ -9,6 +9,7 @@ export const APP_CONSTANTS = {
       SEARCH: 'search',
       ACCOUNT_REGISTER: 'Account/Register',
       ACCOUNT_LOGIN: 'Account/Login',
+      ACCOUNT_VERIFY_TOKEN: 'Account/VerifyToken',
       DRUG_CATEGORY: 'Drug/Category',
       DRUG_RANDOM: 'Drug/2',
       DRUG_BY_ID: 'Drug',
@@ -23,9 +24,9 @@ export const APP_CONSTANTS = {
     apiVersion: 'v1',
     appName: 'PharmaLink',
     features: {
-    enableNotifications: true,
-    enableGeolocation: true,
-    maxNearbyPharmacies: 10
+      enableNotifications: true,
+      enableGeolocation: true,
+      maxNearbyPharmacies: 10,
+    },
   },
- }
 };

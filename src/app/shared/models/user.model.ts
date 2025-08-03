@@ -2,7 +2,8 @@ export class User {
   constructor(
     private _token: string,
     private _expiration: string,
-    public userName: string
+    public userName: string,
+    public role: Roles
   ) {}
 
   get token() {
@@ -23,6 +24,7 @@ export interface ResponseData {
     token: string;
     expiration: string;
     userName: string;
+    role: Roles;
   };
   statusCode: number;
 }
@@ -44,4 +46,10 @@ export interface Patient {
   address?: string;
   patientDiseases?: string;
   patientDrugs?: string;
+}
+
+export enum Roles {
+  Admin = 'Admin',
+  Pharmacy = 'Pharmacy',
+  Patient = 'Patient',
 }
