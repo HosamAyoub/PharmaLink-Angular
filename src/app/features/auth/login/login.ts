@@ -2,8 +2,8 @@ import { Component, inject, signal } from '@angular/core';
 import { AuthService } from '../../../shared/services/auth.service';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormsModule, NgForm } from '@angular/forms';
-import { LoadingSpinner } from '../../../shared/components/loading-spinner/loading-spinner';
 import { CommonModule } from '@angular/common';
+import { LoadingSpinner } from '../../../shared/components/loading-spinner/loading-spinner';
 
 @Component({
   selector: 'app-login',
