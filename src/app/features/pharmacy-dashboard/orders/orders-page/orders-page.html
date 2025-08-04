@@ -1,0 +1,217 @@
+<div class="container-fluid py-4 px-3 px-md-5" style="width: 90%;">
+
+  <!-- Header Section -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div class="d-flex align-items-center gap-3">
+      <button class="btn btn-outline-light border text-dark px-3 py-2 d-flex align-items-center">
+        <i class="fas fa-arrow-left me-2"></i> Back to Dashboard
+      </button>
+      <div>
+        <h2 class="fw-bold mb-1">Orders Management</h2>
+        <p class="text-muted mb-0">Manage and track customer orders with enhanced workflow</p>
+      </div>
+    </div>
+    <button class="btn btn-outline-light border text-dark px-3 py-2 d-flex align-items-center"
+      (click)="exportOrdersAsCSV()">
+      <i class="fas fa-download me-2"></i> Export Orders
+    </button>
+  </div>
+
+  <div class="row g-3 mb-4">
+    <!-- Statistics Cards -->
+
+    <div class="col-md-3">
+      <div class="card border-0 card-shadow card-hover h-100">
+        <div class="card-body d-flex align-items-center">
+          <div class="rounded-circle bg-primary-blue-light p-3 me-3">
+            <i class="fas fa-clock text-primary-blue" style="font-size: 1.5rem;"></i>
+          </div>
+          <div>
+            <h2 class="fw-bold mb-0 text-primary-blue" style="font-size: 2rem;">{{activeOrdersCount}}</h2>
+            <p class="text-muted mb-0 small">Active Orders</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="col-md-3">
+      <div class="card border-0 card-shadow card-hover h-100">
+        <div class="card-body d-flex align-items-center">
+          <div class="rounded-circle bg-warning-light p-3 me-3">
+            <i class="fas fa-truck text-warning" style="font-size: 1.5rem;"></i>
+          </div>
+          <div>
+            <h2 class="fw-bold mb-0 text-warning-custom" style="font-size: 2rem;">{{outForDeliveryCount}}</h2>
+            <p class="text-muted mb-0 small">Out for Delivery</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="card border-0 card-shadow card-hover h-100">
+        <div class="card-body d-flex align-items-center">
+          <div class="rounded-circle bg-success-green-light p-3 me-3">
+            <i class="fas fa-check-circle text-success-green" style="font-size: 1.5rem;"></i>
+          </div>
+          <div>
+            <h2 class="fw-bold mb-0 text-success-green" style="font-size: 2rem;">{{deliveredCount}}</h2>
+            <p class="text-muted mb-0 small">Delivered</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="col-md-3">
+      <div class="card border-0 card-shadow card-hover h-100">
+        <div class="card-body d-flex align-items-center">
+          <div class="rounded-circle bg-error-red-light p-3 me-3">
+            <i class="fas fa-times-circle text-error-red" style="font-size: 1.5rem;"></i>
+          </div>
+          <div>
+            <h2 class="fw-bold mb-0 text-error-red" style="font-size: 2rem;">{{rejectedCount}}</h2>
+            <p class="text-muted mb-0 small">Rejected</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Search and Filter Section -->
+    <div class="card border card-shadow-light mb-4 px-3 py-3">
+      <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
+
+        <!-- Search Input -->
+        <div class="input-group flex-grow-1" style="max-width: 100%;">
+          <span class="input-group-text bg-white-custom border-end-0">
+            <i class="fas fa-search text-muted"></i>
+          </span>
+          <input type="text" class="form-control border-start-0" placeholder="Search by patient name or order ID..."
+            [value]="query()" (input)="onQueryChange($event)" />
+        </div>
+
+        <!-- Filter Dropdown -->
+        <div class="d-flex align-items-center ms-md-3" style="min-width: 200px;">
+          <i class="fas fa-filter text-muted me-2"></i>
+          <select class="form-select" [value]="selectedStatus()" (change)="onStatusChange($event)">
+            <option value="All">All Orders</option>
+            <option value="UnderReview">Under Review</option>
+            <option value="Reviewing">Reviewing</option>
+            <option value="Pending">Pending</option>
+            <option value="OutForDelivery">Out For Delivery</option>
+            <option value="Delivered">Delivered</option>
+            <option value="Rejected">Rejected</option>
+          </select>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Orders Table Section -->
+    <div class="card border-1 card-shadow-light">
+      <div class="card-header bg-white-custom border-bottom d-flex justify-content-between align-items-center py-3 px-4">
+        <div>
+          <h5 class="fw-bold mb-0">Orders ({{orderCount}})</h5>
+          <small class="text-muted">Enhanced order management with interactive workflow</small>
+        </div>
+        <button class="badge bg-success-green border-0" (click)="refresh()">Live Updates</button>
+      </div>
+
+      <div class="card-body p-1">
+        <div class="table-responsive-sm">
+          <table class="table table-hover align-middle mb-0 w-100">
+            <thead class="bg-light">
+              <tr>
+                <th class="px-4 py-3 text-muted fw-semibold border-0">Order Details</th>
+                <th class="py-3 text-muted fw-semibold border-0">Patient</th>
+                <th class="py-3 text-muted fw-semibold border-0">Status & Progress</th>
+                <th class="py-3 text-muted fw-semibold border-0">Total</th>
+                <th class="py-3 text-muted fw-semibold border-0">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let order of filteredOrders()" class="border-bottom">
+                <!-- Order Details -->
+                <td class="px-4 py-3">
+                  <div class="fw-semibold text-dark">ORD-{{ order.orderID }}</div>
+                  <div class="text-muted small">{{ order.orderDate | date: 'yyyy-MM-dd' }}</div>
+                  <div class="text-muted small">{{ order.orderDetails.length }} medicines</div>
+                </td>
+
+                <!-- Patient Info -->
+                <td class="py-3">
+                  <div class="fw-medium">{{ order.name }}</div>
+                  <small class="text-muted">{{ order.phoneNumber }}</small>
+                </td>
+
+                <!-- Status & Progress -->
+                <td class="py-3">
+                  <div class="d-flex align-items-center gap-2 mb-2">
+                    <i class="me-1" [ngClass]="getStatusIcon(order.status)"></i>
+                    <span class="badge rounded-pill fw-normal px-2 py-1 small"
+                      [ngClass]="getStatusBadgeClass(order.status)">
+                      {{ getStatusDisplay(order.status) }}
+                    </span>
+                    <small class="text-muted" *ngIf="getTimeDisplay(order.status)">{{ getTimeDisplay(order.status)
+                      }}</small>
+                  </div>
+                  <div class="progress bg-light" style="height: 6px; width: 140px;">
+                    <div class="progress-bar" [style.width.%]="getProgress(order.status)"
+                      [ngClass]="getProgressColor(order.status)"></div>
+                  </div>
+                  <small class="text-muted">Progress: {{ getProgress(order.status) }}%</small>
+                </td>
+
+                <!-- Total -->
+                <td class="py-3">
+                  <div class="fw-semibold">{{ order.totalPrice | currency:'EGP':'symbol' }}</div>
+                  <small class="text-muted">{{ order.paymentStatus }}</small>
+                </td>
+
+                <!-- Actions -->
+                <td class="py-3">
+                  <div class="d-flex gap-2">
+                    <!-- View -->
+                    <button class="btn btn-sm btn-light border-0" (click)="viewOrder(order.orderID)" title="View Order">
+                      <i class="fas fa-eye text-muted"></i>
+                    </button>
+
+                    <!-- Reject (hidden if OutForDelivery, Delivered, or Rejected) -->
+                    <button class="btn btn-sm btn-light border-0"
+                      *ngIf="order.status !== 'OutForDelivery' && order.status !== 'Delivered' && order.status !== 'Rejected'"
+                      (click)="updateStatus(order, 'rejected')" title="Reject Order">
+                      <i class="fas fa-times-circle text-error-red"></i>
+                    </button>
+
+                    <!-- Mark as Pending (only if Reviewing) -->
+                    <button class="btn btn-sm btn-light border-0" *ngIf="order.status === 'Reviewing'"
+                      (click)="updateStatus(order, 'pending')" title="Mark as Pending">
+                      <i class="fas fa-hourglass-half text-warning-custom"></i>
+                    </button>
+
+                    <!-- Out for Delivery (only if Pending) -->
+                    <button class="btn btn-sm btn-light border-0" *ngIf="order.status === 'Pending'"
+                      (click)="updateStatus(order, 'out-for-delivery')" title="Out for Delivery">
+                      <i class="fas fa-truck text-blue-navbar"></i>
+                    </button>
+
+                    <!-- Mark as Delivered (only if OutForDelivery) -->
+                    <button class="btn btn-sm btn-light border-0" *ngIf="order.status === 'OutForDelivery'"
+                      (click)="updateStatus(order, 'delivered')" title="Mark Delivered">
+                      <i class="fas fa-check text-success-green"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <app-order-details-modal *ngIf="showModal()" [orderDetails]="orderDetails()" [visible]="showModal()"
+    [close]="closeModal">
+  </app-order-details-modal>

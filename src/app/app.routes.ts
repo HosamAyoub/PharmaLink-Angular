@@ -25,10 +25,19 @@ export const routes: Routes = [
   },
   {
     path: 'pharmacy',
-    loadChildren: () =>
-      import('./features/pharmacy-dashboard/pharmacy-dashboard.module').then(
-        (m) => m.PharmacyDashboardModule
+    loadComponent: () =>
+      import('./features/pharmacy-dashboard/pharmacy-layout/pharmacy-layout').then(
+        (m) => m.PharmacyLayout
       ),
+    children: [
+      {
+        path: '',
+        loadChildren: () =>
+          import('./features/pharmacy-dashboard/pharmacy-dashboard-routing.module').then(
+            (m) => m.PharmacyDashboardRoutingModule
+          )
+      },
+    ],
   },
   {
     path: 'client',
