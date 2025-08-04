@@ -132,7 +132,7 @@ export class CartStore {
   }
 
   checkout(paymentMethod: string) {
-    this.http.post<any>('http://localhost:5278/api/Orders/submit', { paymentMethod }).subscribe({
+    this.http.post<any>(this.config.getApiUrl(this.ENDPOINTS.ORDERS_SUBMIT), { paymentMethod }).subscribe({
       next: (res) => {
         if (paymentMethod === 'cash') {
           this.router.navigate(['/client/success'], { queryParams: { orderId: res.orderId } });

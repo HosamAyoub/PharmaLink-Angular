@@ -1,0 +1,104 @@
+.bg-blue-navbar {
+  background-color: var(--blue-navbar) !important;
+}
+
+.bg-primary-blue-light {
+  background-color: var(--primary-blue-light) !important;
+}
+
+.text-blue-navbar {
+  color: var(--blue-navbar) !important;
+}
+
+.bg-warning-light {
+  background-color: var(--warning-yellow-light) !important;
+}
+
+.text-warning-custom {
+  color: var(--warning-yellow) !important;
+}
+
+.bg-warning-custom {
+  background-color: var(--warning-yellow) !important;
+}
+
+.bg-success-green-light {
+  background-color: var(--success-green-light) !important;
+}
+
+.bg-success-green {
+  background-color: var(--success-green) !important;
+}
+
+.text-success-green {
+  color: var(--success-green) !important;
+}
+
+.bg-error-red-light {
+  background-color: var(--error-red-light) !important;
+}
+
+.text-error-red {
+  color: var(--error-red) !important;
+}
+
+.bg-primary-blue-light {
+  background-color: var(--primary-blue-soft) !important;
+}
+
+.text-primary-blue {
+  color: var(--primary-blue) !important;
+}
+
+.bg-white-custom {
+  background-color: var(--background-white) !important;
+}
+
+.bg-purple-custom {
+  background-color: var(--purple) !important;
+}
+
+.bg-purple-light {
+  background-color: var(--purple-light);
+}
+
+.text-purple-custom {
+  color: var(--purple) !important;
+}
+
+.bg-orange-custom {
+  background-color: var(--orange) !important;
+}
+
+.bg-orange-light {
+  background-color: var(--orange-light) !important;
+}
+
+.text-orange-custom {
+  color: var(--orange) !important;
+}
+
+.bg-secondary-custom {
+  background-color: var(--text-secondary) !important;
+}
+
+.text-secondary-custom {
+  color: var(--text-secondary) !important;
+}
+
+.card-shadow {
+  box-shadow: 0 4px 12px var(--shadow-overlay-12);
+}
+
+.card-hover {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px var(--shadow-overlay-12);
+}
+
+.card-shadow-light {
+  box-shadow: 0 1px 4px var(--shadow-overlay-075);
+}
