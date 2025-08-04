@@ -107,6 +107,7 @@ export class OrdersPage {
     });
   }
  
+ 
   closeModal = () => {
     this.showModal.set(false);
   };
@@ -211,5 +212,12 @@ export class OrdersPage {
     a.click();
     window.URL.revokeObjectURL(url);
   }
+
+  private readonly statusExpiryMinutes: Record<string, number> = {
+    UnderReview: 10,
+    Reviewing: 15,
+    Pending: 30
+  };
+
 
 }
