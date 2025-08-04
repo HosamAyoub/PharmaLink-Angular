@@ -1,15 +1,26 @@
-<div class="d-flex flex-column justify-content-center align-items-center text-center w-100" style="padding: 64px;">
-  <p style="font-weight: bold; font-size: 30px; margin-bottom: 32px;">Featured Products</p>
+<div
+  class="d-flex flex-column justify-content-center align-items-center text-center w-100"
+  style="padding: 64px"
+>
+  <p style="font-weight: bold; font-size: 30px; margin-bottom: 32px">
+    Featured Products
+  </p>
   <!-- This section used to highlight the services offered by the pharmacy -->
-  <div class="d-flex justify-content-center  flex-wrap category-cards-container">
+  <div class="d-flex justify-content-center flex-wrap category-cards-container">
     @for (product of products().slice(0, 4); track $index) {
-      <div class="category-card-wrapper">
-        <app-product [product]="product" [index]="$index"></app-product>
-      </div>
+    <div class="category-card-wrapper">
+      <app-product [product]="product" [index]="$index"></app-product>
+    </div>
     }
   </div>
   <!-- View All Link - Separate from flex container -->
   <div class="view-all-container">
-    <p class="view-all-link" (click)="viewAllProducts()">View All Products</p>
+    <a
+      class="view-all-link"
+      [routerLink]="['/client/category']"
+      routerLinkActive="router-link-active"
+    >
+      View All Products
+    </a>
   </div>
- </div>
+</div>

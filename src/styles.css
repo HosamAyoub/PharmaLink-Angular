@@ -32,8 +32,18 @@ body {
   --error-border: #fecaca;
   --error-text: #dc2626;
   --disabled-gray: #d1d5db;
-  --shadow-primary: #667eea4d;
-  --shadow-dark: #0000001a;
+  --shadow-primary: rgba(102, 126, 234, 0.3);
+  --shadow-dark: rgba(0, 0, 0, 0.1);
+
+  /*added by Mariem :)*/
+  --warning-yellow: #f59e0b;
+  --warning-yellow-light: #fef3c7;
+  --primary-blue-soft: rgba(37, 99, 235, 0.1);
+  --purple: #6f42c1;
+  --purple-light: rgba(111, 66, 193, 0.1);
+  --orange: #fd7e14;
+  --orange-light: rgba(253, 126, 20, 0.1);
+
 
   /* Loading spinner colors */
   --pill-left-color: #14cad0;

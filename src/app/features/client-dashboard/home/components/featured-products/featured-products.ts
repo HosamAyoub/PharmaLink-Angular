@@ -2,10 +2,11 @@ import { Component, inject, signal } from '@angular/core';
 import { HomeService } from '../../services/home-service';
 import { Product } from "../../../shared/components/product/product";
 import { IProduct } from '../../../shared/models/IProduct';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'featured-products',
-  imports: [Product],
+  imports: [Product, RouterLink],
   templateUrl: './featured-products.html',
   styleUrls: ['./featured-products.css', '../../shared/styles/shared-home.css']
 })
