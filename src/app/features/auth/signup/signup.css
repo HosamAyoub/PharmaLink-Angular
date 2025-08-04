@@ -179,6 +179,7 @@
   transition: all 0.2s ease;
   width: 100%;
   box-sizing: border-box;
+  resize: none;
 }
 
 .form-group input:focus,
@@ -407,6 +408,10 @@
 .signup-btn:focus {
   outline: 2px solid var(--primary-blue-light);
   outline-offset: -2px;
+}
+
+.note {
+  background-color: #007bff;
 }
 
 /* Responsive Design */
