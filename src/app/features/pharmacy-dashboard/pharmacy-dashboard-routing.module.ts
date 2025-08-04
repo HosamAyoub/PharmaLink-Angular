@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { PharmacyLayout } from './pharmacy-layout/pharmacy-layout';
 import { Home } from './home/home';
+import { OrdersPage } from './orders/orders-page/orders-page';
 
 const routes: Routes = [
   {
@@ -15,9 +16,7 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path: 'orders',
-    loadChildren: () =>
-      import('./orders/orders.module').then((m) => m.OrdersModule),
+    path: 'orders', component: OrdersPage
   },
   {
     path: 'profile',
