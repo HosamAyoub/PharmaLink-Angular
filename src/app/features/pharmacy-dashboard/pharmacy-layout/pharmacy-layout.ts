@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-pharmacy-layout',
-  imports: [],
+  imports: [RouterOutlet],
   templateUrl: './pharmacy-layout.html',
   styleUrl: './pharmacy-layout.css'
 })

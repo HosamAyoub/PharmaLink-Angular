@@ -110,9 +110,9 @@
 }
 
 .sidebar-toggle-btn {
-  position: fixed;
-  top: 90px;
-  left: 20px;
+  position: relative;
+  top: 15px;
+  left: 10px;
   z-index: 1050;
   padding: 10px 16px;
   font-size: 18px;

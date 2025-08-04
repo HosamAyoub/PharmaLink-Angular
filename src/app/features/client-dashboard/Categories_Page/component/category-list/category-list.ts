@@ -1,6 +1,7 @@
 import {
   Component,
   inject,
+  signal,
 
 } from '@angular/core';
 import { SideBar } from  '../../../shared/components/side-bar/side-bar';
@@ -17,14 +18,32 @@ import { DrugService } from '../../service/drug-service';
   imports: [SideBar, CommonModule, RouterLink, NgClass],
 })
 export class CategoryList {
-  DrugData: DrugService = inject(DrugService);
+  drugservice: DrugService = inject(DrugService);
   FavDrug: FavoriteService = inject(FavoriteService);
-  Drugs: IDrug[] = [];
+  Drugs = signal<IDrug[]>([]);
   imageErrors = new Set<number>(); // Track which images failed to load
 
   ReceiveCategoryDrugs(categoryDrugs: IDrug[]) {
-    this.Drugs = categoryDrugs;
+    this.Drugs.set(categoryDrugs);
     console.log('Drugs Received:', this.Drugs);
+  }
+
+  onCategoryNameSelected(category: string) {
+    if (category === '') {
+      this.drugservice.getRandomDrugs().subscribe({
+        next: (data) => {
+          this.Drugs.set(data);
+          console.log('Random Drugs:', data);
+        },
+      });
+    } else {
+      this.drugservice.getDrugsByCategory(category).subscribe({
+        next: (data) => {
+          this.Drugs.set(data);
+          console.log('Drugs in category:', data);
+        },
+      });
+    }
   }
 
   SendDrugSelected(drug: IDrug) {
