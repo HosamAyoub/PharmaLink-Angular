@@ -1,6 +1,4 @@
 import { Routes } from '@angular/router';
-import { ClientLayout } from './features/client-dashboard/client-layout/client-layout';
-
 import { LoadingSpinner } from './shared/components/loading-spinner/loading-spinner';
 import { Login } from './features/auth/login/login';
 import { SignUp } from './features/auth/signup/signup';
@@ -25,10 +23,19 @@ export const routes: Routes = [
   },
   {
     path: 'pharmacy',
-    loadChildren: () =>
-      import('./features/pharmacy-dashboard/pharmacy-dashboard.module').then(
-        (m) => m.PharmacyDashboardModule
+    loadComponent: () =>
+      import('./features/pharmacy-dashboard/pharmacy-layout/pharmacy-layout').then(
+        (m) => m.PharmacyLayout
       ),
+    children: [
+      {
+        path: '',
+        loadChildren: () =>
+          import('./features/pharmacy-dashboard/pharmacy-dashboard-routing.module').then(
+            (m) => m.PharmacyDashboardRoutingModule
+          )
+      },
+    ],
   },
   {
     path: 'client',
@@ -49,9 +56,7 @@ export const routes: Routes = [
       {
         path: '',
         loadChildren: () =>
-          import(
-            './features/client-dashboard/client-dashboard-routing.module'
-          ).then((m) => m.ClientDashboardRoutingModule),
+          import('./features/client-dashboard/client-dashboard-routing.module').then((m) => m.ClientDashboardRoutingModule),
       },
     ],
   },

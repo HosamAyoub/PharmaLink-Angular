@@ -5,7 +5,22 @@ export const APP_CONSTANTS = {
       PHARMACIES: 'pharmacies',
       CATEGORIES: 'categories',
       PHARMACY_STOCK_ALL: 'PharmacyStock/allPharmaciesStock',
+      BATCH_PHARMACY_STOCK_BY_ID: 'PharmacyStock/GetBatchOfPharmacyStock',
+      PHARMACYSTOCK_INVENTORY_STATUS_BY_ID: 'PharmacyStock/InventoryStatusByID',
+      PHARMACYSTOCK_SEARCH_ALL: 'PharmacyStock/SearchFor',
       SEARCH: 'search',
+<<<<<<< Updated upstream
+=======
+      ACCOUNT_REGISTER: 'Account/Register',
+      ACCOUNT_LOGIN: 'Account/Login',
+      DRUG_CATEGORY: 'Drug/Category',
+      DRUG_RANDOM: 'Drug/2',
+      DRUG_BY_ID: 'Drug',
+      DRUG_SEARCH: 'Drug/Search',
+      FAVORITES: 'favorites',
+      ORDERS_SUBMIT: 'Orders/submit',
+      ORDERS_CREATE_CHECKOUT_SESSION: 'Orders/CreateCheckoutSession',
+>>>>>>> Stashed changes
     },
     TIMEOUT: 30000,
     RETRY_ATTEMPTS: 3,

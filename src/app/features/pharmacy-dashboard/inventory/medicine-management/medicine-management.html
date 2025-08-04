@@ -1,0 +1,127 @@
+<div class="container">
+  <!-- Header -->
+  <div class="header">
+    <button class="back-btn">&larr; Back to Dashboard</button>
+    <div class="title-group">
+      <h1>Medicine Management</h1>
+      <div class="subtitle">Manage your pharmacy inventory</div>
+    </div>
+    <button class="add-button" routerLink="/pharmacy/addmedicines">+ Add Medicine</button>
+  </div>
+
+  <!-- Statistics -->
+  <div class="stats">
+    <div class="stat-card">
+        <span class="fs-1">📦</span>
+        <div>
+          <p style="margin: 0;">Total Medicines</p>
+          <p class="stat-number" style="margin: 0;">{{ totalMedicines }}</p>
+        </div>
+    </div>
+    <div class="stat-card">
+        <i class="bi bi-check-circle-fill text-success fs-1"></i>
+        <div>
+          <p style="margin: 0;">In Stock</p>
+          <p class="stat-number" style="margin: 0;">{{ inStock }}</p>
+        </div>
+    </div>
+    <div class="stat-card">
+        <i class="bi bi-x-circle-fill text-danger fs-1"></i>
+        <div>
+          <p style="margin: 0;">Out of Stock</p>
+          <p class="stat-number" style="margin: 0;">{{ outOfStock }}</p>
+        </div>
+    </div>
+    <div class="stat-card">
+        <i class="bi bi-exclamation-circle-fill text-warning fs-1"></i>
+        <div>
+          <p style="margin: 0;">Low Stock</p>
+          <p class="stat-number" style="margin: 0;">{{ lowStock }}</p>
+        </div>
+    </div>
+  </div>
+
+  <!-- Search and Filter -->
+  <div class="search-filter">
+    <input
+      type="search"
+      placeholder="Search medicines..."
+      #SearchInput
+      (input)="onSearchChange(SearchInput.value)"
+    />
+    <select #filterSelect (change)="onFilterChange(filterSelect.value)">
+      <option value="All" selected>All Medicines</option>
+      <option value="In Stock">In Stock</option>
+      <option value="Out of Stock">Out of Stock</option>
+      <option value="Low Stock">Low Stock</option>
+    </select>
+  </div>
+
+  <!-- Medicines Section -->
+  <div class="card">
+    <div class="card-header">
+      <h2>Medicines ({{ totalMedicines }})</h2>
+      <div class="subtitle">Manage your pharmacy inventory</div>
+    </div>
+    <div class="table-scroll-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Medicine Name</th>
+            <th>Category</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Stock Status</th>
+            <th>Available</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let med of medicines">
+            <td>
+              <strong>{{ med.drugName }}</strong><br />
+              <small>{{ med.drugActiveIngredient }}</small>
+            </td>
+            <td>{{ med.drugCategory }}</td>
+            <td><b>{{ med.price }} EGP</b></td>
+            <td>{{ med.quantityAvailable }}</td>
+            <td>
+              <span
+                [class.out-of-stock]="med.quantityAvailable === 0"
+                [class.low-stock]="med.quantityAvailable < 12 && med.quantityAvailable > 0"
+                [class.in-stock]="med.quantityAvailable >= 12"
+              >
+                {{
+                  med.quantityAvailable === 0
+                    ? 'Out of Stock'
+                    : med.quantityAvailable < 12
+                    ? 'Low Stock'
+                    : 'In Stock'
+                }}
+              </span>
+            </td>
+            <td>
+              <div class="form-check form-switch">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  [checked]="med.quantityAvailable > 0"
+                  [disabled]="med.quantityAvailable === 0"
+                />
+              </div>
+            </td>
+            <td>
+              <button class="action-button" title="Edit">
+                <i class="fa fa-edit" aria-hidden="true"></i>
+              </button>
+              <button class="action-button delete" title="Delete">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div *ngIf="medicines.length === 0" class="no-results">No medicines found.</div>
+    </div>
+  </div>
+</div>
