@@ -5,7 +5,6 @@ import { Home } from './home/home';
 
 const routes: Routes = [
   {
-
     path: 'medicinemanagement',
     loadComponent: () =>
       import('./inventory/medicine-management/medicine-management').then((m) => m.MedicineManagement),
