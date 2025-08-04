@@ -37,12 +37,10 @@ export class AuthService {
     const url = this.config.getApiUrl(this.ENDPOINTS.ACCOUNT_REGISTER);
     console.log('Sending signup payload:', payload);
     console.log('To URL:', url);
-    return this.http
-      .post(url, payload)
-      .pipe(catchError(this.handleError));
+    return this.http.post(url, payload).pipe(catchError(this.handleError));
   }
 
-  login(email: string, password: string , rememberMe: boolean) {
+  login(email: string, password: string, rememberMe: boolean) {
     const url = this.config.getApiUrl(this.ENDPOINTS.ACCOUNT_LOGIN);
     return this.http
       .post<ResponseData>(url, {
@@ -56,7 +54,8 @@ export class AuthService {
           const user = new User(
             resData.value.token,
             resData.value.expiration,
-            resData.value.userName
+            resData.value.userName,
+            resData.value.role
           );
           this.user.set(user);
           localStorage.setItem('userData', JSON.stringify(user));
@@ -70,23 +69,66 @@ export class AuthService {
 
   autoLogin() {
     const userDataString = localStorage.getItem('userData');
+    if (!userDataString) {
+      return;
+    }
+    // Use validateToken to verify token and update user state
+    this.validateToken()?.subscribe({
+      next: () => {
+        // User state is updated in validateToken's tap operator
+      },
+      error: (e) => {
+        // If token is invalid, log out the user
+        console.log(e);
+        this.logout();
+      },
+    });
+  }
 
+  validateToken() {
+    // Get token from local storage
+    const userDataString = localStorage.getItem('userData');
     if (!userDataString) {
       return;
     } else {
       const userData = JSON.parse(userDataString);
-      const loadedUser = new User(
-        userData._token,
-        userData._expiration,
-        userData.userName
-      );
-      if (loadedUser.token) {
-        this.user.set(loadedUser);
-        const expirationDate = new Date(userData._expiration);
-        const now = new Date();
-        const expirationDuration = expirationDate.getTime() - now.getTime();
-        this.autoLogout(expirationDuration);
-      }
+
+      // Prepare request to backend VerifyToken endpoint
+      const url = this.config.getApiUrl(this.ENDPOINTS.ACCOUNT_VERIFY_TOKEN);
+
+      // Add headers to specify content type
+      const headers = {
+        'Content-Type': 'application/json', // or 'application/json' if sending as object
+      };
+
+      console.log(typeof userData._token);
+
+      return this.http
+        .post<ResponseData>(url, JSON.stringify(userData._token), { headers })
+        .pipe(
+          catchError(this.handleError),
+          tap((resData) => {
+            // If valid, update user state with latest data from backend
+            const user = new User(
+              resData.value.token,
+              resData.value.expiration,
+              resData.value.userName,
+              resData.value.role
+            );
+
+            console.log(resData);
+
+            this.user.set(user);
+
+            console.log(this.user());
+
+            localStorage.setItem('userData', JSON.stringify(user));
+            const expirationDate = new Date(resData.value.expiration);
+            const now = new Date();
+            const expirationDuration = expirationDate.getTime() - now.getTime();
+            this.autoLogout(expirationDuration);
+          })
+        );
     }
   }
 

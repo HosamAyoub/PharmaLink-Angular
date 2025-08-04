@@ -99,7 +99,7 @@
 
 .card p {
   font-size: 14px;
-  color: var(--accent-blue-upper);
+  color: var(--primary-blue);
 }
 
 .card:hover {

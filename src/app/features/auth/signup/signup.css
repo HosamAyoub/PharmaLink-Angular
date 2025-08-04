@@ -11,7 +11,7 @@
 }
 
 .signup-card {
-  background: var(--surface-white);
+  background: var(--background-white);
   border-radius: 24px;
   padding: 48px 40px;
   width: 100%;
@@ -113,7 +113,7 @@
 .step:not(.active) > span:first-child {
   background: var(--background-white);
   color: var(--text-muted);
-  border: 2px solid var(--border-light);
+  border: 2px solid var(--gray-500);
 }
 .step-label {
   font-size: 14px;
@@ -121,7 +121,7 @@
 .step-separator {
   width: 48px;
   height: 2px;
-  background: var(--border-light);
+  background: var(--gray-500);
   border-radius: 1px;
 }
 
@@ -171,7 +171,7 @@
 .form-group select,
 .form-input {
   padding: 16px 20px;
-  border: 2px solid var(--border-light);
+  border: 2px solid var(--gray-500);
   border-radius: 12px;
   font-size: 16px;
   color: var(--text-primary);
@@ -195,7 +195,7 @@
 
 /* Angular form validation states - matching login styles */
 .form-input:invalid {
-  border-color: var(--border-light);
+  border-color: var(--gray-500);
 }
 
 .form-input.ng-invalid.ng-touched {
@@ -208,7 +208,7 @@
 }
 
 .form-input.ng-valid.ng-dirty {
-  border-color: var(--border-light);
+  border-color: var(--gray-500);
 }
 
 .form-input.ng-valid.ng-dirty:focus {
@@ -221,7 +221,7 @@
 }
 
 .form-input.password-strong {
-  border-color: var(--border-light);
+  border-color: var(--gray-500);
 }
 
 .form-input.password-mismatch {
@@ -229,7 +229,7 @@
 }
 
 .form-input.password-match {
-  border-color: var(--border-light);
+  border-color: var(--gray-500);
 }
 
 .form-input.username-invalid {
@@ -237,7 +237,7 @@
 }
 
 .form-input.username-valid {
-  border-color: var(--border-light);
+  border-color: var(--gray-500);
 }
 
 /* Password requirements component */
@@ -246,7 +246,7 @@
   padding: 12px;
   background: var(--background-light-mint);
   border-radius: 8px;
-  border: 1px solid var(--border-light);
+  border: 1px solid var(--gray-500);
 }
 
 .password-requirements h4 {
@@ -317,7 +317,7 @@
     var(--primary-blue) 0%,
     var(--primary-blue-dark) 100%
   );
-  color: var(--surface-white);
+  color: var(--background-white);
   border: none;
   border-radius: 12px;
   font-size: 16px;
@@ -343,7 +343,7 @@
 }
 
 .signup-btn.secondary {
-  background: var(--border-light);
+  background: var(--gray-500);
   color: var(--text-secondary);
   margin-right: 12px;
   width: auto;

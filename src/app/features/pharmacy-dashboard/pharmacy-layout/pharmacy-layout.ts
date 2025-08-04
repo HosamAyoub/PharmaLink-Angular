@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { AdminDashboardRoutingModule } from "../../admin-dashboard/admin-dashboard-routing.module";
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-pharmacy-layout',
-  imports: [AdminDashboardRoutingModule],
+  imports: [RouterOutlet],
   templateUrl: './pharmacy-layout.html',
   styleUrl: './pharmacy-layout.css'
 })

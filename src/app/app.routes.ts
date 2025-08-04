@@ -4,6 +4,8 @@ import { ClientLayout } from './features/client-dashboard/client-layout/client-l
 import { LoadingSpinner } from './shared/components/loading-spinner/loading-spinner';
 import { Login } from './features/auth/login/login';
 import { SignUp } from './features/auth/signup/signup';
+import { AuthGuard } from './shared/guards/auth.guard';
+import { NotAuthorized } from './shared/components/not-authorized/not-authorized';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/client', pathMatch: 'full' },
@@ -22,23 +24,29 @@ export const routes: Routes = [
       import('./features/admin-dashboard/admin-dashboard.module').then(
         (m) => m.AdminDashboardModule
       ),
+    canActivate: [AuthGuard],
+    data: { roles: ['Admin'] },
   },
+
   {
     path: 'pharmacy',
     loadComponent: () =>
-      import('./features/pharmacy-dashboard/pharmacy-layout/pharmacy-layout').then(
-        (m) => m.PharmacyLayout
-      ),
+      import(
+        './features/pharmacy-dashboard/pharmacy-layout/pharmacy-layout'
+      ).then((m) => m.PharmacyLayout),
     children: [
       {
         path: '',
         loadChildren: () =>
-          import('./features/pharmacy-dashboard/pharmacy-dashboard-routing.module').then(
-            (m) => m.PharmacyDashboardRoutingModule
-          )
+          import(
+            './features/pharmacy-dashboard/pharmacy-dashboard-routing.module'
+          ).then((m) => m.PharmacyDashboardRoutingModule),
       },
     ],
+    canActivate: [AuthGuard],
+    data: { roles: ['Pharmacy'] },
   },
+
   {
     path: 'client',
     loadComponent: () =>
@@ -63,6 +71,12 @@ export const routes: Routes = [
           ).then((m) => m.ClientDashboardRoutingModule),
       },
     ],
+    // canActivate: [AuthGuard],
+    // data: { roles: ['Patient'] },
+  },
+  {
+    path: 'not-authorized',
+    component: NotAuthorized,
   },
   { path: '**', redirectTo: '/client' },
 ];

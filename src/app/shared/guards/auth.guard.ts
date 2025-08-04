@@ -21,11 +21,20 @@ export class AuthGuard implements CanActivate {
     state: RouterStateSnapshot
   ): MaybeAsync<GuardResult> {
     const isAuth = this.authService.user();
-    if (isAuth) {
-      return true;
+
+    // Not authenticated, redirect to login
+    if (!isAuth) {
+      return this.router.createUrlTree(['/login'], {
+        queryParams: { returnUrl: state.url },
+      });
     }
-    return this.router.createUrlTree(['/login'], {
-      queryParams: { returnUrl: state.url },
-    });
+    const allowedRoles = route.data['roles'] as string[];
+
+    // Not authorized user
+    if (allowedRoles && isAuth.role != allowedRoles[0]) {
+      return this.router.createUrlTree(['/not-authorized']);
+    }
+    // Authenticated and authorized user
+    return true;
   }
 }

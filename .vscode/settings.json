@@ -1,0 +1,34 @@
+{
+  "typescript.preferences.includePackageJsonAutoImports": "off",
+  "typescript.suggest.autoImports": false,
+  "typescript.updateImportsOnFileMove.enabled": "never",
+  "typescript.suggest.includeCompletionsForImportStatements": false,
+  "files.watcherExclude": {
+    "**/.git/objects/**": true,
+    "**/.git/subtree-cache/**": true,
+    "**/node_modules/**": true,
+    "**/.angular/cache/**": true,
+    "**/dist/**": true,
+    "**/tmp/**": true,
+    "**/.vscode-test/**": true
+  },
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/dist": true,
+    "**/.angular/cache": true,
+    "**/coverage": true,
+    "**/.vscode-test": true
+  },
+  "files.exclude": {
+    "**/.angular/cache": true,
+    "**/node_modules": true
+  },
+  "task.autoDetect": "off",
+  "extensions.autoUpdate": false,
+  "extensions.autoCheckUpdates": false,
+  "workbench.settings.enableNaturalLanguageSearch": false,
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {},
+  "git.autofetch": false,
+  "git.autorefresh": false
+}

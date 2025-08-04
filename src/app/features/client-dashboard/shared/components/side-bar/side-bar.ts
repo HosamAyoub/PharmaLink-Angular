@@ -6,6 +6,7 @@ import {
   OnInit,
   OnDestroy,
   HostListener,
+  output,
 } from '@angular/core';
 // import { IFavDrug } from '../../../../core/drug/IFavDrug';
 // import { DrugService } from '../../../../core/drug/drug-service';
@@ -252,9 +253,10 @@ export class SideBar implements OnInit, OnDestroy {
   CategoryDrugs: IDrug[] = [];
   selectedCategory: string = '';
   @Output() categorySelected = new EventEmitter<IDrug[]>();
+  @Output() categoryNameSelected: EventEmitter<string> = new EventEmitter<string>();
 
-  sidebarVisible = true;
-  isSmallScreen = false;
+  sidebarVisible = false;
+  isSmallScreen = window.innerWidth < 768;
 
   constructor(private route: ActivatedRoute, private path: Router) {
     this.selectedCategory =
@@ -263,24 +265,11 @@ export class SideBar implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.onclickCategory();
-    this.checkScreenSize();
   }
 
   ngOnDestroy() {}
 
-  @HostListener('window:resize', ['$event'])
-  onResize(event: any) {
-    this.checkScreenSize();
-  }
-
-  checkScreenSize() {
-    this.isSmallScreen = window.innerWidth < 768;
-    if (!this.isSmallScreen) {
-      this.sidebarVisible = true;
-    } else {
-      this.sidebarVisible = false;
-    }
-  }
+  // Removed automatic sidebar collapse/expand logic. Only user clicks control sidebarVisible.
 
   toggleSidebar() {
     this.sidebarVisible = true;
@@ -290,37 +279,13 @@ export class SideBar implements OnInit, OnDestroy {
     this.sidebarVisible = false;
   }
 
-  onclickCategory(
-    category: string = this.route.snapshot.paramMap.get('categoryName') || ''
-  ) {
+  onclickCategory(category: string = this.route.snapshot.paramMap.get('categoryName') || '') {
+    this.categoryNameSelected.emit(category);
     console.log('Selected Category:', category);
-
-    // Close sidebar on mobile after category selection
     if (this.isSmallScreen) {
       setTimeout(() => {
         this.closeSidebar();
       }, 150);
-    }
-
-    if (category === '') {
-      this.selectedCategory = '';
-      this.drugservice.getRandomDrugs().subscribe({
-        next: (data) => {
-          this.CategoryDrugs = data;
-          this.categorySelected.emit(this.CategoryDrugs);
-          console.log('Random Drugs:', data);
-        },
-      });
-    } else {
-      this.selectedCategory = category;
-      this.drugservice.getDrugsByCategory(category).subscribe({
-        next: (data) => {
-          this.CategoryDrugs = data;
-          this.categorySelected.emit(this.CategoryDrugs);
-          this.path.navigate(['/client/category', category]);
-          console.log('Drugs in category:', data);
-        },
-      });
     }
   }
 }

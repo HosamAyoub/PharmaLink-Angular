@@ -1,7 +1,7 @@
 .pharmacy-card {
   transition: transform 0.2s, box-shadow 0.2s;
   box-shadow: 0 4px 15px var(--pharmacy-card-shadow2);
-  border-radius: 12px;
+  border-radius: 0 0 12px 12px;
 }
 
 .pharmacy-card:hover {
