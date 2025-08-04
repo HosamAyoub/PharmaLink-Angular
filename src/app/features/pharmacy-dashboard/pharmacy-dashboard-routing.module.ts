@@ -6,14 +6,19 @@ import { OrdersPage } from './orders/orders-page/orders-page';
 
 const routes: Routes = [
   {
-    path: 'inventory',
-    loadChildren: () =>
-      import('./inventory/inventory.module').then((m) => m.InventoryModule)
+    path: 'medicinemanagement',
+    loadComponent: () =>
+      import('./inventory/medicine-management/medicine-management').then((m) => m.MedicineManagement),
   },
   {
-    path: '',
-    redirectTo: 'inventory/medicine-management',
-    pathMatch: 'full'
+    path: 'addmedicines',
+    loadComponent: () =>
+      import('./inventory/add-medicines-component/add-medicines-component').then((m) => m.AddMedicinesComponent),
+  },
+  {
+    path: 'addproduct/:id',
+    loadComponent: () =>
+      import('./inventory/add-medicine-details-component/add-medicine-details-component').then((m) => m.AddMedicineDetailsComponent),
   },
   {
     path: 'orders', component: OrdersPage
@@ -23,10 +28,6 @@ const routes: Routes = [
     loadChildren: () =>
       import('./profile/profile.module').then((m) => m.ProfileModule),
   },
-  {
-    path: 'home',
-    component: Home,
-  },
   { path: '', redirectTo: 'inventory', pathMatch: 'full' },
 ];
 
@@ -34,4 +35,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class PharmacyDashboardRoutingModule {}
+export class PharmacyDashboardRoutingModule { }

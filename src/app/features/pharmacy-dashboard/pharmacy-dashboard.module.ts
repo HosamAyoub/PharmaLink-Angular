@@ -1,6 +1,4 @@
 import { NgModule } from '@angular/core';
-import { MedicineManagement } from './inventory/medicine-management/medicine-management';
-import { CommonModule } from '@angular/common';
 import { PharmacyDashboardRoutingModule } from './pharmacy-dashboard-routing.module';
 
 @NgModule({
@@ -10,4 +8,4 @@ import { PharmacyDashboardRoutingModule } from './pharmacy-dashboard-routing.mod
     PharmacyDashboardRoutingModule
   ],
 })
-export class PharmacyDashboardModule {}
+export class PharmacyDashboardModule { }
