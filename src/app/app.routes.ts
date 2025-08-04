@@ -25,7 +25,6 @@ export const routes: Routes = [
     canActivate: [AuthGuard],
     data: { roles: ['Admin'] },
   },
-
   {
     path: 'pharmacy',
     loadComponent: () =>
@@ -44,7 +43,6 @@ export const routes: Routes = [
     canActivate: [AuthGuard],
     data: { roles: ['Pharmacy'] },
   },
-
   {
     path: 'client',
     loadComponent: () =>

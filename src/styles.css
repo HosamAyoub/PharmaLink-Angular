@@ -64,8 +64,10 @@ body {
   /* Extracted from inline HTML */
   /* The following variables were extracted from inline HTML/CSS for maintainability. Use these for any new color usage instead of hardcoding. */
   --border-gray-light: #dee2e6;
-  --icon-muted: #888888; /* Used for muted icons, extracted from inline HTML */
-  --section-bg-light: #cdcdcd0e; /* Used for section backgrounds, extracted from inline HTML */
+  --icon-muted: #888888;
+  /* Used for muted icons, extracted from inline HTML */
+  --section-bg-light: #cdcdcd0e;
+  /* Used for section backgrounds, extracted from inline HTML */
   /* Additional extracted colors from all CSS/HTML */
   --gray-navbar-bg: #f8f9fa;
   --gray-navbar-border: #adb5bd;
@@ -96,24 +98,37 @@ body {
   --shadow-overlay-4: rgba(0, 0, 0, 0.4);
   --shadow-overlay-5: rgba(0, 0, 0, 0.5);
   --danger-red: #dc3545;
+
+  --warning-yellow: #f59e0b;
+  --warning-yellow-light: #fef3c7;
+  --primary-blue-soft: rgba(37, 99, 235, 0.1);
+  --purple: #6f42c1;
+  --purple-light: rgba(111, 66, 193, 0.1);
+  --orange: #fd7e14;
+  --orange-light: rgba(253, 126, 20, 0.1);
 }
 
 @keyframes upDown {
   0% {
     transform: translateY(0);
   }
+
   20% {
     transform: translateY(-12px);
   }
+
   35% {
     transform: translateY(0);
   }
+
   45% {
     transform: translateY(-6px);
   }
+
   55% {
     transform: translateY(0);
   }
+
   100% {
     transform: translateY(0);
   }
@@ -237,6 +252,7 @@ body {
   align-items: center;
   justify-content: center;
   cursor: pointer;
+
 }
 
 .btn-modern-outline:hover {
@@ -312,6 +328,7 @@ body {
 
 /* Mobile Responsive */
 @media (max-width: 768px) {
+
   .btn-modern-primary,
   .btn-modern-secondary,
   .btn-modern-danger,
@@ -332,6 +349,7 @@ body {
 }
 
 @media (max-width: 480px) {
+
   .btn-modern-primary,
   .btn-modern-secondary,
   .btn-modern-danger,
