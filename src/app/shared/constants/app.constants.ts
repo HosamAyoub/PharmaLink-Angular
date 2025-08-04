@@ -21,6 +21,7 @@ export const APP_CONSTANTS = {
       FAVORITES: 'favorites',
       ORDERS_SUBMIT: 'Orders/submit',
       ORDERS_CREATE_CHECKOUT_SESSION: 'Orders/CreateCheckoutSession',
+    },
   },
   environment: {
     production: true,
@@ -32,6 +33,5 @@ export const APP_CONSTANTS = {
       enableGeolocation: true,
       maxNearbyPharmacies: 10,
     },
-  },
-}
-}
+  }
+};

@@ -2,25 +2,16 @@
   <!-- Header -->
   <div class="header">
     <button class="back-btn">&larr; Back to Dashboard</button>
-<<<<<<< HEAD
     <div class="title-group">
       <h1>Medicine Management</h1>
       <div class="subtitle">Manage your pharmacy inventory</div>
     </div>
     <button class="add-button" routerLink="/pharmacy/addmedicines">+ Add Medicine</button>
-=======
-    <div>
-      <h1>Medicine Management</h1>
-      <div class="subtitle">Manage your pharmacy inventory</div>
-    </div>
-    <button class="add-button">+ Add Medicine</button>
->>>>>>> main
   </div>
 
   <!-- Statistics -->
   <div class="stats">
     <div class="stat-card">
-<<<<<<< HEAD
         <span class="fs-1">📦</span>
         <div>
           <p style="margin: 0;">Total Medicines</p>
@@ -47,28 +38,11 @@
           <p style="margin: 0;">Low Stock</p>
           <p class="stat-number" style="margin: 0;">{{ lowStock }}</p>
         </div>
-=======
-      <p><span class="icon">📦</span> Total Medicines</p>
-      <p class="stat-number">{{ totalMedicines }}</p>
-    </div>
-    <div class="stat-card">
-      <p><span class="icon">🟩</span> In Stock</p>
-      <p class="stat-number">{{ inStock }}</p>
-    </div>
-    <div class="stat-card">
-      <p><span class="icon">❗</span> Out of Stock</p>
-      <p class="stat-number">{{ outOfStock }}</p>
-    </div>
-    <div class="stat-card">
-      <p><span class="icon">🟨</span> Low Stock</p>
-      <p class="stat-number">{{ lowStock }}</p>
->>>>>>> main
     </div>
   </div>
 
   <!-- Search and Filter -->
   <div class="search-filter">
-<<<<<<< HEAD
     <input
       type="search"
       placeholder="Search medicines..."
@@ -151,52 +125,3 @@
     </div>
   </div>
 </div>
-=======
-    <input type="text" placeholder="Search medicines..." />
-    <select>
-      <option>All Medicines</option>
-      <!-- More filter options as needed -->
-    </select>
-  </div>
-
-  <!-- Responsive Medicine Table -->
-  <div class="table-responsive">
-    <table>
-      <thead>
-        <tr>
-          <th>Medicine Name</th>
-          <th>Category</th>
-          <th>Price</th>
-          <th>Quantity</th>
-          <th>Stock Status</th>
-          <th>Available</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let med of medicines">
-          <td>
-            <strong>{{ med.name }}</strong><br>
-            <small>{{ med.subname }}</small>
-          </td>
-          <td>{{ med.category }}</td>
-          <td><b>\${{ med.price }}</b></td>
-          <td>{{ med.quantity }}</td>
-          <td>
-            <span [class.out-of-stock]="med.quantity === 0" [class.in-stock]="med.quantity > 0">
-              {{ med.quantity === 0 ? 'Out of Stock' : 'In Stock' }}
-            </span>
-          </td>
-          <td>
-            <input type="checkbox" [checked]="med.quantity > 0" [disabled]="med.quantity === 0" />
-          </td>
-          <td>
-            <button class="action-button" title="Edit">&#9998;</button>
-            <button class="action-button delete" title="Delete">&#128465;</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
->>>>>>> main

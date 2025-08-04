@@ -25,9 +25,10 @@ export const routes: Routes = [
     canActivate: [AuthGuard],
     data: { roles: ['Admin'] },
   },
+
   {
     path: 'pharmacy',
-    loadChildren: () =>
+    loadComponent: () =>
       import('./features/pharmacy-dashboard/pharmacy-layout/pharmacy-layout').then(
         (m) => m.PharmacyLayout
       ),
@@ -35,9 +36,9 @@ export const routes: Routes = [
       {
         path: '',
         loadChildren: () =>
-          import(
-            './features/pharmacy-dashboard/pharmacy-dashboard-routing.module'
-          ).then((m) => m.PharmacyDashboardRoutingModule),
+          import('./features/pharmacy-dashboard/pharmacy-dashboard-routing.module').then(
+            (m) => m.PharmacyDashboardRoutingModule
+          )
       },
     ],
     canActivate: [AuthGuard],
