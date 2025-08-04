@@ -8,3 +8,5 @@ import { RouterLink } from '@angular/router';
   styleUrl: './footer.css',
 })
 export class Footer {}
+// asdsadsa
+// dasdasdsa

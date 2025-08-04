@@ -29,6 +29,9 @@
   "workbench.settings.enableNaturalLanguageSearch": false,
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {},
-  "git.autofetch": false,
-  "git.autorefresh": false
+  "git.autofetch": true,
+  "git.autorefresh": true,
+  "git.enabled": true,
+  "git.blame.editorDecoration.enabled": false,
+  "prettier.enable": true
 }
