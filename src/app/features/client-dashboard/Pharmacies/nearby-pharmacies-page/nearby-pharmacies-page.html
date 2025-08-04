@@ -9,26 +9,27 @@
         </div>
         <p class="mt-2">Loading pharmacies...</p>
       </div>
-      }
-
-      @if (errorMessage) {
+      } @if (errorMessage) {
       <div class="alert alert-danger text-center">
         <p class="mb-3">{{ errorMessage }}</p>
         <button class="btn btn-primary" (click)="loadNearbyPharmacies()">
           <i class="bi bi-arrow-clockwise me-1"></i>Try Again
         </button>
       </div>
-      }
-
-      @if (!Loading && !errorMessage) {
-      @if (pharmacies.length === 0) {
+      } @if (!Loading && !errorMessage) { @if (pharmacies.length === 0) {
       <div class="alert alert-info text-center">
         No pharmacies found in your area.
       </div>
-      } @else {      
-        @for (pharmacy of pharmacies; track pharmacy.name) {
-        <div class="col">
-          <app-pharmacy-card [pharmacy]="pharmacy"></app-pharmacy-card>
+      } @else { @for (pharmacy of pharmacies; track pharmacy.name) {
+      <div class="col">
+        @if (pharmacy?.pharmacyID) {
+      <a
+        class=" mb-3 text-decoration-none"
+        [routerLink]="['/client/pharmacyStock', pharmacy.pharmacyID]"
+        routerLinkActive="router-link-active">
+        <client-pharmacy-card [pharmacy]="pharmacy"></client-pharmacy-card>
+      </a>
+    }
         </div>
         }
       }
@@ -37,7 +38,9 @@
     <div class="col-lg-4">
       <div class="card pharmacy-card mb-3">
         <div class="card-body d-flex justify-content-center">
-          <h5 class="card-title fs-6 mb-1">Select a pharmacy to view available products</h5>
+          <h5 class="card-title fs-6 mb-1">
+            Select a pharmacy to view available products
+          </h5>
         </div>
       </div>
     </div>

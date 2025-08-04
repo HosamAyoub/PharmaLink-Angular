@@ -2,6 +2,8 @@ import { Routes } from '@angular/router';
 import { LoadingSpinner } from './shared/components/loading-spinner/loading-spinner';
 import { Login } from './features/auth/login/login';
 import { SignUp } from './features/auth/signup/signup';
+import { AuthGuard } from './shared/guards/auth.guard';
+import { NotAuthorized } from './shared/components/not-authorized/not-authorized';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/client', pathMatch: 'full' },
@@ -20,10 +22,13 @@ export const routes: Routes = [
       import('./features/admin-dashboard/admin-dashboard.module').then(
         (m) => m.AdminDashboardModule
       ),
+    canActivate: [AuthGuard],
+    data: { roles: ['Admin'] },
   },
+
   {
     path: 'pharmacy',
-    loadComponent: () =>
+    loadChildren: () =>
       import('./features/pharmacy-dashboard/pharmacy-layout/pharmacy-layout').then(
         (m) => m.PharmacyLayout
       ),
@@ -31,12 +36,15 @@ export const routes: Routes = [
       {
         path: '',
         loadChildren: () =>
-          import('./features/pharmacy-dashboard/pharmacy-dashboard-routing.module').then(
-            (m) => m.PharmacyDashboardRoutingModule
-          )
+          import(
+            './features/pharmacy-dashboard/pharmacy-dashboard-routing.module'
+          ).then((m) => m.PharmacyDashboardRoutingModule),
       },
     ],
+    canActivate: [AuthGuard],
+    data: { roles: ['Pharmacy'] },
   },
+
   {
     path: 'client',
     loadComponent: () =>
@@ -44,14 +52,14 @@ export const routes: Routes = [
         (m) => m.ClientLayout
       ),
     children: [
-      // Add the nearby-pharmacies route as a child of client
-      {
-        path: 'nearby-pharmacies',
-        loadComponent: () =>
-          import(
-            './features/client-dashboard/Pharmacies/nearby-pharmacies-page/nearby-pharmacies-page'
-          ).then((m) => m.NearbyPharmaciesPage),
-      },
+      // // Add the nearby-pharmacies route as a child of client
+      // {
+      //   path: 'nearby-pharmacies',
+      //   loadComponent: () =>
+      //     import(
+      //       './features/client-dashboard/Pharmacies/nearby-pharmacies-page/nearby-pharmacies-page'
+      //     ).then((m) => m.NearbyPharmaciesPage),
+      // },
       // You can add more client child routes here
       {
         path: '',
@@ -59,6 +67,12 @@ export const routes: Routes = [
           import('./features/client-dashboard/client-dashboard-routing.module').then((m) => m.ClientDashboardRoutingModule),
       },
     ],
+    // canActivate: [AuthGuard],
+    // data: { roles: ['Patient'] },
+  },
+  {
+    path: 'not-authorized',
+    component: NotAuthorized,
   },
   { path: '**', redirectTo: '/client' },
 ];

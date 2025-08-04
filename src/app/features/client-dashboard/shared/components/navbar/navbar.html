@@ -1,22 +1,30 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
   <div class="container-fluid">
     <!-- Logo Section -->
-    <a class="navbar-brand d-flex align-items-center">
+    <a class="navbar-brand d-flex align-items-center" routerLink="/client/home">
       <img
-        src="assets/images/logos/logo.svg"
+        src="assets/images/logos/logo.png"
         alt="Logo"
-        class="me-2"
-        style="width: 40px; height: 40px"
+        style="width: 45px; height: 45px"
       />
-      <span
-        style="
-          font-weight: bold;
-          font-size: 20px;
-          margin-left: 12px;
-          padding-bottom: 6px;
-        "
-        >pharma</span
-      >
+      <div class="flex flex-column">
+        <p
+          style="font-weight: bold; font-size: 20px; margin: 0; line-height: 1"
+        >
+          Pharma
+        </p>
+        <p
+          style="
+            font-weight: bold;
+            font-size: 20px;
+            color: var(--primary-blue);
+            margin: 0;
+            line-height: 1;
+          "
+        >
+          Link
+        </p>
+      </div>
     </a>
 
     <!-- Search Section for MD screens (visible in navbar, not collapsed) -->
@@ -24,13 +32,11 @@
       <div class="position-relative" style="height: 50px; max-width: 400px">
         <input
           type="text"
-          class="form-control border-2 rounded-end ps-5"
+          class="form-control border-2 rounded-end ps-5 navbar-search-input"
           placeholder="Search medicines, pharmacies..."
-          style="border-color: #dee2e6; height: 100%"
         />
         <span
-          class="position-absolute top-50 start-0 translate-middle-y ms-3"
-          style="pointer-events: none; color: #888"
+          class="position-absolute top-50 start-0 translate-middle-y ms-3 navbar-search-icon"
         >
           <i class="fa-solid fa-magnifying-glass"></i>
         </span>
@@ -63,13 +69,11 @@
           >
             <input
               type="text"
-              class="form-control border-2 rounded-end ps-5"
+              class="form-control border-2 rounded-end ps-5 navbar-search-input navbar-search-input-lg"
               placeholder="Search medicines, pharmacies, or health products..."
-              style="border-color: #dee2e6; height: 100%; min-height: 64px"
             />
             <span
-              class="position-absolute top-50 start-0 translate-middle-y ms-3"
-              style="pointer-events: none; color: #888"
+              class="position-absolute top-50 start-0 translate-middle-y ms-3 navbar-search-icon"
             >
               <i class="fa-solid fa-magnifying-glass"></i>
             </span>
@@ -81,13 +85,11 @@
           <div class="position-relative" style="height: 50px">
             <input
               type="text"
-              class="form-control border-2 rounded-end ps-5"
+              class="form-control border-2 rounded-end ps-5 navbar-search-input navbar-search-input-full"
               placeholder="Search medicines, pharmacies..."
-              style="border-color: #dee2e6; height: 100%; width: 100%"
             />
             <span
-              class="position-absolute top-50 start-0 translate-middle-y ms-3"
-              style="pointer-events: none; color: #888"
+              class="position-absolute top-50 start-0 translate-middle-y ms-3 navbar-search-icon"
             >
               <i class="fa-solid fa-magnifying-glass"></i>
             </span>

@@ -1,9 +1,9 @@
 import { Component, inject, signal } from '@angular/core';
-import { AuthService } from '../../../core/auth/auth.service';
+import { AuthService } from '../../../shared/services/auth.service';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormsModule, NgForm } from '@angular/forms';
-import { LoadingSpinner } from '../../../shared/components/loading-spinner/loading-spinner';
 import { CommonModule } from '@angular/common';
+import { LoadingSpinner } from '../../../shared/components/loading-spinner/loading-spinner';
 
 @Component({
   selector: 'app-login',
@@ -56,15 +56,27 @@ export class Login {
     this.isLoading.set(true);
     const email = form.value.email;
     const password = form.value.password;
-    this.authService.login(email, password).subscribe({
+    const rememberMe = Boolean(form.value.rememberMe);
+    this.authService.login(email, password, rememberMe).subscribe({
       next: (resData) => {
-        console.log(resData);
         this.isLoading.set(false);
         form.reset();
 
+        const role = resData.value.role;
+
+        // Redirect based on role
+        let redirectUrl = '/client/home'; // default
+        if (role == 'Admin') {
+          redirectUrl = '/admin/home';
+        } else if (role == 'Pharmacy') {
+          redirectUrl = '/pharmacy/home';
+        }
+        console.log(`redirectUrl: ${redirectUrl}`);
+        console.log(this.route.snapshot.queryParams['returnUrl']);
+
         // Redirect to return URL or default to home
         const returnUrl =
-          this.route.snapshot.queryParams['returnUrl'] || '/client/home';
+          this.route.snapshot.queryParams['returnUrl'] || redirectUrl;
         this.router.navigate([returnUrl]);
       },
       error: (error) => {

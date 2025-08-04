@@ -4,11 +4,12 @@ import { ServiceSection } from '../components/service-section/service-section';
 import { CategorySection } from '../components/category-section/category-section';
 import { FeaturedProducts } from '../components/featured-products/featured-products';
 import { PharmacySection } from '../components/pharmacy-section/pharmacy-section';
-import { Ipharmacy } from '../../Pharmacies/Interface/ipharmacy';
+import { Ipharmacy } from '../../shared/models/ipharmacy';
 import { PharmacyService } from '../../Pharmacies/Service/pharmacy-service';
 import { HomePharmacyCard } from '../components/home-pharmacy-card/home-pharmacy-card';
 import { RouterLink } from '@angular/router';
 import { SlicePipe } from '@angular/common';
+import { Footer } from '../../shared/components/footer/footer';
 
 @Component({
   selector: 'app-home-screen',
@@ -20,8 +21,9 @@ import { SlicePipe } from '@angular/common';
     RouterLink,
     SlicePipe,
     FeaturedProducts,
-    PharmacySection
-],
+    PharmacySection,
+    Footer,
+  ],
   templateUrl: './home-screen.html',
   styleUrl: './home-screen.css',
 })

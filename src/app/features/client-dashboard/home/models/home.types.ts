@@ -1,15 +1,3 @@
-// Product related types
-export interface IProduct {
-  drugId: number;
-  drugName: string;
-  price: string;
-  quantityAvailable: number;
-  drugImageUrl: string;
-  drugDescription?: string;
-  inStock?: boolean;
-  pharmacyId: number;
-  pharmacyName: string;
-}
 
 // Pharmacy related types
 export interface IPharmacy {
@@ -46,4 +34,10 @@ export interface ApiResponse<T> {
   data: T;
   message?: string;
   error?: string;
+}
+
+// Location interface for geolocation
+export interface UserLocation {
+  latitude: number;
+  longitude: number;
 }

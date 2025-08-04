@@ -4,7 +4,8 @@ import { Observable } from 'rxjs';
 import { ConfigService } from '../../../../shared/services/config.service';
 import { APP_CONSTANTS } from '../../../../shared/constants/app.constants';
 import { HOME_CONSTANTS } from '../constants/home.constants';
-import { IProduct, IPharmacy, Category, SearchResponse, ApiResponse } from '../models/home.types';
+import { IPharmacy, Category, SearchResponse, ApiResponse, UserLocation } from '../models/home.types';
+import { IProduct } from '../../shared/models/IProduct';
 
 @Injectable({
   providedIn: 'root'
@@ -26,13 +27,12 @@ export class HomeService {
     return this.http.get<any>(url, { params });
   }
 
-  // Categories
-  getCategories(): Observable<Category[]> {
-    const url = this.configService.getFullApiUrl('CATEGORIES');
-    const params = new HttpParams().set('limit', HOME_CONSTANTS.PRODUCTS.CATEGORIES_COUNT.toString());
-
-    return this.http.get<Category[]>('http://localhost:5278/api/PharmacyStock', { params });
-  }
+  // // Categories
+  // getCategories(): Observable<Category[]> {
+  //   const url = this.configService.getFullApiUrl('PHARMACY_STOCK');
+  //   const params = new HttpParams().set('limit', HOME_CONSTANTS.PRODUCTS.CATEGORIES_COUNT.toString());
+  //   return this.http.get<Category[]>(url, { params });
+  // }
 
   // Nearby Pharmacies
   getNearbyPharmacies(latitude?: number, longitude?: number): Observable<IPharmacy[]> {
@@ -57,8 +57,7 @@ export class HomeService {
     const url = this.configService.getFullApiUrl('SEARCH');
     const params = new HttpParams()
       .set('q', query)
-      .set('page', page.toString())
-      .set('limit', this.configService.itemsPerPage.toString());
+      .set('page', page.toString());
 
     return this.http.get<SearchResponse<IProduct>>(url, { params });
   }
@@ -67,8 +66,7 @@ export class HomeService {
   getAllProducts(page: number = 1): Observable<SearchResponse<IProduct>> {
     const url = this.configService.getFullApiUrl('PRODUCTS');
     const params = new HttpParams()
-      .set('page', page.toString())
-      .set('limit', this.configService.itemsPerPage.toString());
+      .set('page', page.toString());
 
     return this.http.get<SearchResponse<IProduct>>(url, { params });
   }
@@ -77,18 +75,35 @@ export class HomeService {
   getAllPharmacies(page: number = 1): Observable<SearchResponse<IPharmacy>> {
     const url = this.configService.getFullApiUrl('PHARMACIES');
     const params = new HttpParams()
-      .set('page', page.toString())
-      .set('limit', this.configService.itemsPerPage.toString());
-
+      .set('page', page.toString());
     return this.http.get<SearchResponse<IPharmacy>>(url, { params });
   }
 
-  // Helper methods for constants
-  getHomeConstants() {
-    return HOME_CONSTANTS;
+  getUserLocation(): Observable<UserLocation> {
+    return new Observable<UserLocation>((observer) => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            observer.next({
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude
+            });
+            observer.complete();
+          },
+          (error) => {
+            console.error('Geolocation error:', error);
+            observer.error(error);
+          },
+          {
+            enableHighAccuracy: true,
+            timeout: 10000,
+            maximumAge: 300000 // 5 minutes
+          }
+        );
+      } else {
+        observer.error(new Error('Geolocation is not supported by this browser'));
+      }
+    });
   }
 
-  getAppConstants() {
-    return APP_CONSTANTS;
-  }
 }

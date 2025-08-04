@@ -1,0 +1,46 @@
+<div class="d-flex mt-2">
+
+  <app-side-bar (categoryNameSelected)="onCategoryNameSelected($event)"></app-side-bar>
+  <!-- component for displaying loading spinner -->
+  <div *ngIf="uiState() === UiState.Loading" style="flex-grow: 1; display: flex; justify-content: center; align-items: center;">
+    <app-loading-spinner></app-loading-spinner>
+  </div>
+
+  <!-- component for displaying error messages -->
+  <div *ngIf="uiState() === UiState.Error" style="flex-grow: 1">
+    <app-error-handling [httpError]="httpError() || undefined"></app-error-handling>
+  </div>
+
+  <!-- Main Content -->
+  <div *ngIf="uiState() === UiState.Success" class="flex-grow-1">
+    <div class="container">
+        <client-pharmacy-card [pharmacy]="pharmacyDetails()"></client-pharmacy-card>
+      <div class="row g-3">
+        @for(product of pharmacyProducts(); track product.drugId) {
+          <div class="col-12 col-md-6 col-lg-3 d-flex align-items-stretch"  >
+            <a class="w-100 h-100 text-decoration-none"
+               [routerLink]="['/client/pharmacyProduct', product.drugId]"
+               routerLinkActive="router-link-active">
+              <app-product [product]="product" class="w-100 h-100"></app-product>
+            </a>
+          </div>
+        }
+      </div>
+      <nav aria-label="Product pagination" class="mt-4">
+        <ul class="pagination justify-content-center">
+          <li class="page-item" [class.disabled]="currentPage() === 1">
+            <button class="page-link" (click)="goToPage(currentPage() - 1)" [disabled]="currentPage() === 1">Previous</button>
+          </li>
+          @for(page of getPageNumbers(); track page) {
+            <li class="page-item" [class.active]="page === currentPage()">
+              <button class="page-link" (click)="goToPage(page)">{{ page }}</button>
+            </li>
+          }
+          <li class="page-item" [class.disabled]="currentPage() === totalPages()">
+            <button class="page-link" (click)="goToPage(currentPage() + 1)" [disabled]="currentPage() === totalPages()">Next</button>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
