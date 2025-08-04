@@ -155,8 +155,9 @@
                       [ngClass]="getStatusBadgeClass(order.status)">
                       {{ getStatusDisplay(order.status) }}
                     </span>
-                    <small class="text-muted" *ngIf="getTimeDisplay(order.status)">{{ getTimeDisplay(order.status)
-                      }}</small>
+                    <small *ngIf="countdowns()[order.orderID]" class="text-error-red">
+                      (Rejected {{ countdowns()[order.orderID] }})
+                    </small>
                   </div>
                   <div class="progress bg-light" style="height: 6px; width: 140px;">
                     <div class="progress-bar" [style.width.%]="getProgress(order.status)"

@@ -17,6 +17,8 @@ export class OrdersPage {
   selectedStatus = signal<string>('All');
   orderDetails = signal<any | null>(null);
   showModal = signal(false);
+  countdowns = signal<Record<number, string>>({});
+
 
   constructor(private ordersService: OrdersService) { }
 
@@ -61,8 +63,12 @@ export class OrdersPage {
   }
 
   loadOrders() {
-    this.ordersService.getAllOrders().subscribe(data => this.orders.set(data));
+    this.ordersService.getAllOrders().subscribe(data => {
+      this.orders.set(data);
+      this.startAutoRejectAndCountdownTimer();
+    });
   }
+
 
   onQueryChange(event: Event) {
     const input = event.target as HTMLInputElement;
@@ -103,11 +109,12 @@ export class OrdersPage {
         console.log('Order details received:', data);
         this.orderDetails.set(data);
         this.showModal.set(true);
+        this.refresh();
       }
     });
   }
- 
- 
+
+
   closeModal = () => {
     this.showModal.set(false);
   };
@@ -173,18 +180,6 @@ export class OrdersPage {
     }
   }
 
-  getTimeDisplay(status: string): string {
-    switch (status) {
-      case 'UnderReview': return '10min';
-      case 'Reviewing': return '15min';
-      case 'Pending': return '30min';
-      case 'OutForDelivery': return '';
-      case 'Delivered': return '';
-      case 'Rejected': return '';
-      default: return '';
-    }
-  }
-
   exportOrdersAsCSV() {
     const orders = this.filteredOrders();
     const csvRows = [];
@@ -219,5 +214,50 @@ export class OrdersPage {
     Pending: 30
   };
 
+  startAutoRejectAndCountdownTimer() {
+    setInterval(() => {
+      const now = new Date().getTime();
+      const countdownMap: Record<number, string> = {};
+      const ordersToReject: IOrder[] = [];
+
+      for (const order of this.orders()) {
+        const expiryMinutes = this.statusExpiryMinutes[order.status];
+        if (!expiryMinutes) continue;
+
+        if (
+          !order.statusLastUpdated ||
+          new Date(order.statusLastUpdated).getFullYear() <= 1900
+        ) {
+          continue;
+        }
+
+        const startTime = new Date(order.statusLastUpdated).getTime();
+        const endTime = startTime + expiryMinutes * 60_000;
+        const remainingMs = endTime - now;
+
+        // Update countdown
+        if (remainingMs > 0) {
+          const minutes = Math.floor(remainingMs / 60000);
+          const seconds = Math.floor((remainingMs % 60000) / 1000);
+          countdownMap[order.orderID] = `in ${minutes}m ${seconds}s`;
+        } else {
+          countdownMap[order.orderID] = 'soon...';
+          ordersToReject.push(order); // Mark for rejection
+        }
+      }
+
+      // Update countdowns
+      this.countdowns.set(countdownMap);
+
+      // Reject orders that expired
+      for (const order of ordersToReject) {
+        this.ordersService.rejectOrder(order.orderID).subscribe(() => {
+          console.log(`Order ${order.orderID} auto-rejected`);
+          this.refresh();
+        });
+      }
+
+    }, 1000);
+  }
 
 }
