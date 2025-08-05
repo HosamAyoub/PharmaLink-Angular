@@ -40,8 +40,8 @@ export const routes: Routes = [
           )
       },
     ],
-    canActivate: [AuthGuard],
-    data: { roles: ['Pharmacy'] },
+    // canActivate: [AuthGuard],
+    // data: { roles: ['Pharmacy'] },
   },
   {
     path: 'client',
