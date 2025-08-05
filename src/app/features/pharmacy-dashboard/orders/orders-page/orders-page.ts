@@ -3,10 +3,11 @@ import { IOrder } from '../Interfaces/iorder';
 import { OrdersService } from '../Services/orders-service';
 import { CommonModule } from '@angular/common';
 import { OrderDetailsModal } from '../Components/order-details-modal/order-details-modal';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-orders-page',
-  imports: [CommonModule, OrderDetailsModal],
+  imports: [CommonModule, OrderDetailsModal, RouterLink],
   standalone: true,
   templateUrl: './orders-page.html',
   styleUrl: './orders-page.css'
