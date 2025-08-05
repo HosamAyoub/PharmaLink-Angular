@@ -1,0 +1,151 @@
+<div class="container">
+  <!-- Header -->
+  <div class="header">
+    <button class="btn btn-outline-light border card-hover text-dark px-3 py-2 d-flex align-items-center">
+      <i class="fas fa-arrow-left me-2"></i> Back to Dashboard
+    </button>
+    <div class="title-group">
+      <h2 class="fw-bold mb-1">Medicine Management</h2>
+      <p class="text-muted mb-0">Manage your pharmacy inventory</p>
+    </div>
+    <button class="add-button" routerLink="/pharmacy/addmedicines">+ Add Medicine</button>
+  </div>
+
+  <!-- Statistics -->
+  <div class="stats">
+    <div class="stat-card">
+      <span class="fs-1">📦</span>
+      <div style="margin-left: 10px;">
+        <p class="stat-number" style="margin: 0;">{{ totalMedicines }}</p>
+        <p style=" color: var(--primary-blue); font-weight: bold; margin: 0;">Total Medicines</p>
+      </div>
+    </div>
+    <div class="stat-card">
+      <i class="bi bi-check-circle-fill text-success fs-1"></i>
+      <div style="margin-left: 10px;">
+        <p class="stat-number" style="margin: 0;">{{ inStock }}</p>
+        <p class="in-stock" style="margin: 0;">In Stock</p>
+      </div>
+    </div>
+    <div class="stat-card">
+      <i class="bi bi-x-circle-fill text-danger fs-1"></i>
+      <div style="margin-left: 10px;">
+        <p class="stat-number" style="margin: 0;">{{ outOfStock }}</p>
+        <p class="out-of-stock" style="margin: 0;">Out of Stock</p>
+      </div>
+    </div>
+    <div class="stat-card">
+      <i class="bi bi-exclamation-circle-fill text-warning fs-1"></i>
+      <div style="margin-left: 10px;">
+        <p class="stat-number" style="margin: 0;">{{ lowStock }}</p>
+        <p class="low-stock" style="margin: 0;">Low Stock</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Search and Filter -->
+  <div class="search-filter-card mb-3">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
+      <!-- Search Input -->
+      <div class="input-group flex-grow-1" style="max-width: 100%;">
+        <span class="input-group-text bg-white border-end-0">
+          <i class="bi bi-search text-muted"></i>
+        </span>
+        <input type="search" class="form-control border-start-0"
+          placeholder="Search medicines by Name/Category/Active Ingredient..." #SearchInput
+          (input)="onSearchChange(SearchInput.value)" />
+      </div>
+
+      <!-- Filter Dropdown -->
+      <div class="d-flex align-items-center ms-md-3"
+        style="min-width: 200px; border: 1px solid #ced4da; border-radius: 0.5rem;">
+        <i class="fas fa-filter text-muted me-2"></i>
+        <select class="form-select" #filterSelect (change)="onFilterChange(filterSelect.value)">
+          <option value="All" selected>All Medicines</option>
+          <option value="In Stock">In Stock</option>
+          <option value="Out of Stock">Out of Stock</option>
+          <option value="Low Stock">Low Stock</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- Medicines Section -->
+  <div class="card border-1 card-shadow-light mb-2 px-3 py-3">
+    <div class="card-header bg-white-custom border-bottom d-flex justify-content-between align-items-center py-3 px-4">
+      <div>
+        <h5 class="fw-bold mb-0">Medicines ({{ totalMedicines }})</h5>
+        <small class="text-muted">Manage your pharmacy inventory</small>
+      </div>
+    </div>
+
+    <div class="card-body p-1">
+      <div class="table-responsive-sm" style="max-height: 400px; overflow-y: auto;">
+        <table class="table table-hover align-middle mb-0 w-100">
+          <thead class="bg-light">
+            <tr>
+              <th class="px-4 py-3 text-muted fw-semibold border-0">Drug</th>
+              <th class="py-3 text-muted fw-semibold border-0">Category</th>
+              <th class="py-3 text-muted fw-semibold border-0">Price</th>
+              <th class="py-3 text-muted fw-semibold border-0">Quantity</th>
+              <th class="py-3 text-muted fw-semibold border-0">Status</th>
+              <th class="py-3 text-muted fw-semibold border-0">Toggle</th>
+              <th class="py-3 text-muted fw-semibold border-0">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let med of medicines" class="border-bottom">
+              <!-- Drug Details -->
+              <td class="px-4 py-3">
+                <div class="fw-semibold text-dark">{{ med.drugName }}</div>
+                <div class="text-muted small">{{ med.drugActiveIngredient }}</div>
+              </td>
+              <!-- Category -->
+              <td class="py-3">
+                <span class="badge bg-primary-blue-light text-blue-navbar">{{ med.drugCategory }}</span>
+              </td>
+              <!-- Price -->
+              <td class="py-3">
+                <div class="fw-semibold">EGP{{ med.price }}</div>
+              </td>
+              <!-- Quantity -->
+              <td class="py-3">
+                <div class="fw-semibold">{{ med.quantityAvailable }}</div>
+              </td>
+              <!-- Status -->
+              <td class="py-3">
+                <span [class.out-of-stock]="med.quantityAvailable === 0"
+                  [class.low-stock]="med.quantityAvailable < 10 && med.quantityAvailable > 0"
+                  [class.in-stock]="med.quantityAvailable >= 10">
+                  {{
+                  med.quantityAvailable === 0
+                  ? 'Out of Stock'
+                  : med.quantityAvailable < 10 ? 'Low Stock' : 'In Stock' }} </span>
+              </td>
+              <!-- Toggle -->
+              <td class="py-3">
+                <div class="form-check form-switch">
+                  <input class="form-check-input" type="checkbox" [checked]="med.quantityAvailable > 0"
+                    [disabled]="med.quantityAvailable === 0" />
+                </div>
+              </td>
+              <!-- Actions -->
+              <td class="py-3">
+                <div class="d-flex gap-2">
+                  <button class="btn btn-sm btn-light border-0" title="Edit">
+                    <i class="fa fa-edit text-muted"></i>
+                  </button>
+                  <button class="btn btn-sm btn-light border-0 delete" title="Delete">
+                    <i class="fa fa-trash text-danger"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <h5 *ngIf="medicines.length === 0" style="text-align: center; margin-top: 1rem;" class="no-results">No medicines
+          found.</h5>
+      </div>
+    </div>
+  </div>
+</div>
