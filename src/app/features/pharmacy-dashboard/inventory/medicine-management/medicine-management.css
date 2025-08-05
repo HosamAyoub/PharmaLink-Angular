@@ -105,121 +105,6 @@
   color: var(--text-dark);
 }
 
-/* Search and filter */
-.search-filter-box {
-  background: var(--background-white);
-  border-radius: 16px;
-  box-shadow: 0 8px 12px var(--shadow-overlay-075);
-  padding: 1rem 1rem;
-  margin-bottom: 0.2rem;
-  display: flex;
-  align-items: center;
-  border: 2.5px solid var(--border-light);
-}
-
-.search-filter {
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
-  flex-wrap: wrap;
-  box-shadow: 0 1px 6px var(--shadow-overlay-075);
-}
-
-.search-filter input[type='search'] {
-  flex: 2;
-  min-width: 40rem;
-  padding: 0.6rem;
-  border-radius: 8px;
-  border: 2.5px solid var(--border-light);
-  background: var(--background-white);
-  color: var(--text-dark);
-  box-shadow: 0 8px 12px var(--shadow-overlay-075);
-}
-
-.search-filter select {
-  flex: 1;
-  min-width: 18.75rem;
-  padding: 0.6rem 2.5rem 0.6rem 1rem;
-  /* Extra right padding for icon space */
-  border-radius: 8px;
-  border: 2.5px solid var(--border-light);
-  background: var(--background-white);
-  color: var(--primary-blue);
-  font-size: 1.1rem;
-  font-weight: 600;
-  outline: none;
-  box-shadow: 0 8px 12px var(--shadow-overlay-075);
-  appearance: none;
-  position: relative;
-  transition: border-color 0.2s, box-shadow 0.2s;
-}
-
-/* Add a custom arrow for select */
-.search-filter select {
-  background-image: url("data:image/svg+xml,%3Csvg width='16' height='16' fill='gray' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4 6l4 4 4-4' stroke='%236b7280' stroke-width='2' fill='none'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 1rem center;
-  background-size: 1.2rem;
-}
-
-/* On focus */
-.search-filter select:focus {
-  border-color: var(--primary-blue);
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
-}
-
-/* Option style (for modern browsers) */
-.search-filter select option {
-  color: #222;
-  background: #fff;
-  font-weight: 500;
-  padding: 0.5rem;
-}
-
-/* Table styles */
-.table-responsive {
-  overflow-x: auto;
-  border: 2.5px solid var(--border-light);
-  border-radius: 12px;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  background: var(--background-white);
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 1px 6px var(--shadow-overlay-075);
-  border: 2.5px solid var(--border-light);
-}
-
-thead {
-  background: var(--primary-blue--soft);
-  color: var(--background-white);
-}
-
-th,
-td {
-  padding: 0.5rem;
-  text-align: left;
-  border-bottom: 2.5px solid var(--border-light);
-  font-size: 1rem;
-}
-
-/* Table row bottom border */
-th,
-td {
-  border-bottom: 2.5px solid var(--border-light);
-}
-
-tbody tr {
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-tbody tr:hover {
-  background: #f5f8ff;
-}
 
 /* Card styles for medicines section */
 .card {
@@ -235,19 +120,21 @@ tbody tr:hover {
 .form-switch .form-check-input {
   width: 46px;
   height: 26px;
-  background-color: var(--border-light);
-  border: 2.5px solid var(--border-light);
   cursor: pointer;
-  transition: 0.3s;
   position: relative;
   appearance: none;
   -webkit-appearance: none;
   border-radius: 26px;
+  background-color: #fff;
+  border: 2.5px solid var(--success-green);
+  transition: 0.2s, border-color 0.2s;
+  box-shadow: 0 2px 8px var(--shadow-overlay-075);
 }
 
 .form-switch .form-check-input:checked {
-  background-color: var(--primary-blue-soft);
-  background-image: none;
+  background-color: var(--success-green) !important;
+  border-color: #d1d5db;
+  box-shadow: 0 1px 4px var(--background-white);
 }
 
 .form-switch .form-check-input::before {
@@ -255,16 +142,31 @@ tbody tr:hover {
   position: absolute;
   top: 2px;
   left: 2px;
-  width: 22px;
-  height: 22px;
+  width: 15px;
+  height: 15px;
   background-color: var(--background-white);
   border-radius: 50%;
   transition: 0.3s;
+  box-shadow: 0 1px 4px var(--background-mint);
 }
 
 .form-switch .form-check-input:checked::before {
   transform: translateX(20px);
+  width: 15px;
+  height: 15px;
+  border-color: var(--border-gray);
+  background-color: var(--background-light-mint);
 }
+
+
+.form-check-input:disabled {
+  background-color: #f3f4f6;
+  border-color: var(--success-green) !important;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+
 
 /* Add spacing between table and card header */
 .card-header {
@@ -316,4 +218,124 @@ thead th {
   margin-right: 8px;
   font-size: 2rem;
   color: var(--text-secondary);
+}
+
+/* Medicine Management Search & Filter Card */
+.search-filter-card {
+  border: 2.5px solid var(--border-light);
+  border-radius: 16px;
+  box-shadow: 0 1px 4px var(--shadow-overlay-075);
+  background: var(--background-white);
+  margin-bottom: 1.5rem;
+  padding: 1.5rem 1rem;
+}
+
+/* Flex layout for search/filter row */
+.search-filter-row {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .search-filter-row {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+/* Search input group */
+.input-group {
+  max-width: 100%;
+}
+
+.input-group-text {
+  background: var(--background-white);
+  border-right: none;
+  color: var(--text-secondary);
+  font-size: 1.5rem;
+}
+
+.form-control {
+  border-left: none;
+  font-size: 1rem;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  box-shadow: none;
+}
+
+.form-control:focus {
+  border-color: var(--primary-blue);
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.10);
+}
+
+/* Filter dropdown */
+.filter-dropdown {
+  display: flex;
+  align-items: center;
+  min-width: 200px;
+}
+
+.filter-dropdown i {
+  font-size: 2rem;
+  color: var(--primary-blue-soft);
+  margin-right: 0.5rem;
+
+}
+
+  /* Modern style for filter dropdown container */
+  .search-filter-card .filter-dropdown,
+  .d-flex.align-items-center.ms-md-3 {
+    min-width: 200px;
+    border: 2.5px solid var(--border-light);
+    border-radius: 8px;
+    background: var(--background-white);
+    box-shadow: 0 1px 4px var(--shadow-overlay-075);
+    padding: 0.3rem 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  /* Icon style */
+  .d-flex.align-items-center.ms-md-3 i,
+  .search-filter-card .filter-dropdown i {
+    font-size: 1.5rem;
+    color: var(--primary-blue);
+    margin-right: 0.5rem;
+    transition: color 0.2s;
+  }
+
+  /* Select style */
+  .form-select {
+    border: none;
+    box-shadow: none;
+    background: transparent;
+    color: var(--primary-blue);
+    font-size: 1.1rem;
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    outline: none;
+    transition: color 0.2s;
+  }
+
+  /* Focus effect for container and select */
+  .search-filter-card .filter-dropdown:focus-within,
+  .d-flex.align-items-center.ms-md-3:focus-within {
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+  }
+
+  .form-select:focus {
+    color: var(--primary-blue-dark);
+  }
+
+.bg-primary-blue-light {
+  background-color: var(--primary-blue-light) !important;
+}
+
+.bg-success-green {
+  background-color: var(--success-green) !important;
 }
