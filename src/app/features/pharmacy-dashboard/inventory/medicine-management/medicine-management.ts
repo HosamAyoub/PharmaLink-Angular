@@ -45,6 +45,7 @@ export class MedicineManagement {
     if (query === '') {
       this.medicineService.getAllPharmacyMedicines(pageNumber, pageSize).subscribe((res: any) => {
         this.Result = Array.isArray(res.data.items) ? res.data.items : [];
+        console.log('Medicines loaded:', res.data.items);
         this.onFilterChange(this.el.nativeElement.value);
       });
     }
