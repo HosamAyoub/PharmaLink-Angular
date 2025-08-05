@@ -44,8 +44,8 @@ export class DashboardPage implements OnInit {
     this.loading = true;
     this.errorMessage = null;
     this.pharmacyAnalysisService.getPharmacyStockAnalysis().subscribe({
-      next: (data) => {
-        this.stockAnalysisData = data;
+      next: (data:any) => {
+        this.stockAnalysisData = data.data;
         this.loading = false;
         this.cdr.detectChanges();
         console.log('Pharmacy stock analysis data loaded:', this.stockAnalysisData);
@@ -68,7 +68,7 @@ export class DashboardPage implements OnInit {
       description: 'In stock and ready',
       icon: 'pills',
       color: 'var(--light-green)',
-      trend: '+8%'
+      trend: '-8%'
     },
     {
       title: 'Out of Stock',

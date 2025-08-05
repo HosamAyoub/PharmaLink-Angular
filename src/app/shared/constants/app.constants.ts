@@ -24,7 +24,7 @@ export const APP_CONSTANTS = {
       PATIENT_PROFILE: 'Patient/Profile',
       PATIENT_PROFILE_EDIT: 'Patient/UpdateProfile',
       PHARMACY_ANALYSIS: 'Orders/analysis',
-      PHARMACY_STOCK_ANALYSIS: 'PharmacyStock/InventoryStatus'
+      PHARMACY_STOCK_ANALYSIS: 'PharmacyStock/InventoryStatusByID',
     },
   },
   environment: {
