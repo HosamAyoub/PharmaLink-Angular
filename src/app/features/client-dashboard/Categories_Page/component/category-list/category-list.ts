@@ -29,6 +29,9 @@ export class CategoryList {
   }
 
   onCategoryNameSelected(category: string) {
+    // Clear image errors when switching categories
+    this.imageErrors.clear();
+
     if (category === '') {
       this.drugservice.getRandomDrugs().subscribe({
         next: (data) => {

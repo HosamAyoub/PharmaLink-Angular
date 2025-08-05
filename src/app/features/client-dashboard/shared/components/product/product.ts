@@ -1,4 +1,4 @@
-import { Component, Input, input, signal } from '@angular/core';
+import { Component, Input, signal, computed } from '@angular/core';
 import { IProduct } from '../../models/IProduct';
 
 @Component({
@@ -11,7 +11,30 @@ export class Product {
   @Input() product!: IProduct;
   @Input() showPharmacyName: boolean = false;
   @Input() index: number = 0;
-   imageErrors = new Set<number>(); // Track which images failed to load
+
+  // Simple approach - track the last product ID we processed
+  private lastProductId: string | number = '';
+  private imageErrorState = signal(false);
+
+  // Computed property that resets error state when product changes
+  imageSource = computed(() => {
+    // Check if product has changed
+    if (this.product && this.product.drugId !== this.lastProductId) {
+      this.lastProductId = this.product.drugId;
+      this.imageErrorState.set(false); // Reset error state for new product
+      console.log(`New product detected: ${this.product.drugName}, resetting image error state`);
+    }
+
+    // Return appropriate image source
+    if (this.imageErrorState()) {
+      return 'assets/images/error-image.jpg';
+    }
+    return this.getSafeImageUrl(this.product);
+  });
+
+  addToCart(product: IProduct) {
+    // Implement add to cart functionality
+  }
 
     // Handle image loading errors
   onImageError(event: Event, productIndex?: number) {
@@ -20,12 +43,14 @@ export class Product {
     // Set fallback image
     //imgElement.src = 'assets/images/error-placeholder.jpg';
     imgElement.classList.add('error');
+    this.imageErrorState.set(true);
 
-    // Track error for this product
-    if (productIndex !== undefined) {
-      this.imageErrors.add(productIndex);
-    }
-
+    // Log the error for debugging
+    console.error(`Image failed to load for product ${this.product?.drugName}:`, {
+      originalSrc: imgElement.src,
+      productId: this.product?.drugId,
+      error: event
+    });
   }
 
   // Method to toggle favorite status
@@ -38,16 +63,85 @@ export class Product {
   onImageLoad(event: Event) {
     const imgElement = event.target as HTMLImageElement;
     imgElement.classList.remove('error');
+    this.imageErrorState.set(false); // Reset error state when image loads successfully
+
+    console.log(`Image loaded successfully for product ${this.product?.drugName}`);
   }
 
   // Check if image has error
-  hasImageError(index: number): boolean {
-    return this.imageErrors.has(index);
+  hasImageError(): boolean {
+    return this.imageErrorState();
   }
 
-  // Get safe image URL
+  // Method called by template to get image source
+  getImageSource(): string {
+    // Check if product has changed and reset error state
+    if (this.product && this.product.drugId !== this.lastProductId) {
+      this.lastProductId = this.product.drugId;
+      this.imageErrorState.set(false);
+      console.log(`Product changed in getImageSource: ${this.product.drugName}, resetting error state`);
+    }
+
+    // Return appropriate image source
+    if (this.imageErrorState()) {
+      return 'assets/images/error-image.jpg';
+    }
+    return this.getSafeImageUrl(this.product);
+  }
+
+  // Method to manually reset image error state
+  resetImageState(): void {
+    this.imageErrorState.set(false);
+    this.lastProductId = ''; // Force reset of product tracking
+    console.log(`Image state reset for product: ${this.product?.drugName}`);
+  }
+
+  // Method to force refresh the image (useful when product data changes but ID remains same)
+  forceImageRefresh(): void {
+    this.imageErrorState.set(false);
+    // Force the image to reload by updating the src
+    setTimeout(() => {
+      const imgElements = document.querySelectorAll(`img[alt="${this.product?.drugName}"]`);
+      imgElements.forEach((img: any) => {
+        if (img.src) {
+          const originalSrc = img.src;
+          img.src = '';
+          img.src = originalSrc;
+        }
+      });
+    }, 50);
+  }
+
+  // Get safe image URL with better validation
   getSafeImageUrl(product: IProduct): string {
-    return product.drugImageUrl || 'assets/images/error-image.jpg';
+    const imageUrl = product.drugImageUrl;
+
+    // Check if URL is valid and has proper format
+    if (!imageUrl || imageUrl.trim() === '') {
+      console.log(`Empty image URL for product ${product.drugName}`);
+      return 'assets/images/error-image.jpg';
+    }
+
+    // Check for common invalid URL patterns
+    if (imageUrl.includes('localhost') && !imageUrl.includes(window.location.hostname)) {
+      console.log(`Invalid localhost URL for product ${product.drugName}: ${imageUrl}`);
+      return 'assets/images/error-image.jpg';
+    }
+
+    // Check if URL looks like a valid image URL
+    const validExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg'];
+    const hasValidExtension = validExtensions.some(ext =>
+      imageUrl.toLowerCase().includes(ext)
+    );
+
+    if (!hasValidExtension && !imageUrl.includes('http')) {
+      console.log(`Potentially invalid image URL for product ${product.drugName}: ${imageUrl}`);
+    }
+
+    // Log the image URL for debugging
+    console.log(`Loading image for ${product.drugName}: ${imageUrl}`);
+
+    return imageUrl;
   }
 
   // Stock status methods
