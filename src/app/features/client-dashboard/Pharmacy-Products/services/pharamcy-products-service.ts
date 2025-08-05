@@ -18,7 +18,7 @@ export class PharmacyProductsService {
     return this.http.get<Ipharmacy>(`${url}/${id}`);
   }
 getPharmacyProducts(pharmacyId: number, pageNumber: number, pageSize: number): Observable<any> {
-    const url = this.configService.getFullApiUrl(this.ENDPOINTS.BATCH_PHARMACY_STOCK_BY_ID);
+    const url = this.configService.getFullApiUrl(this.ENDPOINTS.Bath);
     var params = { pharmacyId: pharmacyId , pageNumber: pageNumber, pageSize: pageSize};
     return this.http.get<any>(url, { params });
   }
