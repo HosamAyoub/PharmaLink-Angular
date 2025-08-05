@@ -8,7 +8,7 @@ import { RouterLink } from '@angular/router';
 @Component({
   selector: 'app-medicine-management',
   standalone: true,
-  imports: [CommonModule , RouterLink],
+  imports: [CommonModule, RouterLink],
   templateUrl: './medicine-management.html',
   styleUrls: ['./medicine-management.css']
 })
@@ -20,18 +20,17 @@ export class MedicineManagement {
   Result: IPharmaProduct[] = [];
   @ViewChild('filterSelect') el!: ElementRef;
 
-  constructor(private cd: ChangeDetectorRef) {}
+  constructor(private cd: ChangeDetectorRef) { }
 
   ngOnInit() {
     const pharmacyId = 1;
     // load inventory stats
-    this.medicineService.getPharmacyInventoryStatusByID(pharmacyId).subscribe((status: any) => 
-    {
+    this.medicineService.getPharmacyInventoryStatusByID(pharmacyId).subscribe((status: any) => {
       this.Status = status.data;
       this.cd.detectChanges();
     });
 
-    // load initial medicine list
+    // load all medicines
     this.loadMedicines('');
   }
 
@@ -39,31 +38,26 @@ export class MedicineManagement {
     this.loadMedicines(searchTerm);
   }
 
-  loadMedicines(query: string) 
-  {
+  loadMedicines(query: string) {
     const pharmacyId = 1;
     const pageNumber = 1;
     const pageSize = 100;
     console.log(`Loading medicines with query: ${query}`);
-    if (query=== '') 
-    {
+    if (query === '') {
       this.medicineService.getAllPharmacyMedicines(pharmacyId, pageNumber, pageSize).subscribe((res: any) => {
-        this.Result = res.data ?? [];
+        this.Result = Array.isArray(res.data.items) ? res.data.items : [];
         this.onFilterChange(this.el.nativeElement.value);
-        this.cd.detectChanges();
       });
     }
-    else{
-       this.medicineService.SearchMedicines(query, pharmacyId, pageNumber, pageSize).subscribe((res: any) => {
-      this.Result = res.data ?? [];
-      console.log(this.Result);
-      this.onFilterChange(this.el.nativeElement.value);
-      this.cd.detectChanges();
-    },
-    (error: any) => {
-      this.Result = [];
-      this.onFilterChange(this.el.nativeElement.value);
-    });
+    else {
+      this.medicineService.SearchMedicines(query, pharmacyId, pageNumber, pageSize).subscribe((res: any) => {
+        this.Result = Array.isArray(res.data) ? res.data : [];
+        this.onFilterChange(this.el.nativeElement.value);
+      },
+        (error: any) => {
+          this.Result = [];
+          this.onFilterChange(this.el.nativeElement.value);
+        });
     }
   }
 
