@@ -9,4 +9,5 @@ export interface IOrder {
     orderDetails: IOrderDetail[];
     name: string;
     phoneNumber: string;
+    statusLastUpdated: string;
 }

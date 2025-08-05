@@ -1,6 +1,4 @@
 import { Routes } from '@angular/router';
-import { ClientLayout } from './features/client-dashboard/client-layout/client-layout';
-
 import { LoadingSpinner } from './shared/components/loading-spinner/loading-spinner';
 import { Login } from './features/auth/login/login';
 import { SignUp } from './features/auth/signup/signup';
@@ -27,26 +25,24 @@ export const routes: Routes = [
     canActivate: [AuthGuard],
     data: { roles: ['Admin'] },
   },
-
   {
     path: 'pharmacy',
     loadComponent: () =>
-      import(
-        './features/pharmacy-dashboard/pharmacy-layout/pharmacy-layout'
-      ).then((m) => m.PharmacyLayout),
+      import('./features/pharmacy-dashboard/pharmacy-layout/pharmacy-layout').then(
+        (m) => m.PharmacyLayout
+      ),
     children: [
       {
         path: '',
         loadChildren: () =>
-          import(
-            './features/pharmacy-dashboard/pharmacy-dashboard-routing.module'
-          ).then((m) => m.PharmacyDashboardRoutingModule),
+          import('./features/pharmacy-dashboard/pharmacy-dashboard-routing.module').then(
+            (m) => m.PharmacyDashboardRoutingModule
+          )
       },
     ],
     canActivate: [AuthGuard],
     data: { roles: ['Pharmacy'] },
   },
-
   {
     path: 'client',
     loadComponent: () =>
@@ -66,9 +62,7 @@ export const routes: Routes = [
       {
         path: '',
         loadChildren: () =>
-          import(
-            './features/client-dashboard/client-dashboard-routing.module'
-          ).then((m) => m.ClientDashboardRoutingModule),
+          import('./features/client-dashboard/client-dashboard-routing.module').then((m) => m.ClientDashboardRoutingModule),
       },
     ],
     // canActivate: [AuthGuard],

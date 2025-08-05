@@ -1,0 +1,341 @@
+/* Main container */
+.container {
+  max-width: 100%;
+  font-family: var(--fa-font-regular), Arial, sans-serif;
+}
+
+/* Header */
+.header {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 1rem;
+  /* No border for header */
+}
+
+.header>.title-group {
+  flex: 1;
+}
+
+/* Add Medicine Button */
+.add-button {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--primary-blue);
+  color: var(--background-white);
+  border: 2.5px solid var(--border-light);
+  border-radius: 12px;
+  padding: 0.7rem 1.5rem;
+  font-size: 1.1rem;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: 0 8px 12px var(--shadow-overlay-075);
+  transition: 0.2s, box-shadow 0.2s;
+}
+
+.add-button:hover {
+  background: var(--primary-blue-dark);
+  box-shadow: 0 2px 8px var(--shadow-primary);
+}
+
+/* Back Button */
+.back-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--background-white);
+  border: 2.5px solid var(--border-light);
+  border-radius: 12px;
+  padding: 0.7rem 1.5rem;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--text-dark);
+  cursor: pointer;
+  box-shadow: 0 8px 12px var(--shadow-overlay-075);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.back-btn:hover {
+  border-color: var(--primary-blue-light);
+  box-shadow: 0 2px 8px var(--shadow-overlay-075);
+}
+
+.back-btn .icon {
+  font-size: 1.2rem;
+  margin-right: 0.5rem;
+}
+
+/* Stats cards */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.stat-card {
+  display: flex;
+  text-align: left;
+  background: var(--background-white);
+  padding: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px var(--shadow-overlay-075);
+  border: 2.5px solid var(--border-light);
+}
+
+/* Add subtle hover effect to stat cards */
+.stat-card:hover {
+  box-shadow: 0 4px 16px var(--shadow-overlay-15);
+  transform: translateY(-2px) scale(1.02);
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.stat-card .icon {
+  font-size: 1.3rem;
+  margin-right: 0.3rem;
+  color: var(--primary-blue);
+}
+
+.stat-number {
+  font-size: 1.4rem;
+  font-weight: bold;
+  margin-top: 0.5rem;
+  color: var(--text-dark);
+}
+
+
+/* Card styles for medicines section */
+.card {
+  background: var(--background-white);
+  border-radius: 16px;
+  box-shadow: 0 2px 12px var(--shadow-overlay-075);
+  padding: 2rem 1.5rem 1.5rem 1.5rem;
+  margin-top: 2rem;
+  border: 2.5px solid var(--border-light);
+}
+
+/* Form switch */
+.form-switch .form-check-input {
+  width: 46px;
+  height: 26px;
+  cursor: pointer;
+  position: relative;
+  appearance: none;
+  -webkit-appearance: none;
+  border-radius: 26px;
+  background-color: #fff;
+  border: 2.5px solid var(--success-green);
+  transition: 0.2s, border-color 0.2s;
+  box-shadow: 0 2px 8px var(--shadow-overlay-075);
+}
+
+.form-switch .form-check-input:checked {
+  background-color: var(--success-green) !important;
+  border-color: #d1d5db;
+  box-shadow: 0 1px 4px var(--background-white);
+}
+
+.form-switch .form-check-input::before {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 15px;
+  height: 15px;
+  background-color: var(--background-white);
+  border-radius: 50%;
+  transition: 0.3s;
+  box-shadow: 0 1px 4px var(--background-mint);
+}
+
+.form-switch .form-check-input:checked::before {
+  transform: translateX(20px);
+  width: 15px;
+  height: 15px;
+  border-color: var(--border-gray);
+  background-color: var(--background-light-mint);
+}
+
+
+.form-check-input:disabled {
+  background-color: #f3f4f6;
+  border-color: var(--success-green) !important;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+
+
+/* Add spacing between table and card header */
+.card-header {
+  margin-bottom: .5rem;
+}
+
+/* Make sticky table header more visible */
+thead th {
+  box-shadow: 0 2px 8px var(--shadow-overlay-12);
+}
+
+/* Add a subtle border to the bottom of the header */
+.header {
+  border-bottom: 2px solid var(--border-light);
+  padding-bottom: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.out-of-stock {
+  color: var(--error-red);
+  font-weight: bold;
+}
+
+.low-stock {
+  color: var(--warning-yellow);
+  font-weight: bold;
+}
+
+.in-stock {
+  color: var(--success-green);
+  font-weight: bold;
+}
+
+.action-button {
+  background: none;
+  border: none;
+  margin: 0 4px;
+  cursor: pointer;
+  color: var(--text-primary);
+}
+
+.action-button.delete {
+  color: var(--error-red);
+}
+
+.filter-icon {
+  display: flex;
+  align-items: center;
+  margin-right: 8px;
+  font-size: 2rem;
+  color: var(--text-secondary);
+}
+
+/* Medicine Management Search & Filter Card */
+.search-filter-card {
+  border: 2.5px solid var(--border-light);
+  border-radius: 16px;
+  box-shadow: 0 1px 4px var(--shadow-overlay-075);
+  background: var(--background-white);
+  margin-bottom: 1.5rem;
+  padding: 1.5rem 1rem;
+}
+
+/* Flex layout for search/filter row */
+.search-filter-row {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .search-filter-row {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+/* Search input group */
+.input-group {
+  max-width: 100%;
+}
+
+.input-group-text {
+  background: var(--background-white);
+  border-right: none;
+  color: var(--text-secondary);
+  font-size: 1.5rem;
+}
+
+.form-control {
+  border-left: none;
+  font-size: 1rem;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  box-shadow: none;
+}
+
+.form-control:focus {
+  border-color: var(--primary-blue);
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.10);
+}
+
+/* Filter dropdown */
+.filter-dropdown {
+  display: flex;
+  align-items: center;
+  min-width: 200px;
+}
+
+.filter-dropdown i {
+  font-size: 2rem;
+  color: var(--primary-blue-soft);
+  margin-right: 0.5rem;
+
+}
+
+  /* Modern style for filter dropdown container */
+  .search-filter-card .filter-dropdown,
+  .d-flex.align-items-center.ms-md-3 {
+    min-width: 200px;
+    border: 2.5px solid var(--border-light);
+    border-radius: 8px;
+    background: var(--background-white);
+    box-shadow: 0 1px 4px var(--shadow-overlay-075);
+    padding: 0.3rem 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  /* Icon style */
+  .d-flex.align-items-center.ms-md-3 i,
+  .search-filter-card .filter-dropdown i {
+    font-size: 1.5rem;
+    color: var(--primary-blue);
+    margin-right: 0.5rem;
+    transition: color 0.2s;
+  }
+
+  /* Select style */
+  .form-select {
+    border: none;
+    box-shadow: none;
+    background: transparent;
+    color: var(--primary-blue);
+    font-size: 1.1rem;
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    outline: none;
+    transition: color 0.2s;
+  }
+
+  /* Focus effect for container and select */
+  .search-filter-card .filter-dropdown:focus-within,
+  .d-flex.align-items-center.ms-md-3:focus-within {
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+  }
+
+  .form-select:focus {
+    color: var(--primary-blue-dark);
+  }
+
+.bg-primary-blue-light {
+  background-color: var(--primary-blue-light) !important;
+}
+
+.bg-success-green {
+  background-color: var(--success-green) !important;
+}
