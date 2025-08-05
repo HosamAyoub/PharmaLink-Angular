@@ -121,8 +121,9 @@ export class Profile implements OnInit {
       dateOfBirth: this.profile.dateOfBirth,
       country: this.profile.country,
       address: this.profile.address,
-      patientDiseases: this.profile.patientDiseases,
-      patientDrugs: this.profile.patientDrugs,
+      medicalHistory: this.profile.medicalHistory,
+      medications: this.profile.medications,
+      allergies: this.profile.allergies,
     };
 
     const urlWithId = `${this.urlEdit}/${this.accountId}`;

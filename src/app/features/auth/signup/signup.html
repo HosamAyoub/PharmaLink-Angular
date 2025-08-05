@@ -340,29 +340,40 @@
       @else if (step === 2) {
       <div class="step-content">
         <div class="form-group">
-          <label for="patientDiseases" class="form-label optional"
-            >Patient Diseases</label
+          <label for="MedicalHistory" class="form-label optional"
+            >Medical History</label
           >
           <textarea
-            id="patientDiseases"
-            name="patientDiseases"
+            id="MedicalHistory"
+            name="MedicalHistory"
             class="form-input"
-            [(ngModel)]="formModel.patientDiseases"
+            [(ngModel)]="formModel.MedicalHistory"
             placeholder="List any diseases (optional)"
-            rows="4"
+            rows="3"
           ></textarea>
         </div>
-        <div class="form-group">
-          <label for="patientDrugs" class="form-label optional"
-            >Patient Drugs</label
+        <div class="form-group mt-3">
+          <label for="Medications" class="form-label optional"
+            >Current Medications</label
           >
           <textarea
-            id="patientDrugs"
-            name="patientDrugs"
+            id="Medications"
+            name="Medications"
             class="form-input"
-            [(ngModel)]="formModel.patientDrugs"
-            placeholder="List any drugs (optional)"
-            rows="4"
+            [(ngModel)]="formModel.Medications"
+            placeholder="List any medicines (optional)"
+            rows="3"
+          ></textarea>
+        </div>
+        <div class="form-group mt-3">
+          <label for="Allergies" class="form-label optional">Allergies</label>
+          <textarea
+            id="Allergies"
+            name="Allergies"
+            class="form-input"
+            [(ngModel)]="formModel.Allergies"
+            placeholder="List any allergies (optional)"
+            rows="3"
           ></textarea>
         </div>
         <div class="note">

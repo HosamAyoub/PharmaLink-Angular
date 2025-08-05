@@ -1,87 +1,105 @@
 <div class="profile-container">
+  <!-- Profile Header Section -->
   <div class="profile-header">
+    <!-- User Avatar with Edit Button -->
     <div class="profile-avatar">
       <div class="profile-avatar-circle">
         <span class="profile-avatar-icon">{{
-          profile ? (profile.name || "U").charAt(0).toUpperCase() : "U"
+          (profile?.name || "U").charAt(0).toUpperCase()
         }}</span>
       </div>
-      <div class="profile-avatar-edit">
-        <button class="avatar-edit-btn" title="Change Avatar">
-          <span class="edit-icon">📷</span>
-        </button>
-      </div>
     </div>
+
+    <!-- Profile Header Information -->
     <div class="profile-header-info">
+      <!-- Header Content with Edit Button -->
       <div class="profile-header-content">
         <h1>My Profile</h1>
         <button class="profile-edit-btn" (click)="toggleEditMode()">
-          <span class="edit-icon">{{ editMode ? "💾" : "✏️" }}</span>
-          {{ editMode ? "Save Changes" : "Edit Profile" }}
+          @if (editMode) {
+          <span class="edit-icon"><i class="bi bi-floppy"></i></span>
+          <span>Save Changes</span>
+
+          } @else {
+          <span class="edit-icon"><i class="bi bi-pencil"></i></span>
+          <span>Edit Profile</span>
+          }
         </button>
       </div>
+
+      <!-- User Main Information Display -->
       <div class="profile-user-main">
         <div class="profile-user-name">
-          {{ profile ? profile.name || "User Name" : "User Name" }}
+          {{ profile?.name || "User Name" }}
         </div>
+
         <div class="profile-user-email">
-          {{ profile ? profile.country || "Country" : "Country" }}
-        </div>
-        <div class="profile-user-status">
-          <span class="status-indicator active"></span>
-          Online
+          <i class="fa-solid fa-location-dot text-muted me-2"></i>
+          <span>{{ (profile && profile.country) || "Country" }}, </span>
+          <span> {{ (profile && profile.address) || "Address" }}</span>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Tab Navigation -->
+  <!-- Tab Navigation Bar -->
   <div class="profile-tabs">
+    <!-- Personal Information Tab -->
     <button
       class="profile-tab"
       [class.active]="activeTab() === 'personal'"
       (click)="switchTab('personal')"
     >
-      <span class="tab-icon">👤</span>
+      <span class="tab-icon"><i class="bi bi-person me-2"></i></span>
       Personal Info
     </button>
+
+    <!-- Medical Info Tab -->
     <button
       class="profile-tab"
       [class.active]="activeTab() === 'medical'"
       (click)="switchTab('medical')"
     >
-      <span class="tab-icon">🏥</span>
-      Medical History
+      <span class="tab-icon"><i class="bi bi-hospital"></i></span>
+      Medical Info
     </button>
+
+    <!-- Order History Tab -->
     <button
       class="profile-tab"
       [class.active]="activeTab() === 'orders'"
       (click)="switchTab('orders')"
     >
-      <span class="tab-icon">📦</span>
+      <span class="tab-icon"><i class="bi bi-bag me-2"></i></span>
       Order History
     </button>
+
+    <!-- Settings Tab -->
     <button
       class="profile-tab"
       [class.active]="activeTab() === 'settings'"
       (click)="switchTab('settings')"
     >
-      <span class="tab-icon">⚙️</span>
+      <span class="tab-icon"><i class="bi bi-gear me-2"></i></span>
       Settings
     </button>
   </div>
 
+  <!-- Main Content Area - Loading, Profile Data, or Error -->
   @if (isLoading()) {
+  <!-- Loading State -->
   <div class="profile-loading">
     <app-loading-spinner></app-loading-spinner>
   </div>
   } @else if (profile) {
-  <!-- Tab Content -->
+  <!-- Profile Content - Main Data Display -->
   <div class="tab-content">
+    <!-- Personal Information Tab -->
     @if (activeTab() === 'personal') {
     <div class="personal-info-section">
       <div class="section-header">
         <h2>Personal Information</h2>
+        <!-- Edit Mode Actions -->
         @if (editMode) {
         <div class="edit-actions">
           <button class="btn-cancel" (click)="cancelEdit()">Cancel</button>
@@ -90,7 +108,9 @@
         }
       </div>
 
+      <!-- Personal Information Fields Grid -->
       <div class="info-grid">
+        <!-- Full Name Field -->
         <div class="info-item">
           <label>Full Name:</label>
           @if (editMode && profile) {
@@ -102,9 +122,11 @@
             required
           />
           } @else {
-          <span>{{ profile ? profile.name : "Not provided" }}</span>
+          <span>{{ profile.name || "Not provided" }}</span>
           }
         </div>
+
+        <!-- Date of Birth Field -->
         <div class="info-item">
           <label>Date of Birth:</label>
           @if (editMode && profile) {
@@ -116,11 +138,11 @@
             required
           />
           } @else {
-          <span>{{
-            profile ? (profile.dateOfBirth | date) : "Not provided"
-          }}</span>
+          <span>{{ (profile.dateOfBirth | date) || "Not provided" }}</span>
           }
         </div>
+
+        <!-- Gender Field -->
         <div class="info-item">
           <label>Gender:</label>
           @if (editMode && profile) {
@@ -134,15 +156,14 @@
             <option [value]="1">Female</option>
           </select>
           } @else {
-          <span>{{
-            profile
-              ? profile.gender === 0
-                ? "Male"
-                : "Female"
-              : "Not specified"
-          }}</span>
+          <span>
+            @if (profile.gender === 0) { Male } @else if (profile.gender === 1)
+            { Female } @else { Not specified }
+          </span>
           }
         </div>
+
+        <!-- Country Field -->
         <div class="info-item">
           <label>Country:</label>
           @if (editMode && profile) {
@@ -154,9 +175,11 @@
             required
           />
           } @else {
-          <span>{{ profile ? profile.country : "Not provided" }}</span>
+          <span>{{ profile.country || "Not provided" }}</span>
           }
         </div>
+
+        <!-- Address Field -->
         <div class="info-item full-width">
           <label>Address:</label>
           @if (editMode && profile) {
@@ -166,51 +189,44 @@
             rows="3"
           ></textarea>
           } @else {
-          <span>{{
-            profile ? profile.address || "Not provided" : "Not provided"
-          }}</span>
+          <span>{{ profile.address || "Not provided" }}</span>
           }
         </div>
       </div>
     </div>
-    } @if (activeTab() === 'medical') {
+    }
+
+    <!-- Medical History Tab -->
+    @if (activeTab() === 'medical') {
     <div class="medical-history-section">
       <div class="section-header">
-        <h2>Medical History</h2>
-        <div class="medical-badge">
-          <span class="badge-icon">🩺</span>
-          Health Record
-        </div>
+        <h2>Medical Information</h2>
       </div>
 
       <div class="medical-info">
+        <!-- Medical History Section -->
         <div class="medical-section">
           <div class="medical-card">
             <div class="card-header">
-              <h3>Current Diseases</h3>
+              <h3>Medical History</h3>
               <span class="card-icon">🦠</span>
             </div>
             <div class="card-content">
               @if (editMode && profile) {
               <textarea
-                [(ngModel)]="profile.patientDiseases"
+                [(ngModel)]="profile.medicalHistory"
                 class="medical-textarea"
                 rows="3"
                 placeholder="Enter current diseases..."
               ></textarea>
               } @else {
-              <p>
-                {{
-                  profile
-                    ? profile.patientDiseases || "No diseases recorded"
-                    : "No diseases recorded"
-                }}
-              </p>
+              <p>{{ profile.medicalHistory || "No diseases recorded" }}</p>
               }
             </div>
           </div>
         </div>
 
+        <!-- Current Medications Section -->
         <div class="medical-section">
           <div class="medical-card">
             <div class="card-header">
@@ -220,34 +236,51 @@
             <div class="card-content">
               @if (editMode && profile) {
               <textarea
-                [(ngModel)]="profile.patientDrugs"
+                [(ngModel)]="profile.medications"
                 class="medical-textarea"
                 rows="3"
                 placeholder="Enter current medications..."
               ></textarea>
               } @else {
-              <p>
-                {{
-                  profile
-                    ? profile.patientDrugs || "No medications recorded"
-                    : "No medications recorded"
-                }}
-              </p>
+              <p>{{ profile.medications || "No medications recorded" }}</p>
+              }
+            </div>
+          </div>
+        </div>
+
+        <!-- Allergies Section -->
+        <div class="medical-section">
+          <div class="medical-card">
+            <div class="card-header">
+              <h3>Allergies</h3>
+              <span class="card-icon">🤧</span>
+            </div>
+            <div class="card-content">
+              @if (editMode && profile) {
+              <textarea
+                [(ngModel)]="profile.allergies"
+                class="medical-textarea"
+                rows="3"
+                placeholder="Enter your allergies..."
+              ></textarea>
+              } @else {
+              <p>{{ profile.allergies || "No Allergies recorded" }}</p>
               }
             </div>
           </div>
         </div>
       </div>
     </div>
-    } @if (activeTab() === 'orders') {
+    }
+
+    <!-- Order History Tab -->
+    @if (activeTab() === 'orders') {
     <div class="order-history-section">
       <div class="section-header">
         <h2>Order History</h2>
-        <div class="orders-badge">
-          <span class="badge-icon">📋</span>
-          Recent Orders
-        </div>
       </div>
+
+      <!-- Placeholder for No Orders -->
       <div class="orders-placeholder">
         <div class="placeholder-icon">📦</div>
         <h3>No Orders Yet</h3>
@@ -257,16 +290,18 @@
         <button class="cta-button">Browse Products</button>
       </div>
     </div>
-    } @if (activeTab() === 'settings') {
+    }
+
+    <!-- Account Settings Tab -->
+    @if (activeTab() === 'settings') {
     <div class="settings-section">
       <div class="section-header">
         <h2>Account Settings</h2>
-        <div class="settings-badge">
-          <span class="badge-icon">⚙️</span>
-          Preferences
-        </div>
       </div>
+
+      <!-- Settings Options Grid -->
       <div class="settings-grid">
+        <!-- Email Notifications Setting -->
         <div class="setting-item">
           <div class="setting-info">
             <h4>Email Notifications</h4>
@@ -277,6 +312,8 @@
             <span class="slider"></span>
           </label>
         </div>
+
+        <!-- SMS Notifications Setting -->
         <div class="setting-item">
           <div class="setting-info">
             <h4>SMS Notifications</h4>
@@ -287,6 +324,8 @@
             <span class="slider"></span>
           </label>
         </div>
+
+        <!-- Privacy Mode Setting -->
         <div class="setting-item">
           <div class="setting-info">
             <h4>Privacy Mode</h4>
@@ -302,6 +341,7 @@
     }
   </div>
   } @else {
+  <!-- Error State - Profile Data Not Available -->
   <div class="profile-error">
     <div class="error-icon">⚠️</div>
     <h3>Unable to Load Profile</h3>

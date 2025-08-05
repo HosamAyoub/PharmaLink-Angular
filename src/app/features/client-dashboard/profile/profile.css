@@ -82,7 +82,7 @@
   transform: scale(1.05);
 }
 
-.profile-avatar-circle::after {
+/* .profile-avatar-circle::after {
   content: "";
   position: absolute;
   bottom: 2px;
@@ -92,7 +92,7 @@
   background-color: var(--success-green);
   border-radius: 50%;
   border: 3px solid var(--background-white);
-}
+} */
 
 .profile-avatar-icon {
   font-size: 2.5rem;
