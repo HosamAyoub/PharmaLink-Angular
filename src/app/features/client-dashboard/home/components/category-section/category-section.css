@@ -26,6 +26,47 @@
   gap: 1rem; /* Default gap for all screens */
 }
 
+/* Override app-category component styles specifically in category-section */
+.category-cards-container app-category .card {
+  max-width: 386px !important;
+  padding: 25px 92px !important;
+  border: none;
+  box-shadow: 0 4px 24px var(--shadow-dark), 0 1.5px 6px var(--shadow-dark);
+  transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
+    box-shadow 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  background: var(--background-white);
+}
+
+.category-cards-container app-category .card p {
+  font-size: 14px;
+  color: var(--primary-blue);
+}
+
+.category-cards-container app-category .card:hover {
+  transform: translateY(-8px) scale(1.04);
+  box-shadow: 0 8px 32px var(--shadow-dark), 0 3px 12px var(--shadow-dark);
+}
+
+.category-cards-container app-category .icon {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+  margin: 0 auto 16px auto;
+}
+
+.category-cards-container app-category .card-body {
+  text-align: center;
+}
+
+.category-cards-container app-category .card-title {
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.category-cards-container app-category .card-text {
+  margin: 0;
+}
+
 .category-card-wrapper {
   display: flex;
   flex-direction: column;
@@ -51,14 +92,14 @@
     gap: 0.75rem; /* Smaller gap to fit 4 cards */
   }
 
-  .category-card-wrapper {
+  .category-cards-container app-category {
     flex: 0 0 calc(25% - 0.5625rem); /* 25% minus (3 gaps * 0.75rem / 4 cards) */
     max-width: calc(25% - 0.5625rem);
   }
 
-  .card {
+  .category-cards-container app-category .card {
     height: 100%;
-    max-width: none;
+    max-width: none !important;
     width: 100%;
     padding: 25px 10px !important; /* Reduced padding for 4 cards */
   }
@@ -66,19 +107,28 @@
 
 /* Medium screens (md) - 2 cards per row with flex-grow */
 @media (min-width: 768px) and (max-width: 991px) {
-  .category-card-wrapper {
+  .category-cards-container app-category {
     flex: 1 1 calc(50% - 0.5rem); /* Adjust for consistent gap */
     min-width: 200px;
   }
 
-  .card {
+  .category-cards-container app-category .card {
     height: 100%;
-    max-width: none;
+    max-width: none !important;
     width: 100%;
     flex-grow: 1;
     padding: 25px 30px !important;
   }
 }
+
+  .category-cards-container app-category .card {
+    height: 100%;
+    max-width: none !important;
+    width: 100%;
+    flex-grow: 1;
+    padding: 25px 30px !important;
+  }
+
 
 /* Small screens (sm and below) - One card per row, full width */
 @media (max-width: 767px) {
@@ -87,13 +137,13 @@
     gap: 1rem;
   }
 
-  .category-card-wrapper {
+  .category-cards-container app-category {
     flex: none;
     width: 100%;
   }
 
-  .card {
-    max-width: none;
+  .category-cards-container app-category .card {
+    max-width: none !important;
     width: 100%;
     margin: 0;
     padding: 25px 40px !important;
@@ -106,7 +156,7 @@
     padding: 0 1rem;
   }
 
-  .card {
+  .category-cards-container app-category .card {
     padding: 20px 30px !important;
   }
 }

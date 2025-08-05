@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-
+ import { RouterOutlet } from '@angular/router';
 @Component({
   selector: 'app-pharmacy-layout',
   imports: [RouterOutlet],
-  templateUrl: './pharmacy-layout.html',
-  styleUrl: './pharmacy-layout.css'
+templateUrl: './pharmacy-layout.html',
+  styleUrls: ['./pharmacy-layout.css']
 })
 export class PharmacyLayout {
 
+ 
 }

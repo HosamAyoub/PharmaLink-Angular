@@ -1,0 +1,71 @@
+<!-- Wrapper with responsive flex-direction -->
+<div class="d-flex flex-column flex-md-row" id="mainWrapper">
+  <!-- Sidebar -->
+  <app-side-bar
+    (categoryNameSelected)="onCategoryNameSelected($event)"
+    [selectedCategoryInput]="categoryName"
+  >
+  </app-side-bar>
+
+  <!-- Main Content -->
+  <div class="flex-grow-1" id="pageContent">
+    <div class="container-fluid px-0">
+      <div class="card-list-grid">
+        @for (drug of Drugs(); track $index) {
+        <div class="card card-grid-item border-0">
+          <div
+            class="card drug-card border-0 shadow-sm w-100 h-100 rounded-3 transition hover-shadow position-relative"
+          >
+            <div class="card-body d-flex flex-column">
+              <div class="text-center mb-3">
+                <img
+                  [src]="
+                    hasImageError($index)
+                      ? 'assets/images/error-image.jpg'
+                      : drug.imageUrl
+                  "
+                  alt="Drug Image"
+                  class="img-fluid product-image"
+                  style="max-width: 100%"
+                  (error)="onImageError($event, $index)"
+                  (load)="onImageLoad($event)"
+                  [class.error]="hasImageError($index)"
+                />
+              </div>
+              <h5 class="fw-bold text-dark mb-2 text-center text-md-start">
+                {{ drug.name }}
+              </h5>
+              <p class="text-muted mb-3 text-center text-md-start">
+                {{ drug.drugCategory }}
+              </p>
+
+              <div
+                class="d-flex flex-column flex-sm-row justify-content-between align-items-stretch align-items-sm-center gap-2 mt-auto"
+              >
+                <button
+                  class="btn btn-modern-primary btn-modern-square flex-grow-1 me-sm-2"
+                  [routerLink]="['/client/DrugDetails', drug.drugId]"
+                >
+                  View Details
+                </button>
+                <button
+                  class="btn bg-transparent border-0 align-self-center p-2"
+                  (click)="Category_ToggleFavorites(drug.drugId)"
+                >
+                  <i
+                    [ngClass]="
+                      Category_isFavorite(drug.drugId)
+                        ? 'fa-solid fa-heart text-danger'
+                        : 'fa-regular fa-heart text-secondary'
+                    "
+                  ></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>

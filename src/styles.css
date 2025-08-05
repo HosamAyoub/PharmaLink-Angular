@@ -13,7 +13,8 @@ body {
   --status-red: #991b1b;
   --primary-blue: #2563eb;
   --primary-blue-light: #347cef;
-  --primary-blue-dark: #4267b9;
+  --primary-blue-background: #2563eb1a;
+  --primary-blue-dark: #2853b0;
   --background-mint: #dcfce7;
   --background-light-mint: #f0fdf4;
   --background-off-white: #eeeeee;
@@ -25,6 +26,7 @@ body {
   --text-placeholder: #9ca3af;
   --border-gray: #d1d5db;
   --success-green: #166534;
+  --light-green:#16A34A;
   --success-green-light: rgba(16, 185, 129, 0.1);
   --error-red: #ef4444;
   --error-red-light: rgba(239, 68, 68, 0.1);
@@ -32,8 +34,17 @@ body {
   --error-border: #fecaca;
   --error-text: #dc2626;
   --disabled-gray: #d1d5db;
-  --shadow-primary: #667eea4d;
-  --shadow-dark: #0000001a;
+  --shadow-primary: rgba(102, 126, 234, 0.3);
+  --shadow-dark: rgba(0, 0, 0, 0.1);
+
+  /*added by Mariem :)*/
+  --warning-yellow: #f59e0b;
+  --warning-yellow-light: #fef3c7;
+  --primary-blue-soft: rgba(37, 99, 235, 0.1);
+  --purple: #6f42c1;
+  --purple-light: rgba(111, 66, 193, 0.1);
+  --orange: #fd7e14;
+  --orange-light: rgba(253, 126, 20, 0.1);
 
   /* Loading spinner colors */
   --pill-left-color: #14cad0;
@@ -58,14 +69,19 @@ body {
 
   --black: #000000;
 
+  --violet: #9333EA;
+  --orange:#EA580C;
+
   /* Blue violet */
   /* Removed duplicated color variables below, as they are already defined above with different names or values. */
 
   /* Extracted from inline HTML */
   /* The following variables were extracted from inline HTML/CSS for maintainability. Use these for any new color usage instead of hardcoding. */
   --border-gray-light: #dee2e6;
-  --icon-muted: #888888; /* Used for muted icons, extracted from inline HTML */
-  --section-bg-light: #cdcdcd0e; /* Used for section backgrounds, extracted from inline HTML */
+  --icon-muted: #888888;
+  /* Used for muted icons, extracted from inline HTML */
+  --section-bg-light: #cdcdcd0e;
+  /* Used for section backgrounds, extracted from inline HTML */
   /* Additional extracted colors from all CSS/HTML */
   --gray-navbar-bg: #f8f9fa;
   --gray-navbar-border: #adb5bd;
@@ -96,24 +112,37 @@ body {
   --shadow-overlay-4: rgba(0, 0, 0, 0.4);
   --shadow-overlay-5: rgba(0, 0, 0, 0.5);
   --danger-red: #dc3545;
+
+  --warning-yellow: #f59e0b;
+  --warning-yellow-light: #fef3c7;
+  --primary-blue-soft: rgba(37, 99, 235, 0.1);
+  --purple: #6f42c1;
+  --purple-light: rgba(111, 66, 193, 0.1);
+  --orange: #fd7e14;
+  --orange-light: rgba(253, 126, 20, 0.1);
 }
 
 @keyframes upDown {
   0% {
     transform: translateY(0);
   }
+
   20% {
     transform: translateY(-12px);
   }
+
   35% {
     transform: translateY(0);
   }
+
   45% {
     transform: translateY(-6px);
   }
+
   55% {
     transform: translateY(0);
   }
+
   100% {
     transform: translateY(0);
   }
@@ -162,7 +191,8 @@ body {
 
 .btn-modern-primary:focus {
   outline: none;
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3), 0 0 0 3px rgba(59, 130, 246, 0.2);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3),
+    0 0 0 3px rgba(59, 130, 246, 0.2);
 }
 
 /* Secondary Button - Green Gradient */
@@ -240,6 +270,7 @@ body {
   align-items: center;
   justify-content: center;
   cursor: pointer;
+
 }
 
 .btn-modern-outline:hover {
@@ -315,6 +346,7 @@ body {
 
 /* Mobile Responsive */
 @media (max-width: 768px) {
+
   .btn-modern-primary,
   .btn-modern-secondary,
   .btn-modern-danger,
@@ -335,6 +367,7 @@ body {
 }
 
 @media (max-width: 480px) {
+
   .btn-modern-primary,
   .btn-modern-secondary,
   .btn-modern-danger,
