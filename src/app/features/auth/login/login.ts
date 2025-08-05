@@ -69,7 +69,7 @@ export class Login {
         if (role == 'Admin') {
           redirectUrl = '/admin/home';
         } else if (role == 'Pharmacy') {
-          redirectUrl = '/pharmacy/home';
+          redirectUrl = '/pharmacy/dashboard';
         }
         console.log(`redirectUrl: ${redirectUrl}`);
         console.log(this.route.snapshot.queryParams['returnUrl']);

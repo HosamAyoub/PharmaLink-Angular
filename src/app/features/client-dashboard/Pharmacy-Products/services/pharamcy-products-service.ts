@@ -6,7 +6,7 @@ import { ConfigService } from '../../../../shared/services/config.service';
 import { APP_CONSTANTS } from '../../../../shared/constants/app.constants';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PharmacyProductsService {
   http = inject(HttpClient);
@@ -18,15 +18,36 @@ export class PharmacyProductsService {
     return this.http.get<Ipharmacy>(`${url}/${id}`);
   }
 
-  getPharmacyProducts(pharmacyId: number, pageNumber: number, pageSize: number): Observable<any> {
-    const url = this.configService.getFullApiUrl(this.ENDPOINTS.PHARMACY_STOCK);
-    var params = { pharmacyId: pharmacyId , pageNumber: pageNumber, pageSize: pageSize};
+  getPharmacyProducts(
+    pharmacyId: number,
+    pageNumber: number,
+    pageSize: number
+  ): Observable<any> {
+    const url = this.configService.getFullApiUrl(
+      this.ENDPOINTS.BATCH_PHARMACY_STOCK_BY_ID
+    );
+    var params = {
+      pharmacyId: pharmacyId,
+      pageNumber: pageNumber,
+      pageSize: pageSize,
+    };
     return this.http.get<any>(url, { params });
   }
 
-  getPharmacyProductsByCategory(pharmacyId: number, categoryName: string, pageNumber: number, pageSize: number): Observable<any> {
-    const url = this.configService.getFullApiUrl(`${this.ENDPOINTS.PHARMACY_STOCK}/${categoryName}`);
-    var params = { pharmacyId: pharmacyId,pageNumber: pageNumber, pageSize: pageSize };
+  getPharmacyProductsByCategory(
+    pharmacyId: number,
+    categoryName: string,
+    pageNumber: number,
+    pageSize: number
+  ): Observable<any> {
+    const url = this.configService.getFullApiUrl(
+      `${this.ENDPOINTS.PHARMACY_STOCK}/${categoryName}`
+    );
+    var params = {
+      pharmacyId: pharmacyId,
+      pageNumber: pageNumber,
+      pageSize: pageSize,
+    };
     return this.http.get<any>(url, { params });
   }
 }
