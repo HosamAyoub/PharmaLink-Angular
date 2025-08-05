@@ -25,6 +25,7 @@ body {
   --text-placeholder: #9ca3af;
   --border-gray: #d1d5db;
   --success-green: #166534;
+  --light-green:#16A34A;
   --success-green-light: rgba(16, 185, 129, 0.1);
   --error-red: #ef4444;
   --error-red-light: rgba(239, 68, 68, 0.1);
@@ -57,6 +58,9 @@ body {
   --gray-800: #64748b;
 
   --black: #000000;
+
+  --violet: #9333EA;
+  --orange:#EA580C;
 
   /* Blue violet */
   /* Removed duplicated color variables below, as they are already defined above with different names or values. */

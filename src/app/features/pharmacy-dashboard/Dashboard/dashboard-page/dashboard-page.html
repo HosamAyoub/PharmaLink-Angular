@@ -1,0 +1,26 @@
+<div class="dashboard-page">
+  <app-dashboard-header></app-dashboard-header>
+  <div class="container">
+    <div class="row">
+      @if (loading) {
+      <div class="loading-spinner">
+        <!-- Add your loading spinner here -->
+      </div>
+      } @else if (errorMessage) {
+      <div class="error-message">
+        {{ errorMessage }}
+      </div>
+      } @else {
+      <div class="dashboard-grid">
+        @for (card of cards; track card.title) {
+        <app-stats-card [title]="card.title" [value]="card.value" [description]="card.description" [trend]="card.trend"
+          [icon]="card.icon" [color]="card.color" />
+        }
+      </div>
+      }
+      <div class="quick-actions">
+        <app-quick-actions></app-quick-actions>
+      </div>
+    </div>
+  </div>
+</div>

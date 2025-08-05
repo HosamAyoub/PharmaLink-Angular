@@ -12,6 +12,7 @@ import {
 } from '@angular/common/http';
 // import { authInterceptor } from './interceptors/auth-interceptor';
 import { authInterceptor } from './shared/interceptors/auth-interceptor';
+import { provideClientHydration } from '@angular/platform-browser';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -19,5 +20,6 @@ export const appConfig: ApplicationConfig = {
     provideZonelessChangeDetection(),
     provideRouter(routes),
     provideHttpClient(withFetch(), withInterceptors([authInterceptor])),
+    provideClientHydration()
   ],
 };

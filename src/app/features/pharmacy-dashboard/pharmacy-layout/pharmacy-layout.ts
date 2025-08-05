@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { AuthService } from './../../../shared/services/auth.service';
+import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
 @Component({
@@ -9,4 +10,5 @@ import { RouterOutlet } from '@angular/router';
 })
 export class PharmacyLayout {
 
+ 
 }
