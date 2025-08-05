@@ -1,7 +1,10 @@
 <!-- Wrapper with responsive flex-direction -->
 <div class="d-flex flex-column flex-md-row" id="mainWrapper">
   <!-- Sidebar -->
-  <app-side-bar (categoryNameSelected)="onCategoryNameSelected($event)">
+  <app-side-bar
+    (categoryNameSelected)="onCategoryNameSelected($event)"
+    [selectedCategoryInput]="categoryName"
+  >
   </app-side-bar>
 
   <!-- Main Content -->

@@ -8,4 +8,5 @@ templateUrl: './pharmacy-layout.html',
 })
 export class PharmacyLayout {
 
+ 
 }

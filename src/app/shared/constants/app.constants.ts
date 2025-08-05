@@ -21,6 +21,10 @@ export const APP_CONSTANTS = {
       FAVORITES: 'favorites',
       ORDERS_SUBMIT: 'Orders/submit',
       ORDERS_CREATE_CHECKOUT_SESSION: 'Orders/CreateCheckoutSession',
+      PATIENT_PROFILE: 'Patient/Profile',
+      PATIENT_PROFILE_EDIT: 'Patient/UpdateProfile',
+      PHARMACY_ANALYSIS: 'Orders/analysis',
+      PHARMACY_STOCK_ANALYSIS: 'PharmacyStock/InventoryStatusByID',
     },
   },
   environment: {
@@ -33,5 +37,6 @@ export const APP_CONSTANTS = {
       enableGeolocation: true,
       maxNearbyPharmacies: 10,
     },
-  }
+  },
+  Cart: 'Cart'
 };

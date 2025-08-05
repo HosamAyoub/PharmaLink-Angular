@@ -44,8 +44,9 @@ export interface Patient {
   dateOfBirth: Date;
   country: string;
   address?: string;
-  patientDiseases?: string;
-  patientDrugs?: string;
+  medicalHistory?: string;
+  medications?: string;
+  allergies?: string;
 }
 
 export enum Roles {

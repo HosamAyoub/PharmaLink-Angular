@@ -1,0 +1,80 @@
+a{
+  text-decoration: none;
+}
+.quick-actions-section{
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  margin-top: 30px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+.quick-actions-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 275px));
+    gap: 25px;
+    padding: 20px;
+}
+.quick-action-card {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  transition: all 0.3s ease;
+  margin-right: 30px;
+}
+
+.quick-action-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+}
+
+.quick-action-card:hover .card-title {
+  color: var(--blue-200);
+  transition: color 0.3s ease;
+}
+
+.quick-action-card:hover span {
+  color: var(--blue-200);
+  transform: translateX(5px);
+  transition: all 0.3s ease;
+}
+
+.quick-action-card:hover span svg {
+  stroke: currentColor;
+}
+.quick-action-card .card-icon{
+    width: 45px;
+    height: 45px;
+    border-radius: 15px;
+}
+.quick-action-card .card-icon.blue {
+    background-color: var(--blue-200);
+}
+.quick-action-card .card-icon.green {
+    background-color: var(--light-green);
+}
+.quick-action-card .card-icon.purple {
+    background-color: var(--violet);
+}
+.quick-action-card .card-icon.orange {
+    background-color: var(--orange);
+}
+.quick-action-card .card-icon i{
+    font-size: 22px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: translateY(10px);
+}
+.quick-action-card .card-title {
+  font-size: 18px;
+  margin-top: 10px;
+}
+.quick-action-card .card-text {
+  font-size: 14px;
+  margin-top: 3px;
+  color: var(--gray-700);
+}

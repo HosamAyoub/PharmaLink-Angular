@@ -258,8 +258,9 @@ export class SignUp {
         dateOfBirth: this.formModel.dateOfBirth,
         country: this.formModel.country,
         address: this.formModel.address,
-        patientDiseases: this.formModel.patientDiseases,
-        patientDrugs: this.formModel.patientDrugs,
+        MedicalHistory: this.formModel.MedicalHistory,
+        Medications: this.formModel.Medications,
+        Allergies: this.formModel.Allergies,
       },
     };
 

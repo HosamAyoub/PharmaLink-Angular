@@ -65,7 +65,7 @@
 .error-code {
   font-size: 8rem;
   font-weight: 700;
-  color: #009688;
+  color: var(--error-red);
   line-height: 1;
   margin-bottom: 1rem;
   text-shadow: 0 4px 8px rgba(0, 150, 136, 0.2);

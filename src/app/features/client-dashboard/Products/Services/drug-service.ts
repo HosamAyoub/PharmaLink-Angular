@@ -1,0 +1,29 @@
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { ConfigService } from '../../../../shared/services/config.service';
+import { APP_CONSTANTS } from '../../../../shared/constants/app.constants';
+import { IDrug } from '../Models/IDrug';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class DrugService {
+  private ENDPOINTS = APP_CONSTANTS.API.ENDPOINTS;
+
+  constructor(private http: HttpClient, private config: ConfigService) {}
+
+  getDrugsByCategory(categoryName: string): Observable<IDrug[]> {
+    const url = this.config.getApiUrl(
+      `${this.ENDPOINTS.DRUG_CATEGORY}?Cname=${categoryName}`
+    );
+    console.log(url);
+
+    return this.http.get<IDrug[]>(url);
+  }
+
+  getRandomDrugs(): Observable<IDrug[]> {
+    const url = this.config.getApiUrl(this.ENDPOINTS.DRUG_RANDOM);
+    return this.http.get<IDrug[]>(url);
+  }
+}

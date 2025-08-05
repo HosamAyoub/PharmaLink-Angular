@@ -8,20 +8,36 @@ import { SideBar } from  '../../../shared/components/side-bar/side-bar';
 import { CommonModule, NgClass } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { FavoriteService } from '../../../Favorites/Services/favorite-service';
-import { IDrug } from '../../models/IDrug';
-import { DrugService } from '../../service/drug-service';
+import { DrugService } from '../../Services/drug-service';
+import { IDrug } from '../../Models/IDrug';
+import { ActivatedRoute } from '@angular/router';
+
 
 @Component({
-  selector: 'app-category-list',
-  templateUrl: './category-list.html',
-  styleUrls: ['./category-list.css'],
+  selector: 'client-products-screen',
+  templateUrl: './products-screen.html',
+  styleUrls: ['./products-screen.css'],
   imports: [SideBar, CommonModule, RouterLink, NgClass],
 })
-export class CategoryList {
+export class ProductsScreen {
   drugservice: DrugService = inject(DrugService);
   FavDrug: FavoriteService = inject(FavoriteService);
+  categoryName: string = '';
+
   Drugs = signal<IDrug[]>([]);
   imageErrors = new Set<number>(); // Track which images failed to load
+
+  /**
+   *
+   */
+  constructor() {
+    const route = inject(ActivatedRoute);
+    route.paramMap.subscribe(params => {
+      this.categoryName = params.get('categoryName') || '';
+      this.onCategoryNameSelected(this.categoryName);
+    });
+
+  }
 
   ReceiveCategoryDrugs(categoryDrugs: IDrug[]) {
     this.Drugs.set(categoryDrugs);

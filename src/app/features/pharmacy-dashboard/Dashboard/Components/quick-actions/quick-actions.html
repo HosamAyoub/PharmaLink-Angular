@@ -1,0 +1,63 @@
+<div class="quick-actions-section">
+    <div class="card-header">
+        <h4><span class="" [style.color]="'var(--blue-200)'"><svg xmlns="http://www.w3.org/2000/svg" width="24"
+                    height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trending-up h-4 w-4 mr-1">
+                    <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline>
+                    <polyline points="16 7 22 7 22 13"></polyline>
+                </svg></span>
+            Quick Actions</h4>
+        <p [style.color]="'var(--gray-800)'">Manage your pharmacy operations efficiently</p>
+    </div>
+    <div class="quick-actions-grid">
+        <div class="card quick-action-card" style="width: 18rem;"  >
+            <a [routerLink]="['/pharmacy/ordersManagement']">
+            <div class="card-body">
+                <div class="card-icon blue">
+                    <i class="fa-solid fa-clipboard-list"></i>
+                </div>
+                <h5 class="card-title">Manage Orders</h5>            
+                <p class="card-text">View and process customer orders</p>
+                <span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class=""><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></span>
+            </div>
+            </a>
+        </div>
+        <div class="card quick-action-card" style="width: 18rem;">
+            <a [routerLink]="['/pharmacy/medicinemanagement']">
+            <div class="card-body">
+                <div class="card-icon green">
+                    <i class="fa-solid fa-cubes"></i>
+                </div>
+                <h5 class="card-title">Medicine Inventory</h5>            
+                <p class="card-text">Add and manage your medicine stock</p>
+                <span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class=""><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></span>
+            </div>
+            </a>
+        </div>
+        <div class="card quick-action-card" style="width: 18rem;">
+            <a [routerLink]="['pharmacy/']">
+            <div class="card-body">
+                <div class="card-icon purple">
+                    <i class="fa-solid fa-chart-column"></i>
+                </div>
+                <h5 class="card-title">Analytics</h5>            
+                <p class="card-text">View detailed sales reports</p>
+                <span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class=""><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></span>           
+            </div>
+            </a>
+        </div>
+        <div class="card quick-action-card" style="width: 18rem;">
+            <a [routerLink]="['pharmacy/medicinemanagement']">
+            <div class="card-body">
+                <div class="card-icon orange">
+                    <i class="fa-solid fa-house-user"></i>
+                </div>
+                <h5 class="card-title">Pharmacy Profile</h5>            
+                <p class="card-text">Update your pharmacy information</p>
+                <span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class=""><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></span>
+            </div>
+            </a>
+        </div>
+
+    </div>
+</div>

@@ -13,6 +13,7 @@ import { Footer } from '../../shared/components/footer/footer';
 
 @Component({
   selector: 'app-home-screen',
+  standalone: true,
   imports: [
     Slider,
     ServiceSection,
