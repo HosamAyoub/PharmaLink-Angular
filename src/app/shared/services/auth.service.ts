@@ -30,8 +30,9 @@ export class AuthService {
         dateOfBirth: signUpData.patient.dateOfBirth,
         country: signUpData.patient.country,
         address: signUpData.patient.address,
-        patientDiseases: signUpData.patient.patientDiseases,
-        patientDrugs: signUpData.patient.patientDrugs,
+        medicalHistory: signUpData.patient.medicalHistory,
+        medications: signUpData.patient.medications,
+        allergies: signUpData.patient.allergies,
       },
     };
     const url = this.config.getApiUrl(this.ENDPOINTS.ACCOUNT_REGISTER);

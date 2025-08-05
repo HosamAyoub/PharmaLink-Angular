@@ -23,12 +23,15 @@
     "**/.angular/cache": true,
     "**/node_modules": true
   },
-  "task.autoDetect": "off",
+  "task.autoDetect": "on",
   "extensions.autoUpdate": false,
   "extensions.autoCheckUpdates": false,
   "workbench.settings.enableNaturalLanguageSearch": false,
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {},
-  "git.autofetch": false,
-  "git.autorefresh": false
+  "git.autofetch": true,
+  "git.autorefresh": true,
+  "git.enabled": true,
+  "git.blame.editorDecoration.enabled": false,
+  "prettier.enable": true
 }

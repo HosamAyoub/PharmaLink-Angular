@@ -49,12 +49,12 @@
       <li
         class="navbar-item nav-hover cursor-pointer"
         (click)="onclickCategory(category.name)"
-        [ngClass]="{ active: selectedCategory === category.name }"
+        [ngClass]="{ active: selectedCategory() === category.name }"
         role="button"
         tabindex="0"
       >
         <a class="nav-link d-flex align-items-center">
-          <img [src]="category.icon" />
+          <img [src]="category.image" />
           <span class="nav-link sidebar-category-name">{{
             category.name
           }}</span>

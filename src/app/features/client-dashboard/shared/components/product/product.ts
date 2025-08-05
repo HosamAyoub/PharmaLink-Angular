@@ -11,7 +11,11 @@ export class Product {
   @Input() product!: IProduct;
   @Input() showPharmacyName: boolean = false;
   @Input() index: number = 0;
-   imageErrors = new Set<number>(); // Track which images failed to load
+  imageErrors = new Set<number>(); // Track which images failed to load
+
+  addToCart(product: IProduct) {
+    // Implement add to cart functionality
+  }
 
     // Handle image loading errors
   onImageError(event: Event, productIndex?: number) {
