@@ -33,5 +33,6 @@ export const APP_CONSTANTS = {
       enableGeolocation: true,
       maxNearbyPharmacies: 10,
     },
-  }
+  },
+  Cart: 'Cart'
 };

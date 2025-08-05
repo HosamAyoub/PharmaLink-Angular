@@ -1,0 +1,9 @@
+<div style="padding: 1rem">
+  <p style="font-weight: 700; font-size: 1.875rem">Medicine Categories</p>
+  <p>Browse medicines by category to find what you need</p>
+  <div class="categories-container">
+    @for (item of categories; track $index) {
+    <app-category [category]="item"></app-category>
+    }
+  </div>
+</div>

@@ -145,8 +145,8 @@ body {
 }
 
 .icon {
-  /* width: 36px;
-  height: 36px; */
+  width: 42px;
+  height: 42px;
   animation: upDown 3s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
 }
 
