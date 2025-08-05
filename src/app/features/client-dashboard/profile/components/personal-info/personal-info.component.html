@@ -1,0 +1,138 @@
+<div class="personal-info-container">
+  <div class="section-header">
+    <h3>Personal Information</h3>
+    <button class="edit-btn" (click)="onToggleEdit()">
+      <span class="edit-icon">✏️</span>
+      @if (editMode) { Save } @else { Edit }
+    </button>
+  </div>
+
+  @if (profile) {
+  <form class="profile-form" autocomplete="off">
+    <div class="form-row">
+      <div class="form-group">
+        <label>
+          <span class="field-icon">👤</span>
+          Full Name
+        </label>
+        @if (editMode) {
+        <input
+          type="text"
+          [(ngModel)]="profile.name"
+          name="name"
+          class="form-input"
+          placeholder="Enter your full name"
+          (ngModelChange)="onProfileChange()"
+        />
+        } @else {
+        <p class="profile-text">
+          @if (profile.name) { {{ profile.name }} } @else { Not provided }
+        </p>
+        }
+      </div>
+
+      <div class="form-group">
+        <label>
+          <span class="field-icon">📅</span>
+          Date of Birth
+        </label>
+        @if (editMode) {
+        <input
+          type="date"
+          [(ngModel)]="profile.dateOfBirth"
+          name="dateOfBirth"
+          class="form-input"
+          (ngModelChange)="onProfileChange()"
+        />
+        } @else {
+        <p class="profile-text">
+          @if (profile.dateOfBirth) {
+          {{ profile.dateOfBirth | date : "mediumDate" }} } @else { Not provided
+          }
+        </p>
+        }
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>
+          <span class="field-icon">🌍</span>
+          Country
+        </label>
+        @if (editMode) {
+        <input
+          type="text"
+          [(ngModel)]="profile.country"
+          name="country"
+          class="form-input"
+          placeholder="Enter your country"
+          (ngModelChange)="onProfileChange()"
+        />
+        } @else {
+        <p class="profile-text">
+          @if (profile.country) { {{ profile.country }} } @else { Not provided }
+        </p>
+        }
+      </div>
+
+      <div class="form-group">
+        <label>
+          <span class="field-icon">⚧</span>
+          Gender
+        </label>
+        @if (editMode) {
+        <select
+          [(ngModel)]="profile.gender"
+          name="gender"
+          class="form-select"
+          (ngModelChange)="onProfileChange()"
+        >
+          <option [value]="0">Male</option>
+          <option [value]="1">Female</option>
+        </select>
+        } @else {
+        <p class="profile-text">
+          @if (profile.gender === 0) { Male } @else if (profile.gender === 1) {
+          Female } @else { Not specified }
+        </p>
+        }
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group full-width">
+        <label>
+          <span class="field-icon">📍</span>
+          Address
+        </label>
+        @if (editMode) {
+        <input
+          type="text"
+          [(ngModel)]="profile.address"
+          name="address"
+          class="form-input"
+          placeholder="Enter your address"
+          (ngModelChange)="onProfileChange()"
+        />
+        } @else {
+        <p class="profile-text">
+          @if (profile.address) { {{ profile.address }} } @else { Not provided }
+        </p>
+        }
+      </div>
+    </div>
+
+    @if (editMode) {
+    <div class="form-actions">
+      <button type="button" class="btn-cancel" (click)="onCancelEdit()">
+        Cancel
+      </button>
+      <button type="button" class="btn-save" (click)="onToggleEdit()">
+        Save Changes
+      </button>
+    </div>
+    }
+  </form>
+  }
+</div>

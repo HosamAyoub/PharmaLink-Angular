@@ -6,7 +6,6 @@ import { Router } from '@angular/router';
 import { ResponseData, SignUpData, User } from '../models/user.model';
 import { ConfigService } from './config.service';
 import { APP_CONSTANTS } from '../constants/app.constants';
-import { jwtDecode } from 'jwt-decode';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -127,12 +126,6 @@ export class AuthService {
             const expirationDate = new Date(resData.value.expiration);
             const now = new Date();
             const expirationDuration = expirationDate.getTime() - now.getTime();
-
-            const token = user.token;
-            if (token) {
-              const claims = jwtDecode(token);
-              console.log(claims);
-            }
             this.autoLogout(expirationDuration);
           })
         );

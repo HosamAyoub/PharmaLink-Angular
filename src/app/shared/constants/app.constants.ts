@@ -17,6 +17,8 @@ export const APP_CONSTANTS = {
       FAVORITES: 'favorites',
       ORDERS_SUBMIT: 'Orders/submit',
       ORDERS_CREATE_CHECKOUT_SESSION: 'Orders/CreateCheckoutSession',
+      PATIENT_PROFILE: 'Patient/Profile',
+      PATIENT_PROFILE_EDIT: 'Patient/UpdateProfile',
     },
   },
   environment: {

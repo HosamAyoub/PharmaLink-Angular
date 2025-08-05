@@ -1,1 +1,318 @@
-<p>profile works!</p>
+<div class="profile-container">
+  <div class="profile-header">
+    <div class="profile-avatar">
+      <div class="profile-avatar-circle">
+        <span class="profile-avatar-icon">{{
+          profile ? (profile.name || "U").charAt(0).toUpperCase() : "U"
+        }}</span>
+      </div>
+      <div class="profile-avatar-edit">
+        <button class="avatar-edit-btn" title="Change Avatar">
+          <span class="edit-icon">📷</span>
+        </button>
+      </div>
+    </div>
+    <div class="profile-header-info">
+      <div class="profile-header-content">
+        <h1>My Profile</h1>
+        <button class="profile-edit-btn" (click)="toggleEditMode()">
+          <span class="edit-icon">{{ editMode ? "💾" : "✏️" }}</span>
+          {{ editMode ? "Save Changes" : "Edit Profile" }}
+        </button>
+      </div>
+      <div class="profile-user-main">
+        <div class="profile-user-name">
+          {{ profile ? profile.name || "User Name" : "User Name" }}
+        </div>
+        <div class="profile-user-email">
+          {{ profile ? profile.country || "Country" : "Country" }}
+        </div>
+        <div class="profile-user-status">
+          <span class="status-indicator active"></span>
+          Online
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab Navigation -->
+  <div class="profile-tabs">
+    <button
+      class="profile-tab"
+      [class.active]="activeTab() === 'personal'"
+      (click)="switchTab('personal')"
+    >
+      <span class="tab-icon">👤</span>
+      Personal Info
+    </button>
+    <button
+      class="profile-tab"
+      [class.active]="activeTab() === 'medical'"
+      (click)="switchTab('medical')"
+    >
+      <span class="tab-icon">🏥</span>
+      Medical History
+    </button>
+    <button
+      class="profile-tab"
+      [class.active]="activeTab() === 'orders'"
+      (click)="switchTab('orders')"
+    >
+      <span class="tab-icon">📦</span>
+      Order History
+    </button>
+    <button
+      class="profile-tab"
+      [class.active]="activeTab() === 'settings'"
+      (click)="switchTab('settings')"
+    >
+      <span class="tab-icon">⚙️</span>
+      Settings
+    </button>
+  </div>
+
+  @if (isLoading()) {
+  <div class="profile-loading">
+    <app-loading-spinner></app-loading-spinner>
+  </div>
+  } @else if (profile) {
+  <!-- Tab Content -->
+  <div class="tab-content">
+    @if (activeTab() === 'personal') {
+    <div class="personal-info-section">
+      <div class="section-header">
+        <h2>Personal Information</h2>
+        @if (editMode) {
+        <div class="edit-actions">
+          <button class="btn-cancel" (click)="cancelEdit()">Cancel</button>
+          <button class="btn-save" (click)="toggleEditMode()">Save</button>
+        </div>
+        }
+      </div>
+
+      <div class="info-grid">
+        <div class="info-item">
+          <label>Full Name:</label>
+          @if (editMode && profile) {
+          <input
+            type="text"
+            [(ngModel)]="profile.name"
+            class="profile-input"
+            name="name"
+            required
+          />
+          } @else {
+          <span>{{ profile ? profile.name : "Not provided" }}</span>
+          }
+        </div>
+        <div class="info-item">
+          <label>Date of Birth:</label>
+          @if (editMode && profile) {
+          <input
+            type="date"
+            [value]="profile.dateOfBirth | date : 'yyyy-MM-dd'"
+            class="profile-input"
+            name="dateOfBirth"
+            required
+          />
+          } @else {
+          <span>{{
+            profile ? (profile.dateOfBirth | date) : "Not provided"
+          }}</span>
+          }
+        </div>
+        <div class="info-item">
+          <label>Gender:</label>
+          @if (editMode && profile) {
+          <select
+            [(ngModel)]="profile.gender"
+            class="profile-select"
+            name="gender"
+            required=""
+          >
+            <option [value]="0">Male</option>
+            <option [value]="1">Female</option>
+          </select>
+          } @else {
+          <span>{{
+            profile
+              ? profile.gender === 0
+                ? "Male"
+                : "Female"
+              : "Not specified"
+          }}</span>
+          }
+        </div>
+        <div class="info-item">
+          <label>Country:</label>
+          @if (editMode && profile) {
+          <input
+            type="text"
+            [(ngModel)]="profile.country"
+            class="profile-input"
+            name="country"
+            required
+          />
+          } @else {
+          <span>{{ profile ? profile.country : "Not provided" }}</span>
+          }
+        </div>
+        <div class="info-item full-width">
+          <label>Address:</label>
+          @if (editMode && profile) {
+          <textarea
+            [(ngModel)]="profile.address"
+            class="profile-textarea"
+            rows="3"
+          ></textarea>
+          } @else {
+          <span>{{
+            profile ? profile.address || "Not provided" : "Not provided"
+          }}</span>
+          }
+        </div>
+      </div>
+    </div>
+    } @if (activeTab() === 'medical') {
+    <div class="medical-history-section">
+      <div class="section-header">
+        <h2>Medical History</h2>
+        <div class="medical-badge">
+          <span class="badge-icon">🩺</span>
+          Health Record
+        </div>
+      </div>
+
+      <div class="medical-info">
+        <div class="medical-section">
+          <div class="medical-card">
+            <div class="card-header">
+              <h3>Current Diseases</h3>
+              <span class="card-icon">🦠</span>
+            </div>
+            <div class="card-content">
+              @if (editMode && profile) {
+              <textarea
+                [(ngModel)]="profile.patientDiseases"
+                class="medical-textarea"
+                rows="3"
+                placeholder="Enter current diseases..."
+              ></textarea>
+              } @else {
+              <p>
+                {{
+                  profile
+                    ? profile.patientDiseases || "No diseases recorded"
+                    : "No diseases recorded"
+                }}
+              </p>
+              }
+            </div>
+          </div>
+        </div>
+
+        <div class="medical-section">
+          <div class="medical-card">
+            <div class="card-header">
+              <h3>Current Medications</h3>
+              <span class="card-icon">💊</span>
+            </div>
+            <div class="card-content">
+              @if (editMode && profile) {
+              <textarea
+                [(ngModel)]="profile.patientDrugs"
+                class="medical-textarea"
+                rows="3"
+                placeholder="Enter current medications..."
+              ></textarea>
+              } @else {
+              <p>
+                {{
+                  profile
+                    ? profile.patientDrugs || "No medications recorded"
+                    : "No medications recorded"
+                }}
+              </p>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    } @if (activeTab() === 'orders') {
+    <div class="order-history-section">
+      <div class="section-header">
+        <h2>Order History</h2>
+        <div class="orders-badge">
+          <span class="badge-icon">📋</span>
+          Recent Orders
+        </div>
+      </div>
+      <div class="orders-placeholder">
+        <div class="placeholder-icon">📦</div>
+        <h3>No Orders Yet</h3>
+        <p>
+          Your order history will appear here once you make your first purchase.
+        </p>
+        <button class="cta-button">Browse Products</button>
+      </div>
+    </div>
+    } @if (activeTab() === 'settings') {
+    <div class="settings-section">
+      <div class="section-header">
+        <h2>Account Settings</h2>
+        <div class="settings-badge">
+          <span class="badge-icon">⚙️</span>
+          Preferences
+        </div>
+      </div>
+      <div class="settings-grid">
+        <div class="setting-item">
+          <div class="setting-info">
+            <h4>Email Notifications</h4>
+            <p>Receive updates about your orders and promotions</p>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" checked />
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div class="setting-item">
+          <div class="setting-info">
+            <h4>SMS Notifications</h4>
+            <p>Get SMS alerts for order status updates</p>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" />
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div class="setting-item">
+          <div class="setting-info">
+            <h4>Privacy Mode</h4>
+            <p>Hide your profile from other users</p>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" />
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+    </div>
+    }
+  </div>
+  } @else {
+  <div class="profile-error">
+    <div class="error-icon">⚠️</div>
+    <h3>Unable to Load Profile</h3>
+    <p>
+      We're having trouble loading your profile data. Please check your
+      connection and try again.
+    </p>
+    <button class="btn-retry" (click)="loadProfile()">
+      <span class="retry-icon">🔄</span>
+      Retry Loading
+    </button>
+  </div>
+  }
+</div>

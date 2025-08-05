@@ -13,7 +13,8 @@ body {
   --status-red: #991b1b;
   --primary-blue: #2563eb;
   --primary-blue-light: #347cef;
-  --primary-blue-dark: #4267b9;
+  --primary-blue-background: #2563eb1a;
+  --primary-blue-dark: #2853b0;
   --background-mint: #dcfce7;
   --background-light-mint: #f0fdf4;
   --background-off-white: #eeeeee;
@@ -43,7 +44,6 @@ body {
   --purple-light: rgba(111, 66, 193, 0.1);
   --orange: #fd7e14;
   --orange-light: rgba(253, 126, 20, 0.1);
-
 
   /* Loading spinner colors */
   --pill-left-color: #14cad0;
@@ -174,7 +174,8 @@ body {
 
 .btn-modern-primary:focus {
   outline: none;
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3), 0 0 0 3px rgba(59, 130, 246, 0.2);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3),
+    0 0 0 3px rgba(59, 130, 246, 0.2);
 }
 
 /* Secondary Button - Green Gradient */

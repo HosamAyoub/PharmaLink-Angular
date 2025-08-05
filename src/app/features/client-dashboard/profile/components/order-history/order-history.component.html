@@ -1,0 +1,53 @@
+@if (isLoading()) {
+<div class="order-loading">
+  <app-loading-spinner></app-loading-spinner>
+</div>
+} @else {
+<div class="order-history-container">
+  <h3>Order History</h3>
+
+  @if (orders.length === 0) {
+  <div class="empty-orders">
+    <div class="empty-icon">📦</div>
+    <h4>No orders found</h4>
+    <p>Your order history will appear here</p>
+  </div>
+  } @else {
+  <div class="orders-list">
+    @for (order of orders; track order.id) {
+    <div class="order-card">
+      <div class="order-header">
+        <div class="order-info">
+          <h4 class="order-id">{{ order.id }}</h4>
+          <p class="order-date">{{ order.date | date : "mediumDate" }}</p>
+        </div>
+        <div class="order-status">
+          <span [class]="'status-badge ' + getStatusClass(order.status)">
+            {{ getStatusText(order.status) }}
+          </span>
+        </div>
+      </div>
+
+      <div class="order-items">
+        @for (item of order.items; track item.name) {
+        <div class="order-item">
+          <span class="item-name">{{ item.name }}</span>
+          <span class="item-details"
+            >Qty: {{ item.quantity }} - ${{ item.price.toFixed(2) }}</span
+          >
+        </div>
+        }
+      </div>
+
+      <div class="order-footer">
+        <div class="order-total">
+          <strong>Total: ${{ order.total.toFixed(2) }}</strong>
+        </div>
+        <button class="view-details-btn">View Details</button>
+      </div>
+    </div>
+    }
+  </div>
+  }
+</div>
+}

@@ -23,7 +23,7 @@
     "**/.angular/cache": true,
     "**/node_modules": true
   },
-  "task.autoDetect": "off",
+  "task.autoDetect": "on",
   "extensions.autoUpdate": false,
   "extensions.autoCheckUpdates": false,
   "workbench.settings.enableNaturalLanguageSearch": false,

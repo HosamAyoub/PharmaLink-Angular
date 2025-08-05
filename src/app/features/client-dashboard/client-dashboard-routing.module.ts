@@ -12,6 +12,7 @@ import { NearbyPharmacies } from './Details/component/nearby-pharmacies/nearby-p
 import { NearbyPharmaciesPage } from './Pharmacies/nearby-pharmacies-page/nearby-pharmacies-page';
 import { PharmacyStock } from './Pharmacy-Products/components/pharmacy-stock-page/pharmacy-stock';
 import { PharamcyProductDetails } from './pharamcy-product-details/pharamcy-product-details';
+import { Profile } from './profile/profile';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -40,13 +41,14 @@ const routes: Routes = [
     component: PharmacyStock,
   },
   {
-    path:'pharmacyProduct/:id',
-    component: PharamcyProductDetails
+    path: 'pharmacyProduct/:id',
+    component: PharamcyProductDetails,
   },
   { path: 'cart', component: CartPage, canActivate: [AuthGuard] },
   { path: 'success', component: SuccessPage },
   { path: 'cancel', component: CancelPage },
   { path: 'favorites', component: FavoritePage, canActivate: [AuthGuard] },
+  { path: 'profile', component: Profile },
 ];
 
 @NgModule({

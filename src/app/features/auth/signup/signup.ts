@@ -14,7 +14,7 @@ import { LoadingSpinner } from '../../../shared/components/loading-spinner/loadi
 export class SignUp {
   isLoading = signal(false);
   displayedError = '';
-  step = 2;
+  step = 1;
 
   // Model to persist form data between steps
   formModel: any = {

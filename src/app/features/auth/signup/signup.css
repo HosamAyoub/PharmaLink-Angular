@@ -411,7 +411,11 @@
 }
 
 .note {
-  background-color: #007bff;
+  margin-top: 1.5rem;
+  padding: 1rem;
+  color: var(--primary-blue-dark);
+  background-color: var(--primary-blue-background);
+  border-radius: 1rem;
 }
 
 /* Responsive Design */
