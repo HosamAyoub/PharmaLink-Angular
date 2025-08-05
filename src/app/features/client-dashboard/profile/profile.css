@@ -135,7 +135,7 @@
 }
 
 .profile-user-name {
-  font-size: 20px;
+  font-size: 36px;
   font-weight: 600;
   color: var(--text-primary);
 }
@@ -976,7 +976,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 16px;
 }
 
 .profile-avatar-edit {

@@ -187,6 +187,7 @@
             [(ngModel)]="profile.address"
             class="profile-textarea"
             rows="3"
+            resize="none"
           ></textarea>
           } @else {
           <span>{{ profile.address || "Not provided" }}</span>
@@ -218,6 +219,7 @@
                 class="medical-textarea"
                 rows="3"
                 placeholder="Enter current diseases..."
+                resize="none"
               ></textarea>
               } @else {
               <p>{{ profile.medicalHistory || "No diseases recorded" }}</p>
@@ -240,6 +242,7 @@
                 class="medical-textarea"
                 rows="3"
                 placeholder="Enter current medications..."
+                resize="none"
               ></textarea>
               } @else {
               <p>{{ profile.medications || "No medications recorded" }}</p>
@@ -262,6 +265,7 @@
                 class="medical-textarea"
                 rows="3"
                 placeholder="Enter your allergies..."
+                resize="none"
               ></textarea>
               } @else {
               <p>{{ profile.allergies || "No Allergies recorded" }}</p>
