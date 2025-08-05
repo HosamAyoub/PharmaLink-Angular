@@ -39,18 +39,17 @@ export class MedicineManagement {
   }
 
   loadMedicines(query: string) {
-    const pharmacyId = 1;
     const pageNumber = 1;
     const pageSize = 100;
     console.log(`Loading medicines with query: ${query}`);
     if (query === '') {
-      this.medicineService.getAllPharmacyMedicines(pharmacyId, pageNumber, pageSize).subscribe((res: any) => {
+      this.medicineService.getAllPharmacyMedicines(pageNumber, pageSize).subscribe((res: any) => {
         this.Result = Array.isArray(res.data.items) ? res.data.items : [];
         this.onFilterChange(this.el.nativeElement.value);
       });
     }
     else {
-      this.medicineService.SearchMedicines(query, pharmacyId, pageNumber, pageSize).subscribe((res: any) => {
+      this.medicineService.SearchMedicines(query, pageNumber, pageSize).subscribe((res: any) => {
         this.Result = Array.isArray(res.data) ? res.data : [];
         this.onFilterChange(this.el.nativeElement.value);
       },
