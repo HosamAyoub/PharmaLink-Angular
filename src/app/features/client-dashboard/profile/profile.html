@@ -1,32 +1,15 @@
 <div class="profile-container">
-  <!-- Profile Header Section -->
   <app-profile-header></app-profile-header>
-
-  <!-- Tab Navigation Bar -->
   <app-profile-navbar></app-profile-navbar>
 
   <!-- Main Content Area - Loading, Profile Data, or Error -->
   @if (isLoading() === UiState.Loading) {
-  <!-- Loading State -->
   <div class="profile-loading">
     <app-loading-spinner></app-loading-spinner>
   </div>
   } @else if (isLoading() === UiState.Success) {
-  <!-- Profile Content - Main Data Display -->
   <app-profile-main></app-profile-main>
   } @else {
-  <!-- Error State - Profile Data Not Available -->
-  <div class="profile-error">
-    <div class="error-icon">⚠️</div>
-    <h3>Unable to Load Profile</h3>
-    <p>
-      We're having trouble loading your profile data. Please check your
-      connection and try again.
-    </p>
-    <button class="btn-retry" (click)="loadProfile()">
-      <span class="retry-icon">🔄</span>
-      Retry Loading
-    </button>
-  </div>
+  <app-profile-error></app-profile-error>
   }
 </div>

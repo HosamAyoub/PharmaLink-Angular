@@ -7,6 +7,7 @@ import { ProfileNavbar } from './components/profile-navbar/profile-navbar';
 import { ProfileService } from './services/profile-service';
 import { ProfileMain } from './components/profile-main/profile-main';
 import { UiState } from '../../../shared/enums/UIState';
+import { ProfileError } from './components/profile-error/profile-error';
 
 @Component({
   selector: 'app-profile',
@@ -18,6 +19,7 @@ import { UiState } from '../../../shared/enums/UIState';
     ProfileHeader,
     ProfileNavbar,
     ProfileMain,
+    ProfileError
   ],
   templateUrl: './profile.html',
   styleUrls: ['./profile.css'],

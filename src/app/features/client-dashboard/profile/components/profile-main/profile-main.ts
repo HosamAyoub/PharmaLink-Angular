@@ -8,7 +8,7 @@ import { DatePipe } from '@angular/common';
   standalone: true,
   imports: [FormsModule, DatePipe],
   templateUrl: './profile-main.html',
-  styleUrls: ['../../profile.css'],
+  styleUrl: './profile-main.css',
 })
 export class ProfileMain {
   profileService = inject(ProfileService);

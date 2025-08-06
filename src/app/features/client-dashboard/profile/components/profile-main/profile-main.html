@@ -18,41 +18,41 @@
       <!-- Full Name Field -->
       <div class="info-item">
         <label>Full Name:</label>
-        @if (editMode() && profile) {
+        @if (editMode() && profile()) {
         <input
           type="text"
-          [(ngModel)]="profile.name"
+          [(ngModel)]="profile()!.name"
           class="profile-input"
           name="name"
           required
         />
         } @else {
-        <span>{{ profile?.name || "Not provided" }}</span>
+        <span>{{ profile()?.name || "Not provided" }}</span>
         }
       </div>
 
       <!-- Date of Birth Field -->
       <div class="info-item">
         <label>Date of Birth:</label>
-        @if (editMode() && profile) {
+        @if (editMode() && profile()) {
         <input
           type="date"
-          [value]="profile.dateOfBirth | date : 'yyyy-MM-dd'"
+          [value]="profile()!.dateOfBirth | date : 'yyyy-MM-dd'"
           class="profile-input"
           name="dateOfBirth"
           required
         />
         } @else {
-        <span>{{ (profile?.dateOfBirth | date) || "Not provided" }}</span>
+        <span>{{ (profile()?.dateOfBirth | date) || "Not provided" }}</span>
         }
       </div>
 
       <!-- Gender Field -->
       <div class="info-item">
         <label>Gender:</label>
-        @if (editMode() && profile) {
+        @if (editMode() && profile()) {
         <select
-          [(ngModel)]="profile.gender"
+          [(ngModel)]="profile()!.gender"
           class="profile-select"
           name="gender"
           required=""
@@ -62,8 +62,8 @@
         </select>
         } @else {
         <span>
-          @if (profile?.gender === 0) { Male } @else if (profile?.gender === 1)
-          { Female } @else { Not specified }
+          @if (profile()?.gender === 0) { Male } @else if (profile()?.gender ===
+          1) { Female } @else { Not specified }
         </span>
         }
       </div>
@@ -71,31 +71,31 @@
       <!-- Country Field -->
       <div class="info-item">
         <label>Country:</label>
-        @if (editMode() && profile) {
+        @if (editMode() && profile()) {
         <input
           type="text"
-          [(ngModel)]="profile.country"
+          [(ngModel)]="profile()!.country"
           class="profile-input"
           name="country"
           required
         />
         } @else {
-        <span>{{ profile?.country || "Not provided" }}</span>
+        <span>{{ profile()?.country || "Not provided" }}</span>
         }
       </div>
 
       <!-- Address Field -->
       <div class="info-item full-width">
         <label>Address:</label>
-        @if (editMode() && profile) {
+        @if (editMode() && profile()) {
         <textarea
-          [(ngModel)]="profile.address"
+          [(ngModel)]="profile()!.address"
           class="profile-textarea"
           rows="3"
           resize="none"
         ></textarea>
         } @else {
-        <span>{{ profile?.address || "Not provided" }}</span>
+        <span>{{ profile()?.address || "Not provided" }}</span>
         }
       </div>
     </div>
@@ -118,16 +118,16 @@
             <span class="card-icon">🦠</span>
           </div>
           <div class="card-content">
-            @if (editMode() && profile) {
+            @if (editMode() && profile()) {
             <textarea
-              [(ngModel)]="profile.medicalHistory"
+              [(ngModel)]="profile()!.medicalHistory"
               class="medical-textarea"
               rows="3"
               placeholder="Enter current diseases..."
               resize="none"
             ></textarea>
             } @else {
-            <p>{{ profile?.medicalHistory || "No diseases recorded" }}</p>
+            <p>{{ profile()?.medicalHistory || "No diseases recorded" }}</p>
             }
           </div>
         </div>
@@ -141,16 +141,16 @@
             <span class="card-icon">💊</span>
           </div>
           <div class="card-content">
-            @if (editMode() && profile) {
+            @if (editMode() && profile()) {
             <textarea
-              [(ngModel)]="profile.medications"
+              [(ngModel)]="profile()!.medications"
               class="medical-textarea"
               rows="3"
               placeholder="Enter current medications..."
               resize="none"
             ></textarea>
             } @else {
-            <p>{{ profile?.medications || "No medications recorded" }}</p>
+            <p>{{ profile()?.medications || "No medications recorded" }}</p>
             }
           </div>
         </div>
@@ -164,16 +164,16 @@
             <span class="card-icon">🤧</span>
           </div>
           <div class="card-content">
-            @if (editMode() && profile) {
+            @if (editMode() && profile()) {
             <textarea
-              [(ngModel)]="profile.allergies"
+              [(ngModel)]="profile()!.allergies"
               class="medical-textarea"
               rows="3"
               placeholder="Enter your allergies..."
               resize="none"
             ></textarea>
             } @else {
-            <p>{{ profile?.allergies || "No Allergies recorded" }}</p>
+            <p>{{ profile()?.allergies || "No Allergies recorded" }}</p>
             }
           </div>
         </div>

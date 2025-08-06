@@ -18,8 +18,8 @@ export class ProfileService {
   accountId = '';
 
   isLoading = signal(UiState.Loading);
-  profile: Patient | null = null;
-  originalProfile: Patient | null = null;
+  profile = signal<Patient | null>(null);
+  originalProfile = signal<Patient | null>(null);
   editMode = signal(false);
   activeTab = signal('personal');
 
@@ -61,8 +61,8 @@ export class ProfileService {
     this.http.get<Patient>(this.url, { params }).subscribe({
       next: (profileData) => {
         console.log('Profile data received:', profileData);
-        this.profile = profileData;
-        this.originalProfile = { ...profileData };
+        this.profile.set(profileData);
+        this.originalProfile.set(profileData);
         this.isLoading.set(UiState.Success);
       },
       error: (error) => {
@@ -81,38 +81,41 @@ export class ProfileService {
   }
 
   saveProfile() {
-    if (!this.profile) return;
+    if (!this.profile()) return;
 
-    console.log('Saving profile:', this.profile);
-    this.originalProfile = { ...this.profile };
+    console.log('Saving profile:', this.profile());
+    this.originalProfile.set(this.profile());
     this.editMode.set(false);
 
     // Strict required field validation
     if (
-      !this.profile?.name ||
-      (!this.profile?.gender && this.profile?.gender !== 0) ||
-      !this.profile?.dateOfBirth ||
-      !this.profile?.country ||
-      !this.profile?.address
+      !this.profile()?.name ||
+      (!this.profile()?.gender && this.profile()?.gender !== 0) ||
+      !this.profile()?.dateOfBirth ||
+      !this.profile()?.country ||
+      !this.profile()?.address
     ) {
       alert('Please fill in all required fields.');
       return;
     }
+
     const editedData: Patient = {
-      name: this.profile.name,
-      gender: this.profile.gender,
-      dateOfBirth: this.profile.dateOfBirth,
-      country: this.profile.country,
-      address: this.profile.address,
-      medicalHistory: this.profile.medicalHistory,
-      medications: this.profile.medications,
-      allergies: this.profile.allergies,
+      name: this.profile()!.name,
+      gender: this.profile()!.gender,
+      dateOfBirth: this.profile()!.dateOfBirth,
+      country: this.profile()!.country,
+      address: this.profile()?.address,
+      medicalHistory: this.profile()?.medicalHistory,
+      medications: this.profile()?.medications,
+      allergies: this.profile()?.allergies,
     };
+
+    console.log('edited profile: ', editedData);
 
     const urlWithId = `${this.urlEdit}/${this.accountId}`;
     this.http.put(urlWithId, editedData).subscribe({
       next: () => {
-        this.originalProfile = { ...editedData };
+        this.originalProfile.set(editedData);
         this.editMode.set(false);
         this.isLoading.set(UiState.Success);
         alert('Profile updated successfully!');
@@ -126,7 +129,7 @@ export class ProfileService {
 
   cancelEdit() {
     if (this.originalProfile) {
-      this.profile = { ...this.originalProfile };
+      this.profile.set(this.originalProfile());
     }
     this.editMode.set(false);
   }

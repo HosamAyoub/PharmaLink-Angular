@@ -5,7 +5,7 @@ import { ProfileService } from '../../services/profile-service';
   selector: 'app-profile-navbar',
   imports: [],
   templateUrl: './profile-navbar.html',
-  styleUrls: ['../../profile.css'],
+  styleUrl: './profile-navbar.css',
 })
 export class ProfileNavbar {
   profileService = inject(ProfileService);
