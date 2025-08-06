@@ -12,4 +12,23 @@
   } @else {
   <app-profile-error></app-profile-error>
   }
+  <!-- Alert states -->
+  <!-- @if (alertState() == FormState.Success) {
+  <div class="alert alert-success alert-position" role="alert">
+    Profile has been edited successfully!
+  </div>
+  } @else if (alertState() == FormState.Failed) {
+  <div class="alert alert-danger alert-position" role="alert">
+    A simple danger alert—check it out!
+  </div>
+  } @else if (alertState() == FormState.Required) {
+  <div class="alert alert-warning alert-position" role="alert">
+    A simple warning alert—check it out!
+  </div>
+  } @else (){} -->
+
+  <app-alert
+    [alertState]="alertState()"
+    [alertMessage]="alertMessage()"
+  ></app-alert>
 </div>

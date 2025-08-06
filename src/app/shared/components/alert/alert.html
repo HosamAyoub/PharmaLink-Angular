@@ -1,0 +1,13 @@
+@if (alertState() !== FormState.Hide) {
+<div
+  class="alert alert-position"
+  role="alert"
+  [ngClass]="{
+    'alert-success': alertState() === FormState.Success,
+    'alert-danger': alertState() === FormState.Failed,
+    'alert-warning': alertState() === FormState.Required
+  }"
+>
+  {{ alertMessage() }}
+</div>
+}

@@ -25,6 +25,13 @@
   margin-bottom: 24px;
 }
 
+.section-header h2 {
+  font-size: 30px;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin: 0;
+}
+
 .edit-actions {
   display: flex;
   gap: 12px;

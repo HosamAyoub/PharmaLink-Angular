@@ -20,6 +20,21 @@
   }
 }
 
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 32px 0;
+  margin-bottom: 24px;
+}
+
+.section-header h2 {
+  font-size: 30px;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin: 0;
+}
+
 .settings-section {
   background: var(--background-white);
   padding: 24px;
