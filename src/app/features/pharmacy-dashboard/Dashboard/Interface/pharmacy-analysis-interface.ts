@@ -24,6 +24,7 @@ export interface TopSellingProduct {
     drugId:        number;
     drugName:      string;
     totalQuantity: number;
+    salesCount:    number;
     totalRevenue:  number;
 }
 export interface IPharmacystockAnalysis {

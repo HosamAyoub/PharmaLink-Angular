@@ -4,10 +4,10 @@
     <div class="row">
       @if (loading) {
       <div class="loading-spinner">
-        <!-- Add your loading spinner here -->
+        <app-loading-spinner></app-loading-spinner>
       </div>
       } @else if (errorMessage) {
-      <div class="error-message">
+      <div class="error-message error-alert">
         {{ errorMessage }}
       </div>
       } @else {
@@ -20,6 +20,14 @@
       }
       <div class="quick-actions">
         <app-quick-actions></app-quick-actions>
+      </div>
+      <div class="col-md-8">
+        <div class="top-selling-products">
+          <app-top-selling-products-section [pharmacyAnalysis]="analysisData"></app-top-selling-products-section>
+        </div>
+      </div>
+      <div class="col-md-4">
+
       </div>
     </div>
   </div>

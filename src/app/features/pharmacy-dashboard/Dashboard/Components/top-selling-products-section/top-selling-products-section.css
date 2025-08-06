@@ -1,0 +1,103 @@
+.top-selling-section{
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  margin-top: 30px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+.top-selling-section:hover {
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+}
+
+.product-list {
+  margin-top: 20px;
+}
+
+.product-card {
+  display: flex;
+  align-items: center;
+  padding: 15px 0;
+  border-bottom: 1px solid var(--gray-500);
+}
+
+.product-card:last-child {
+  border-bottom: none;
+}
+
+.product-rank {
+  font-weight: bold;
+  font-size: 18px;
+  color: var(--blue-150);
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  text-align: center;
+  background-color: var(--gray-300);
+}
+
+.product-info {
+  flex-grow: 1;
+  padding: 0 20px;
+  
+
+}
+.product-details{
+  display: flex;
+  justify-content: space-between;
+}
+
+.product-name {
+  margin: 0 0 5px 0;
+  color: #2c3e50;
+  font-size: 16px;
+}
+
+.units-sold {
+  margin: 0;
+  color: var(--gray-800);
+  font-size: 13px;
+}
+
+.progress-container {
+  margin-top: 8px;
+  height: 8px;
+  background: var(--gray-500);
+  border-radius: 3px;
+  position: relative;
+  max-width: 720px;
+}
+
+.progress-bar {
+  height: 100%;
+  border-radius: 3px;
+  background: var(--blue-150);
+  transition: width 0.5s ease;
+}
+
+.progress-text {
+  position: absolute;
+  right: 0;
+  top: -20px;
+  font-size: 12px;
+  color: var(--blue-150);
+  font-weight: bold;
+}
+
+.sales-stats {
+  text-align: right;
+  min-width: 80px;
+}
+
+.revenue {
+  font-weight: bold;
+  font-size: 18px;
+  margin: 0;
+  color: var(--light-green);
+}
+
+.percentage {
+  margin: 5px 0 0 0;
+  color: #3498db;
+  font-size: 14px;
+}

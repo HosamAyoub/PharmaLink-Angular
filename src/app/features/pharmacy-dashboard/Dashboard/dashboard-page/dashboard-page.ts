@@ -4,10 +4,12 @@ import { DashboardHeader } from './../Components/dashboard-header/dashboard-head
 import { Component, ChangeDetectorRef, OnInit } from '@angular/core';
 import { PharmacyAnalysisService } from '../Services/pharmacy-analysis-service';
 import { IPharmacyAnalysis, IPharmacystockAnalysis } from '../Interface/pharmacy-analysis-interface';
+import { LoadingSpinner } from '../../../../shared/components/loading-spinner/loading-spinner';
+import { TopSellingProductsSection } from '../Components/top-selling-products-section/top-selling-products-section';
 
 @Component({
   selector: 'app-dashboard-page',
-  imports: [DashboardHeader,StatsCard,QuickActions],
+  imports: [DashboardHeader,StatsCard,QuickActions,LoadingSpinner,TopSellingProductsSection],
   templateUrl: './dashboard-page.html',
   styleUrl: './dashboard-page.css'
 })
