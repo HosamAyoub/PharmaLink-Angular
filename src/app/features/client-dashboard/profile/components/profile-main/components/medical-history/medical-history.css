@@ -39,6 +39,14 @@
   border-left: 4px solid var(--primary-blue);
 }
 
+.border-red {
+  border-color: var(--danger-red);
+}
+
+.border-green {
+  border-color: var(--green);
+}
+
 .medical-card {
   background: var(--background-white);
   border: 2px solid var(--border-light);
@@ -85,4 +93,8 @@
   padding: 12px;
   font-family: inherit;
   resize: vertical;
+}
+
+.icon-size {
+  width: 30px;
 }
