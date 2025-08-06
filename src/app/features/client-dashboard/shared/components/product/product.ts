@@ -1,5 +1,8 @@
-import { Component, Input, signal, computed } from '@angular/core';
+import { Component, Input, signal, computed, inject } from '@angular/core';
 import { IProduct } from '../../models/IProduct';
+import { CartService } from '../../../Cart/Services/cart-service';
+import { CartUpdateDto } from '../../../Cart/Interfaces/cart-update-dto';
+import { ToastService } from '../../../../../shared/services/toast.service';
 
 @Component({
   selector: 'app-product',
@@ -12,9 +15,13 @@ export class Product {
   @Input() showPharmacyName: boolean = false;
   @Input() index: number = 0;
 
+
   // Simple approach - track the last product ID we processed
   private lastProductId: string | number = '';
   private imageErrorState = signal(false);
+
+  cartService = inject(CartService);
+  toastService = inject(ToastService);
 
   // Computed property that resets error state when product changes
   imageSource = computed(() => {
@@ -33,7 +40,25 @@ export class Product {
   });
 
   addToCart(product: IProduct) {
-    // Implement add to cart functionality
+    const cartProduct: CartUpdateDto = {
+      drugId: product.drugId,
+      pharmacyId: product.pharmacyId,
+      quantity: 1
+    };
+
+    this.cartService.addToCart(cartProduct).subscribe({
+      next: () => {
+        this.toastService.showSuccess(`${product.drugName} added to cart successfully!`);
+      },
+      error: (error) => {
+        if (error.message && error.message.includes('logged in')) {
+          this.toastService.showWarning('Please login to add items to your cart');
+        } else {
+          this.toastService.showError('Failed to add item to cart. Please try again.');
+        }
+        console.error('Add to cart error:', error);
+      }
+    });
   }
 
     // Handle image loading errors
