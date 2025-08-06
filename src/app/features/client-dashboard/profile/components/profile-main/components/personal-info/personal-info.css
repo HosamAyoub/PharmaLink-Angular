@@ -1,17 +1,7 @@
-/* Profile Main Content Styles */
-.tab-content {
-  background-color: var(--background-white);
-  border-radius: 16px;
-  box-shadow: 0 4px 6px var(--shadow-dark);
-  border: 1px solid var(--border-gray);
-  overflow: hidden;
-  animation: fadeIn 0.3s ease-out;
-}
-
-@keyframes fadeIn {
+@keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(20px);
   }
   to {
     opacity: 1;
@@ -33,13 +23,6 @@
   align-items: center;
   padding: 24px 32px 0;
   margin-bottom: 24px;
-}
-
-.section-header h2 {
-  font-size: 24px;
-  font-weight: 600;
-  color: var(--text-dark);
-  margin: 0;
 }
 
 .edit-actions {
@@ -109,17 +92,6 @@
   opacity: 0;
 }
 
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
 .info-item.full-width {
   grid-column: 1 / -1;
 }
@@ -153,9 +125,7 @@
   border-bottom-color: var(--blue-200);
 }
 
-.profile-input,
-.profile-select,
-.profile-textarea {
+.profile-input {
   padding: 16px 20px;
   border: 2px solid var(--border-gray);
   border-radius: 12px;
@@ -168,16 +138,73 @@
   box-shadow: 0 2px 4px var(--shadow-black-05);
 }
 
-.profile-input:hover,
-.profile-select:hover,
+.profile-input:hover {
+  border-color: var(--border-light);
+  box-shadow: 0 4px 12px var(--shadow-black-10);
+  transform: translateY(-1px);
+}
+
+.profile-input:focus {
+  border-color: var(--blue-200);
+  box-shadow: 0 0 0 4px var(--shadow-blue-20), 0 8px 25px var(--shadow-blue-15);
+  transform: translateY(-2px);
+  background: var(--background-white);
+}
+
+.profile-input::placeholder {
+  color: var(--profile-placeholder);
+  font-weight: 400;
+}
+
+.profile-select {
+  padding: 16px 20px;
+  border: 2px solid var(--border-gray);
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  background: var(--profile-header-bg);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  outline: none;
+  box-shadow: 0 2px 4px var(--shadow-black-05);
+}
+
+.profile-select:hover {
+  border-color: var(--border-light);
+  box-shadow: 0 4px 12px var(--shadow-black-10);
+  transform: translateY(-1px);
+}
+
+.profile-select:focus {
+  border-color: var(--blue-200);
+  box-shadow: 0 0 0 4px var(--shadow-blue-20), 0 8px 25px var(--shadow-blue-15);
+  transform: translateY(-2px);
+  background: var(--background-white);
+}
+
+.profile-textarea {
+  padding: 16px 20px;
+  border: 2px solid var(--border-gray);
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  background: var(--profile-header-bg);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  outline: none;
+  box-shadow: 0 2px 4px var(--shadow-black-05);
+  resize: vertical;
+  min-height: 120px;
+  font-family: inherit;
+  line-height: 1.6;
+}
+
 .profile-textarea:hover {
   border-color: var(--border-light);
   box-shadow: 0 4px 12px var(--shadow-black-10);
   transform: translateY(-1px);
 }
 
-.profile-input:focus,
-.profile-select:focus,
 .profile-textarea:focus {
   border-color: var(--blue-200);
   box-shadow: 0 0 0 4px var(--shadow-blue-20), 0 8px 25px var(--shadow-blue-15);
@@ -185,89 +212,16 @@
   background: var(--background-white);
 }
 
-.profile-input::placeholder,
 .profile-textarea::placeholder {
   color: var(--profile-placeholder);
   font-weight: 400;
-}
-
-.profile-textarea {
-  resize: vertical;
-  min-height: 120px;
-  font-family: inherit;
-  line-height: 1.6;
-}
-
-.profile-value {
-  padding: 8px 0;
-  font-size: 16px;
-  color: var(--text-primary);
-  background: none;
-  border: none;
-  min-height: 24px;
-  display: flex;
-  align-items: center;
-  font-weight: 400;
-  line-height: 1.5;
-}
-
-.profile-value.multiline {
-  white-space: pre-wrap;
-  align-items: flex-start;
-  padding-top: 8px;
-  min-height: 48px;
-  line-height: 1.6;
-}
-
-.profile-text {
-  margin: 0;
-  padding: 8px 0;
-  font-size: 16px;
-  color: var(--text-primary);
-  font-weight: 400;
-  line-height: 1.5;
-  background: none;
-  border: none;
-}
-
-.profile-text.multiline {
-  white-space: pre-wrap;
-  line-height: 1.6;
-  min-height: 48px;
-}
-
-.profile-text.empty {
-  color: var(--text-muted);
-  font-style: italic;
 }
 
 .full-width {
   grid-column: 1 / -1;
 }
 
-/* Medical History Section */
-.medical-history-section {
-  background: var(--background-white);
-  padding: 24px;
-  border-radius: 12px;
-  box-shadow: 0 2px 4px var(--shadow-light);
-  border: 1px solid var(--border-gray);
-}
-
-.medical-info {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 24px;
-  margin-top: 16px;
-}
-
-.medical-section {
-  background: var(--background-light);
-  padding: 16px;
-  border-radius: 8px;
-  border-left: 4px solid var(--primary-blue);
-}
-
+/* Medical Cards */
 .medical-card {
   background: var(--background-white);
   border: 2px solid var(--border-light);
@@ -353,15 +307,7 @@
   background: var(--primary-blue-dark);
 }
 
-/* Settings Section */
-.settings-section {
-  background: var(--background-white);
-  padding: 24px;
-  border-radius: 12px;
-  box-shadow: 0 2px 4px var(--shadow-light);
-  border: 1px solid var(--border-gray);
-}
-
+/* Settings Grid */
 .settings-grid {
   padding: 0 32px 32px;
 }
@@ -435,4 +381,44 @@ input:checked + .slider {
 
 input:checked + .slider:before {
   transform: translateX(26px);
+}
+
+/* Enhanced Error State */
+.profile-error {
+  text-align: center;
+  padding: 60px 40px;
+  background: var(--background-white);
+  border-radius: 16px;
+  box-shadow: 0 4px 6px var(--shadow-red-10);
+  border: 1px solid var(--border-gray);
+}
+
+.error-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+.profile-error h3 {
+  font-size: 20px;
+  color: var(--text-dark);
+  margin-bottom: 8px;
+}
+
+.profile-error p {
+  color: var(--text-muted);
+  margin-bottom: 24px;
+}
+
+.retry-icon {
+  margin-right: 8px;
+}
+
+/* Focus styles for accessibility */
+.profile-edit-btn:focus,
+.profile-tab:focus,
+.btn-cancel:focus,
+.btn-save:focus,
+.btn-retry:focus {
+  outline: 2px solid var(--primary-blue);
+  outline-offset: 2px;
 }

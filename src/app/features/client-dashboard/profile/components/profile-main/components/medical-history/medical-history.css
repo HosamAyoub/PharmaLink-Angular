@@ -1,0 +1,88 @@
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 32px 0;
+  margin-bottom: 24px;
+}
+
+.medical-history-section {
+  background: var(--background-white);
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px var(--shadow-light);
+  border: 1px solid var(--border-gray);
+}
+
+.medical-info {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+  margin-top: 16px;
+}
+
+.medical-section {
+  background: var(--background-light);
+  padding: 16px;
+  border-radius: 8px;
+  border-left: 4px solid var(--primary-blue);
+}
+
+.medical-card {
+  background: var(--background-white);
+  border: 2px solid var(--border-light);
+  border-radius: 12px;
+  overflow: hidden;
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.medical-card:hover {
+  border-color: var(--primary-blue-light);
+  box-shadow: 0 4px 12px var(--shadow-black-10);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  background: var(--background-light);
+  border-bottom: 1px solid var(--border-light);
+  box-shadow: 0 2px 4px var(--shadow-black-05);
+}
+
+.card-header h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin: 0;
+}
+
+.card-icon {
+  font-size: 20px;
+}
+
+.card-content {
+  padding: 20px;
+}
+
+.medical-textarea {
+  width: 100%;
+  min-height: 80px;
+  border: 1px solid var(--border-gray);
+  border-radius: 6px;
+  padding: 12px;
+  font-family: inherit;
+  resize: vertical;
+}
