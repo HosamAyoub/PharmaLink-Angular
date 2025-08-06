@@ -1,18 +1,13 @@
-<div class="card p-3 border-0 shadow-sm bg-white rounded-4 cart-hover">
+<div class="card p-3 border-0 card-shadow bg-white rounded-4 cart-hover">
   <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
 
     <!-- Left: Image and Drug Info -->
     <div class="d-flex align-items-center flex-grow-1 min-w-0">
-      <img 
-        [src]="item()?.imageUrl" 
-        width="64" height="64" 
-        class="me-3 rounded-3 bg-light" 
-        style="object-fit: cover;"
-      />
+      <img [src]="item()?.imageUrl" width="64" height="64" class="me-3 rounded-3 bg-light" style="object-fit: cover;" />
       <div class="text-truncate">
         <h6 class="mb-0 fw-semibold text-primary text-truncate">{{ item()?.drugName }}</h6>
         <small class="text-muted d-block text-truncate">{{ item()?.pharmacyName }}</small>
-        <span class="text-success fw-bold">${{ item()?.unitPrice }}</span>
+        <span class="text-success fw-bold">{{ item()?.unitPrice | currency:'EGP':'symbol'}}</span>
       </div>
     </div>
 
@@ -28,14 +23,14 @@
     </div>
 
     <!-- Right: Total and Remove -->
-    <div class="text-end ms-3">
-      <div class="fw-bold text-dark">${{ item()?.totalPrice }}</div>
-      <i 
-        class="bi bi-trash3-fill text-danger cursor-pointer fs-5 mt-1 d-inline-block hover-trash" 
-        (click)="remove.emit()" 
-        title="Remove item"
-      ></i>
+    <div class="text-end ms-3" style="min-width: 100px;">
+      <div class="fw-bold text-dark" style="min-width: 80px; text-align: end;">
+        {{ item()?.totalPrice | currency:'EGP':'symbol' }}
+      </div>
+      <i class="bi bi-trash3-fill text-danger cursor-pointer fs-5 mt-1 d-inline-block hover-trash"
+        (click)="remove.emit()" title="Remove item"></i>
     </div>
+
 
   </div>
 </div>

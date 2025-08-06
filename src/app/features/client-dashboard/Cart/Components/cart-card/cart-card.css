@@ -1,14 +1,19 @@
-.cart-hover {
+.card-shadow {
+  box-shadow: 0 4px 12px var(--shadow-overlay-12);
+}
+
+.card-hover {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  border-radius: 1rem;
-  background-color: #f9f9f9;
 }
 
-.cart-hover:hover {
-  transform: translateY(-4px) scale(1.02);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px var(--shadow-overlay-12);
 }
 
+.card-shadow-light {
+  box-shadow: 0 1px 4px var(--shadow-overlay-075);
+}
 /* Optional: Hover effect for trash icon */
 .hover-trash {
   transition: transform 0.2s ease, color 0.2s ease;

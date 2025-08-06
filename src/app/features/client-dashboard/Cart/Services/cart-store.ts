@@ -7,7 +7,9 @@ import { HttpClient } from '@angular/common/http';
 import { ConfigService } from '../../../../shared/services/config.service';
 import { APP_CONSTANTS } from '../../../../shared/constants/app.constants';
 import { Router } from '@angular/router';
+import { Observable, Subscription } from 'rxjs';
 
+declare var bootstrap: any;
 
 @Injectable({
   providedIn: 'root'
@@ -17,12 +19,13 @@ export class CartStore {
   // Signals
   cartItems = signal<CartItem[]>([]);
   orderSummary = signal<OrderSummary | null>(null);
+  public isLoading = signal<boolean>(false);
 
   constructor(private cartService: CartService, private http: HttpClient, private router: Router, private config: ConfigService) { }
 
   // Load cart summary from API
-  loadCart() {
-    this.cartService.getCartSummary().subscribe({
+  loadCart(): Subscription {
+    return this.cartService.getCartSummary().subscribe({
       next: (data) => {
         this.cartItems.set(data.cartItems);
         this.orderSummary.set(data.orderSummary);
@@ -62,7 +65,7 @@ export class CartStore {
       this.cartItems.set(updated);
 
       this.cartService.decrementItem(dto).subscribe({
-        next: () => this.updateTotals(),
+        next: () => this.loadCart(),
         error: (err) => console.error('Decrement error:', err)
       });
     } else {
@@ -75,7 +78,7 @@ export class CartStore {
       this.cartItems.set(updated);
 
       this.cartService.decrementItem(dto).subscribe({
-        next: () => this.updateTotals(),
+        next: () => this.loadCart(),
         error: (err) => console.error('Decrement error:', err)
       });
     }
@@ -102,8 +105,8 @@ export class CartStore {
     });
   }
 
-  clearCart() {
-    this.cartService.clearCart().subscribe({
+  clearCart(): Subscription {
+    return this.cartService.clearCart().subscribe({
       next: () => {
         this.cartItems.set([]);
         const summary = this.orderSummary();
@@ -131,25 +134,42 @@ export class CartStore {
     this.orderSummary.set({ ...summary });
   }
 
-  checkout(paymentMethod: string) {
-    this.http.post<any>(this.config.getApiUrl(this.ENDPOINTS.ORDERS_SUBMIT), { paymentMethod }).subscribe({
+  checkout(paymentMethod: string): Subscription | undefined {
+    const summary = this.orderSummary();
+    if (!summary) return;
+
+    if (summary.total < 30) {
+      const modal = new bootstrap.Modal(document.getElementById('minOrderModal')!);
+      modal.show();
+      return;
+    }
+
+    this.isLoading.set(true);
+
+    return this.http.post<any>(this.config.getApiUrl(this.ENDPOINTS.ORDERS_SUBMIT), { paymentMethod }).subscribe({
       next: (res) => {
         if (paymentMethod === 'cash') {
-          this.router.navigate(['/client/success'], { queryParams: { orderId: res.orderId } });
+          this.router.navigate(['/client/success'], { queryParams: { orderId: res.orderId, paymentMethod: 'cash' } });
         } else {
-          this.createStripeSession(res.orderId);
+          this.createStripeSession();
         }
+        this.isLoading.set(false);
       },
       error: (err) => {
         console.error('Order submission failed', err);
         alert("Order submission failed");
+        this.isLoading.set(false); 
       }
+      
     });
   }
 
-  private createStripeSession(orderId: number) {
+
+  private createStripeSession() {
     const url = this.config.getApiUrl(this.ENDPOINTS.ORDERS_CREATE_CHECKOUT_SESSION);
-    this.http.post<any>(url, orderId).subscribe({
+    const deliveryFee = this.orderSummary()?.deliveryFee ?? 0;
+
+    this.http.post<any>(url, { deliveryFee }).subscribe({
       next: (sessionRes) => {
         if (sessionRes?.url) {
           window.location.href = sessionRes.url;
