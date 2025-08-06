@@ -48,7 +48,7 @@ export class ToastComponent implements OnInit, OnDestroy {
   // Make these public for template access
   isEntering = signal(true);
   isLeaving = signal(false);
-  private autoRemoveTimeout?: number;
+  private autoRemoveTimeout?: any;
   private isHovered = false;
 
   ngOnInit() {

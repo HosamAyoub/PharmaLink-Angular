@@ -75,9 +75,9 @@
 
 /* Toast Type Variants */
 .toast-success {
-  background: linear-gradient(135deg, rgba(34, 197, 94, 0.9) 0%, rgba(22, 163, 74, 0.9) 100%);
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.9) 0%, rgba(40, 83, 176, 0.9) 100%);
   color: white;
-  border-color: rgba(34, 197, 94, 0.3);
+  border-color: rgba(37, 99, 235, 0.3);
 }
 
 .toast-warning {
@@ -271,7 +271,7 @@
   }
 
   .toast-success {
-    border-color: #22c55e;
+    border-color: var(--primary-blue)
   }
 
   .toast-warning {

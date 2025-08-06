@@ -1,8 +1,8 @@
 import { Component, Input, signal, computed, inject } from '@angular/core';
 import { IProduct } from '../../models/IProduct';
-import { CartService } from '../../../Cart/Services/cart-service';
-import { CartUpdateDto } from '../../../Cart/Interfaces/cart-update-dto';
+import { CartStore } from '../../../Cart/Services/cart-store';
 import { ToastService } from '../../../../../shared/services/toast.service';
+import { CartItem } from '../../../Cart/Interfaces/cart-item';
 
 @Component({
   selector: 'app-product',
@@ -20,7 +20,7 @@ export class Product {
   private lastProductId: string | number = '';
   private imageErrorState = signal(false);
 
-  cartService = inject(CartService);
+  cartStore = inject(CartStore);
   toastService = inject(ToastService);
 
   // Computed property that resets error state when product changes
@@ -39,18 +39,30 @@ export class Product {
     return this.getSafeImageUrl(this.product);
   });
 
-  addToCart(product: IProduct) {
-    const cartProduct: CartUpdateDto = {
+  addToCart(product: IProduct, event?: Event) {
+    // Prevent event from bubbling up to parent elements (like navigation click)
+    if (event) {
+      event.stopPropagation();
+      event.preventDefault();
+    }
+
+    const cartProduct: CartItem ={
       drugId: product.drugId,
       pharmacyId: product.pharmacyId,
-      quantity: 1
-    };
+      drugName: product.drugName,
+      pharmacyName: product.pharmacyName,
+      quantity: 1,
+      unitPrice: parseFloat(product.price),
+      imageUrl: product.drugImageUrl,
+      totalPrice: parseFloat(product.price)
 
-    this.cartService.addToCart(cartProduct).subscribe({
+    }
+
+    this.cartStore.addToCart(cartProduct).subscribe({
       next: () => {
         this.toastService.showSuccess(`${product.drugName} added to cart successfully!`);
       },
-      error: (error) => {
+      error: (error: any) => {
         if (error.message && error.message.includes('logged in')) {
           this.toastService.showWarning('Please login to add items to your cart');
         } else {
@@ -100,17 +112,17 @@ export class Product {
 
   // Method called by template to get image source
   getImageSource(): string {
-    // Check if product has changed and reset error state
-    if (this.product && this.product.drugId !== this.lastProductId) {
-      this.lastProductId = this.product.drugId;
-      this.imageErrorState.set(false);
-      console.log(`Product changed in getImageSource: ${this.product.drugName}, resetting error state`);
-    }
+    // // Check if product has changed and reset error state
+    // if (this.product && this.product.drugId !== this.lastProductId) {
+    //   this.lastProductId = this.product.drugId;
+    //   this.imageErrorState.set(false);
+    //   console.log(`Product changed in getImageSource: ${this.product.drugName}, resetting error state`);
+    // }
 
-    // Return appropriate image source
-    if (this.imageErrorState()) {
-      return 'assets/images/error-image.jpg';
-    }
+    // // Return appropriate image source
+    // if (this.imageErrorState()) {
+    //   return 'assets/images/error-image.jpg';
+    // }
     return this.getSafeImageUrl(this.product);
   }
 

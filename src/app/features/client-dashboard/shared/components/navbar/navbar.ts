@@ -3,6 +3,7 @@ import { Component, computed, inject, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '../../../../../shared/services/auth.service';
+import { CartStore } from '../../../Cart/Services/cart-store';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -13,22 +14,27 @@ import { Subscription } from 'rxjs';
 })
 export class Navbar {
   private authService = inject(AuthService);
-  // private subscription!: Subscription;
-  // isAuthenticated = false;
-
-  // ngOnInit() {
-  //   this.subscription = this.authService.user.subscribe((user) => {
-  //     this.isAuthenticated = Boolean(user);
-  //   });
-  // }
-  // ngOnDestroy() {
-  //   this.subscription.unsubscribe();
-  // }
+  private cartStore = inject(CartStore);
+  
+  // Computed properties for reactive updates
+  cartItemCount = computed(() => {
+    const items = this.cartStore.cartItems();
+    return items.reduce((total, item) => total + item.quantity, 0);
+  });
+  
+  // Display cart count with 99+ limit for UI
+  cartDisplayCount = computed(() => {
+    const count = this.cartItemCount();
+    return count > 99 ? '99+' : count.toString();
+  });
+  
   get isAuthenticated() {
     return Boolean(this.authService.user());
   }
+  
   onLogout() {
     this.authService.logout();
   }
+  
   LoggedUserName = computed(() => this.authService.user()?.userName);
 }
