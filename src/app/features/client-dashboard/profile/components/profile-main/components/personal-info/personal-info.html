@@ -1,0 +1,99 @@
+<div class="personal-info-section">
+  <div class="section-header">
+    <h2>Personal Information</h2>
+    <!-- Edit Mode Actions -->
+    @if (editMode()) {
+    <div class="edit-actions">
+      <button class="btn-cancel" (click)="cancelEdit()">Cancel</button>
+      <button class="btn-save" (click)="toggleEditMode()">Save</button>
+    </div>
+    }
+  </div>
+
+  <!-- Personal Information Fields Grid -->
+  <div class="info-grid">
+    <!-- Full Name Field -->
+    <div class="info-item">
+      <label>Full Name:</label>
+      @if (editMode() && profile()) {
+      <input
+        type="text"
+        [(ngModel)]="profile()!.name"
+        class="profile-input"
+        name="name"
+        required
+      />
+      } @else {
+      <span>{{ profile()?.name || "Not provided" }}</span>
+      }
+    </div>
+
+    <!-- Date of Birth Field -->
+    <div class="info-item">
+      <label>Date of Birth:</label>
+      @if (editMode() && profile()) {
+      <input
+        type="date"
+        [value]="profile()!.dateOfBirth | date : 'yyyy-MM-dd'"
+        class="profile-input"
+        name="dateOfBirth"
+        required
+      />
+      } @else {
+      <span>{{ (profile()?.dateOfBirth | date) || "Not provided" }}</span>
+      }
+    </div>
+
+    <!-- Gender Field -->
+    <div class="info-item">
+      <label>Gender:</label>
+      @if (editMode() && profile()) {
+      <select
+        [(ngModel)]="profile()!.gender"
+        class="profile-select"
+        name="gender"
+        required=""
+      >
+        <option [value]="0">Male</option>
+        <option [value]="1">Female</option>
+      </select>
+      } @else {
+      <span>
+        @if (profile()?.gender === 0) { Male } @else if (profile()?.gender ===
+        1) { Female } @else { Not specified }
+      </span>
+      }
+    </div>
+
+    <!-- Country Field -->
+    <div class="info-item">
+      <label>Country:</label>
+      @if (editMode() && profile()) {
+      <input
+        type="text"
+        [(ngModel)]="profile()!.country"
+        class="profile-input"
+        name="country"
+        required
+      />
+      } @else {
+      <span>{{ profile()?.country || "Not provided" }}</span>
+      }
+    </div>
+
+    <!-- Address Field -->
+    <div class="info-item full-width">
+      <label>Address:</label>
+      @if (editMode() && profile()) {
+      <textarea
+        [(ngModel)]="profile()!.address"
+        class="profile-textarea"
+        rows="3"
+        resize="none"
+      ></textarea>
+      } @else {
+      <span>{{ profile()?.address || "Not provided" }}</span>
+      }
+    </div>
+  </div>
+</div>
