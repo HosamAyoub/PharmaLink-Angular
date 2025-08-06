@@ -2,7 +2,7 @@ import { Injectable, signal, inject } from '@angular/core';
 import { catchError, tap } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { HttpErrorResponse, HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ResponseData, SignUpData, User } from '../models/user.model';
 import { ConfigService } from './config.service';
 import { APP_CONSTANTS } from '../constants/app.constants';
@@ -12,6 +12,7 @@ export class AuthService {
   user = signal<User | null>(null);
   http = inject(HttpClient);
   router = inject(Router);
+  route = inject(ActivatedRoute);
   private tokenExpirationDuration: any;
   config = inject(ConfigService);
   private ENDPOINTS = APP_CONSTANTS.API.ENDPOINTS;
@@ -77,6 +78,10 @@ export class AuthService {
     this.validateToken()?.subscribe({
       next: () => {
         // User state is updated in validateToken's tap operator
+        // const returnUrl = this.route.snapshot.queryParams['returnUrl'];
+        // if (returnUrl) {
+        //   this.router.navigate([returnUrl]);
+        // }
       },
       error: (e) => {
         // If token is invalid, log out the user

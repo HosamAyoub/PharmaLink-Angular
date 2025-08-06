@@ -1,0 +1,41 @@
+<div class="profile-header">
+  <!-- User Avatar with Edit Button -->
+  <div class="profile-avatar">
+    <div class="profile-avatar-circle">
+      <span class="profile-avatar-icon">{{
+        (profile()?.name || "U").charAt(0).toUpperCase()
+      }}</span>
+    </div>
+  </div>
+
+  <!-- Profile Header Information -->
+  <div class="profile-header-info">
+    <!-- Header Content with Edit Button -->
+    <div class="profile-header-content">
+      <h1>My Profile</h1>
+      <button class="profile-edit-btn" (click)="toggleEditMode()">
+        @if (editMode()) {
+        <span class="edit-icon"><i class="bi bi-floppy"></i></span>
+        <span>Save Changes</span>
+
+        } @else {
+        <span class="edit-icon"><i class="bi bi-pencil"></i></span>
+        <span>Edit Profile</span>
+        }
+      </button>
+    </div>
+
+    <!-- User Main Information Display -->
+    <div class="profile-user-main">
+      <div class="profile-user-name">
+        {{ profile()?.name || "User Name" }}
+      </div>
+
+      <div class="profile-user-email">
+        <i class="fa-solid fa-location-dot text-muted me-2"></i>
+        <span>{{ (profile() && profile()?.country) || "Country" }}, </span>
+        <span> {{ (profile() && profile()?.address) || "Address" }}</span>
+      </div>
+    </div>
+  </div>
+</div>

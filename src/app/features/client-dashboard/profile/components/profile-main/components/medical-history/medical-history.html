@@ -1,0 +1,76 @@
+<div class="medical-history-section">
+  <div class="section-header">
+    <h2>Medical Information</h2>
+  </div>
+
+  <div class="medical-info">
+    <!-- Medical History Section -->
+    <div class="medical-section">
+      <div class="medical-card">
+        <div class="card-header">
+          <h3>Medical History</h3>
+          <span class="card-icon">🦠</span>
+        </div>
+        <div class="card-content">
+          @if (editMode() && profile()) {
+          <textarea
+            [(ngModel)]="profile()!.medicalHistory"
+            class="medical-textarea"
+            rows="3"
+            placeholder="Enter current diseases..."
+            resize="none"
+          ></textarea>
+          } @else {
+          <p>{{ profile()?.medicalHistory || "No diseases recorded" }}</p>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- Current Medications Section -->
+    <div class="medical-section">
+      <div class="medical-card">
+        <div class="card-header">
+          <h3>Current Medications</h3>
+          <span class="card-icon">💊</span>
+        </div>
+        <div class="card-content">
+          @if (editMode() && profile()) {
+          <textarea
+            [(ngModel)]="profile()!.medications"
+            class="medical-textarea"
+            rows="3"
+            placeholder="Enter current medications..."
+            resize="none"
+          ></textarea>
+          } @else {
+          <p>{{ profile()?.medications || "No medications recorded" }}</p>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- Allergies Section -->
+    <div class="medical-section">
+      <div class="medical-card">
+        <div class="card-header">
+          <h3>Allergies</h3>
+          <span class="card-icon">🤧</span>
+        </div>
+        <div class="card-content">
+          @if (editMode() && profile()) {
+          <textarea
+            [(ngModel)]="profile()!.allergies"
+            class="medical-textarea"
+            rows="3"
+            placeholder="Enter your allergies..."
+            resize="none"
+          ></textarea>
+          } @else {
+          <p>{{ profile()?.allergies || "No Allergies recorded" }}</p>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
