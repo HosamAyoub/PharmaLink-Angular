@@ -1,7 +1,8 @@
 <div class="container">
   <!-- Header -->
   <div class="header">
-    <button class="btn btn-outline-light border card-hover text-dark px-3 py-2 d-flex align-items-center" [routerLink]="['/pharmacy/dashboard']">
+    <button class="btn btn-outline-light border card-hover text-dark px-3 py-2 d-flex align-items-center"
+      [routerLink]="['/pharmacy/dashboard']">
       <i class="fas fa-arrow-left me-2"></i> Back to Dashboard
     </button>
     <div class="title-group">
@@ -89,7 +90,7 @@
               <th class="py-3 text-muted fw-semibold border-0">Price</th>
               <th class="py-3 text-muted fw-semibold border-0">Quantity</th>
               <th class="py-3 text-muted fw-semibold border-0">Status</th>
-              <th class="py-3 text-muted fw-semibold border-0">Toggle</th>
+              <th class="py-3 text-muted fw-semibold border-0">Available</th>
               <th class="py-3 text-muted fw-semibold border-0">Actions</th>
             </tr>
           </thead>
@@ -97,46 +98,65 @@
             <tr *ngFor="let med of medicines" class="border-bottom">
               <!-- Drug Details -->
               <td class="px-4 py-3">
-                <div class="fw-semibold text-dark">{{ med.drugName }}</div>
-                <div class="text-muted small">{{ med.drugActiveIngredient }}</div>
+                <div class="fw-semibold text-dark">{{ med.pharmaproduct.drugName }}</div>
+                <div class="text-muted small">{{ med.pharmaproduct.drugActiveIngredient }}</div>
               </td>
               <!-- Category -->
               <td class="py-3">
-                <span class="badge bg-primary-blue-light text-blue-navbar">{{ med.drugCategory }}</span>
+                <span class="badge bg-primary-blue-light text-blue-navbar">{{ med.pharmaproduct.drugCategory }}</span>
               </td>
               <!-- Price -->
               <td class="py-3">
-                <div class="fw-semibold">EGP{{ med.price }}</div>
+                <div *ngIf="med.isediting" class="input-group">
+                  <input type="number" class="form-control" min="0" id="price-{{ med.pharmaproduct.drugId }}"
+                    style="width: 2rem; height: 2rem; padding: 0.5rem;" value="{{ med.pharmaproduct.price }}" />
+                </div>
+                <div *ngIf="!med.isediting" class="fw-semibold">
+                  EGP{{ med.pharmaproduct.price }}
+                </div>
               </td>
               <!-- Quantity -->
               <td class="py-3">
-                <div class="fw-semibold">{{ med.quantityAvailable }}</div>
+                <div *ngIf="med.isediting" class="input-group">
+                  <input type="number" class="form-control" min="0" id="quantity-{{ med.pharmaproduct.drugId }}"
+                    style="width: 2rem ; height: 2rem; padding: 0.5rem;"
+                    value="{{ med.pharmaproduct.quantityAvailable }}" />
+                </div>
+                <div *ngIf="!med.isediting" class="fw-semibold">
+                  {{ med.pharmaproduct.quantityAvailable }}
+                </div>
               </td>
               <!-- Status -->
               <td class="py-3">
-                <span [class.out-of-stock]="med.quantityAvailable === 0"
-                  [class.low-stock]="med.quantityAvailable < 10 && med.quantityAvailable > 0"
-                  [class.in-stock]="med.quantityAvailable >= 10">
+                <span [class.out-of-stock]="med.pharmaproduct.quantityAvailable === 0"
+                  [class.low-stock]="med.pharmaproduct.quantityAvailable < 10 && med.pharmaproduct.quantityAvailable > 0"
+                  [class.in-stock]="med.pharmaproduct.quantityAvailable >= 10">
                   {{
-                  med.quantityAvailable === 0
+                  med.pharmaproduct.quantityAvailable === 0
                   ? 'Out of Stock'
-                  : med.quantityAvailable < 10 ? 'Low Stock' : 'In Stock' }} </span>
+                  : med.pharmaproduct.quantityAvailable < 10 ? 'Low Stock' : 'In Stock' }} </span>
               </td>
               <!-- Toggle -->
               <td class="py-3">
                 <div class="form-check form-switch">
-                  <input class="form-check-input" type="checkbox" [checked]="med.quantityAvailable > 0"
-                    [disabled]="med.quantityAvailable === 0" />
+                  <input class="form-check-input" type="checkbox" [checked]="med.pharmaproduct.quantityAvailable > 0"
+                    [disabled]="med.pharmaproduct.quantityAvailable === 0 && !med.isediting" />
                 </div>
               </td>
               <!-- Actions -->
               <td class="py-3">
                 <div class="d-flex gap-2">
-                  <button class="btn btn-sm btn-light border-0" title="Edit">
+                  <button class="btn btn-sm btn-light border-0" title="Edit" (click)="editMedicine(med)"
+                    *ngIf="!med.isediting">
                     <i class="fa fa-edit text-muted"></i>
                   </button>
-                  <button class="btn btn-sm btn-light border-0 delete" title="Delete">
+                  <button class="btn btn-sm btn-light border-0 delete" title="Delete" (click)="deleteMedicine(med)"
+                  *ngIf="!med.isediting">
                     <i class="fa fa-trash text-danger"></i>
+                  </button>
+                  <button class="btn btn-sm btn-light border-0" title="Save" (click)="updateMedicine(med)"
+                    *ngIf="med.isediting">
+                    <i class="fa fa-save text-success"></i>
                   </button>
                 </div>
               </td>

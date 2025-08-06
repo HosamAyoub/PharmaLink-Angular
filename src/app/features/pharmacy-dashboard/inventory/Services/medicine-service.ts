@@ -11,10 +11,13 @@ import { IDrugDetails } from '../../../client-dashboard/Details/model/IDrugDetia
 export class MedicineService {
   private ENDPOINTS = APP_CONSTANTS.API.ENDPOINTS;
 
-  constructor(private http: HttpClient, private config: ConfigService) { }
+  constructor(private http: HttpClient, private config: ConfigService) {
+  }
 
-  getPharmacyInventoryStatusByID(PharmacyID: number): Observable<any> {
-    const url = this.config.getApiUrl(`${this.ENDPOINTS.PHARMACYSTOCK_INVENTORY_STATUS_BY_ID}/?pharmacyId=${PharmacyID}`);
+
+
+  getPharmacyInventoryStatusByID(): Observable<any> {
+    const url = this.config.getApiUrl(`${this.ENDPOINTS.PHARMACYSTOCK_INVENTORY_STATUS_BY_ID}`);
     return this.http.get<any>(url);
   }
 
@@ -29,10 +32,11 @@ export class MedicineService {
     });
   }
 
-  getAllPharmacyMedicines(pagenumber: number, pagesize: number): Observable<any> {
+  getAllPharmacyMedicines(pharmacyid: number, pagenumber: number, pagesize: number): Observable<any> {
     const url = this.config.getApiUrl(`${this.ENDPOINTS.BATCH_PHARMACY_STOCK_BY_ID}?`);
     return this.http.get<any>(url, {
       params: {
+        pharmacyId: pharmacyid,
         pageNumber: pagenumber,
         pageSize: pagesize
       }
@@ -46,6 +50,21 @@ export class MedicineService {
         SearchAnything: searchTerm
       }
     });
+  }
+
+  EditPharmacyStockProduct(drugId: number, productPrice: number, quantity: number): Observable<any> {
+    const url = this.config.getApiUrl(`${this.ENDPOINTS.PHARMACY_STOCK}`);
+    return this.http.put<any>(url,
+      {
+        drugId: drugId,
+        price: productPrice,
+        quantityAvailable: quantity
+      });
+  }
+
+  deletePharmacyStockProduct(drugId: number): Observable<any> {
+    const url = this.config.getApiUrl(`${this.ENDPOINTS.PHARMACY_STOCK}/${drugId}`);
+    return this.http.delete<any>(url);
   }
 
 }
