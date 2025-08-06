@@ -1,6 +1,36 @@
-<div class="text-center mt-5">
-  <h2 class="text-success mb-4">Order Placed Successfully!</h2>
-  <img src="../../../../../../assets/images/icons/image_processing20250209-1944378-1ykx6b9.gif" alt="Success" class="img-fluid" style="max-width: 300px;" />
-  <p class="mt-3">Thank you for your order 🎉</p>
-  <a routerLink="/client/home" class="btn btn-primary mt-3">Go to Home</a>
+<div class="d-flex justify-content-center align-items-center min-vh-100">
+  <div class="text-center p-4 shadow rounded" style="max-width: 500px; width: 100%;">
+    
+    <!-- Loading -->
+    <ng-container *ngIf="status === 'loading'">
+      <div class="spinner-border text-primary mb-3" role="status"></div>
+      <p class="text-muted">Checking payment status...</p>
+    </ng-container>
+
+    <!-- Pending -->
+    <ng-container *ngIf="status === 'pending'">
+      <i class="fas fa-clock fa-3x text-warning mb-3"></i>
+      <h5 class="text-warning">We're confirming your order...</h5>
+      <p class="text-muted">Please wait a moment ⏳</p>
+    </ng-container>
+
+    <!-- Success -->
+    <ng-container *ngIf="status === 'success'">
+      <i class="fas fa-check-circle fa-3x text-success mb-3"></i>
+      <i class="fas fa-check-circle fa-4x text-success mb-3"></i>
+      <h2 class="text-success">Order Placed Successfully!</h2>
+       <i class="fas fa-box-open fa-5x text-secondary my-4"></i>
+      <p class="text-muted">Thank you for your order 🎉</p>
+      <a routerLink="/client/home" class="btn btn-success mt-3 px-4">Go to Home</a>
+    </ng-container>
+
+    <!-- Error -->
+    <ng-container *ngIf="status === 'error'">
+      <i class="fas fa-exclamation-circle fa-3x text-danger mb-3"></i>
+      <h5 class="text-danger">Something went wrong!</h5>
+      <p class="text-muted">Please contact support or try again.</p>
+      <a [routerLink]="['/home']" class="btn btn-outline-danger mt-3 px-4">Return Home</a>
+    </ng-container>
+
+  </div>
 </div>

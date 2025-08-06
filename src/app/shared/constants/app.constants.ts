@@ -25,6 +25,7 @@ export const APP_CONSTANTS = {
       PATIENT_PROFILE_EDIT: 'Patient/UpdateProfile',
       PHARMACY_ANALYSIS: 'Orders/analysis',
       PHARMACY_STOCK_ANALYSIS: 'PharmacyStock/InventoryStatusByID',
+      ORDERS_VALIDATE_SESSION: 'orders/validate-session',
     },
   },
   environment: {
