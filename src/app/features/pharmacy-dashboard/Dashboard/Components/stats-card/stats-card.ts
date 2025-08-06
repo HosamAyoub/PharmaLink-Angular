@@ -4,7 +4,7 @@ import { getIconClass } from '../../../../../shared/utils/icon-mapper.util';
   selector: 'app-stats-card',
   imports: [],
   templateUrl: './stats-card.html',
-  styleUrl: './stats-card.css'
+  styleUrl: './stats-card.css',
 })
 export class StatsCard {
   @Input() title!: string;
