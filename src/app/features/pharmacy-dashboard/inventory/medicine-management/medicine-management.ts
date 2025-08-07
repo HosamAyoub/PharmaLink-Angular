@@ -19,13 +19,12 @@ export class MedicineManagement {
   Status!: IPharmaInventoryStatus;
   medicines: IMedicine[] = [];
   Result: IMedicine[] = [];
-  @ViewChild('filterSelect') el!: ElementRef;
-  accountId: number = 0;
+  @ViewChild('filterSelect') filterselect!: ElementRef;
+  @ViewChild('searchInput') searchInput!: ElementRef;
 
   constructor(private cd: ChangeDetectorRef) { }
 
   ngOnInit() {
-    this.getUserDataFromToken();
     // load inventory stats
     this.getPharmacyStatus();
     // load all medicines
@@ -33,16 +32,7 @@ export class MedicineManagement {
   }
 
 
-  getUserDataFromToken() {
-    const userDataString = localStorage.getItem('userData');
-    if (!userDataString) {
-      return;
-    }
-    const userData = JSON.parse(userDataString);
-    const token = userData._token;
-    const claims = jwtDecode(token) as Record<string, any>;
-    this.accountId = claims['pharmacy_id'];
-  }
+
 
   getPharmacyStatus() {
     this.medicineService.getPharmacyInventoryStatusByID().subscribe((status: any) => {
@@ -61,14 +51,14 @@ export class MedicineManagement {
     const pageSize = 100;
     console.log(`Loading medicines with query: ${query}`);
     if (query === '') {
-      this.medicineService.getAllPharmacyMedicines(this.accountId, pageNumber, pageSize).subscribe((res: any) => {
+      this.medicineService.getAllPharmacyMedicines(pageNumber, pageSize).subscribe((res: any) => {
         this.Result = res.data.items.map((item: any) => ({
           pharmaproduct: item,
           isediting: false as boolean,
           available: item.quantityAvailable > 0
         }));
         console.log('Medicines loaded:', res.data.items);
-        this.onFilterChange(this.el.nativeElement.value);
+        this.onFilterChange(this.filterselect.nativeElement.value);
       });
     }
     else {
@@ -78,11 +68,11 @@ export class MedicineManagement {
           isediting: false as boolean,
           available: item.quantityAvailable > 0
         }));
-        this.onFilterChange(this.el.nativeElement.value);
+        this.onFilterChange(this.filterselect.nativeElement.value);
       },
         (error: any) => {
           this.Result = [];
-          this.onFilterChange(this.el.nativeElement.value);
+          this.onFilterChange(this.filterselect.nativeElement.value);
         });
     }
   }
@@ -101,7 +91,15 @@ export class MedicineManagement {
   }
 
   editMedicine(medicine: IMedicine) {
+    if(!medicine.isediting) {
+      document.getElementById(`toggle-${medicine.pharmaproduct.drugId}`)?.setAttribute('disabled', `true`);
+    }
+    else
+    {
+      document.getElementById(`toggle-${medicine.pharmaproduct.drugId}`)?.removeAttribute('disabled');
+    }
     medicine.isediting = !medicine.isediting;
+    this.cd.detectChanges();
   }
 
   updateMedicine(medicine: IMedicine) {
@@ -112,9 +110,30 @@ export class MedicineManagement {
       .subscribe(() => {
         medicine.pharmaproduct.quantityAvailable = updatedQuantity;
         medicine.pharmaproduct.price = updatedPrice;
-        medicine.isediting = false;
         medicine.available = updatedQuantity > 0;
+        this.editMedicine(medicine);
+        this.getPharmacyStatus();
       });
+  }
+
+  toggleMedicineStatus(medicine: IMedicine) {
+    if(medicine.available) 
+    {
+      this.medicineService.EditPharmacyStockProduct(medicine.pharmaproduct.drugId, medicine.pharmaproduct.price,0)
+        .subscribe(() => {
+          medicine.pharmaproduct.quantityAvailable = 0;
+          medicine.pharmaproduct.price = medicine.pharmaproduct.price;
+          medicine.isediting = false;
+          medicine.available = false;
+          this.getPharmacyStatus();
+        });
+    }
+    else
+    {
+      medicine.available = true;
+      this.editMedicine(medicine);
+    }
+
   }
 
   deleteMedicine(medicine: IMedicine) {
