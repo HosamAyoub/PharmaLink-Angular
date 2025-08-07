@@ -7,28 +7,27 @@ import { DecimalPipe } from '@angular/common';
   selector: 'client-pharmacy-card',
   imports: [DecimalPipe],
   templateUrl: './pharmacy-card.html',
-  styleUrl: './pharmacy-card.css'
+  styleUrl: './pharmacy-card.css',
 })
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PharmacyCard {
-
   @Input() pharmacy!: Ipharmacy;
 
-getStars(rate: number | undefined): string {
-  if (!rate) return '';
+  getStars(rate: number | undefined): string {
+    if (!rate) return '';
 
-  const fullStars = Math.floor(rate);
-  const hasHalfStar = rate % 1 >= 0.5;
-  const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+    const fullStars = Math.floor(rate);
+    const hasHalfStar = rate % 1 >= 0.5;
+    const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
 
-  return (
-    '<span class="full-star">★</span>'.repeat(fullStars) +
-    (hasHalfStar ? '<span class="half-star">✫</span>' : '') +
-    '<span class="empty-star">☆</span>'.repeat(emptyStars)
-  );
-}
+    return (
+      '<span class="full-star">★</span>'.repeat(fullStars) +
+      (hasHalfStar ? '<span class="half-star">✫</span>' : '') +
+      '<span class="empty-star">☆</span>'.repeat(emptyStars)
+    );
+  }
 
   isOpenNow(startHour?: string, endHour?: string): boolean {
     if (!startHour || !endHour) return false;
@@ -44,8 +43,10 @@ getStars(rate: number | undefined): string {
     const startTime = startH * 60 + startM;
     const endTime = endH * 60 + endM;
 
+    console.log('current time: ', currentTime);
+    console.log('start time: ', startTime);
+    console.log('end time: ', endTime);
+
     return currentTime >= startTime && currentTime <= endTime;
   }
 }
-
-
