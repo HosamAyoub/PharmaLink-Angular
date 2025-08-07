@@ -128,19 +128,15 @@
               </td>
               <!-- Status -->
               <td class="py-3">
-                <span [class.out-of-stock]="med.pharmaproduct.quantityAvailable === 0"
-                  [class.low-stock]="med.pharmaproduct.quantityAvailable < 10 && med.pharmaproduct.quantityAvailable > 0"
-                  [class.in-stock]="med.pharmaproduct.quantityAvailable >= 10">
-                  {{
-                  med.pharmaproduct.quantityAvailable === 0
-                  ? 'Out of Stock'
-                  : med.pharmaproduct.quantityAvailable < 10 ? 'Low Stock' : 'In Stock' }} </span>
+                <span *ngIf="med.pharmaproduct.quantityAvailable === 0 || !med.available" class="out-of-stock">Out of Stock</span>
+                <span *ngIf="med.pharmaproduct.quantityAvailable < 12 && med.pharmaproduct.quantityAvailable > 0 && med.available" class="low-stock">Low Stock</span>
+                <span *ngIf="med.pharmaproduct.quantityAvailable >= 12 && med.available" class="in-stock">In Stock</span>
               </td>
               <!-- Toggle -->
               <td class="py-3">
                 <div class="form-check form-switch">
                   <input class="form-check-input" type="checkbox" [checked]="med.pharmaproduct.quantityAvailable > 0"
-                    [disabled]="med.pharmaproduct.quantityAvailable === 0 && !med.isediting" />
+                    (change)="toggleMedicineStatus(med)" id="toggle-{{ med.pharmaproduct.drugId }}" />
                 </div>
               </td>
               <!-- Actions -->
@@ -154,10 +150,11 @@
                   *ngIf="!med.isediting">
                     <i class="fa fa-trash text-danger"></i>
                   </button>
-                  <button class="btn btn-sm btn-light border-0" title="Save" (click)="updateMedicine(med)"
-                    *ngIf="med.isediting">
-                    <i class="fa fa-save text-success"></i>
-                  </button>
+                  <div *ngIf="med.isediting" class="d-flex gap-2">
+                    <button class="btn btn-sm btn-light border-0" title="Save" (click)="updateMedicine(med)">
+                      <i class="fa fa-save text-success"></i>
+                    </button>
+                  </div>
                 </div>
               </td>
             </tr>

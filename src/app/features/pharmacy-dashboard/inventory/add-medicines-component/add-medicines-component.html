@@ -54,14 +54,16 @@
         Selected Medicines
         <span class="selected-count">{{ selectedMedicines.length }} selected</span>
       </div>
-      <button class="AddStock-button">Add To Stock</button>
+      <button class="AddStock-button" data-bs-toggle="modal" data-bs-target="#addStockModal">
+        Add To Stock
+      </button>
     </div>
     <div class="selected-medicines-list">
       @for (medicine of selectedMedicines; track medicine) {
       <div class="selected-medicine-tag">
-        {{ medicine.commonName }}
+        {{ medicine.drugdetails.commonName }}
         <button class="remove-tag" (click)="removeMedicine(medicine)">
-          <i class="remove-icon" aria-hidden="true">&times;</i>
+          <i class="remove-icon">&times;</i>
         </button>
       </div>
       }
@@ -72,8 +74,9 @@
   <!-- Medicine Cards Grid -->
   <div class="medicines-grid">
     @for (medicine of filteredMedicines; track medicine) {
-    <div class="medicine-card" [class.selected]="checkSelectedMedicine(medicine)" (click)="onMedicineClick(medicine)">
-      <div class="medicine-card-content">
+    <div class="medicine-card m-0 " [class.selected]="checkSelectedMedicine(medicine)===2"
+      (click)="onMedicineClick(medicine)">
+      <div class="medicine-card-content m-0 ">
         <div class="medicine-icon">
           <img [src]="medicine.drug_UrlImg" alt="{{ medicine.commonName }}" class="medicine-image">
         </div>
@@ -82,14 +85,17 @@
           <p class="medicine-ingredient">{{ medicine.activeIngredient }}</p>
           <p class="medicine-category">{{ medicine.category }}</p>
         </div>
+        <div class="alert alert-success mt-auto" style="width:6rem; padding: 0.5rem; text-align: center;"
+          *ngIf="checkSelectedMedicine(medicine) === 1">
+          In Stock
+        </div>
       </div>
-      <div class="selection-checkbox" (click)="$event.stopPropagation(); onMedicineSelect(medicine)">
-        <div class="checkbox" [class.checked]="checkSelectedMedicine(medicine)">
-          @if (checkSelectedMedicine(medicine)) {
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="white">
+      <div id="checkbox{{ medicine.drugID }}" class="selection-checkbox"
+        (click)="$event.stopPropagation(); onMedicineSelect(medicine)">
+        <div class="checkbox" [class.checked]="checkSelectedMedicine(medicine) === 2">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="white" *ngIf="checkSelectedMedicine(medicine)===2">
             <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
           </svg>
-          }
         </div>
       </div>
     </div>
@@ -97,10 +103,63 @@
   </div>
 
   <!-- Add Medicine Details Modal -->
-  <!-- <app-add-medicine-details 
-    *ngIf="showMedicineDetails && selectedMedicine"
-    [medicine]="selectedMedicine"
-    (close)="onCloseMedicineDetails()"
-    (addToStock)="onAddToStock($event)"
-  ></app-add-medicine-details> -->
+  <div class="modal fade" id="addStockModal" tabindex="-1" aria-labelledby="addStockModalLabel">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addStockModalLabel">Add Selected Medicines to Stock</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          @if (selectedMedicines.length === 0) {
+          <div class="text-center text-muted py-4">
+            No medicines selected.
+          </div>
+          }
+          @if (selectedMedicines.length > 0) {
+          <div class="table-responsive">
+            <table class="table table-bordered align-middle">
+              <thead class="bg-primary text-white">
+                <tr style="justify-content: center; align-items: center;">
+                  <th style="width: 8px;">Image</th>
+                  <th style="width: 40px;">Name</th>
+                  <th style="width: 40px;">Category</th>
+                  <th style="width: 50px;">Quantity</th>
+                  <th style="width: 5px;">Price</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (medicine of selectedMedicines; track medicine) {
+                <tr style="justify-content: center; align-items: center;">
+                  <td>
+                    <img [src]="medicine.drugdetails.drug_UrlImg" alt="{{ medicine.drugdetails.commonName }}"
+                      style="height: 80px; object-fit: contain; border-radius: 6px;">
+                  </td>
+                  <td>{{ medicine.drugdetails.commonName }}</td>
+                  <td>{{ medicine.drugdetails.category }}</td>
+                  <td><input class="form-control" style="width: 5rem ; height: 2rem; padding: 0.5rem;" type="number"
+                      [ngModel]="medicine.quantity" (ngModelChange)="medicine.quantity = $event" min="0" /></td>
+                  <td style="text-align: center;">
+                    <div style="display: flex; align-items: center;">
+                      <input class="form-control" style="width: 5rem; height: 2rem; padding: 0.5rem; margin-right: 6px;"
+                        [ngModel]="medicine.price" (ngModelChange)="medicine.price = $event" type="number" min="0"
+                        step="0.01" />
+                      <span>EGP</span>
+                    </div>
+                  </td>
+                </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+          }
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-success" (click)="onAddToStock()"
+            data-bs-dismiss="modal">Confirm</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
