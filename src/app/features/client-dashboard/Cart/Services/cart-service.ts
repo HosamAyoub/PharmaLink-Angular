@@ -9,6 +9,8 @@ import { ConfigService } from '../../../../shared/services/config.service';
 import { APP_CONSTANTS } from '../../../../shared/constants/app.constants';
 import { CartItem } from '../Interfaces/cart-item';
 import { AuthUtils } from '../../../../core/utils';
+import { OrderSummary } from '../Interfaces/order-summary';
+import { App } from '../../../../app';
 
 @Injectable({
   providedIn: 'root'
@@ -48,6 +50,13 @@ export class CartService {
     }
   }
 
+  getOrderSummary(): Observable<OrderSummary> 
+  {
+      const url = this.config.getApiUrl(APP_CONSTANTS.API.ENDPOINTS.ORDER_SUMMARY);
+      return this.http.get<OrderSummary>(url);
+    
+  }
+
   addToCart(cartItem: CartItem): Observable<void> {
     //check if user is logged in
     if(AuthUtils.isUserLoggedIn()){
@@ -61,6 +70,19 @@ export class CartService {
     }
     else{
       let cart = JSON.parse(localStorage.getItem(APP_CONSTANTS.Cart) || '[]');
+
+      //check that this item have the same pharmacy id in local storage
+      const hasDifferentPharmacy = cart.find((item: CartItem) =>
+         item.pharmacyId !== cartItem.pharmacyId
+      );
+
+      if(hasDifferentPharmacy) {
+          return throwError(() => {
+            const error = new Error('You can only add drugs from one pharmacy at a time.');
+            (error as any).code = APP_CONSTANTS.ErrorCodes.DIFFERENT_PHARMACY;
+            return error;
+          }); 
+        }
 
       const existingItemIndex = cart.findIndex((item: CartItem) => 
         item.drugId === cartItem.drugId && item.pharmacyId === cartItem.pharmacyId
@@ -178,7 +200,6 @@ export class CartService {
       });
     }
 
-    console.log('Syncing local cart with database:', localCart);
     
     // Convert local cart items to DTOs for bulk add
     const cartItemDtos = localCart.map((item: CartItem) => ({

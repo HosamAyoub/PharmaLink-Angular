@@ -3,6 +3,7 @@ import { IProduct } from '../../models/IProduct';
 import { CartStore } from '../../../Cart/Services/cart-store';
 import { ToastService } from '../../../../../shared/services/toast.service';
 import { CartItem } from '../../../Cart/Interfaces/cart-item';
+import { APP_CONSTANTS } from '../../../../../shared/constants/app.constants';
 
 @Component({
   selector: 'app-product',
@@ -63,8 +64,8 @@ export class Product {
         this.toastService.showSuccess(`${product.drugName} added to cart successfully!`);
       },
       error: (error: any) => {
-        if (error.message && error.message.includes('logged in')) {
-          this.toastService.showWarning('Please login to add items to your cart');
+        if(error.code == APP_CONSTANTS.ErrorCodes.DIFFERENT_PHARMACY) {
+          this.toastService.showError('You can not add products from different pharmacies to the cart.');
         } else {
           this.toastService.showError('Failed to add item to cart. Please try again.');
         }

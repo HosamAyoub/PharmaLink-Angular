@@ -30,7 +30,9 @@ export class CartPage {
   isAuthenticated = computed(() => !!this.authService.user());
   ngOnInit(): void {
     this.cartStore.loadCart();
-    
+    this.cartStore.getOrderSummary();
+    console.log('Order Summary:', this.orderSummary());
+
     // Ensure auth state is current
     this.authService.autoLogin();
   }
