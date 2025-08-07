@@ -5,7 +5,7 @@
 }
 .card {
   max-width: 390px;
-  padding: 25px 30px !important;
+  padding: 15px 20px !important;
   border: none;
   box-shadow: 0 4px 24px var(--pharmacy-card-shadow1),
     0 1.5px 6px var(--pharmacy-card-shadow2);

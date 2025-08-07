@@ -8,6 +8,8 @@ import { ProfileService } from './services/profile-service';
 import { ProfileMain } from './components/profile-main/profile-main';
 import { UiState } from '../../../shared/enums/UIState';
 import { ProfileError } from './components/profile-error/profile-error';
+import { FormState } from '../../../shared/enums/FormState';
+import { Alert } from '../../../shared/components/alert/alert';
 
 @Component({
   selector: 'app-profile',
@@ -19,7 +21,8 @@ import { ProfileError } from './components/profile-error/profile-error';
     ProfileHeader,
     ProfileNavbar,
     ProfileMain,
-    ProfileError
+    ProfileError,
+    Alert,
   ],
   templateUrl: './profile.html',
   styleUrls: ['./profile.css'],
@@ -28,7 +31,10 @@ export class Profile implements OnInit {
   profileService = inject(ProfileService);
   isLoading = this.profileService.isLoading;
   profile = this.profileService.profile;
+  alertState = this.profileService.alertState;
+  alertMessage = this.profileService.alertMessage;
   public UiState = UiState;
+  public FormState = FormState;
 
   loadProfile() {
     this.profileService.loadProfile();

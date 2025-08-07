@@ -5,11 +5,16 @@
 
   <div class="medical-info">
     <!-- Medical History Section -->
-    <div class="medical-section">
+    <div class="medical-section border-green">
       <div class="medical-card">
         <div class="card-header">
           <h3>Medical History</h3>
-          <span class="card-icon">🦠</span>
+          <span class="card-icon"
+            ><img
+              src="../../../../../../../../assets/images/profile/virus.png"
+              alt="Allergy"
+              class="icon-size"
+          /></span>
         </div>
         <div class="card-content">
           @if (editMode() && profile()) {
@@ -32,7 +37,12 @@
       <div class="medical-card">
         <div class="card-header">
           <h3>Current Medications</h3>
-          <span class="card-icon">💊</span>
+          <span class="card-icon"
+            ><img
+              src="../../../../../../../../assets/images/profile/drugs1.png"
+              alt="Allergy"
+              class="icon-size"
+          /></span>
         </div>
         <div class="card-content">
           @if (editMode() && profile()) {
@@ -51,11 +61,16 @@
     </div>
 
     <!-- Allergies Section -->
-    <div class="medical-section">
+    <div class="medical-section border-red">
       <div class="medical-card">
         <div class="card-header">
           <h3>Allergies</h3>
-          <span class="card-icon">🤧</span>
+          <span class="card-icon">
+            <img
+              src="../../../../../../../../assets/images/profile/drug-allergy.png"
+              alt="Allergy"
+              class="icon-size"
+          /></span>
         </div>
         <div class="card-content">
           @if (editMode() && profile()) {

@@ -17,6 +17,13 @@
   margin-bottom: 24px;
 }
 
+.section-header h2 {
+  font-size: 30px;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin: 0;
+}
+
 .medical-history-section {
   background: var(--background-white);
   padding: 24px;
@@ -37,6 +44,14 @@
   padding: 16px;
   border-radius: 8px;
   border-left: 4px solid var(--primary-blue);
+}
+
+.border-red {
+  border-color: var(--danger-red);
+}
+
+.border-green {
+  border-color: var(--green);
 }
 
 .medical-card {
@@ -85,4 +100,8 @@
   padding: 12px;
   font-family: inherit;
   resize: vertical;
+}
+
+.icon-size {
+  width: 30px;
 }

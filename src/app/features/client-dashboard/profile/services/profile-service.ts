@@ -1,18 +1,19 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { inject, Injectable, OnInit, signal } from '@angular/core';
+import { effect, inject, Injectable, OnInit, signal } from '@angular/core';
 import { APP_CONSTANTS } from '../../../../shared/constants/app.constants';
 import { ConfigService } from '../../../../shared/services/config.service';
 import { UiState } from '../../../../shared/enums/UIState';
 import { Patient } from '../../../../shared/models/user.model';
 import { jwtDecode } from 'jwt-decode';
+import { FormState } from '../../../../shared/enums/FormState';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProfileService {
   http = inject(HttpClient);
-  endPoint = APP_CONSTANTS.API.ENDPOINTS;
   config = inject(ConfigService);
+  endPoint = APP_CONSTANTS.API.ENDPOINTS;
   url = this.config.getApiUrl(this.endPoint.PATIENT_PROFILE);
   urlEdit = this.config.getApiUrl(this.endPoint.PATIENT_PROFILE_EDIT);
   accountId = '';
@@ -22,6 +23,23 @@ export class ProfileService {
   originalProfile = signal<Patient | null>(null);
   editMode = signal(false);
   activeTab = signal('personal');
+  alertState = signal(FormState.Hide);
+  alertTimeout: any = null;
+  alertMessage = signal<string>('');
+
+  constructor() {
+    effect(() => {
+      if (this.alertState() !== FormState.Hide) {
+        if (this.alertTimeout) {
+          clearTimeout(this.alertTimeout);
+        }
+        this.alertTimeout = setTimeout(() => {
+          this.alertState.set(FormState.Hide);
+          this.alertTimeout = null;
+        }, 2000);
+      }
+    });
+  }
 
   switchTab(tab: string) {
     console.log('Switching to tab:', tab);
@@ -83,10 +101,6 @@ export class ProfileService {
   saveProfile() {
     if (!this.profile()) return;
 
-    console.log('Saving profile:', this.profile());
-    this.originalProfile.set(this.profile());
-    this.editMode.set(false);
-
     // Strict required field validation
     if (
       !this.profile()?.name ||
@@ -95,9 +109,14 @@ export class ProfileService {
       !this.profile()?.country ||
       !this.profile()?.address
     ) {
-      alert('Please fill in all required fields.');
+      this.alertState.set(FormState.Required);
+      this.alertMessage.set('Please fill in all required fields.');
       return;
     }
+
+    console.log('Saving profile:', this.profile());
+    this.originalProfile.set(this.profile());
+    this.editMode.set(false);
 
     const editedData: Patient = {
       name: this.profile()!.name,
@@ -118,11 +137,15 @@ export class ProfileService {
         this.originalProfile.set(editedData);
         this.editMode.set(false);
         this.isLoading.set(UiState.Success);
-        alert('Profile updated successfully!');
+        this.alertState.set(FormState.Success);
+
+        this.alertMessage.set('Profile updated successfully!');
+        console.log(this.alertMessage());
       },
       error: () => {
         this.isLoading.set(UiState.Error);
-        alert('Failed to update profile.');
+        this.alertMessage.set('Failed to update profile.');
+        this.alertState.set(FormState.Failed);
       },
     });
   }
