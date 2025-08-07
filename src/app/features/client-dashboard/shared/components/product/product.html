@@ -21,7 +21,7 @@
       <div class="d-flex justify-content-between align-items-center">
         <!-- Dynamic stock status based on quantity -->
         <div
-          class="d-flex justify-content-center align-items-center rounded-3 px-2 py-1"
+          class="d-flex justify-content-center align-items-center rounded-pill px-2 py-1"
           [style.background-color]="
             getStockBackgroundColor(product.quantityAvailable)
           "
@@ -40,7 +40,7 @@
         ></i>
       </div>
       <button
-        class="btn btn-modern-primary mt-3 rounded-0"
+        class="btn btn-modern-primary mt-3 rounded-1"
         style="width: 100%"
         (click)="addToCart(product, $event)"
       >
