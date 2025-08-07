@@ -55,8 +55,10 @@ export class PharmacyProfilePage implements OnInit {
 
   onPhotoSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
-    if (input.files?.length) {
-      this.selectedPhotoFile = input.files[0];
+    const file = input?.files?.[0];
+
+    if (file) {
+      this.selectedPhotoFile = file;
 
       const reader = new FileReader();
       reader.onload = () => {
