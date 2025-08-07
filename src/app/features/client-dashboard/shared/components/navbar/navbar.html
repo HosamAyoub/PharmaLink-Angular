@@ -138,18 +138,22 @@
           <!-- Cart Icon with Badge -->
           <li class="nav-item me-3 p-2">
             <a
-              class="nav-link p-2 position-relative"
+              class="nav-link p-2 rounded-circle position-relative cart-icon-container"
               data-bs-toggle="tooltip"
-              title="Cart"
+              [title]="'Cart (' + cartItemCount() + ' items)'"
               routerLink="cart"
+              [attr.aria-label]="
+                'Shopping cart with ' + cartItemCount() + ' items'
+              "
             >
               <img
                 src="assets/images/icons/cart.svg"
                 alt="Cart"
                 class="me-2 me-lg-0"
               />
+              @if (cartItemCount() > 0) {
               <span
-                class="position-absolute badge rounded-pill bg-danger"
+                class="position-absolute badge rounded-pill bg-danger cart-badge"
                 style="
                   font-size: 0.6rem;
                   top: -2px;
@@ -160,9 +164,11 @@
                   align-items: center;
                   justify-content: center;
                 "
+                [attr.aria-label]="cartItemCount() + ' items in cart'"
               >
-                1
+                {{ cartDisplayCount() }}
               </span>
+              }
               <span class="d-lg-none">Cart</span>
             </a>
           </li>

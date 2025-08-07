@@ -1,8 +1,24 @@
 export const CategoriesData = [
+
   {
-    name: 'Anemia medications',
-    image: 'https://cdn-icons-png.flaticon.com/512/2965/2965567.png',
+    name: 'Antibiotic',
+    image: '/assets/images/icons/antibiotic.png',
+    description: '120+ products'
+  },
+  {
+    name: 'Anemias',
+    image: 'assets/images/icons/anemia.png',
     description: '150+ medicines'
+  },
+    {
+    name: 'Muscle relaxants',
+    image: 'assets/images/icons/muscle.png',
+    description: '10+ products'
+  },
+   {
+    name: 'Sleep aids',
+    image: 'assets/images/icons/sleeping-pills.png',
+    description: '15+ products'
   },
   {
     name: 'Anthelmintics',
@@ -10,12 +26,17 @@ export const CategoriesData = [
     description: '45+ items'
   },
   {
-    name: 'Anti-Parkinson drugs',
+    name: 'Vaccine',
+    image: 'assets/images/icons/syringe-svgrepo-com.svg',
+    description: '20+ vaccines'
+  },
+  {
+    name: 'Anti-Parkinson',
     image: 'https://cdn-icons-png.flaticon.com/512/4290/4290854.png',
     description: '30+ medicines'
   },
   {
-    name: 'Anti-obesity drugs',
+    name: 'Anti-obesity',
     image: 'https://cdn-icons-png.flaticon.com/512/3307/3307196.png',
     description: '25+ supplements'
   },
@@ -24,11 +45,7 @@ export const CategoriesData = [
     image: 'https://cdn-icons-png.flaticon.com/512/254/254022.png',
     description: '40+ medicines'
   },
-  {
-    name: 'Antibiotic',
-    image: '/assets/images/icons/antibiotic.png',
-    description: '120+ products'
-  },
+
   {
     name: 'Anticancer',
     image: 'https://cdn-icons-png.flaticon.com/512/4388/4388166.png',
@@ -75,7 +92,7 @@ export const CategoriesData = [
     description: '40+ products'
   },
   {
-    name: 'Antigout drugs',
+    name: 'Antigout',
     image: 'https://cdn-icons-png.flaticon.com/512/3523/3523063.png',
     description: '10+ medicines'
   },
@@ -219,11 +236,7 @@ export const CategoriesData = [
     image: 'https://cdn-icons-png.flaticon.com/512/3307/3307196.png',
     description: '6+ medicines'
   },
-  {
-    name: 'Muscle relaxants',
-    image: 'assets/images/icons/muscle.png',
-    description: '10+ products'
-  },
+
   {
     name: 'NSAID',
     image: 'https://cdn-icons-png.flaticon.com/512/4320/4320337.png',
@@ -254,11 +267,7 @@ export const CategoriesData = [
     image: 'https://cdn-icons-png.flaticon.com/512/4689/4689162.png',
     description: '6+ medicines'
   },
-  {
-    name: 'Sleep aids',
-    image: 'assets/images/icons/sleeping-pills.png',
-    description: '15+ products'
-  },
+
   {
     name: 'Thyroid medications',
     image: 'https://cdn-icons-png.flaticon.com/512/2965/2965573.png',
@@ -269,11 +278,7 @@ export const CategoriesData = [
     image: 'https://cdn-icons-png.flaticon.com/512/831/831682.png',
     description: '9+ products'
   },
-  {
-    name: 'Vaccine',
-    image: 'assets/images/icons/syringe-svgrepo-com.svg',
-    description: '20+ vaccines'
-  },
+
   {
     name: 'Vasodilators',
     image: 'https://cdn-icons-png.flaticon.com/512/3523/3523063.png',

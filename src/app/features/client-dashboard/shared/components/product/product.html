@@ -2,19 +2,15 @@
   <div class="card">
     <div class="product-image-container">
       <img
-        [src]="
-          hasImageError(index)
-            ? 'assets/images/error-image.jpg'
-            : getSafeImageUrl(product)
-        "
+        [src]="getImageSource()"
         [alt]="product.drugName"
         class="product-image"
         (error)="onImageError($event, index)"
         (load)="onImageLoad($event)"
-        [class.error]="hasImageError(index)"
+        [class.error]="hasImageError()"
       />
     </div>
-    <div class="card-body text-start p-3">
+    <div class="card-body text-start">
       <h5>{{ product.drugName }}</h5>
       <p style="color: var(--primary-color)">{{ product.pharmacyName }}</p>
       <p
@@ -25,7 +21,7 @@
       <div class="d-flex justify-content-between align-items-center">
         <!-- Dynamic stock status based on quantity -->
         <div
-          class="d-flex justify-content-center align-items-center rounded-pill px-2 py-1"
+          class="d-flex justify-content-center align-items-center rounded-3 px-2 py-1"
           [style.background-color]="
             getStockBackgroundColor(product.quantityAvailable)
           "
@@ -44,9 +40,9 @@
         ></i>
       </div>
       <button
-        class="btn btn-modern-primary mt-3 rounded-1"
+        class="btn btn-modern-primary mt-3 rounded-0"
         style="width: 100%"
-        (click)="addToCart(product)"
+        (click)="addToCart(product, $event)"
       >
         Add to Cart
       </button>

@@ -1,9 +1,12 @@
 import { Component, Input, ChangeDetectorRef, inject, viewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CartService } from '../../../Cart/Services/cart-service';
+import { CartStore } from '../../../Cart/Services/cart-store';
 import {CartUpdateDto} from '../../../Cart/Interfaces/cart-update-dto';
 import { ViewChild } from '@angular/core';
 import { IPharmaStock } from '../../model/IPharmaDrug';
+import { CartItem } from '../../../Cart/Interfaces/cart-item';
+import { DrugDetails } from '../drug-details/drug-details';
+import { IDrugDetails } from '../../model/IDrugDetials';
 
 @Component({
   selector: 'app-pharmacy-available',
@@ -15,7 +18,7 @@ import { IPharmaStock } from '../../model/IPharmaDrug';
 export class PharmacyAvailable {
   private _pharmacies: IPharmaStock[] = [];
   @ViewChild('QuantityInput') el!: ElementRef;
-  cartservice = inject(CartService);
+  cartStore = inject(CartStore);
 
   @Input()
   set pharmacies(value: IPharmaStock[]) {
@@ -27,7 +30,7 @@ export class PharmacyAvailable {
     });
   }
 
-  @Input() drugId: number = 0;
+  @Input() drug: IDrugDetails | null = null;
 
   get pharmacies() {
     return this._pharmacies;
@@ -38,15 +41,22 @@ export class PharmacyAvailable {
   SendToCart(pharmacy: IPharmaStock)
   {
     console.log('Added to cart:', pharmacy.pharma_Name);
-    this.cartservice.addToCart({
-      drugId: this.drugId,
+    const cartItem: CartItem = {
+      drugId: this.drug!.drugID,
       pharmacyId: pharmacy.pharma_Id,
-      quantity: parseInt(this.el.nativeElement.value)
-    } as CartUpdateDto).subscribe({
-      next: (response) => {
+      drugName: pharmacy.pharma_Name,
+      pharmacyName: pharmacy.pharma_Name,
+      imageUrl: this.drug!.drug_UrlImg,
+      unitPrice: pharmacy.price,
+      quantity: parseInt(this.el.nativeElement.value),
+      totalPrice: pharmacy.price * parseInt(this.el.nativeElement.value),
+    };
+
+    this.cartStore.addToCart(cartItem).subscribe({
+      next: (response: any) => {
         console.log('Item added to cart successfully:', response);
       },
-      error: (error) => {
+      error: (error: any) => {
         console.error('Error adding item to cart:', error);
       }
     });
