@@ -47,6 +47,14 @@
   animation: pulse 2s infinite;
 }
 
+.profile-avatar-image {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid #ccc;
+}
+
 @keyframes pulse {
   0%,
   100% {
@@ -166,6 +174,22 @@
 
 .profile-edit-btn:active {
   transform: translateY(-1px) scale(0.98);
+}
+
+.card-shadow {
+  box-shadow: 0 4px 12px var(--shadow-overlay-12);
+}
+
+.card-hover {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px var(--shadow-overlay-12);
+}
+.rating-stars i {
+  font-size: 1.2rem;
 }
 
 .edit-icon {
@@ -600,4 +624,24 @@ input:checked + .slider:before {
 .btn-retry:focus {
   outline: 2px solid var(--primary-blue);
   outline-offset: 2px;
+}
+/* Profile Container */
+.profile-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: var(--background-white);
+  min-height: 100vh;
+  animation: fadeIn 0.6s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

@@ -1,148 +1,223 @@
-<div class="profile-header">
-    <!-- User Avatar with Edit Button -->
-    <div class="profile-avatar">
-        <div class="profile-avatar-circle">
-            <span class="profile-avatar-icon">{{
-                (pharmacy()?.name || "U").charAt(0).toUpperCase()
-                }}</span>
-        </div>
-    </div>
+<ng-container *ngIf="isLoading() === UiState.Loading; else profileContent">
+  <app-loading-spinner></app-loading-spinner>
+</ng-container>
 
-    <!-- Profile Header Information -->
-    <div class="profile-header-info">
+<ng-template #profileContent>
+  <div class="profile-container">
+    <button class="btn btn-outline-light border card-hover text-dark px-3 py-2 d-flex align-items-center mb-2"
+      [routerLink]="['/pharmacy/dashboard']">
+      <i class="fas fa-arrow-left me-2"></i> Back to Dashboard
+    </button>
+
+    <div class="profile-header d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3">
+      <div class="profile-avatar">
+        <ng-container *ngIf="pharmacy()?.imgUrl; else showInitial">
+          <div class="profile-avatar-circle">
+            <span class="profile-avatar-icon">
+              <img [src]="pharmacy()!.imgUrl" alt="Pharmacy Image" class="profile-avatar-image" />
+            </span>
+          </div>
+        </ng-container>
+
+        <ng-template #showInitial>
+          <div class="profile-avatar-circle">
+            <span class="profile-avatar-icon">
+              {{ (pharmacy()?.name || 'U').charAt(0).toUpperCase() }}
+            </span>
+          </div>
+        </ng-template>
+      </div>
+
+      <!-- Profile Header Information -->
+      <div class="profile-header-info">
         <!-- Header Content with Edit Button -->
         <div class="profile-header-content">
-            <h1>My Profile</h1>
-            <button class="profile-edit-btn" (click)="toggleEditMode()">
-                @if (editMode()) {
-                <span class="edit-icon"><i class="bi bi-floppy"></i></span>
-                <span>Save Changes</span>
+          <h1>My Profile</h1>
+          <button class="profile-edit-btn" (click)="toggleEditMode()">
+            @if (editMode()) {
+            <span class="edit-icon"><i class="bi bi-floppy"></i></span>
+            <span>Save Changes</span>
 
-                } @else {
-                <span class="edit-icon"><i class="bi bi-pencil"></i></span>
-                <span>Edit Profile</span>
-                }
-            </button>
+            } @else {
+            <span class="edit-icon"><i class="bi bi-pencil"></i></span>
+            <span>Edit Profile</span>
+            }
+          </button>
         </div>
 
         <!-- User Main Information Display -->
-        <div class="profile-user-main">
+        <ng-container *ngIf="pharmacy() as pharmacyData">
+          <div class="d-flex align-items-center gap-2 flex-wrap">
             <div class="profile-user-name">
-                {{ pharmacy()?.name || "User Name" }}
+              {{ pharmacyData.name || "User Name" }}
             </div>
 
-            <div class="profile-user-email">
-                <i class="fa-solid fa-location-dot text-muted me-2"></i>
-                <span> {{ (pharmacy() && pharmacy()?.address) || "Address" }}</span>
+            <div class="rating-stars d-flex align-items-center">
+              <ng-container *ngFor="let star of [1.0,2.0,3.0,4.0,5.0]">
+                <i class="fa fa-star" [ngClass]="{
+            'fas text-warning': pharmacyRate >= star,
+            'far text-muted': pharmacyRate < star
+          }"></i>
+              </ng-container>
             </div>
+          </div>
+
+          <div class="profile-user-email mt-1">
+            <i class="fa-solid fa-location-dot text-muted me-2"></i>
+            <span>{{ pharmacyData.address || "Address" }}</span>
+          </div>
+        </ng-container>
+
+      </div>
+    </div>
+
+
+    <div class="personal-info-section">
+      <div class="section-header">
+        <h2>Pharmacy Information</h2>
+
+        <!-- Edit Mode Actions -->
+        @if (editMode()) {
+        <div class="edit-actions">
+          <button class="btn-cancel" (click)="cancelEdit()">Cancel</button>
+          <button class="btn-save" (click)="toggleEditMode()">Save</button>
         </div>
-    </div>
-</div>
-<div class="personal-info-section">
-  <div class="section-header">
-    <h2>Pharmacy Information</h2>
+        }
+      </div>
 
-    <!-- Edit Mode Actions -->
-    @if (editMode()) {
-    <div class="edit-actions">
-      <button class="btn-cancel" (click)="cancelEdit()">Cancel</button>
-      <button class="btn-save" (click)="toggleEditMode()">Save</button>
+      <!-- Pharmacy Information Fields Grid -->
+      <div class="row gy-4">
+        <!-- Pharmacy Name -->
+        <div class="col-md-6">
+          <div class="info-item">
+            <label>Pharmacy Name:</label>
+            @if (editMode() && pharmacy()) {
+            <input type="text" [(ngModel)]="pharmacy()!.name" name="name" class="profile-input form-control"
+              #nameRef="ngModel" required />
+            <div class="text-danger mt-1 small" *ngIf="nameRef.invalid && (nameRef.touched || nameRef.dirty)">
+              Name is required.
+            </div>
+            } @else {
+            <span>{{ pharmacy()?.name || "Not provided" }}</span>
+            }
+          </div>
+        </div>
+
+        <!-- Phone Number -->
+        <div class="col-md-6">
+          <div class="info-item">
+            <label>Phone Number:</label>
+            @if (editMode() && pharmacy()) {
+            <input type="text" [(ngModel)]="pharmacy()!.phoneNumber" name="phoneNumber"
+              class="profile-input form-control" #phoneRef="ngModel" required />
+            <div class="text-danger mt-1 small" *ngIf="phoneRef.invalid && (phoneRef.touched || phoneRef.dirty)">
+              Phone number is required.
+            </div>
+            } @else {
+            <span>{{ pharmacy()?.phoneNumber || "Not provided" }}</span>
+            }
+          </div>
+        </div>
+
+        <!-- Email -->
+        <div class="col-md-6">
+          <div class="info-item">
+            <label>Email:</label>
+            @if (editMode() && pharmacy()) {
+            <input type="email" [(ngModel)]="pharmacy()!.email" name="email" class="profile-input form-control"
+              #emailRef="ngModel" required />
+            <div class="text-danger mt-1 small" *ngIf="emailRef.invalid && (emailRef.touched || emailRef.dirty)">
+              Email is required.
+            </div>
+            } @else {
+            <span>{{ pharmacy()?.email || "Not provided" }}</span>
+            }
+          </div>
+        </div>
+
+        <!-- Photo Upload -->
+        <div class="col-md-6">
+          <div class="info-item image-upload-section">
+            @if (!editMode()) {
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <label class="form-label fw-semibold mb-0">
+                Current Photo:
+              </label>
+
+              <div class="d-flex align-items-center gap-3">
+                <img *ngIf="pharmacy()?.imgUrl" [src]="pharmacy()!.imgUrl" alt="Pharmacy Image"
+                  class="rounded border shadow-sm" style="width: 150px; height: auto;" />
+                <span *ngIf="!pharmacy()?.imgUrl" class="text-muted">No photo uploaded</span>
+              </div>
+            </div>
+            }
+            @else {
+            <label class="form-label fw-semibold mb-2">
+              Upload Photo:
+            </label>
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <input type="file" (change)="onPhotoSelected($event)" accept="image/*"
+                class="form-control form-control-sm mb-3" style="width: 200px; padding: 4px 8px;" />
+
+              <div class="d-flex justify-content-start align-items-center">
+                <img *ngIf="imagePreviewUrl || pharmacy()?.imgUrl" [src]="imagePreviewUrl || pharmacy()?.imgUrl"
+                  alt="Selected Image" class="rounded border shadow-sm" style="width: 150px; height: auto;" />
+              </div>
+            </div>
+            }
+          </div>
+        </div>
+
+        <!-- Start Hour -->
+        <div class="col-md-6">
+          <div class="info-item">
+            <label>Start Hour:</label>
+            @if (editMode() && pharmacy()) {
+            <input type="time" [(ngModel)]="pharmacy()!.startHour" name="startHour" class="profile-input form-control"
+              #startHourRef="ngModel" required />
+            <div class="text-danger mt-1 small"
+              *ngIf="startHourRef.invalid && (startHourRef.touched || startHourRef.dirty)">
+              Start hour is required.
+            </div>
+            } @else {
+            <span>{{ pharmacy()?.startHour || "Not provided" }}</span>
+            }
+          </div>
+        </div>
+
+        <!-- End Hour -->
+        <div class="col-md-6">
+          <div class="info-item">
+            <label>End Hour:</label>
+            @if (editMode() && pharmacy()) {
+            <input type="time" [(ngModel)]="pharmacy()!.endHour" name="endHour" class="profile-input form-control"
+              #endHourRef="ngModel" required />
+            <div class="text-danger mt-1 small" *ngIf="endHourRef.invalid && (endHourRef.touched || endHourRef.dirty)">
+              End hour is required.
+            </div>
+            } @else {
+            <span>{{ pharmacy()?.endHour || "Not provided" }}</span>
+            }
+          </div>
+        </div>
+
+        <!-- Address -->
+        <div class="col-12">
+          <div class="info-item">
+            <label>Address:</label>
+            @if (editMode() && pharmacy()) {
+            <textarea [(ngModel)]="pharmacy()!.address" class="form-control profile-textarea" rows="3" required
+              #address="ngModel"></textarea>
+            <div class="text-danger mt-1 small" *ngIf="address.invalid && (address.touched || address.dirty)">
+              Address is required.
+            </div>
+            } @else {
+            <span>{{ pharmacy()?.address || "Not provided" }}</span>
+            }
+          </div>
+        </div>
+      </div>
+
     </div>
-    }
   </div>
-
-  <!-- Pharmacy Information Fields Grid -->
-  <div class="info-grid">
-    <!-- Pharmacy Name -->
-    <div class="info-item">
-      <label>Pharmacy Name:</label>
-      @if (editMode() && pharmacy()) {
-      <input
-        type="text"
-        [(ngModel)]="pharmacy()!.name"
-        class="profile-input"
-        name="name"
-        required
-      />
-      } @else {
-      <span>{{ pharmacy()?.name || "Not provided" }}</span>
-      }
-    </div>
-
-    <!-- Phone Number -->
-    <div class="info-item">
-      <label>Phone Number:</label>
-      @if (editMode() && pharmacy()) {
-      <input
-        type="text"
-        [(ngModel)]="pharmacy()!.phoneNumber"
-        class="profile-input"
-        name="phoneNumber"
-        required
-      />
-      } @else {
-      <span>{{ pharmacy()?.phoneNumber || "Not provided" }}</span>
-      }
-    </div>
-
-    <!-- Email -->
-    <div class="info-item">
-      <label>Email:</label>
-      @if (editMode() && pharmacy()) {
-      <input
-        type="email"
-        [(ngModel)]="pharmacy()!.email"
-        class="profile-input"
-        name="email"
-        required
-      />
-      } @else {
-      <span>{{ pharmacy()?.email || "Not provided" }}</span>
-      }
-    </div>
-
-    <!-- Working Hours -->
-    <div class="info-item">
-      <label>Start Hour:</label>
-      @if (editMode() && pharmacy()) {
-      <input
-        type="time"
-        [(ngModel)]="pharmacy()!.startHour"
-        class="profile-input"
-        name="startHour"
-      />
-      } @else {
-      <span>{{ pharmacy()?.startHour || "Not provided" }}</span>
-      }
-    </div>
-
-    <div class="info-item">
-      <label>End Hour:</label>
-      @if (editMode() && pharmacy()) {
-      <input
-        type="time"
-        [(ngModel)]="pharmacy()!.endHour"
-        class="profile-input"
-        name="endHour"
-      />
-      } @else {
-      <span>{{ pharmacy()?.endHour || "Not provided" }}</span>
-      }
-    </div>
-
-    <!-- Address -->
-    <div class="info-item full-width">
-      <label>Address:</label>
-      @if (editMode() && pharmacy()) {
-      <textarea
-        [(ngModel)]="pharmacy()!.address"
-        class="profile-textarea"
-        rows="3"
-        resize="none"
-      ></textarea>
-      } @else {
-      <span>{{ pharmacy()?.address || "Not provided" }}</span>
-      }
-    </div>
-  </div>
-</div>
+</ng-template>

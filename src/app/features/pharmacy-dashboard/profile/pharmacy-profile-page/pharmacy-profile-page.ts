@@ -1,36 +1,76 @@
-import { Component, effect, OnInit, signal } from '@angular/core';
+import { Component, OnInit, inject} from '@angular/core';
 import { PharmacyDisplayDTO } from '../Interfaces/pharmacy-display-dto';
 import { PharmacyService } from '../Services/pharmacy-service';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
+import { LoadingSpinner } from '../../../../shared/components/loading-spinner/loading-spinner';
+import { UiState } from '../../../../shared/enums/UIState';
 
 @Component({
   selector: 'app-pharmacy-profile-page',
-  imports: [CommonModule, FormsModule],
+  standalone: true,
+  imports: [CommonModule, FormsModule, RouterLink, LoadingSpinner],
   templateUrl: './pharmacy-profile-page.html',
   styleUrl: './pharmacy-profile-page.css'
 })
 export class PharmacyProfilePage implements OnInit {
-  constructor(private pharmacyService: PharmacyService) { }
-  pharmacy = signal<PharmacyDisplayDTO | undefined>(undefined);
-  originalPharmacy: PharmacyDisplayDTO | null = null;
 
-  isOpen: boolean = true;
-  editMode = signal(false);
+  private pharmacyService = inject(PharmacyService);
+
+  pharmacy = this.pharmacyService.pharmacy;
+  _imagePreviewUrl = this.pharmacyService.imagePreviewUrl;
+  isLoading = this.pharmacyService.isLoading;
+  editMode = this.pharmacyService.editMode;
+  public UiState = UiState;
+
+  private originalPharmacy: PharmacyDisplayDTO | null = null;
+  private selectedPhotoFile?: File;
 
   ngOnInit(): void {
-    this.editMode = this.pharmacyService.editMode;
     this.loadPharmacyProfile();
   }
 
-  loadPharmacyProfile() {
-    this.pharmacyService.getPharmacyProfile().subscribe(data => {
-      this.pharmacy.set(data);
-      this.originalPharmacy = structuredClone(data);
-    })
-  };
+  private loadPharmacyProfile(): void {
+    this.isLoading.set(UiState.Loading);
 
-  toggleEditMode() {
+    this.pharmacyService.getPharmacyProfile().subscribe({
+      next: (data) => {
+        this.pharmacy.set(data);
+        this.originalPharmacy = structuredClone(data);
+
+        if (data.imgUrl) {
+          this._imagePreviewUrl.set(data.imgUrl);
+        }
+
+        console.log("Pharmacy profile loaded:", data);
+        this.isLoading.set(UiState.Success);
+      },
+      error: (err) => {
+        console.error("Failed to load profile:", err);
+        this.isLoading.set(UiState.Error);
+      }
+    });
+  }
+
+  onPhotoSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files?.length) {
+      this.selectedPhotoFile = input.files[0];
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        this._imagePreviewUrl.set(reader.result as string);
+      };
+      reader.readAsDataURL(this.selectedPhotoFile);
+    }
+  }
+
+  get imagePreviewUrl() {
+  return this._imagePreviewUrl(); 
+}
+
+  toggleEditMode(): void {
     if (this.editMode()) {
       this.saveProfile();
     } else {
@@ -38,27 +78,36 @@ export class PharmacyProfilePage implements OnInit {
     }
   }
 
-  saveProfile() {
+  private saveProfile(): void {
+    this.isLoading.set(UiState.Loading);
+
     const updated = this.pharmacy();
     if (!updated) return;
 
-    this.pharmacyService.updatePharmacyProfile(updated).subscribe({
+    this.pharmacyService.updatePharmacyProfile(updated, this.selectedPhotoFile).subscribe({
       next: (updatedPharmacy) => {
         this.pharmacy.set(updatedPharmacy);
         this.originalPharmacy = structuredClone(updatedPharmacy);
         this.editMode.set(false);
+        this.selectedPhotoFile = undefined;
         console.log("Pharmacy profile updated.");
+        this.isLoading.set(UiState.Success);
       },
       error: (err) => {
-        console.error("Update failed", err);
+        console.error("Update failed:", err);
+        this.isLoading.set(UiState.Error);
       }
     });
   }
 
-  cancelEdit() {
+  cancelEdit(): void {
     if (this.originalPharmacy) {
       this.pharmacy.set(structuredClone(this.originalPharmacy));
     }
     this.editMode.set(false);
+  }
+
+  get pharmacyRate(): number {
+    return +(this.pharmacy()?.rate ?? 0);
   }
 }
