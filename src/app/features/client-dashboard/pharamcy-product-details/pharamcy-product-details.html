@@ -1,6 +1,11 @@
 <div class="drug-details-container">
-  <app-product-details-header [drugDetails]="drugDetails()!.drug_Info"></app-product-details-header>
+  <app-product-details-header
+    [drugDetails]="drugDetails()!.drug_Info"
+    [fullDrugData]="drugDetails()!"
+  ></app-product-details-header>
   <div class="drug-details-content">
-    <app-product-details-content [drugDetails]="drugDetails()!.drug_Info"></app-product-details-content>
+    <app-product-details-content
+      [drugDetails]="drugDetails()!.drug_Info"
+    ></app-product-details-content>
   </div>
 </div>

@@ -1,43 +1,60 @@
-      <div class="drug-header d-flex align-items-center gap-3">
-       <div class="drug-icon">
-        <img
-          [src]="hasImageError()? 'assets/images/error-image.jpg' :drugDetails.drug_UrlImg"
-          alt="Drug Image"
-          class="img-fluid shadow product-image"
-          (error)="onImageError($event)"
-          (load)="onImageLoad($event)"
-          [class.error]="hasImageError()"
-          style="width: 200px; object-fit: cover; border-radius: 12px;">
-      </div>
-       <div class="drug-info" *ngIf="drugDetails">
-        <h1 class="drug-name">{{ drugDetails.commonName }}</h1>
+<div class="drug-header d-flex align-items-center gap-3">
+  <div class="drug-icon">
+    <img
+      [src]="
+        hasImageError()
+          ? 'assets/images/error-image.jpg'
+          : drugDetails.drug_UrlImg
+      "
+      alt="Drug Image"
+      class="img-fluid shadow product-image"
+      (error)="onImageError($event)"
+      (load)="onImageLoad($event)"
+      [class.error]="hasImageError()"
+      style="width: 200px; object-fit: cover; border-radius: 12px"
+    />
+  </div>
+  <div class="drug-info" *ngIf="drugDetails">
+    <h1 class="drug-name">{{ drugDetails.commonName }}</h1>
 
-        <p class="scientific-name fw-bold text-dark">
-          Scientific Name:
-          <span class="fw-normal text-secondary">{{ drugDetails.activeIngredient }}</span>
-        </p>
+    <p class="scientific-name fw-bold text-dark">
+      Scientific Name:
+      <span class="fw-normal text-secondary">{{
+        drugDetails.activeIngredient
+      }}</span>
+    </p>
 
-        <p class="category fw-bold text-dark">
-          Category:
-          <a [routerLink]="['/client/category', drugDetails.category]"
-            class="category-tag text-decoration-none fw-normal text-primary">
-            {{ drugDetails.category }}
-          </a>
-        </p>
-      </div>
-        <div class="action-buttons d-flex gap-2 align-self-center ms-auto">
-          <button class="btn btn-modern-primary"
-                  (click)="addToCart(drugDetails.drugID)">
-            <i class="fas fa-shopping-cart me-2"></i>
-            Add to Cart
-          </button>
-          <button class="btn bg-transparent border-0 p-3 favorite-btn"
-                  (click)="Details_ToggleFavorites(drugDetails.drugID)">
-            <i class="fa-2xl"
-              [ngClass]="Details_isFavorite(drugDetails.drugID)
-                          ? 'fa-solid fa-heart text-danger'
-                          : 'fa-regular fa-heart text-secondary'">
-            </i>
-          </button>
-        </div>
-      </div>
+    <p class="category fw-bold text-dark">
+      Category:
+      <a
+        [routerLink]="['/client/category', drugDetails.category]"
+        class="category-tag text-decoration-none fw-normal text-primary"
+      >
+        {{ drugDetails.category }}
+      </a>
+    </p>
+  </div>
+  <div class="action-buttons d-flex gap-2 align-self-center ms-auto">
+    <button
+      class="btn btn-modern-primary"
+      (click)="addToCart(drugDetails.drugID, $event)"
+    >
+      <i class="fas fa-shopping-cart me-2"></i>
+      Add to Cart
+    </button>
+    <button
+      class="btn bg-transparent border-0 p-3 favorite-btn"
+      (click)="Details_ToggleFavorites(drugDetails.drugID)"
+    >
+      <i
+        class="fa-2xl"
+        [ngClass]="
+          Details_isFavorite(drugDetails.drugID)
+            ? 'fa-solid fa-heart text-danger'
+            : 'fa-regular fa-heart text-secondary'
+        "
+      >
+      </i>
+    </button>
+  </div>
+</div>

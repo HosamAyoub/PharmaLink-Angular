@@ -21,18 +21,13 @@ const routes: Routes = [
     loadComponent: () =>
       import('./inventory/add-medicines-component/add-medicines-component').then((m) => m.AddMedicinesComponent),
   },
-  {
-    path: 'addproduct/:id',
-    loadComponent: () =>
-      import('./inventory/add-medicine-details-component/add-medicine-details-component').then((m) => m.AddMedicineDetailsComponent),
-  },
-  
+
   {
     path: 'profile',
     loadComponent: () =>
       import('./profile/pharmacy-profile-page/pharmacy-profile-page').then((m) => m.PharmacyProfilePage),
   },
-  { path: 'dashboard', component:DashboardPage}
+  { path: 'dashboard', component: DashboardPage }
 ];
 
 @NgModule({

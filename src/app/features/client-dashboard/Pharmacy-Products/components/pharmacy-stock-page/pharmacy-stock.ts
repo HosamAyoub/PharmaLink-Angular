@@ -1,5 +1,5 @@
 import { Component, inject, signal, effect } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { PharmacyCard } from "../../../shared/components/pharmacy-card/pharmacy-card";
 import { single } from 'rxjs';
 import { Ipharmacy } from '../../../shared/models/ipharmacy';
@@ -17,12 +17,13 @@ import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'client-pharmacy-stock',
-  imports: [CommonModule, PharmacyCard, SideBar, Product, LoadingSpinner, ErrorHandling,RouterLink],
+  imports: [CommonModule, PharmacyCard, SideBar, Product, LoadingSpinner, ErrorHandling],
   templateUrl: './pharmacy-stock.html',
   styleUrl: './pharmacy-stock.css'
 })
 export class PharmacyStock {
   pharmacyService = inject(PharmacyProductsService);
+  private router = inject(Router);
   pharmacyId = signal<number>(0);
   // Signal to hold pharmacy details
   pharmacyDetails = signal<Ipharmacy>({} as Ipharmacy);
@@ -155,5 +156,10 @@ export class PharmacyStock {
     else {
       this.loadPharmacyProductsByCategory();
     }
+  }
+
+  // Navigate to product details page
+  navigateToProduct(drugId: number) {
+    this.router.navigate(['/client/pharmacyProduct', drugId]);
   }
 }

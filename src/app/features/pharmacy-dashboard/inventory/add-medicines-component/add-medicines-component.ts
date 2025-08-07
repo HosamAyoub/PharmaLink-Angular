@@ -1,100 +1,98 @@
 // add-medicines.component.ts
 import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
-import { AddMedicineDetailsComponent } from '../add-medicine-details-component/add-medicine-details-component';
 import { RouterLink } from '@angular/router';
 import { MedicineService } from '../Services/medicine-service';
 import { IDrugDetails } from '../../../client-dashboard/Details/model/IDrugDetials';
 import { DrugService } from '../../../client-dashboard/Categories_Page/service/drug-service';
-
-interface Medicine {
-  id: string;
-  name: string;
-  activeIngredient: string;
-  description: string;
-  category: string;
-  selected?: boolean;
-}
-
+import { IAddToStock } from '../Models/iadd-to-stock';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { ViewChild } from '@angular/core';
+import { ElementRef } from '@angular/core';
 @Component({
   selector: 'app-add-medicines',
-  imports: [RouterLink],
-templateUrl: './add-medicines-component.html',
+  imports: [RouterLink, CommonModule, FormsModule],
+  templateUrl: './add-medicines-component.html',
   styleUrls: ['./add-medicines-component.css']
 })
 export class AddMedicinesComponent implements OnInit {
-  searchQuery: string = '';
-  selectedMedicines: IDrugDetails[] = [];
+
+  @ViewChild('searchInput') searchinput!: ElementRef;
+  selectedMedicines: IAddToStock[] = [];
   filteredMedicines: IDrugDetails[] = [];
   medicineService: MedicineService = inject(MedicineService);
   drugservice: DrugService = inject(DrugService);
 
 
-  constructor(private cd: ChangeDetectorRef) {}
+  constructor(private cd: ChangeDetectorRef) {
 
-  ngOnInit() 
-  {
-    this.onSearchChange("Antibiotic");
   }
 
-  onSearchChange(query: string) 
-  {
-    if(query === '') 
-    {
+  ngOnInit() {
+    this.onSearchChange("Antibiotic");
+    this.medicineService.updatePharmacyStockList();
+  }
+
+  onSearchChange(query: string) {
+    if (query === '') {
       this.filteredMedicines = [];
     }
-    else
-    {
-       this.medicineService.SearchForDrugs(query).subscribe(results =>
-        { 
-          this.filteredMedicines = results;
-          this.cd.detectChanges();
-        }, (error: any) => {
-          this.filteredMedicines = [];
-        });
+    else {
+      this.medicineService.SearchForDrugs(query).subscribe(results => {
+        this.filteredMedicines = results;
+        this.cd.detectChanges();
+      }, (error: any) => {
+        this.filteredMedicines = [];
+      });
     }
-   
+
   }
 
-  onMedicineClick(medicine: IDrugDetails) 
-  {
-    if (this.selectedMedicines.some(m => m.drugID === medicine.drugID)) {
-      this.selectedMedicines = this.selectedMedicines.filter(m => m.drugID !== medicine.drugID);
+  onMedicineClick(medicine: IDrugDetails) {
+    if (this.selectedMedicines.some(m => m.drugdetails.drugID === medicine.drugID)) {
+      this.selectedMedicines = this.selectedMedicines.filter(m => m.drugdetails.drugID !== medicine.drugID);
     }
-    else
-    {
-      this.selectedMedicines.push(medicine);
+    else if (!this.medicineService.PharmacyStockList().some(m => m.drugId === medicine.drugID)) {
+      this.selectedMedicines.push({ drugdetails: medicine, quantity: 0, price: 0 });
     }
-   
   }
 
-  onMedicineSelect(medicine: IDrugDetails) 
-  {
-    if (this.selectedMedicines.some(m => m.drugID === medicine.drugID)) {
-      this.selectedMedicines.push(medicine);
+  onMedicineSelect(medicine: IDrugDetails) {
+    if (this.selectedMedicines.some(m => m.drugdetails.drugID === medicine.drugID)) {
+      this.selectedMedicines.push({ drugdetails: medicine, quantity: 0, price: 0 });
     } else {
-      this.selectedMedicines = this.selectedMedicines.filter(m => m.drugID !== medicine.drugID);
+      this.selectedMedicines = this.selectedMedicines.filter(m => m.drugdetails.drugID !== medicine.drugID);
     }
   }
 
-  removeMedicine(medicine: IDrugDetails) 
-  {
-    this.selectedMedicines = this.selectedMedicines.filter(m => m.drugID !== medicine.drugID);
+  removeMedicine(medicine: IAddToStock) {
+    this.selectedMedicines = this.selectedMedicines.filter(m => m.drugdetails.drugID !== medicine.drugdetails.drugID);
   }
 
 
-  onAddToStock(medicineData: any) 
-  {
-    console.log('Adding to stock:', medicineData);
-    this.selectedMedicines = [];
+  onAddToStock() {
+    console.log('Adding to stock:', this.selectedMedicines);
+    this.medicineService.AddPharmacyStockProduct(this.selectedMedicines).subscribe(
+      response => {
+        console.log('Stock added successfully:', response);
+        this.selectedMedicines = [];
+        this.onSearchChange(this.searchinput.nativeElement.value);
+        this.medicineService.updatePharmacyStockList();
+        this.cd.detectChanges();
+      },
+      error => {
+        console.error('Error adding stock:', error);
+      });
   }
 
-  checkSelectedMedicine(medicine: IDrugDetails): boolean 
-  {
-    return this.selectedMedicines.some(m => m.drugID === medicine.drugID);
+  checkSelectedMedicine(medicine: IDrugDetails): number {
+    if (this.medicineService.PharmacyStockList().some(m => m.drugId === medicine.drugID)) {
+      return 1;
+    }
+    if (this.selectedMedicines.some(m => m.drugdetails.drugID === medicine.drugID)) {
+      return 2;
+    }
+    return 0;
   }
-
-  
-
-  
 
 }
