@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '../../../../../shared/services/auth.service';
 import { Subscription } from 'rxjs';
+import { ProfileService } from '../../../profile/services/profile-service';
 
 @Component({
   selector: 'client-navbar',
@@ -13,6 +14,10 @@ import { Subscription } from 'rxjs';
 })
 export class Navbar {
   private authService = inject(AuthService);
+  private profileService = inject(ProfileService);
+  switchTab(tab: string) {
+    this.profileService.switchTab(tab);
+  }
   // private subscription!: Subscription;
   // isAuthenticated = false;
 

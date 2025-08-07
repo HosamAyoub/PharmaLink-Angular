@@ -121,7 +121,7 @@
           <!-- Wishlist Icon -->
           <li class="nav-item me-3">
             <a
-              class="nav-link p-2 rounded-circle position-relative"
+              class="nav-link p-2 position-relative"
               data-bs-toggle="tooltip"
               title="Wishlist"
               routerLink="favorites"
@@ -136,9 +136,9 @@
           </li>
 
           <!-- Cart Icon with Badge -->
-          <li class="nav-item me-3">
+          <li class="nav-item me-3 p-2">
             <a
-              class="nav-link p-2 rounded-circle position-relative"
+              class="nav-link p-2 position-relative"
               data-bs-toggle="tooltip"
               title="Cart"
               routerLink="cart"
@@ -168,7 +168,7 @@
           </li>
 
           <!-- Notifications Icon -->
-          <li class="nav-item me-3 me-lg-3 mb-2 mb-lg-0">
+          <li class="nav-item me-3 me-lg-3 mb-2 mb-lg-0 p-2">
             <a
               class="nav-link p-2 position-relative d-flex align-items-center justify-content-center"
               data-bs-toggle="tooltip"
@@ -199,7 +199,7 @@
           </li>
 
           <!-- Profile Dropdown -->
-          <li class="nav-item dropdown">
+          <li class="nav-item dropdown p-2">
             <a
               class="nav-link p-2 d-flex align-items-center dropdown-toggle"
               id="profileDropdown"
@@ -248,28 +248,40 @@
                 <li><hr class="dropdown-divider" /></li>
 
                 <li>
-                  <a class="dropdown-item py-2" routerLink="profile">
+                  <a
+                    class="dropdown-item py-2"
+                    routerLink="profile"
+                    (click)="switchTab('personal')"
+                  >
                     <i class="bi bi-person me-2 text-primary"></i>
                     My Profile
                   </a>
                 </li>
 
                 <li>
-                  <a class="dropdown-item py-2">
+                  <a
+                    class="dropdown-item py-2"
+                    routerLink="profile"
+                    (click)="switchTab('orders')"
+                  >
                     <i class="bi bi-bag me-2 text-success"></i>
                     My Orders
                   </a>
                 </li>
 
                 <li>
-                  <a class="dropdown-item py-2">
+                  <a class="dropdown-item py-2" routerLink="favorites">
                     <i class="bi bi-heart me-2 text-danger"></i>
                     Wishlist
                   </a>
                 </li>
 
                 <li>
-                  <a class="dropdown-item py-2">
+                  <a
+                    class="dropdown-item py-2"
+                    routerLink="profile"
+                    (click)="switchTab('settings')"
+                  >
                     <i class="bi bi-gear me-2 text-secondary"></i>
                     Settings
                   </a>
