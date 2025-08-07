@@ -24,7 +24,8 @@ export class Navbar {
   // Computed properties for reactive updates
   cartItemCount = computed(() => {
     const items = this.cartStore.cartItems();
-    return items.reduce((total, item) => total + item.quantity, 0);
+    // Return the number of unique items (different products), not total quantity
+    return items.length;
   });
   
   // Display cart count with 99+ limit for UI

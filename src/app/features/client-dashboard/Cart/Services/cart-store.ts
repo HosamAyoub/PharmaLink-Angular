@@ -37,6 +37,8 @@ export class CartStore {
     return this.cartService.getCartItems().subscribe({
       next: (data: CartItem[]) => {
         this.cartItems.set(data);
+        // get summery 
+        
         // Calculate totals manually for both authenticated and non-authenticated users
         this.calculateTotals();
       },
@@ -56,6 +58,19 @@ export class CartStore {
       }
     });
   }
+
+  getOrderSummary(): Subscription | undefined {
+    return this.cartService.getOrderSummary().subscribe({
+      next: (summary: OrderSummary) => {
+        this.orderSummary.set(summary);
+      },
+      error: (err: any) => {
+        console.error('Failed to load order summary:', err);
+        this.orderSummary.set(null); // Clear summary on error
+      }
+    });
+  }
+  
 
  
   // Calculate totals for cart items
