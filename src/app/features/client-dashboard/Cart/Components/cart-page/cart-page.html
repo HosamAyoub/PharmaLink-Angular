@@ -1,25 +1,22 @@
 <!-- Error Message -->
-    @if (displayedError) {
-    <div class="error-alert">
-      <p>{{ displayedError }}</p>
-    </div>
-    }
+@if (displayedError) {
+<div class="error-alert">
+  <p>{{ displayedError }}</p>
+</div>
+}
 
-    <!-- Loading Spinner -->
-    @if (isLoading()) {
-    <div class="loading-container">
-      <app-loading-spinner />
-    </div>
-    } @else {
+<!-- Loading Spinner -->
+@if (isLoading()) {
+<div class="loading-container">
+  <app-loading-spinner />
+</div>
+} @else {
 <div class="container-fluid p-4 bg-light">
   <div class="row g-4">
-
     <!-- Cart Items Section -->
     <div class="col-md-8">
       <div class="card bg-white shadow-sm p-4 rounded-4">
-        <h4 class="mb-4">
-          <i class="bi bi-cart4 me-2"></i>Cart Items
-        </h4>
+        <h4 class="mb-4"><i class="bi bi-cart4 me-2"></i>Cart Items</h4>
 
         <div class="d-flex justify-content-end">
           <button class="btn btn-outline-danger btn-sm rounded-pill mb-3" style="width: 100%; max-width: 160px"
@@ -28,96 +25,109 @@
           </button>
         </div>
 
+        @for(item of cartItems(); track item.drugId) {
+        <app-cart-card [item]="item" (increment)="onIncrement(item)" (decrement)="onDecrement(item)"
+          (remove)="removeItem(item)" class="mb-3"></app-cart-card>
+        }
 
-        <app-cart-card *ngFor="let item of cartItems()" [item]="item" (increment)="onIncrement(item)"
-          (decrement)="onDecrement(item)" (remove)="removeItem(item)" class="mb-3">
-        </app-cart-card>
-
-        <div *ngIf="cartItems().length === 0" class="text-center text-muted mt-4">
+        @if(cartItems().length <= 0) { <div class="text-center text-muted mt-4">
           <i class="bi bi-bag-x-fill fs-1 mb-2 text-danger"></i>
           <p>Your cart is empty.</p>
-        </div>
       </div>
-    </div>
-
-
-    <!-- Summary Section -->
-    <div class="col-md-4">
-      <!-- Delivery Options -->
-      <div class="card shadow-sm p-4 mb-3 rounded-4">
-        <h6 class="fw-bold mb-3 text-dark">
-          <i class="bi bi-truck me-1 text-primary"></i>Delivery Options
-        </h6>
-        <div class="form-check mb-2">
-          <input class="form-check-input" type="radio" name="deliveryOption" value="home" checked />
-          <label class="form-check-label">Home Delivery <small class="text-muted">2–4 hours</small></label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="radio" name="deliveryOption" value="pickup" />
-          <label class="form-check-label">Pharmacy Pickup <small class="text-muted">30 mins</small></label>
-        </div>
-      </div>
-
-      <!-- Address -->
-      <div class="card shadow-sm p-4 mb-3 rounded-4">
-        <h6 class="fw-bold mb-3 text-dark">
-          <i class="bi bi-geo-alt me-1 text-primary"></i>Delivery Address
-        </h6>
-        <ng-container *ngIf="orderSummary() as summary">
-          <p class="mb-1"><i class="bi bi-house-door me-2"></i>{{ summary.address }}</p>
-          <p class="mb-1"><i class="bi bi-globe me-2"></i>{{ summary.country }}</p>
-          <p class="mb-1"><i class="bi bi-telephone me-2"></i>{{ summary.phoneNumber }}</p>
-        </ng-container>
-        <a href="#" class="text-decoration-underline text-primary mt-2 d-inline-block">
-          <i class="bi bi-pencil-square me-1"></i>Change Address
-        </a>
-      </div>
-
-      <!-- Order Summary -->
-      <ng-container *ngIf="orderSummary() as summary">
-        <div class="card shadow-sm p-4 mb-3 rounded-4" *ngIf="cartItems().length > 0">
-          <h6 class="fw-bold mb-3 text-dark">
-            <i class="bi bi-receipt me-1 text-primary"></i>Order Summary
-          </h6>
-          <div class="d-flex justify-content-between mb-1">
-            <span>Subtotal:</span>
-            <span>{{ summary.subtotal.toFixed(2) | currency:'EGP':'symbol'}}</span>
-          </div>
-          <div class="d-flex justify-content-between mb-1">
-            <span>Delivery Fee:</span>
-            <span>{{ summary.deliveryFee.toFixed(2) | currency:'EGP':'symbol'}}</span>
-          </div>
-          <hr />
-          <div class="d-flex justify-content-between fw-bold fs-5">
-            <span>Total:</span>
-            <span>{{ summary.total.toFixed(2) | currency:'EGP':'symbol'}}</span>
-          </div>
-        </div>
-      </ng-container>
-
-
-      <!-- Payment Method -->
-      <div class="card shadow-sm p-4 mb-3 rounded-4">
-        <h6 class="fw-bold mb-3 text-dark">
-          <i class="bi bi-credit-card-2-front me-1 text-primary"></i>Payment Method
-        </h6>
-        <div class="form-check mb-2">
-          <input class="form-check-input" type="radio" name="paymentMethod" value="card" checked />
-          <label class="form-check-label">Credit/Debit Card</label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="radio" name="paymentMethod" value="cash" />
-          <label class="form-check-label">Cash on Delivery</label>
-        </div>
-      </div>
-
-      <!-- Checkout Button -->
-      <button class="btn btn-primary w-100 py-3 fs-5 rounded-3 shadow-sm" (click)="checkout()">
-        <i class="bi bi-check-circle me-2"></i>Proceed to Checkout
-      </button>
-
+      }
     </div>
   </div>
+
+  <!-- Summary Section -->
+  <div class="col-md-4">
+    <!-- Delivery Options -->
+    <div class="card shadow-sm p-4 mb-3 rounded-4">
+      <h6 class="fw-bold mb-3 text-dark">
+        <i class="bi bi-truck me-1 text-primary"></i>Delivery Options
+      </h6>
+      <div class="form-check mb-2">
+        <input class="form-check-input" type="radio" name="deliveryOption" value="home" checked />
+        <label class="form-check-label">Home Delivery <small class="text-muted">2–4 hours</small></label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="deliveryOption" value="pickup" />
+        <label class="form-check-label">Pharmacy Pickup <small class="text-muted">30 mins</small></label>
+      </div>
+    </div>
+
+    <!-- Address - Only show for authenticated users -->
+    <div class="card shadow-sm p-4 mb-3 rounded-4" *ngIf="isAuthenticated()">
+      <h6 class="fw-bold mb-3 text-dark">
+        <i class="bi bi-geo-alt me-1 text-primary"></i>Delivery Address
+      </h6>
+      <ng-container *ngIf="orderSummary() as summary">
+        <p class="mb-1">
+          <i class="bi bi-house-door me-2"></i>{{ summary.address }}
+        </p>
+        <p class="mb-1">
+          <i class="bi bi-globe me-2"></i>{{ summary.country }}
+        </p>
+        <p class="mb-1">
+          <i class="bi bi-telephone me-2"></i>{{ summary.phoneNumber }}
+        </p>
+      </ng-container>
+      <a href="#" class="text-decoration-underline text-primary mt-2 d-inline-block">
+        <i class="bi bi-pencil-square me-1"></i>Change Address
+      </a>
+    </div>
+
+    <!-- Order Summary -->
+    <ng-container *ngIf="orderSummary() as summary">
+      <div class="card shadow-sm p-4 mb-3 rounded-4" *ngIf="cartItems().length > 0">
+        <h6 class="fw-bold mb-3 text-dark">
+          <i class="bi bi-receipt me-1 text-primary"></i>Order Summary
+        </h6>
+        <div class="d-flex justify-content-between mb-1">
+          <span>Subtotal:</span>
+          <span>{{
+            summary.subtotal.toFixed(2) | currency : "EGP" : "symbol"
+            }}</span>
+        </div>
+        <div class="d-flex justify-content-between mb-1">
+          <span>Delivery Fee:</span>
+          <span>{{
+            summary.deliveryFee.toFixed(2) | currency : "EGP" : "symbol"
+            }}</span>
+        </div>
+        <hr />
+        <div class="d-flex justify-content-between fw-bold fs-5">
+          <span>Total:</span>
+          <span>{{
+            summary.total.toFixed(2) | currency : "EGP" : "symbol"
+            }}</span>
+        </div>
+      </div>
+    </ng-container>
+
+    <!-- Payment Method -->
+    <div class="card shadow-sm p-4 mb-3 rounded-4">
+      <h6 class="fw-bold mb-3 text-dark">
+        <i class="bi bi-credit-card-2-front me-1 text-primary"></i>Payment
+        Method
+      </h6>
+      <div class="form-check mb-2">
+        <input class="form-check-input" type="radio" name="paymentMethod" value="card" checked />
+        <label class="form-check-label">Credit/Debit Card</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="paymentMethod" value="cash" />
+        <label class="form-check-label">Cash on Delivery</label>
+      </div>
+    </div>
+
+    <!-- Checkout Button -->
+    <button class="btn btn-primary w-100 py-3 fs-5 rounded-3 shadow-sm" (click)="checkout()">
+      <i class="bi bi-check-circle me-2" *ngIf="isAuthenticated()"></i>
+      <i class="bi bi-box-arrow-in-right me-2" *ngIf="!isAuthenticated()"></i>
+      Proceed to Checkout
+    </button>
+  </div>
+</div>
 </div>
 
 <!-- Empty Cart Modal -->
@@ -148,7 +158,6 @@
   </div>
 </div>
 
-
 <!-- Min Order Modal -->
 <div class="modal fade" id="minOrderModal" tabindex="-1" aria-labelledby="minOrderModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
@@ -163,7 +172,8 @@
 
       <div class="modal-body text-center px-4 pb-0">
         <p class="fs-6 text-muted mb-3">
-          Sorry, the minimum order total must be at least <strong>30 EGP</strong> to proceed to checkout.
+          Sorry, the minimum order total must be at least
+          <strong>30 EGP</strong> to proceed to checkout.
         </p>
         <i class="bi bi-cash-coin text-danger fs-1 mb-3"></i>
       </div>
@@ -176,4 +186,4 @@
     </div>
   </div>
 </div>
-    }
+}

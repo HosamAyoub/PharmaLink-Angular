@@ -20,6 +20,7 @@ export const APP_CONSTANTS = {
       DRUG_SEARCH: 'Drug/Search',
       FAVORITES: 'favorites',
       ORDERS_SUBMIT: 'Orders/submit',
+      ORDER_SUMMARY: 'Orders/order-summary',
       ORDERS_CREATE_CHECKOUT_SESSION: 'Orders/CreateCheckoutSession',
       PATIENT_PROFILE: 'Patient/Profile',
       PATIENT_PROFILE_EDIT: 'Patient/UpdateProfile',
@@ -33,11 +34,16 @@ export const APP_CONSTANTS = {
     apiBaseUrl: 'http://localhost:5278/api',
     apiVersion: 'v1',
     appName: 'PharmaLink',
+    googleApiKey: 'AIzaSyCsSmpYJNb9htQSnH1NM-yHmM4bOSzZnUU',
     features: {
       enableNotifications: true,
       enableGeolocation: true,
       maxNearbyPharmacies: 10,
     },
+  },
+
+  ErrorCodes:{
+    DIFFERENT_PHARMACY : 'DIFFERENT_PHARMACY',
   },
   Cart: 'Cart'
 };

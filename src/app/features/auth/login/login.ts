@@ -64,20 +64,22 @@ export class Login {
 
         const role = resData.value.role;
 
-        // Redirect based on role
-        let redirectUrl = '/client/home'; // default
+        // Check for return URL first, then redirect based on role
+        const returnUrl = this.route.snapshot.queryParams['returnUrl'];
+        console.log(`returnUrl from query params: ${returnUrl}`);
+        
+        let redirectUrl = '/client/home'; // default for client
         if (role == 'Admin') {
           redirectUrl = '/admin/home';
         } else if (role == 'Pharmacy') {
           redirectUrl = '/pharmacy/dashboard';
         }
-        console.log(`redirectUrl: ${redirectUrl}`);
-        console.log(this.route.snapshot.queryParams['returnUrl']);
+        console.log(`defaultRedirectUrl based on role: ${redirectUrl}`);
 
-        // Redirect to return URL or default to home
-        const returnUrl =
-          this.route.snapshot.queryParams['returnUrl'] || redirectUrl;
-        this.router.navigate([returnUrl]);
+        // Use return URL if provided, otherwise use role-based redirect
+        const finalUrl = returnUrl || redirectUrl;
+        console.log(`finalUrl: ${finalUrl}`);
+        this.router.navigate([finalUrl]);
       },
       error: (error) => {
         this.displayedError = this.getErrorMessage(error);

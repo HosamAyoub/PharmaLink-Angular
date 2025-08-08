@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ResponseData, SignUpData, User } from '../models/user.model';
 import { ConfigService } from './config.service';
 import { APP_CONSTANTS } from '../constants/app.constants';
+import { CartStore } from '../../features/client-dashboard/Cart/Services/cart-store';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -13,6 +14,7 @@ export class AuthService {
   http = inject(HttpClient);
   router = inject(Router);
   route = inject(ActivatedRoute);
+  cartStore = inject(CartStore);
   private tokenExpirationDuration: any;
   config = inject(ConfigService);
   private ENDPOINTS = APP_CONSTANTS.API.ENDPOINTS;
@@ -65,6 +67,9 @@ export class AuthService {
           const now = new Date();
           const expirationDuration = expirationDate.getTime() - now.getTime();
           this.autoLogout(expirationDuration);
+          
+          // Synchronize cart after successful login
+          this.cartStore.syncCartAfterLogin();
         })
       );
   }

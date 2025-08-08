@@ -1,0 +1,15 @@
+.product-card-container {
+  transition: transform 0.2s ease-in-out;
+  text-decoration: none;
+  color: inherit;
+}
+
+.product-card-container:hover {
+  transform: translateY(-2px);
+  text-decoration: none;
+  color: inherit;
+}
+
+.product-card-container:hover .card {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}

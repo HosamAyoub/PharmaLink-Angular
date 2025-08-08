@@ -3,7 +3,8 @@
   <!-- Header Section -->
   <div class="d-flex justify-content-between align-items-center mb-4">
     <div class="d-flex align-items-center gap-3">
-      <button class="btn btn-outline-light border card-hover text-dark px-3 py-2 d-flex align-items-center" [routerLink]="['/pharmacy/dashboard']">
+      <button class="btn btn-outline-light border card-hover text-dark px-3 py-2 d-flex align-items-center"
+        [routerLink]="['/pharmacy/dashboard']">
         <i class="fas fa-arrow-left me-2"></i> Back to Dashboard
       </button>
       <div>
@@ -133,8 +134,8 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let order of filteredOrders()" class="border-bottom">
-                <!-- Order Details -->
+              @for(order of filteredOrders(); track order.orderID) {
+              <tr>
                 <td class="px-4 py-3">
                   <div class="fw-semibold text-dark">ORD-{{ order.orderID }}</div>
                   <div class="text-muted small">{{ order.orderDate | date: 'yyyy-MM-dd' }}</div>
@@ -181,32 +182,41 @@
                     </button>
 
                     <!-- Reject (hidden if OutForDelivery, Delivered, or Rejected) -->
-                    <button class="btn btn-sm btn-light border-0"
-                      *ngIf="order.status !== 'OutForDelivery' && order.status !== 'Delivered' && order.status !== 'Rejected'"
-                      (click)="updateStatus(order, 'rejected')" title="Reject Order">
+                    @if(order.status !== 'OutForDelivery' && order.status !== 'Delivered' && order.status !==
+                    'Rejected'){
+                    <button class="btn btn-sm btn-light border-0" (click)="updateStatus(order, 'rejected')"
+                      title="Reject Order">
                       <i class="fas fa-times-circle text-error-red"></i>
                     </button>
+                    }
 
                     <!-- Mark as Pending (only if Reviewing) -->
-                    <button class="btn btn-sm btn-light border-0" *ngIf="order.status === 'Reviewing'"
-                      (click)="updateStatus(order, 'pending')" title="Mark as Pending">
+                    @if(order.status === 'Reviewing') {
+                    <button class="btn btn-sm btn-light border-0" (click)="updateStatus(order, 'pending')"
+                      title="Mark as Pending">
                       <i class="fas fa-hourglass-half text-warning-custom"></i>
                     </button>
+                    }
 
                     <!-- Out for Delivery (only if Pending or viewing) -->
-                    <button class="btn btn-sm btn-light border-0" *ngIf="order.status === 'Pending' || order.status === 'Reviewing'"
-                      (click)="updateStatus(order, 'out-for-delivery')" title="Out for Delivery">
+                    @if(order.status === 'Pending' || order.status === 'Reviewing') {
+                    <button class="btn btn-sm btn-light border-0" (click)="updateStatus(order, 'out-for-delivery')"
+                      title="Out for Delivery">
                       <i class="fas fa-truck text-blue-navbar"></i>
                     </button>
+                    }
 
                     <!-- Mark as Delivered (only if OutForDelivery) -->
-                    <button class="btn btn-sm btn-light border-0" *ngIf="order.status === 'OutForDelivery'"
-                      (click)="updateStatus(order, 'delivered')" title="Mark Delivered">
+                    @if(order.status === 'OutForDelivery') {
+                    <button class="btn btn-sm btn-light border-0" (click)="updateStatus(order, 'delivered')"
+                      title="Mark Delivered">
                       <i class="fas fa-check text-success-green"></i>
                     </button>
+                    }
                   </div>
                 </td>
               </tr>
+              }
             </tbody>
           </table>
         </div>
