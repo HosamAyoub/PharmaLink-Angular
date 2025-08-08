@@ -4,7 +4,6 @@ import { IMedicine } from './../Models/imedicine';
 import { IPharmaInventoryStatus } from '../Models/ipharma-inventory-status';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { jwtDecode } from 'jwt-decode';
 
 @Component({
   selector: 'app-medicine-management',

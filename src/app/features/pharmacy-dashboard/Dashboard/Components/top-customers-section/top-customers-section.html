@@ -1,0 +1,26 @@
+<div class="top-customers-section">
+    <div class="card-header">
+        <h4><i class="fa-solid fa-user-secret" [style.color]="'var(--blue-200)'"></i> Top Customers</h4>
+        <p [style.color]="'var(--gray-800)'">Most valuable customers this month</p>
+    </div>
+    <div class="customer-list">
+        @for(customer of topCustomers|slice:0:6; track $index) {
+        <div class="customer-card">
+            <div class="customer-rank">{{ $index + 1 }}</div>
+            <div class="customer-info">
+                <div class="customer-details">
+                    <div>
+                        <h3 class="customer-name">{{ customer.customerName }}</h3>
+                        <p class="orders-sold">{{ customer.totalOrders }} Orders</p>
+                    </div>
+                    <div class="sales-stats">
+                        <p class="revenue">${{ customer.totalSpent }}</p>
+                    </div>
+                </div>
+            
+            </div>
+
+        </div>
+        }
+    </div>
+</div>

@@ -1,3 +1,4 @@
+import { AnalyticsPage } from './Analytics/analytics-page/analytics-page';
 import { DashboardPage } from './Dashboard/dashboard-page/dashboard-page';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
@@ -21,7 +22,11 @@ const routes: Routes = [
     loadComponent: () =>
       import('./inventory/add-medicines-component/add-medicines-component').then((m) => m.AddMedicinesComponent),
   },
-
+  {
+    path: "analytics",
+    loadComponent: () =>
+      import('./Analytics/analytics-page/analytics-page').then((m) => m.AnalyticsPage),
+  },
   {
     path: 'profile',
     loadComponent: () =>

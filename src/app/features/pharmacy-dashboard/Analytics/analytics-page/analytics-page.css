@@ -1,0 +1,35 @@
+.card-hover {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.card-hover:hover {
+    background-color: var(--gray-400);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+}
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 300px));
+  gap: 20px;
+  padding: 20px;
+}
+.card{
+    padding: 6px;
+    border-radius: 15px;
+}
+.card:hover{
+    box-shadow: 0 2px 20px rgba(0,0,0,0.15);
+}
+.trend {
+  font-weight: bold;
+  &.positive {
+    color: #4CAF50;
+  }
+  &.negative {
+    color: var(--danger-red);
+  }
+  &.show {
+        display: inline !important;
+  }
+  &.hide {
+        display: none !important;
+  }
+}
