@@ -13,6 +13,7 @@ import {
 // import { authInterceptor } from './interceptors/auth-interceptor';
 import { authInterceptor } from './shared/interceptors/auth-interceptor';
 import { provideClientHydration } from '@angular/platform-browser';
+import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -20,6 +21,7 @@ export const appConfig: ApplicationConfig = {
     provideZonelessChangeDetection(),
     provideRouter(routes),
     provideHttpClient(withFetch(), withInterceptors([authInterceptor])),
-    provideClientHydration()
+    provideClientHydration(),
+    provideCharts(withDefaultRegisterables()),
   ],
 };

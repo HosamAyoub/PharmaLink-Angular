@@ -1,0 +1,12 @@
+.alert-position {
+  position: fixed;
+  left: 50%;
+  bottom: 30px;
+  transform: translateX(-50%);
+  z-index: 9999999999;
+  min-width: 350px;
+  max-width: 90vw;
+  text-align: center;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
+  pointer-events: none; /* so it doesn't block clicks */
+}

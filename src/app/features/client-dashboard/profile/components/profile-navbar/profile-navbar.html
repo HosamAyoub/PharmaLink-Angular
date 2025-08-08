@@ -1,0 +1,41 @@
+<div class="profile-tabs">
+  <!-- Personal Information Tab -->
+  <button
+    class="profile-tab"
+    [class.active]="activeTab() === 'personal'"
+    (click)="switchTab('personal')"
+  >
+    <span class="tab-icon"><i class="bi bi-person me-2"></i></span>
+    Personal Info
+  </button>
+
+  <!-- Medical Info Tab -->
+  <button
+    class="profile-tab"
+    [class.active]="activeTab() === 'medical'"
+    (click)="switchTab('medical')"
+  >
+    <span class="tab-icon"><i class="bi bi-hospital"></i></span>
+    Medical Info
+  </button>
+
+  <!-- Order History Tab -->
+  <button
+    class="profile-tab"
+    [class.active]="activeTab() === 'orders'"
+    (click)="switchTab('orders')"
+  >
+    <span class="tab-icon"><i class="bi bi-bag me-2"></i></span>
+    Order History
+  </button>
+
+  <!-- Settings Tab -->
+  <button
+    class="profile-tab"
+    [class.active]="activeTab() === 'settings'"
+    (click)="switchTab('settings')"
+  >
+    <span class="tab-icon"><i class="bi bi-gear me-2"></i></span>
+    Settings
+  </button>
+</div>

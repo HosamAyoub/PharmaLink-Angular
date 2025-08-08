@@ -2,16 +2,19 @@ import { Injectable, signal, inject } from '@angular/core';
 import { catchError, tap } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { HttpErrorResponse, HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ResponseData, SignUpData, User } from '../models/user.model';
 import { ConfigService } from './config.service';
 import { APP_CONSTANTS } from '../constants/app.constants';
+import { CartStore } from '../../features/client-dashboard/Cart/Services/cart-store';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   user = signal<User | null>(null);
   http = inject(HttpClient);
   router = inject(Router);
+  route = inject(ActivatedRoute);
+  cartStore = inject(CartStore);
   private tokenExpirationDuration: any;
   config = inject(ConfigService);
   private ENDPOINTS = APP_CONSTANTS.API.ENDPOINTS;
@@ -64,6 +67,9 @@ export class AuthService {
           const now = new Date();
           const expirationDuration = expirationDate.getTime() - now.getTime();
           this.autoLogout(expirationDuration);
+          
+          // Synchronize cart after successful login
+          this.cartStore.syncCartAfterLogin();
         })
       );
   }
@@ -77,6 +83,10 @@ export class AuthService {
     this.validateToken()?.subscribe({
       next: () => {
         // User state is updated in validateToken's tap operator
+        // const returnUrl = this.route.snapshot.queryParams['returnUrl'];
+        // if (returnUrl) {
+        //   this.router.navigate([returnUrl]);
+        // }
       },
       error: (e) => {
         // If token is invalid, log out the user

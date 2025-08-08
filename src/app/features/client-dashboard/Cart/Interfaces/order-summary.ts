@@ -1,4 +1,4 @@
-export interface OrderSummary {
+export interface  OrderSummary {
     name: string;
     phoneNumber: string;
     email: string;

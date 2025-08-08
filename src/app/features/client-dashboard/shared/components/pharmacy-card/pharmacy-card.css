@@ -1,7 +1,13 @@
 .pharmacy-card {
   transition: transform 0.2s, box-shadow 0.2s;
   box-shadow: 0 4px 15px var(--pharmacy-card-shadow2);
-  border-radius: 0 0 12px 12px;
+  border-radius: 1rem;
+}
+
+.pharmacy-image-container {
+  width: 150px;
+  flex-shrink: 0;
+  margin: 0.5rem 0 0 0.5rem;
 }
 
 .pharmacy-card:hover {
@@ -16,4 +22,28 @@
 
 .bi {
   font-size: 0.9rem;
+}
+
+.rate {
+  font-size: 1.1rem;
+  font-weight: 400;
+  padding: 0;
+  margin: 0;
+}
+
+.closed-color {
+  color: var(--error-red);
+  background: var(--status-red-background);
+  font-weight: 450;
+}
+
+.open-color {
+  color: var(--success-green);
+  background: var(--background-mint);
+  font-weight: 450;
+}
+
+.openState {
+  margin-bottom: 0;
+  padding: 0.2rem 0.4rem;
 }

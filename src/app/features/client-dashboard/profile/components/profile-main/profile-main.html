@@ -1,0 +1,21 @@
+<div class="tab-content">
+  <!-- Personal Information Tab -->
+  @if (activeTab() === 'personal') {
+    <app-personal-info></app-personal-info>
+  }
+
+  <!-- Medical History Tab -->
+  @if (activeTab() === 'medical') {
+  <app-medical-history></app-medical-history>
+  }
+
+  <!-- Order History Tab -->
+  @if (activeTab() === 'orders') {
+  <app-orders-history></app-orders-history>
+  }
+
+  <!-- Account Settings Tab -->
+  @if (activeTab() === 'settings') {
+  <app-account-settings></app-account-settings>
+  }
+</div>

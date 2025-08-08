@@ -1,0 +1,33 @@
+<div class="top-selling-section">
+    <div class="card-header">
+        <h4><i class="fa-solid fa-capsules" [style.color]="'var(--blue-200)'"></i> Top Selling Products</h4>
+        <p [style.color]="'var(--gray-800)'">Best performing medicines with sales analytics</p>
+    </div>
+    <div class="product-list">
+        @for(product of topSellingProducts | slice:0:5; track $index) {
+        <div class="product-card">
+            <div class="product-rank">{{ $index + 1 }}</div>
+            <div class="product-info">
+                <div class="product-details">
+                    <div>
+                        <h3 class="product-name">{{ product.drugName }}</h3>
+                        <p class="units-sold">{{ product.salesCount }} units sold</p>
+                    </div>
+                    <div class="sales-stats">
+                        <p class="revenue">${{ product.totalRevenue }}</p>
+                        <!-- <p class="percentage">{{ (product.salesCount / product.totalQuantity) * 100 | number: '1.0-1' }}%</p> -->
+                    </div>
+                </div>
+                <div class="progress-container" [class.d-none]="!displaybar">
+                    <div class="progress-bar"
+                        [style.width.%]="(product.salesCount / (product.totalQuantity + product.salesCount) ) * 100">
+                    </div>
+                    <span class="progress-text">{{ (product.salesCount / (product.totalQuantity + product.salesCount) )
+                        * 100 | number: '1.0-1' }}%</span>
+                </div>
+            </div>
+
+        </div>
+        }
+    </div>
+</div>

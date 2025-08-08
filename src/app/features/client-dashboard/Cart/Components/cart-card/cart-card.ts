@@ -1,9 +1,10 @@
 import { Component, EventEmitter, input, Input, Output } from '@angular/core';
 import { CartItem } from '../../Interfaces/cart-item';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-cart-card',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './cart-card.html',
   styleUrl: './cart-card.css'
 })

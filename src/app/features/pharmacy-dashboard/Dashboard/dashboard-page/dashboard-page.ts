@@ -4,10 +4,15 @@ import { DashboardHeader } from './../Components/dashboard-header/dashboard-head
 import { Component, ChangeDetectorRef, OnInit } from '@angular/core';
 import { PharmacyAnalysisService } from '../Services/pharmacy-analysis-service';
 import { IPharmacyAnalysis, IPharmacystockAnalysis } from '../Interface/pharmacy-analysis-interface';
+import { LoadingSpinner } from '../../../../shared/components/loading-spinner/loading-spinner';
+import { TopSellingProductsSection } from '../Components/top-selling-products-section/top-selling-products-section';
+import { MonthlyPerformanceSection } from '../Components/monthly-performance-section/monthly-performance-section';
+import { RecentActivity } from '../Components/recent-activity/recent-activity';
+import { TopCustomersSection } from '../Components/top-customers-section/top-customers-section';
 
 @Component({
   selector: 'app-dashboard-page',
-  imports: [DashboardHeader,StatsCard,QuickActions],
+  imports: [DashboardHeader,StatsCard,QuickActions,LoadingSpinner,TopSellingProductsSection,MonthlyPerformanceSection,RecentActivity,TopCustomersSection],
   templateUrl: './dashboard-page.html',
   styleUrl: './dashboard-page.css'
 })

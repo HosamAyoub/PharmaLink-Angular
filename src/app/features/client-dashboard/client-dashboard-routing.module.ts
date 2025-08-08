@@ -49,7 +49,9 @@ const routes: Routes = [
     path: 'pharmacyProduct/:id',
     component: PharamcyProductDetails,
   },
-  { path: 'cart', component: CartPage, canActivate: [AuthGuard] },
+  { path: 'cart', component: CartPage
+    // , canActivate: [AuthGuard] 
+  },
   { path: 'success', component: SuccessPage },
   { path: 'cancel', component: CancelPage },
   { path: 'favorites', component: FavoritePage, canActivate: [AuthGuard] },
