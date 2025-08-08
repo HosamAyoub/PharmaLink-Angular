@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, signal } from '@angular/core';
 import { PharmacyCard } from '../../shared/components/pharmacy-card/pharmacy-card';
 import { PharmacyService } from '../Service/pharmacy-service';
 import { Ipharmacy } from '../../shared/models/ipharmacy';
@@ -12,7 +12,9 @@ import { RouterLink, RouterModule } from '@angular/router';
   styleUrl: './nearby-pharmacies-page.css',
 })
 export class NearbyPharmaciesPage implements OnInit {
-  protected pharmacies: Ipharmacy[] = [];
+  // protected pharmacies: Ipharmacy[] = [];
+  pharmacies = signal<Ipharmacy[]>([]);
+
   protected errorMessage: string | null = null;
   protected Loading: boolean = true;
 
@@ -30,8 +32,8 @@ export class NearbyPharmaciesPage implements OnInit {
 
     this.pharmacyService.getPharmacies().subscribe({
       next: (data) => {
-        this.pharmacies = data;
-        console.log('Nearby pharmacies loaded:', this.pharmacies);
+        this.pharmacies.set(data);
+        console.log('Nearby pharmacies loaded:', this.pharmacies());
         this.Loading = false;
         this.cdr.detectChanges(); // Ensure the view updates immediately
       },
