@@ -4,7 +4,7 @@
         <p [style.color]="'var(--gray-800)'">Best performing medicines with sales analytics</p>
     </div>
     <div class="product-list">
-        @for(product of topSellingProducts; track $index) {
+        @for(product of topSellingProducts | slice:0:5; track $index) {
         <div class="product-card">
             <div class="product-rank">{{ $index + 1 }}</div>
             <div class="product-info">
@@ -18,7 +18,7 @@
                         <!-- <p class="percentage">{{ (product.salesCount / product.totalQuantity) * 100 | number: '1.0-1' }}%</p> -->
                     </div>
                 </div>
-                <div class="progress-container">
+                <div class="progress-container" [class.d-none]="!displaybar">
                     <div class="progress-bar"
                         [style.width.%]="(product.salesCount / (product.totalQuantity + product.salesCount) ) * 100">
                     </div>

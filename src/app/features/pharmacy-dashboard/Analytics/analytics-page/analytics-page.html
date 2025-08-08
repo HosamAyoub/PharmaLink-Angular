@@ -1,0 +1,84 @@
+<div class="container-fluid py-4 px-3 px-md-5" style="width: 95%;">
+
+    <!-- Header Section -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="d-flex align-items-center gap-3">
+            <button class="btn btn-outline-light border card-hover text-dark px-3 py-2 d-flex align-items-center"
+                [routerLink]="['/pharmacy/dashboard']">
+                <i class="fas fa-arrow-left me-2"></i> Back to Dashboard
+            </button>
+            <div>
+                <h2 class="fw-bold mb-1">Analytics & Reports</h2>
+                <p class="text-muted mb-0">Detailed insights into your pharmacy performance</p>
+            </div>
+        </div>
+        <button class="btn btn-outline-light card-hover border text-dark px-3 py-2 d-flex align-items-center" (click)="exportOrdersAsCSV()">
+            <i class="fas fa-download me-2"></i> Export Reports
+        </button>
+    </div>
+    <div class="row">
+        @if (loading) {
+        <div class="loading-spinner">
+            <app-loading-spinner></app-loading-spinner>
+        </div>
+        } @else if (errorMessage) {
+        <div class="error-message error-alert">
+            {{ errorMessage }}
+        </div>
+        } @else {
+        <div class="dashboard-grid">
+            @for (card of cards; track card.title) {
+            <div class="card" style="width: 18rem;">
+                <div class="card-body d-flex justify-content-between">
+                    <div>
+                        <h6 class="card-title" [style.color]="'var(--gray-800)'">{{card.title}}</h6>
+                        <h2 class="card-subtitle mb-2">{{card.value}}</h2>
+                    </div>
+                    @if (card.trend) {
+                    <div class="trend d-flex pt-4" [class.positive]="card.trend.startsWith('+')"
+                        [class.negative]="card.trend.startsWith('-')">
+                        <p class="pe-1">{{ card.trend }}</p>
+                        <div class="trend" [class.show]="card.trend.startsWith('+')"
+                            [class.hide]="card.trend.startsWith('-')">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="lucide lucide-trending-up h-4 w-4 mr-1">
+                                <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline>
+                                <polyline points="16 7 22 7 22 13"></polyline>
+                            </svg>
+                        </div>
+                        <div class="trend" [class.hide]="card.trend.startsWith('+')"
+                            [class.show]="card.trend.startsWith('-')">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="lucide lucide-trending-down h-4 w-4 mr-1">
+                                <polyline points="22 17 13.5 8.5 8.5 13.5 2 7"></polyline>
+                                <polyline points="16 17 22 17 22 11"></polyline>
+                            </svg>
+                        </div>
+                    </div>
+                    }
+
+                </div>
+            </div>
+            }
+        </div>
+        }
+        <div class="col-md-6">
+            <div class="monthly-performance">
+                <app-monthly-performance-section
+                    [monthlyStats]="analysisData?.monthlyStats"></app-monthly-performance-section>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="recent-activity">
+                <app-top-customers-section [pharmacyAnalysis]="analysisData"></app-top-customers-section>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="top-selling-products">
+                <app-top-selling-products-section [pharmacyAnalysis]="analysisData" [displaybar]="false"></app-top-selling-products-section>
+            </div>
+        </div>
+    </div>
+</div>

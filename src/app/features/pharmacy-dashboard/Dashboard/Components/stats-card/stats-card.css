@@ -23,6 +23,7 @@
   gap: 12px;
   margin-bottom: 15px;
   justify-content: space-between;
+  height: 60px;
 }
 
 .value {
