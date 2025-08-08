@@ -22,12 +22,6 @@ const routes: Routes = [
     loadComponent: () =>
       import('./inventory/add-medicines-component/add-medicines-component').then((m) => m.AddMedicinesComponent),
   },
-
-  {
-    path: 'addproduct/:id',
-    loadComponent: () =>
-      import('./inventory/add-medicine-details-component/add-medicine-details-component').then((m) => m.AddMedicineDetailsComponent),
-  },
   {
     path: "analytics",
     loadComponent: () =>
