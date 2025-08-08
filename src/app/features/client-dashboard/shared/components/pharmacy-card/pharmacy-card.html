@@ -1,7 +1,11 @@
 <div class="card pharmacy-card mb-3 d-flex flex-row align-items-stretch">
   <div class="pharmacy-image-container">
     <img
-      src="../../../../../../assets/images/pharamcy/pharmacy-template.jpg"
+      [src]="
+        pharmacy.imgUrl
+          ? pharmacy.imgUrl
+          : '../../../../../../assets/images/pharamcy/pharmacy-template.jpg'
+      "
       alt="pharmacy template image"
       width="150px"
     />
