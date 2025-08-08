@@ -1,25 +1,32 @@
 import { Component, inject, signal, effect } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { PharmacyCard } from "../../../shared/components/pharmacy-card/pharmacy-card";
+import { PharmacyCard } from '../../../shared/components/pharmacy-card/pharmacy-card';
 import { single } from 'rxjs';
 import { Ipharmacy } from '../../../shared/models/ipharmacy';
 import { PharmacyService } from '../../../Pharmacies/Service/pharmacy-service';
 import { PharmacyProductsService } from '../../services/pharamcy-products-service';
-import { SideBar } from "../../../shared/components/side-bar/side-bar";
+import { SideBar } from '../../../shared/components/side-bar/side-bar';
 import { IDrug } from '../../../Categories_Page/models/IDrug';
-import { Product } from "../../../shared/components/product/product";
+import { Product } from '../../../shared/components/product/product';
 import { IProduct } from '../../../shared/models/IProduct';
 import { UiState } from '../../../../../shared/enums/UIState';
 import { CommonModule } from '@angular/common';
-import { LoadingSpinner } from "../../../../../shared/components/loading-spinner/loading-spinner";
-import { ErrorHandling } from "../../../../../shared/components/error-handling/error-handling";
+import { LoadingSpinner } from '../../../../../shared/components/loading-spinner/loading-spinner';
+import { ErrorHandling } from '../../../../../shared/components/error-handling/error-handling';
 import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'client-pharmacy-stock',
-  imports: [CommonModule, PharmacyCard, SideBar, Product, LoadingSpinner, ErrorHandling],
+  imports: [
+    CommonModule,
+    PharmacyCard,
+    SideBar,
+    Product,
+    LoadingSpinner,
+    ErrorHandling,
+  ],
   templateUrl: './pharmacy-stock.html',
-  styleUrl: './pharmacy-stock.css'
+  styleUrl: './pharmacy-stock.css',
 })
 export class PharmacyStock {
   pharmacyService = inject(PharmacyProductsService);
@@ -34,15 +41,12 @@ export class PharmacyStock {
 
   uiState = signal<UiState>(UiState.Loading);
   httpError = signal<HttpErrorResponse | null>(null);
-  selectedCategory:string = '';
+  selectedCategory: string = '';
 
   // Pagination signals
   pageSize = signal<number>(12);
   currentPage = signal<number>(1);
   totalPages = signal<number>(1);
-
-
-
 
   // Change page
   goToPage(page: number) {
@@ -54,7 +58,7 @@ export class PharmacyStock {
 
   constructor(public route: ActivatedRoute) {
     // Get pharmacyId from route params
-    route.paramMap.subscribe(params => {
+    route.paramMap.subscribe((params) => {
       const id = Number(params.get('id'));
       if (id) {
         this.pharmacyId.set(id);
@@ -64,8 +68,6 @@ export class PharmacyStock {
         console.warn('Pharmacy ID is not set in route');
       }
     });
-
-
   }
 
   loadPharmacy() {
@@ -81,7 +83,7 @@ export class PharmacyStock {
           console.error('Error fetching pharmacy data:', error);
           this.httpError.set(error);
           this.uiState.set(UiState.Error);
-        }
+        },
       });
     } else {
       console.warn('Pharmacy ID is not set');
@@ -91,51 +93,77 @@ export class PharmacyStock {
   loadPharmacyProducts() {
     console.log('Loading pharmacy products for ID:', this.pharmacyId());
     if (this.pharmacyId()) {
-      this.pharmacyService.getPharmacyProducts(this.pharmacyId(), this.currentPage(), this.pageSize()).subscribe({
-        next: (response) => {
-          if(response.success) {
-            this.uiState.set(UiState.Success);
-            this.pharmacyProducts.set(response.data.items);
-            this.totalPages.set(response.data.totalPages);
-            console.log('Pharmacy products loaded:', response.data.items);
-          }
-          else{
-            console.error('Failed to load pharmacy products:', response.errors);
-          }
-        },
-        error: (error: HttpErrorResponse) => {
-          this.httpError.set(error);
-          this.uiState.set(UiState.Error);
-          console.error('Error fetching pharmacy products:', error);
-        }
-      });
+      this.pharmacyService
+        .getPharmacyProducts(
+          this.pharmacyId(),
+          this.currentPage(),
+          this.pageSize()
+        )
+        .subscribe({
+          next: (response) => {
+            if (response.success) {
+              this.uiState.set(UiState.Success);
+              this.pharmacyProducts.set(response.data.items);
+              this.totalPages.set(response.data.totalPages);
+              console.log('Pharmacy products loaded:', response.data.items);
+            } else {
+              console.error(
+                'Failed to load pharmacy products:',
+                response.errors
+              );
+            }
+          },
+          error: (error: HttpErrorResponse) => {
+            this.httpError.set(error);
+            this.uiState.set(UiState.Error);
+            console.error('Error fetching pharmacy products:', error);
+          },
+        });
     } else {
       console.warn('Pharmacy ID is not set');
     }
   }
 
   loadPharmacyProductsByCategory() {
-    console.log('Loading pharmacy products by category:', this.selectedCategory);
+    console.log(
+      'Loading pharmacy products by category:',
+      this.selectedCategory
+    );
     if (this.pharmacyId() && this.selectedCategory) {
       this.uiState.set(UiState.Loading);
-      this.pharmacyService.getPharmacyProductsByCategory(this.pharmacyId(), this.selectedCategory, this.currentPage(), this.pageSize()).subscribe({
-        next: (response) => {
-          if(response.success) {
-            this.uiState.set(UiState.Success);
-            this.pharmacyProducts.set(response.data.items);
-            this.totalPages.set(response.data.totalPages);
-            console.log('Pharmacy products by category loaded:', response.data.items);
-          }
-          else{
-            console.error('Failed to load pharmacy products by category:', response.errors);
-          }
-        },
-        error: (error: HttpErrorResponse) => {
-          this.httpError.set(error);
-          this.uiState.set(UiState.Error);
-          console.error('Error fetching pharmacy products by category:', error);
-        }
-      });
+      this.pharmacyService
+        .getPharmacyProductsByCategory(
+          this.pharmacyId(),
+          this.selectedCategory,
+          this.currentPage(),
+          this.pageSize()
+        )
+        .subscribe({
+          next: (response) => {
+            if (response.success) {
+              this.uiState.set(UiState.Success);
+              this.pharmacyProducts.set(response.data.items);
+              this.totalPages.set(response.data.totalPages);
+              console.log(
+                'Pharmacy products by category loaded:',
+                response.data.items
+              );
+            } else {
+              console.error(
+                'Failed to load pharmacy products by category:',
+                response.errors
+              );
+            }
+          },
+          error: (error: HttpErrorResponse) => {
+            this.httpError.set(error);
+            this.uiState.set(UiState.Error);
+            console.error(
+              'Error fetching pharmacy products by category:',
+              error
+            );
+          },
+        });
     } else {
       console.warn('Pharmacy ID or selected category is not set');
     }
@@ -150,10 +178,9 @@ export class PharmacyStock {
     this.selectedCategory = category;
     this.currentPage.set(1); // Reset to first page on category change
     console.log('Selected Category:', this.selectedCategory);
-    if(this.selectedCategory== '') {
+    if (this.selectedCategory == '') {
       this.loadPharmacyProducts();
-  }
-    else {
+    } else {
       this.loadPharmacyProductsByCategory();
     }
   }
