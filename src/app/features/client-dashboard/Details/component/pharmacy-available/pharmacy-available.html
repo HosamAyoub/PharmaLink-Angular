@@ -7,16 +7,13 @@
   <div class="pharmacy-table-container">
     <div class="table-header">
       <div class="header-cell pharmacy-col">Pharmacy</div>
-       <div class="header-cell status-col">Quantity</div>
+      <div class="header-cell status-col">Quantity</div>
       <div class="header-cell price-col">Price</div>
       <div class="header-cell action-col">Add To Cart</div>
     </div>
 
     <div class="pharmacy-list">
-      <div
-        class="pharmacy-row"
-        *ngFor="let pharmacy of pharmacies; index as i"
-      >
+      <div class="pharmacy-row" *ngFor="let pharmacy of pharmacies; index as i">
         <!-- Desktop Layout -->
         <div class="desktop-layout">
           <div class="pharmacy-info">
@@ -27,14 +24,10 @@
             </div>
           </div>
 
-           <div class="pharmacy-status">
+          <div class="pharmacy-status">
             <span class="status-badge">
-              <input
-                #QuantityInput
-                type="number"
-                class="form-control quantity-input shadow-sm"
-                min="1"
-                value="1" />
+              <input #QuantityInput type="number" class="form-control quantity-input shadow-sm" min="1"
+                max="{{ pharmacy.quantityAvailable }}" value="1" />
             </span>
           </div>
 
@@ -43,13 +36,10 @@
             {{ pharmacy.price }}<span class="currency text-primary"> $</span>
           </div>
 
-         
+
           <div class="pharmacy-action">
-            <button
-              class="buy-button"
-              [disabled]="pharmacy.quantityAvailable === 0"
-              (click)="SendToCart(pharmacy)"
-            >+</button>
+            <button class="buy-button" [disabled]="pharmacy.quantityAvailable === 0"
+              (click)="SendToCart(pharmacy)">+</button>
           </div>
         </div>
 
@@ -67,28 +57,20 @@
           <div class="mobile-row">
             <span class="mobile-label">Quantity:</span>
             <span class="status-badge">
-              <input
-                #QuantityInput
-                type="number"
-                class="form-control quantity-input shadow-sm"
-                min="1"
-                value="1" />
+              <input #QuantityInput type="number" class="form-control quantity-input shadow-sm" min="1" value="1" />
             </span>
           </div>
 
           <div class="mobile-row">
             <span class="mobile-label">Price:</span>
             <div class="pharmacy-price">
-             {{ pharmacy.price }}<span class="currency text-primary"> $</span>
+              {{ pharmacy.price }}<span class="currency text-primary"> $</span>
             </div>
           </div>
 
-          
 
-          <button
-            class="buy-button"
-            (click)="SendToCart(pharmacy)"
-          >+</button>
+
+          <button class="buy-button" (click)="SendToCart(pharmacy)">+</button>
         </div>
       </div>
     </div>
