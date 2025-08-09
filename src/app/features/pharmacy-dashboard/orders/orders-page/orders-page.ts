@@ -1,9 +1,11 @@
-import { Component, computed, signal } from '@angular/core';
+import { Component, computed, inject,  OnInit, signal } from '@angular/core';
 import { IOrder } from '../Interfaces/iorder';
 import { OrdersService } from '../Services/orders-service';
 import { CommonModule } from '@angular/common';
 import { OrderDetailsModal } from '../Components/order-details-modal/order-details-modal';
 import { RouterLink } from '@angular/router';
+import { OrdersSignalrServiceService } from '../Shared/Services/orders-signalr-service.service';
+import { PharmacyService } from '../../profile/Services/pharmacy-service';
 
 @Component({
   selector: 'app-orders-page',
@@ -12,16 +14,18 @@ import { RouterLink } from '@angular/router';
   templateUrl: './orders-page.html',
   styleUrl: './orders-page.css'
 })
-export class OrdersPage {
-  orders = signal<IOrder[]>([]);
+export class OrdersPage implements OnInit {
+  ordersService = inject(OrdersService);
+  pharmacyService = inject(PharmacyService);
+  signalRService = inject(OrdersSignalrServiceService);
+
+  orders = this.ordersService.orders;
   query = signal('');
   selectedStatus = signal<string>('All');
   orderDetails = signal<any | null>(null);
   showModal = signal(false);
-  countdowns = signal<Record<number, string>>({});
+  countdowns = this.ordersService.countdowns;
 
-
-  constructor(private ordersService: OrdersService) { }
 
   filteredOrders = computed(() => {
     let result = this.orders()
@@ -64,10 +68,7 @@ export class OrdersPage {
   }
 
   loadOrders() {
-    this.ordersService.getAllOrders().subscribe(data => {
-      this.orders.set(data);
-      this.startAutoRejectAndCountdownTimer();
-    });
+    this.ordersService.loadOrders();
   }
 
 
@@ -208,57 +209,4 @@ export class OrdersPage {
     a.click();
     window.URL.revokeObjectURL(url);
   }
-
-  private readonly statusExpiryMinutes: Record<string, number> = {
-    UnderReview: 10,
-    Reviewing: 15,
-    Pending: 30
-  };
-
-  startAutoRejectAndCountdownTimer() {
-    setInterval(() => {
-      const now = new Date().getTime();
-      const countdownMap: Record<number, string> = {};
-      const ordersToReject: IOrder[] = [];
-
-      for (const order of this.orders()) {
-        const expiryMinutes = this.statusExpiryMinutes[order.status];
-        if (!expiryMinutes) continue;
-
-        if (
-          !order.statusLastUpdated ||
-          new Date(order.statusLastUpdated).getFullYear() <= 1900
-        ) {
-          continue;
-        }
-
-        const startTime = new Date(order.statusLastUpdated).getTime();
-        const endTime = startTime + expiryMinutes * 60_000;
-        const remainingMs = endTime - now;
-
-        // Update countdown
-        if (remainingMs > 0) {
-          const minutes = Math.floor(remainingMs / 60000);
-          const seconds = Math.floor((remainingMs % 60000) / 1000);
-          countdownMap[order.orderID] = `in ${minutes}m ${seconds}s`;
-        } else {
-          countdownMap[order.orderID] = 'soon...';
-          ordersToReject.push(order); // Mark for rejection
-        }
-      }
-
-      // Update countdowns
-      this.countdowns.set(countdownMap);
-
-      // Reject orders that expired
-      for (const order of ordersToReject) {
-        this.ordersService.rejectOrder(order.orderID).subscribe(() => {
-          console.log(`Order ${order.orderID} auto-rejected`);
-          this.refresh();
-        });
-      }
-
-    }, 1000);
-  }
-
 }
