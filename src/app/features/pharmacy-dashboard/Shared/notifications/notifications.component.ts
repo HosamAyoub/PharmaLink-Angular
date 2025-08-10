@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, inject, OnDestroy, OnInit } from '@angular/core';
-import { OrdersSignalrServiceService } from '../../Services/orders-signalr-service.service';
-import { PharmacyService } from '../../../../profile/Services/pharmacy-service';
-import { OrdersService } from '../../../Services/orders-service';
+import { OrdersSignalrServiceService } from '../Services/orders-signalr-service.service';
+import { PharmacyService } from '../../profile/Services/pharmacy-service';
+import { OrdersService } from '../../orders/Services/orders-service';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -43,12 +43,12 @@ export class NotificationsComponent implements OnInit, OnDestroy {
       this.showPopup = true;
       this.playSound();
       this.orderService.loadOrders();
-      this.cd.detectChanges(); 
+      this.cd.detectChanges();
 
       setTimeout(() => {
-      this.showPopup = false;
-      this.cd.detectChanges();
-    }, 5000);
+        this.showPopup = false;
+        this.cd.detectChanges();
+      }, 5000);
     });
   }
 
@@ -64,8 +64,8 @@ export class NotificationsComponent implements OnInit, OnDestroy {
     const audio = new Audio();
     audio.src = 'assets/notification.mp3';
     audio.play().catch(err => {
-    console.warn('Failed to play audio:', err);
-  });
+      console.warn('Failed to play audio:', err);
+    });
     audio.play();
   }
 

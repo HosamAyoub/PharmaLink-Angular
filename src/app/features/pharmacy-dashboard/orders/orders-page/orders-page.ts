@@ -1,10 +1,10 @@
-import { Component, computed, inject,  OnInit, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { IOrder } from '../Interfaces/iorder';
 import { OrdersService } from '../Services/orders-service';
 import { CommonModule } from '@angular/common';
 import { OrderDetailsModal } from '../Components/order-details-modal/order-details-modal';
 import { RouterLink } from '@angular/router';
-import { OrdersSignalrServiceService } from '../Shared/Services/orders-signalr-service.service';
+import { OrdersSignalrServiceService } from '../../Shared/Services/orders-signalr-service.service';
 import { PharmacyService } from '../../profile/Services/pharmacy-service';
 
 @Component({
