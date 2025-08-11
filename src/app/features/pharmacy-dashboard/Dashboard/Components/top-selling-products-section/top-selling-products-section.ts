@@ -1,20 +1,20 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { IPharmacyAnalysis, TopSellingProduct } from '../../Interface/pharmacy-analysis-interface';
-import { DecimalPipe } from '@angular/common';
+import { DecimalPipe, SlicePipe } from '@angular/common';
 
 @Component({
   selector: 'app-top-selling-products-section',
-  imports: [DecimalPipe],
+  imports: [DecimalPipe, SlicePipe],
   templateUrl: './top-selling-products-section.html',
   styleUrl: './top-selling-products-section.css'
 })
 export class TopSellingProductsSection implements OnChanges{
   
 @Input() pharmacyAnalysis:IPharmacyAnalysis | null = null;
+@Input() displaybar: boolean = true;
 
 topSellingProducts:TopSellingProduct [] = this.pharmacyAnalysis?.topSellingProducts || [];
 ngOnChanges(): void {
-  // This method will be called whenever the input property changes
   this.updateTopSellingProducts();
 }
 updateTopSellingProducts(): void {

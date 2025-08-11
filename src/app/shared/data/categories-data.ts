@@ -6,16 +6,16 @@ export const CategoriesData = [
     description: '120+ products'
   },
   {
-    name: 'Anemias',
+    name: 'Anemia',
     image: 'assets/images/icons/anemia.png',
     description: '150+ medicines'
   },
-    {
+  {
     name: 'Muscle relaxants',
     image: 'assets/images/icons/muscle.png',
     description: '10+ products'
   },
-   {
+  {
     name: 'Sleep aids',
     image: 'assets/images/icons/sleeping-pills.png',
     description: '15+ products'
@@ -274,7 +274,7 @@ export const CategoriesData = [
     description: '8+ medicines'
   },
   {
-    name: 'Urinary tract medications',
+    name: 'Urinary tract',
     image: 'https://cdn-icons-png.flaticon.com/512/831/831682.png',
     description: '9+ products'
   },

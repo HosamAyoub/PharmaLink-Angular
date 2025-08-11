@@ -9,6 +9,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ViewChild } from '@angular/core';
 import { ElementRef } from '@angular/core';
+
+
 @Component({
   selector: 'app-add-medicines',
   imports: [RouterLink, CommonModule, FormsModule],
@@ -34,7 +36,7 @@ export class AddMedicinesComponent implements OnInit {
   }
 
   onSearchChange(query: string) {
-    if (query === '') {
+    if (query === '' ) {
       this.filteredMedicines = [];
     }
     else {
@@ -53,17 +55,10 @@ export class AddMedicinesComponent implements OnInit {
       this.selectedMedicines = this.selectedMedicines.filter(m => m.drugdetails.drugID !== medicine.drugID);
     }
     else if (!this.medicineService.PharmacyStockList().some(m => m.drugId === medicine.drugID)) {
-      this.selectedMedicines.push({ drugdetails: medicine, quantity: 0, price: 0 });
+      this.selectedMedicines.push({ drugdetails: medicine, quantity: 0, price: 1 });
     }
   }
 
-  onMedicineSelect(medicine: IDrugDetails) {
-    if (this.selectedMedicines.some(m => m.drugdetails.drugID === medicine.drugID)) {
-      this.selectedMedicines.push({ drugdetails: medicine, quantity: 0, price: 0 });
-    } else {
-      this.selectedMedicines = this.selectedMedicines.filter(m => m.drugdetails.drugID !== medicine.drugID);
-    }
-  }
 
   removeMedicine(medicine: IAddToStock) {
     this.selectedMedicines = this.selectedMedicines.filter(m => m.drugdetails.drugID !== medicine.drugdetails.drugID);

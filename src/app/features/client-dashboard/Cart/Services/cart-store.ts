@@ -38,6 +38,7 @@ export class CartStore {
       next: (data: CartItem[]) => {
         this.cartItems.set(data);
         // get summery 
+        this.getOrderSummary();
         
         // Calculate totals manually for both authenticated and non-authenticated users
         this.calculateTotals();

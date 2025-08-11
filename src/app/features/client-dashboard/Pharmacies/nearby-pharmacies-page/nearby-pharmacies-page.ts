@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, signal } from '@angular/core';
 import { PharmacyCard } from '../../shared/components/pharmacy-card/pharmacy-card';
 import { PharmacyService } from '../Service/pharmacy-service';
 import { Ipharmacy } from '../../shared/models/ipharmacy';
@@ -12,7 +12,9 @@ import { RouterLink, RouterModule } from '@angular/router';
   styleUrl: './nearby-pharmacies-page.css',
 })
 export class NearbyPharmaciesPage implements OnInit {
-  protected pharmacies: Ipharmacy[] = [];
+  // protected pharmacies: Ipharmacy[] = [];
+  pharmacies = signal<Ipharmacy[]>([]);
+
   protected errorMessage: string | null = null;
   protected Loading: boolean = true;
 

@@ -27,7 +27,15 @@
         </div>
       </div>
       <div class="col-md-4">
-
+        <div class="recent-activity">
+          <app-recent-activity></app-recent-activity>
+           <!-- <app-top-customers-section [pharmacyAnalysis]="analysisData"></app-top-customers-section> -->
+        </div>
+      </div>
+      <div class="col-md-12">
+        <div class="monthly-performance">
+          <app-monthly-performance-section [monthlyStats]="analysisData?.monthlyStats"></app-monthly-performance-section>
+        </div>
       </div>
     </div>
   </div>

@@ -16,24 +16,23 @@
           <i class="bi bi-arrow-clockwise me-1"></i>Try Again
         </button>
       </div>
-      } @if (!Loading && !errorMessage) { @if (pharmacies.length === 0) {
+      } @if (!Loading && !errorMessage) { @if (pharmacies().length === 0) {
       <div class="alert alert-info text-center">
         No pharmacies found in your area.
       </div>
-      } @else { @for (pharmacy of pharmacies; track pharmacy.name) {
+      } @else { @for (pharmacy of pharmacies(); track pharmacy.name) {
       <div class="col">
         @if (pharmacy?.pharmacyID) {
-      <a
-        class=" mb-3 text-decoration-none"
-        [routerLink]="['/client/pharmacyStock', pharmacy.pharmacyID]"
-        routerLinkActive="router-link-active">
-        <client-pharmacy-card [pharmacy]="pharmacy"></client-pharmacy-card>
-      </a>
-    }
-        </div>
+        <a
+          class="mb-3 text-decoration-none"
+          [routerLink]="['/client/pharmacyStock', pharmacy.pharmacyID]"
+          routerLinkActive="router-link-active"
+        >
+          <client-pharmacy-card [pharmacy]="pharmacy"></client-pharmacy-card>
+        </a>
         }
-      }
-      }
+      </div>
+      } } }
     </div>
     <div class="col-lg-4">
       <div class="card pharmacy-card mb-3">

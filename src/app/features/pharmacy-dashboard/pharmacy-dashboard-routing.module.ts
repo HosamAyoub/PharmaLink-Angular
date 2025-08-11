@@ -18,11 +18,15 @@ const routes: Routes = [
     loadComponent: () =>
       import('./inventory/add-medicines-component/add-medicines-component').then((m) => m.AddMedicinesComponent),
   },
-
+  {
+    path: "analytics",
+    loadComponent: () =>
+      import('./Analytics/analytics-page/analytics-page').then((m) => m.AnalyticsPage),
+  },
   {
     path: 'profile',
-    loadChildren: () =>
-      import('./profile/profile.module').then((m) => m.ProfileModule),
+    loadComponent: () =>
+      import('./profile/pharmacy-profile-page/pharmacy-profile-page').then((m) => m.PharmacyProfilePage),
   },
   { path: 'dashboard', component: DashboardPage }
 ];

@@ -3,6 +3,92 @@
     <h2>Order History</h2>
   </div>
 
+  @if (orders().length > 0) {
+  <div class="table-responsive">
+    <table class="table table-hover table-striped align-middle shadow-sm rounded-3 overflow-hidden">
+      <thead class="bg-light">
+        <tr>
+          <th>Pharmacy</th>
+          <th>Date</th>
+          <th>Order Status</th>
+          <th>Total Amount</th>
+          <th>Payment Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (order of orders(); track order.orderId) {
+        <tr>
+          <!-- Pharmacy Info -->
+          <td>
+            <div class="fw-bold">{{ order.pharmacyName }}</div>
+            <small class="text-muted d-block">
+              <i class="bi bi-geo-alt me-1"></i>{{ order.pharmacyAddress }}
+            </small>
+            <small class="text-muted d-block">
+              <i class="bi bi-telephone me-1"></i>{{ order.pharmacyPhoneNumber }}
+            </small>
+          </td>
+
+          <!-- Date -->
+          <td>
+            <i class="bi bi-calendar-event me-1 text-primary-blue-light"></i>
+            {{ order.orderDate | date:'dd MMM yyyy, hh:mm a' }}
+          </td>
+
+          <!-- Order Status -->
+          <td>
+            <span class="badge d-inline-flex align-items-center gap-1 px-2 py-1"
+              [class.bg-success-green]="order.status === 'Delivered'"
+              [class.bg-warning-custom]="order.status === 'Pending'"
+              [class.bg-error-red]="order.status === 'Rejected'"
+              [class.bg-orange-custom]="order.status === 'UnderReview'"
+              [class.bg-purple-custom]="order.status === 'Reviewing'"
+              [class.bg-orange-custom]="order.status === 'OutForDelivery'"
+              [class.bg-secondary-custom]="order.status === 'Cancelled'">
+              <i class="bi bi-info-circle"></i> {{ order.status }}
+            </span>
+          </td>
+
+          <!-- Total Amount -->
+          <td class="fw-bold text-success-green">
+            {{ order.totalAmount.toFixed(2) | currency:'EGP':'symbol' }}
+          </td>
+
+          <!-- Payment Status -->
+          <td>
+            @if(order.paymentStatus == 'Pending'){
+            <span class="badge d-inline-flex align-items-center gap-1 px-2 py-1 bg-secondary-custom">
+              <i class="bi bi-shield-check"></i> Cash On Delivery
+            </span>
+            }@else {
+            <span class="badge d-inline-flex align-items-center gap-1 px-2 py-1"
+              [class.bg-success-green]="order.paymentStatus === 'Approved'"
+              [class.bg-error-red]="order.paymentStatus === 'Refunded' || order.paymentStatus === 'Cancelled'">
+              <i class="bi bi-shield-check"></i> {{ order.paymentStatus }}
+            </span>
+            }
+          </td>
+
+          <!-- Actions -->
+          <td class="text-center">
+            <button class="btn btn-sm bg-primary-blue-light me-2" (click)="openDetails(order)">
+              <i class="bi bi-eye"></i>
+            </button>
+            @if(order.status === 'Pending' || order.status === 'UnderReview' || order.status === 'Reviewing') {
+            <button class="btn btn-sm btn-danger" title="Cancel Order" (click)="openCancelModal(order.orderId)">
+              <i class="bi bi-x-circle"></i>
+            </button>
+            }
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  }
+  @else {
   <!-- Placeholder for No Orders -->
   <div class="orders-placeholder">
     <div class="placeholder-icon">📦</div>
@@ -11,5 +97,113 @@
       Your order history will appear here once you make your first purchase.
     </p>
     <button class="cta-button">Browse Products</button>
+  </div>
+  }
+</div>
+
+<!-- Order Details Modal -->
+<div class="modal fade" id="orderDetailsModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content shadow-lg border-0 rounded-3">
+      <div class="modal-header bg-primary-blue-light text-dark">
+        <h5 class="modal-title">
+          <i class="bi bi-receipt me-2"></i> Order Details #{{ selectedOrder?.orderId }}
+        </h5>
+        <button type="button" class="btn-close btn-close-dark" data-bs-dismiss="modal"></button>
+      </div>
+
+      @if(selectedOrder) {
+      <div class="modal-body">
+
+        <!-- Order Info -->
+        <div class="row g-3 mb-3">
+          <div class="col-md-6">
+            <p><i class="bi bi-shop me-2"></i><strong>Pharmacy:</strong> {{ selectedOrder.pharmacyName }}</p>
+            <p><i class="bi bi-geo-alt me-2"></i><strong>Address:</strong> {{ selectedOrder.pharmacyAddress }}</p>
+            <p><i class="bi bi-telephone me-2"></i><strong>Phone:</strong> {{ selectedOrder.pharmacyPhoneNumber }}</p>
+          </div>
+          <div class="col-md-6">
+            <p><i class="bi bi-calendar-event me-2"></i><strong>Date:</strong> {{ selectedOrder.orderDate | date:'dd MMM
+              yyyy, hh:mm a'}}</p>
+            <p>
+              <i class="bi bi-info-circle me-2"></i><strong>Status:</strong>
+              <span class="badge bg-info text-dark">{{ selectedOrder.status }}</span>
+            </p>
+            <p>
+              <i class="bi bi-cash me-2"></i><strong>Total Amount:</strong>
+              <span class="fw-bold text-success">{{ selectedOrder.totalAmount.toFixed(2) | currency:'EGP':'symbol'
+                }}</span>
+            </p>
+          </div>
+        </div>
+
+        <!-- Payment Info -->
+        <div class="row g-3 mb-3">
+          <div class="col-md-6">
+            <p><i class="bi bi-credit-card me-2"></i><strong>Payment Method:</strong> {{ selectedOrder.paymentMethod }}
+            </p>
+          </div>
+          <div class="col-md-6">
+            <p>
+              <i class="bi bi-shield-check me-2"></i><strong>Payment Status:</strong>
+              <span class="badge" [class.bg-success]="selectedOrder.paymentStatus === 'Approved'"
+                [class.bg-warning]="selectedOrder.paymentStatus !== 'Approved'">
+                {{ selectedOrder.paymentStatus }}
+              </span>
+            </p>
+          </div>
+        </div>
+
+        <!-- Delivery Address -->
+        <div class="mb-4">
+          <p><i class="bi bi-truck me-2"></i><strong>Delivery Address:</strong> {{ selectedOrder.deliveryAddress }}</p>
+        </div>
+
+        <!-- Order Items Table -->
+        <h6 class="fw-bold mb-3">Order Items</h6>
+        <div class="table-responsive">
+          <table class="table table-bordered align-middle">
+            <thead class="table-light">
+              <tr>
+                <th>Drug Name</th>
+                <th>Quantity</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for(item of selectedOrder.orderDetails; track item.drugName) {
+              <tr>
+                <td>{{ item.drugName }}</td>
+                <td>{{ item.quantity }}</td>
+              </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+      }
+    </div>
+  </div>
+</div>
+
+<!-- Cancel Confirmation Modal -->
+<div class="modal fade" id="cancelOrderModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow-lg">
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title">
+          <i class="bi bi-exclamation-triangle me-2"></i> Confirm Cancelation
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to cancel this order?
+        <p class="text-muted mb-0">This action cannot be undone.</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">No, Keep Order</button>
+        <button class="btn btn-danger" (click)="cancelOrder()">Yes, Cancel Order</button>
+      </div>
+    </div>
   </div>
 </div>
