@@ -8,6 +8,7 @@ export const APP_CONSTANTS = {
       PHARMACY_STOCK: 'PharmacyStock',
       PHARMACY_STOCK_ALL: 'PharmacyStock/allPharmaciesStock',
       BATCH_PHARMACY_STOCK_BY_ID: 'PharmacyStock/GetBatchOfPharmacyStock',
+      GET_ALLINVENTORY: 'PharmacyStock/AllInventory',
       PHARMACYSTOCK_INVENTORY_STATUS_BY_ID: 'PharmacyStock/InventoryStatusByID',
       PHARMACYSTOCK_SEARCH_ALL: 'PharmacyStock/SearchFor',
       SEARCH: 'search',
@@ -42,8 +43,8 @@ export const APP_CONSTANTS = {
     },
   },
 
-  ErrorCodes:{
-    DIFFERENT_PHARMACY : 'DIFFERENT_PHARMACY',
+  ErrorCodes: {
+    DIFFERENT_PHARMACY: 'DIFFERENT_PHARMACY',
   },
   Cart: 'Cart'
 };

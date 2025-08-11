@@ -1,5 +1,5 @@
-export interface IPharmaProduct 
-{
+import { ProductStatus } from "./product-status-enum"
+export interface IPharmaProductDetails {
     drugId: number,
     drugName: string,
     drugCategory: string,
@@ -9,5 +9,6 @@ export interface IPharmaProduct
     pharmacyId: number,
     pharmacyName: string,
     price: number,
-    quantityAvailable: number
+    quantityAvailable: number,
+    status: ProductStatus
 }

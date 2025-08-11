@@ -59,7 +59,7 @@
       </button>
     </div>
     <div class="selected-medicines-list">
-      @for (medicine of selectedMedicines; track medicine) {
+      @for (medicine of selectedMedicines; track medicine.drugdetails.drugID) {
       <div class="selected-medicine-tag">
         {{ medicine.drugdetails.commonName }}
         <button class="remove-tag" (click)="removeMedicine(medicine)">
@@ -73,7 +73,7 @@
 
   <!-- Medicine Cards Grid -->
   <div class="medicines-grid">
-    @for (medicine of filteredMedicines; track medicine) {
+    @for (medicine of filteredMedicines; track medicine.drugID) {
     <div class="medicine-card m-0 " [class.selected]="checkSelectedMedicine(medicine)===2"
       (click)="onMedicineClick(medicine)">
       <div class="medicine-card-content m-0 ">
@@ -90,8 +90,7 @@
           In Stock
         </div>
       </div>
-      <div id="checkbox{{ medicine.drugID }}" class="selection-checkbox"
-        (click)="$event.stopPropagation(); onMedicineSelect(medicine)">
+      <div id="checkbox{{ medicine.drugID }}" class="selection-checkbox">
         <div class="checkbox" [class.checked]="checkSelectedMedicine(medicine) === 2">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="white" *ngIf="checkSelectedMedicine(medicine)===2">
             <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
@@ -103,12 +102,12 @@
   </div>
 
   <!-- Add Medicine Details Modal -->
-  <div class="modal fade" id="addStockModal" tabindex="-1" aria-labelledby="addStockModalLabel">
+  <div class="modal fade" id="addStockModal" tabindex="-1">
     <div class="modal-dialog modal-lg modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="addStockModalLabel">Add Selected Medicines to Stock</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
         <div class="modal-body">
           @if (selectedMedicines.length === 0) {
@@ -129,7 +128,7 @@
                 </tr>
               </thead>
               <tbody>
-                @for (medicine of selectedMedicines; track medicine) {
+                @for (medicine of selectedMedicines; track medicine.drugdetails.drugID) {
                 <tr style="justify-content: center; align-items: center;">
                   <td>
                     <img [src]="medicine.drugdetails.drug_UrlImg" alt="{{ medicine.drugdetails.commonName }}"
@@ -142,8 +141,8 @@
                   <td style="text-align: center;">
                     <div style="display: flex; align-items: center;">
                       <input class="form-control" style="width: 5rem; height: 2rem; padding: 0.5rem; margin-right: 6px;"
-                        [ngModel]="medicine.price" (ngModelChange)="medicine.price = $event" type="number" min="0"
-                        step="0.01" />
+                        [ngModel]="medicine.price" (ngModelChange)="medicine.price = $event" type="number" min="1"
+                        step="1" />
                       <span>EGP</span>
                     </div>
                   </td>

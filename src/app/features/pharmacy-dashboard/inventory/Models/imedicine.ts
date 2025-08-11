@@ -1,7 +1,6 @@
-import { IPharmaProduct } from "./ipharma-product";
+import { IPharmaProductDetails } from "./ipharma-product-details";
 
 export interface IMedicine {
-    pharmaproduct: IPharmaProduct;
-    isediting: boolean;
-    available: boolean;
+    pharmaproduct: IPharmaProductDetails;
+    isediting: boolean
 }
