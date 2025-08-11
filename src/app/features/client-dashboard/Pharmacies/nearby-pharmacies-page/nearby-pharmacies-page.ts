@@ -32,7 +32,7 @@ export class NearbyPharmaciesPage implements OnInit {
 
     this.pharmacyService.getPharmacies().subscribe({
       next: (data) => {
-        this.pharmacies = data;
+        this.pharmacies.set(data);
         this.Loading = false;
         this.cdr.detectChanges(); // Ensure the view updates immediately
       },
