@@ -41,7 +41,6 @@ export class Profile implements OnInit {
   }
 
   ngOnInit() {
-    console.log('🔥 Profile component initialized');
     this.loadProfile();
   }
 }

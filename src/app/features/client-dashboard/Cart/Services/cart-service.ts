@@ -42,7 +42,6 @@ export class CartService {
     } else {
       // User is not logged in - get from local storage
       const cart = JSON.parse(localStorage.getItem(APP_CONSTANTS.Cart) || '[]');
-      console.log('Loading cart from localStorage hhh:', cart);
       return new Observable<CartItem[]>(observer => {
         observer.next(cart);
         observer.complete();
@@ -98,7 +97,6 @@ export class CartService {
       }
       
       localStorage.setItem(APP_CONSTANTS.Cart, JSON.stringify(cart));
-      console.log('Added to localStorage cart:', cart);
 
       return new Observable<void>(observer => {
         observer.next();
@@ -119,7 +117,6 @@ export class CartService {
         item.quantity += 1;
         item.totalPrice = item.unitPrice * item.quantity;
         localStorage.setItem(APP_CONSTANTS.Cart, JSON.stringify(cartItems));
-        console.log('Incremented item in localStorage:', item);
       }
       return new Observable<void>(observer => {
         observer.next();
@@ -140,12 +137,10 @@ export class CartService {
         item.quantity -= 1;
         item.totalPrice = item.unitPrice * item.quantity;
         localStorage.setItem(APP_CONSTANTS.Cart, JSON.stringify(cartItems));
-        console.log('Decremented item in localStorage:', item);
       } else if (item && item.quantity === 1) {
         // Remove item if quantity becomes 0
         cartItems = cartItems.filter((x: CartItem) => !(x.drugId === dto.drugId && x.pharmacyId === dto.pharmacyId));
         localStorage.setItem(APP_CONSTANTS.Cart, JSON.stringify(cartItems));
-        console.log('Removed item from localStorage:', item);
       }
       return new Observable<void>(observer => {
         observer.next();
@@ -163,7 +158,6 @@ export class CartService {
       let cartItems = JSON.parse(localStorage.getItem(APP_CONSTANTS.Cart) || '[]');
       cartItems = cartItems.filter((x: CartItem) => !(x.drugId === dto.drugId && x.pharmacyId === dto.pharmacyId));
       localStorage.setItem(APP_CONSTANTS.Cart, JSON.stringify(cartItems));
-      console.log('Removed item from localStorage, remaining items:', cartItems);
       return new Observable<void>(observer => {
         observer.next();
         observer.complete();
@@ -193,7 +187,6 @@ export class CartService {
     const localCart: CartItem[] = JSON.parse(localStorage.getItem(APP_CONSTANTS.Cart) || '[]');
     
     if (localCart.length === 0) {
-      console.log('No local cart items to sync');
       return new Observable<void>(observer => {
         observer.next();
         observer.complete();
@@ -216,7 +209,6 @@ export class CartService {
         next: () => {
           // Clear local storage after successful sync
           localStorage.removeItem(APP_CONSTANTS.Cart);
-          console.log('Cart sync completed successfully using bulk endpoint, local cart cleared');
           observer.next();
           observer.complete();
         },

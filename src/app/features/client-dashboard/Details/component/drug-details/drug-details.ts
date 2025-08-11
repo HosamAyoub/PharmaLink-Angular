@@ -1,4 +1,4 @@
-import { Component, inject, Input } from '@angular/core';
+import { Component, inject, Input, computed } from '@angular/core';
 import { PharmacyAvailable } from '../pharmacy-available/pharmacy-available';
 import { NearbyPharmacies } from '../nearby-pharmacies/nearby-pharmacies';
 import { ActivatedRoute, RouterLink } from '@angular/router';
@@ -9,10 +9,12 @@ import { FavoriteService } from '../../../Favorites/Services/favorite-service';
 import { IPharmaDrug } from '../../model/IPharmaDrug';
 import { DrugService } from '../../../Categories_Page/service/drug-service';
 import { DrugDetailsService } from '../../service/drug-details-service';
+import { IDrug } from '../../../Categories_Page/models/IDrug';
+import { DrugImageComponent } from '../../../../../shared/components/drug-image/drug-image';
 
 @Component({
   selector: 'app-drug-details',
-  imports: [PharmacyAvailable, NearbyPharmacies, CommonModule,RouterLink],
+  imports: [PharmacyAvailable, NearbyPharmacies, CommonModule, RouterLink, DrugImageComponent],
   templateUrl: './drug-details.html',
   styleUrl: './drug-details.css',
 })
@@ -21,7 +23,10 @@ export class DrugDetails {
   drugDetails!: IPharmaDrug;
   drugservice: DrugDetailsService = inject(DrugDetailsService);
   FavService: FavoriteService = inject(FavoriteService);
-  private imageError = false;
+
+  // Create a computed property that reactively tracks favorite changes
+  favoriteDrugs = computed(() => this.FavService.favoriteDrugs());
+
   constructor(private route: ActivatedRoute, private cdr: ChangeDetectorRef) {
     this.drugId = this.route.snapshot.paramMap.get('id');
   }
@@ -39,7 +44,6 @@ export class DrugDetails {
         .subscribe((map) => {
           this.drugDetails = map;
           this.cdr.detectChanges();
-          console.log('Drug Details:', this.drugDetails);
         });
     }
   }
@@ -61,38 +65,26 @@ export class DrugDetails {
     this.expandedSections[section] = !this.expandedSections[section];
   }
 
-  Details_ToggleFavorites(drugId: number)
+  Details_ToggleFavorites()
   {
-    this.FavService.ToggleFavorites(drugId);
+    const druginfo = this.drugDetails.drug_Info;
+    const drug:IDrug =
+    {
+      name: druginfo.commonName,
+      imageUrl: druginfo.drug_UrlImg,
+      description: druginfo.description,
+      drugId: druginfo.drugID,
+      drugCategory: druginfo.category
+      // Add other properties as needed
+    }
+    this.FavService.ToggleFavorites(drug);
   }
 
   Details_isFavorite(drugId: number): boolean {
-    return this.FavService.isFavorite(drugId);
+    // Use the computed property to make this reactive
+    const favorites = this.favoriteDrugs();
+    if (!Array.isArray(favorites)) return false;
+    return favorites.some(d => d.drugId === drugId);
   }
-
-     // Handle successful image loading
-  onImageLoad(event: Event) {
-    const imgElement = event.target as HTMLImageElement;
-    imgElement.classList.remove('error');
-  }
-
-  // Check if image has error
-  hasImageError(): boolean {
-    return this.imageError;
-  }
-
-    onImageError(event: Event) {
-    const imgElement = event.target as HTMLImageElement;
-
-    // Set fallback image
-    //imgElement.src = 'assets/images/error-placeholder.jpg';
-    imgElement.classList.add('error');
-
-    // Track error for this product
-      this.imageError = true;
-      this.cdr.detectChanges(); // Ensure change detection runs to update the view
-
-  }
-
 
 }

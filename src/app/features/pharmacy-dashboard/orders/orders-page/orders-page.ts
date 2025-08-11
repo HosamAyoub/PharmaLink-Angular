@@ -104,10 +104,8 @@ export class OrdersPage {
   }
 
   viewOrder(orderId: number) {
-    console.log('Fetching order details for ID:', orderId);
     this.ordersService.markAsInReview(orderId).subscribe({
       next: data => {
-        console.log('Order details received:', data);
         this.orderDetails.set(data);
         this.showModal.set(true);
         this.refresh();
@@ -253,7 +251,6 @@ export class OrdersPage {
       // Reject orders that expired
       for (const order of ordersToReject) {
         this.ordersService.rejectOrder(order.orderID).subscribe(() => {
-          console.log(`Order ${order.orderID} auto-rejected`);
           this.refresh();
         });
       }

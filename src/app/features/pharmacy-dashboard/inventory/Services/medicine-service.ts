@@ -78,7 +78,6 @@ export class MedicineService {
 
   EditPharmacyStockProduct(drugId: number, productPrice: number, quantity: number): Observable<any> {
     const url = this.config.getApiUrl(`${this.ENDPOINTS.PHARMACY_STOCK}`);
-    console.log('Editing product with ID:', drugId, 'Price:', productPrice, 'Quantity:', quantity);
     return this.http.put<any>(url,
       {
         drugId: drugId,

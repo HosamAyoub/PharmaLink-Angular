@@ -7,8 +7,6 @@ export class User {
   ) {}
 
   get token() {
-    // console.log(`expiration = ${new Date(this._expiration).getTime()}`);
-    // console.log(`now = ${new Date().getTime()}`);
     if (
       !this._expiration ||
       new Date().getTime() > new Date(this._expiration).getTime()

@@ -4,10 +4,14 @@ import { CartStore } from '../../../Cart/Services/cart-store';
 import { ToastService } from '../../../../../shared/services/toast.service';
 import { CartItem } from '../../../Cart/Interfaces/cart-item';
 import { APP_CONSTANTS } from '../../../../../shared/constants/app.constants';
+import { CommonModule } from '@angular/common';
+import { FavoriteService } from '../../../Favorites/Services/favorite-service';
+import { IDrug } from '../../../Categories_Page/models/IDrug';
+import { DrugImageComponent } from '../../../../../shared/components/drug-image/drug-image';
 
 @Component({
   selector: 'app-product',
-  imports: [],
+  imports: [CommonModule, DrugImageComponent],
   templateUrl: './product.html',
   styleUrl: './product.css'
 })
@@ -15,30 +19,25 @@ export class Product {
   @Input() product!: IProduct;
   @Input() showPharmacyName: boolean = false;
   @Input() index: number = 0;
-
-
-  // Simple approach - track the last product ID we processed
-  private lastProductId: string | number = '';
-  private imageErrorState = signal(false);
+  favService = inject(FavoriteService);
 
   cartStore = inject(CartStore);
   toastService = inject(ToastService);
 
-  // Computed property that resets error state when product changes
-  imageSource = computed(() => {
-    // Check if product has changed
-    if (this.product && this.product.drugId !== this.lastProductId) {
-      this.lastProductId = this.product.drugId;
-      this.imageErrorState.set(false); // Reset error state for new product
-      console.log(`New product detected: ${this.product.drugName}, resetting image error state`);
-    }
+  // Create a computed property that reactively tracks favorite changes
+  favoriteDrugs = computed(() => this.favService.favoriteDrugs());
 
-    // Return appropriate image source
-    if (this.imageErrorState()) {
-      return 'assets/images/error-image.jpg';
-    }
-    return this.getSafeImageUrl(this.product);
+  // Check if this specific product is a favorite
+  isFavorite = computed(() => {
+    const favorites = this.favoriteDrugs();
+    if (!Array.isArray(favorites) || !this.product) return false;
+    return favorites.some(d => d.drugId === this.product.drugId);
   });
+
+  // Add a method to perform an action on this product
+  performAction() {
+    // Product action implementation
+  }
 
   addToCart(product: IProduct, event?: Event) {
     // Prevent event from bubbling up to parent elements (like navigation click)
@@ -74,80 +73,30 @@ export class Product {
     });
   }
 
-    // Handle image loading errors
-  onImageError(event: Event, productIndex?: number) {
-    const imgElement = event.target as HTMLImageElement;
-
-    // Set fallback image
-    //imgElement.src = 'assets/images/error-placeholder.jpg';
-    imgElement.classList.add('error');
-    this.imageErrorState.set(true);
-
-    // Log the error for debugging
-    console.error(`Image failed to load for product ${this.product?.drugName}:`, {
-      originalSrc: imgElement.src,
-      productId: this.product?.drugId,
-      error: event
-    });
-  }
-
   // Method to toggle favorite status
   toggleFavorite(event: Event) {
-    const target = event.target as HTMLElement;
-    target.classList.toggle('active');
-  }
+    // Prevent event from bubbling up
+    event.stopPropagation();
+    event.preventDefault();
 
-  // Handle successful image loading
-  onImageLoad(event: Event) {
-    const imgElement = event.target as HTMLImageElement;
-    imgElement.classList.remove('error');
-    this.imageErrorState.set(false); // Reset error state when image loads successfully
+    const drug : IDrug = {
+      name: this.product.drugName,
+      imageUrl: this.product.drugImageUrl,
+      description: this.product.drugDescription || '',
+      drugId: this.product.drugId,
+      drugCategory: this.product.drugCategory
+    }
 
-    console.log(`Image loaded successfully for product ${this.product?.drugName}`);
-  }
+    // Use the service to toggle favorites - this will update the signal reactively
+    this.favService.ToggleFavorites(drug);
 
-  // Check if image has error
-  hasImageError(): boolean {
-    return this.imageErrorState();
+    // Remove manual DOM manipulation - let Angular handle the reactive updates
+    // The template will update automatically based on the isFavorite computed property
   }
 
   // Method called by template to get image source
   getImageSource(): string {
-    // // Check if product has changed and reset error state
-    // if (this.product && this.product.drugId !== this.lastProductId) {
-    //   this.lastProductId = this.product.drugId;
-    //   this.imageErrorState.set(false);
-    //   console.log(`Product changed in getImageSource: ${this.product.drugName}, resetting error state`);
-    // }
-
-    // // Return appropriate image source
-    // if (this.imageErrorState()) {
-    //   return 'assets/images/error-image.jpg';
-    // }
     return this.getSafeImageUrl(this.product);
-  }
-
-  // Method to manually reset image error state
-  resetImageState(): void {
-    this.imageErrorState.set(false);
-    this.lastProductId = ''; // Force reset of product tracking
-    console.log(`Image state reset for product: ${this.product?.drugName}`);
-  }
-
-  // Method to force refresh the image (useful when product data changes but ID remains same)
-  forceImageRefresh(): void {
-    this.imageErrorState.set(false);
-    // Force the image to reload by updating the src
-    setTimeout(() => {
-      const imgElements = document.querySelectorAll(`img[alt="${this.product?.drugName}"]`);
-      imgElements.forEach((img: any) => {
-        if (img.src) {
-          const originalSrc = img.src;
-          img.src = '';
-          img.src = originalSrc;
-        }
-      });
-    }, 50);
   }
 
   // Get safe image URL with better validation
@@ -156,13 +105,11 @@ export class Product {
 
     // Check if URL is valid and has proper format
     if (!imageUrl || imageUrl.trim() === '') {
-      console.log(`Empty image URL for product ${product.drugName}`);
       return 'assets/images/error-image.jpg';
     }
 
     // Check for common invalid URL patterns
     if (imageUrl.includes('localhost') && !imageUrl.includes(window.location.hostname)) {
-      console.log(`Invalid localhost URL for product ${product.drugName}: ${imageUrl}`);
       return 'assets/images/error-image.jpg';
     }
 
@@ -173,11 +120,9 @@ export class Product {
     );
 
     if (!hasValidExtension && !imageUrl.includes('http')) {
-      console.log(`Potentially invalid image URL for product ${product.drugName}: ${imageUrl}`);
     }
 
     // Log the image URL for debugging
-    console.log(`Loading image for ${product.drugName}: ${imageUrl}`);
 
     return imageUrl;
   }

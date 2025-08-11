@@ -2,6 +2,7 @@ import {
   Component,
   inject,
   signal,
+  computed,
 
 } from '@angular/core';
 import { SideBar } from  '../../../shared/components/side-bar/side-bar';
@@ -11,13 +12,14 @@ import { FavoriteService } from '../../../Favorites/Services/favorite-service';
 import { DrugService } from '../../Services/drug-service';
 import { IDrug } from '../../Models/IDrug';
 import { ActivatedRoute } from '@angular/router';
+import { DrugImageComponent } from '../../../../../shared/components/drug-image/drug-image';
 
 
 @Component({
   selector: 'client-products-screen',
   templateUrl: './products-screen.html',
   styleUrls: ['./products-screen.css'],
-  imports: [SideBar, CommonModule, RouterLink, NgClass],
+  imports: [SideBar, CommonModule, RouterLink, NgClass, DrugImageComponent],
 })
 export class ProductsScreen {
   drugservice: DrugService = inject(DrugService);
@@ -25,7 +27,9 @@ export class ProductsScreen {
   categoryName: string = '';
 
   Drugs = signal<IDrug[]>([]);
-  imageErrors = new Set<number>(); // Track which images failed to load
+
+  // Create a computed property that reactively tracks favorite changes
+  favoriteDrugs = computed(() => this.FavDrug.favoriteDrugs());
 
   /**
    *
@@ -41,74 +45,42 @@ export class ProductsScreen {
 
   ReceiveCategoryDrugs(categoryDrugs: IDrug[]) {
     this.Drugs.set(categoryDrugs);
-    console.log('Drugs Received:', this.Drugs);
   }
 
   onCategoryNameSelected(category: string) {
-    // Clear image errors when switching categories
-    this.imageErrors.clear();
-
     if (category === '') {
       this.drugservice.getRandomDrugs().subscribe({
         next: (data) => {
           this.Drugs.set(data);
-          console.log('Random Drugs:', data);
         },
       });
     } else {
       this.drugservice.getDrugsByCategory(category).subscribe({
         next: (data) => {
           this.Drugs.set(data);
-          console.log('Drugs in category:', data);
         },
       });
     }
   }
 
   SendDrugSelected(drug: IDrug) {
-    console.log('Selected Drug:', drug);
   }
 
   ngAfterViewInit()
   {
-  console.log('Drugs in AfterViewInit:', this.Drugs);
 }
 
-Category_ToggleFavorites(drugId: number)
+Category_ToggleFavorites(drug: IDrug)
 {
-  this.FavDrug.ToggleFavorites(drugId);
+  this.FavDrug.ToggleFavorites(drug);
 }
 
   Category_isFavorite(drugId: number): boolean
   {
-    return this.FavDrug.isFavorite(drugId);
+    // Use the computed property to make this reactive
+    const favorites = this.favoriteDrugs();
+    if (!Array.isArray(favorites)) return false;
+    return favorites.some(d => d.drugId === drugId);
   }
-
-   // Handle successful image loading
-  onImageLoad(event: Event) {
-    const imgElement = event.target as HTMLImageElement;
-    imgElement.classList.remove('error');
-  }
-
-  // Check if image has error
-  hasImageError(index: number): boolean {
-    return this.imageErrors.has(index);
-  }
-
-    onImageError(event: Event, productIndex?: number) {
-    const imgElement = event.target as HTMLImageElement;
-
-    // Set fallback image
-    //imgElement.src = 'assets/images/error-placeholder.jpg';
-    imgElement.classList.add('error');
-
-    // Track error for this product
-    if (productIndex !== undefined) {
-      this.imageErrors.add(productIndex);
-    }
-
-  }
-
-
 
 }

@@ -69,11 +69,9 @@ export class PharmacyStock {
   }
 
   loadPharmacy() {
-    console.log('Loading pharmacy with ID:', this.pharmacyId());
     if (this.pharmacyId()) {
       this.pharmacyService.getPharmacy(this.pharmacyId()).subscribe({
         next: (data) => {
-          console.log('Pharmacy data loaded:', data);
           this.uiState.set(UiState.Success);
           this.pharmacyDetails.set(data);
         },
@@ -89,7 +87,6 @@ export class PharmacyStock {
   }
 
   loadPharmacyProducts() {
-    console.log('Loading pharmacy products for ID:', this.pharmacyId());
     if (this.pharmacyId()) {
       this.pharmacyService.getPharmacyProducts(this.pharmacyId(), this.currentPage(), this.pageSize()).subscribe({
         next: (response) => {
@@ -97,7 +94,6 @@ export class PharmacyStock {
             this.uiState.set(UiState.Success);
             this.pharmacyProducts.set(response.data.items);
             this.totalPages.set(response.data.totalPages);
-            console.log('Pharmacy products loaded:', response.data.items);
           }
           else{
             console.error('Failed to load pharmacy products:', response.errors);
@@ -115,7 +111,6 @@ export class PharmacyStock {
   }
 
   loadPharmacyProductsByCategory() {
-    console.log('Loading pharmacy products by category:', this.selectedCategory);
     if (this.pharmacyId() && this.selectedCategory) {
       this.uiState.set(UiState.Loading);
       this.pharmacyService.getPharmacyProductsByCategory(this.pharmacyId(), this.selectedCategory, this.currentPage(), this.pageSize()).subscribe({
@@ -124,7 +119,6 @@ export class PharmacyStock {
             this.uiState.set(UiState.Success);
             this.pharmacyProducts.set(response.data.items);
             this.totalPages.set(response.data.totalPages);
-            console.log('Pharmacy products by category loaded:', response.data.items);
           }
           else{
             console.error('Failed to load pharmacy products by category:', response.errors);
@@ -149,7 +143,6 @@ export class PharmacyStock {
   onCategoryNameSelected(category: string) {
     this.selectedCategory = category;
     this.currentPage.set(1); // Reset to first page on category change
-    console.log('Selected Category:', this.selectedCategory);
     if(this.selectedCategory== '') {
       this.loadPharmacyProducts();
   }
