@@ -18,12 +18,21 @@ export const routes: Routes = [
   { path: 'loading', component: LoadingSpinner },
   {
     path: 'admin',
-    loadChildren: () =>
-      import('./features/admin-dashboard/admin-dashboard.module').then(
-        (m) => m.AdminDashboardModule
+    loadComponent: () =>
+      import('./features/admin-dashboard/admin-layout/admin-layout').then(
+        m => m.AdminLayout
       ),
-    canActivate: [AuthGuard],
-    data: { roles: ['Admin'] },
+    // canActivate: [AuthGuard],
+    // data: { roles: ['Admin'] },
+    children: [
+      {
+        path: '',
+        loadChildren: () =>
+          import('./features/admin-dashboard/admin-dashboard-routing.module').then(
+            m => m.AdminDashboardRoutingModule
+          )
+      }
+    ]
   },
   {
     path: 'pharmacy',

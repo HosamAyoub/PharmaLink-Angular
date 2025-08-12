@@ -1,0 +1,42 @@
+<button class="toggle-btn" (click)="toggleSidebar()">
+    <i class="bi" [ngClass]="isSidebarOpen ? 'bi-x-lg' : 'bi-list'"></i>
+</button>
+
+<div class="sidebar" [class.open]="isSidebarOpen">
+    <!-- Header -->
+    <div class="sidebar-header">
+        <div class="logo-container">
+            <div class="logo">
+                <img src="assets/images/logos/logo.png" alt="Logo" />
+            </div>
+            <div class="brand-info">
+                <h2 class="brand-title">PharmaLink</h2>
+                <p class="brand-subtitle">Control Panel</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Menu -->
+    <nav class="sidebar-nav">
+        <ul class="nav-list">
+            <li *ngFor="let item of menuItems" class="nav-item" [class.active]="activeItem === item.id"
+                (click)="onItemClick(item.id)">
+                <div class="nav-link">
+                    <i [class]="'bi bi-' + item.icon" class="nav-icon"></i>
+                    <span>{{ item.label }}</span>
+                </div>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- System Status -->
+    <div class="sidebar-footer">
+        <div class="system-status">
+            <i class="bi bi-lightning-charge-fill text-warning"></i>
+            <span class="status-text">System Status:</span>
+            <span class="status-value text-success fw-bold">{{ systemStatus }}</span>
+        </div>
+    </div>
+</div>
+
+
