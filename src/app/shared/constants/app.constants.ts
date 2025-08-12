@@ -19,6 +19,7 @@ export const APP_CONSTANTS = {
       DRUG_RANDOM: 'Drug/2',
       DRUG_BY_ID: 'Drug',
       DRUG_SEARCH: 'Drug/Search',
+      DRUG_ADMINDATA: 'Drug/GetAdminData',
       FAVORITES: 'favorites',
       ORDERS_SUBMIT: 'Orders/submit',
       ORDER_SUMMARY: 'Orders/order-summary',
