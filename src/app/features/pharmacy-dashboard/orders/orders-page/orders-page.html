@@ -180,7 +180,7 @@
                     <button class="btn btn-sm btn-light border-0" (click)="viewOrder(order.orderID)" title="View Order">
                       <i class="fas fa-eye text-muted"></i>
                     </button>
-
+                    @if(order.status != 'Cancelled'){
                     <!-- Reject (hidden if OutForDelivery, Delivered, or Rejected) -->
                     @if(order.status !== 'OutForDelivery' && order.status !== 'Delivered' && order.status !==
                     'Rejected'){
@@ -212,6 +212,7 @@
                       title="Mark Delivered">
                       <i class="fas fa-check text-success-green"></i>
                     </button>
+                    }
                     }
                   </div>
                 </td>

@@ -2,6 +2,7 @@ export interface IProduct {
   drugId: number;
   drugName: string;
   price: string;
+  drugCategory: string;
   quantityAvailable: number;
   drugImageUrl: string;
   drugDescription?: string;

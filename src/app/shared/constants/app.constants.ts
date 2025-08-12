@@ -28,7 +28,8 @@ export const APP_CONSTANTS = {
       PATIENT_PROFILE_EDIT: 'Patient/UpdateProfile',
       PHARMACY_ANALYSIS: 'Orders/analysis',
       PHARMACY_STOCK_ANALYSIS: 'PharmacyStock/InventoryStatusByID',
-      ORDERS_VALIDATE_SESSION: 'orders/validate-session',
+      ORDERS_VALIDATE_SESSION: 'Orders/validate-session',
+      MULTIPLE_FAVORITES: 'Favorites/AddMultiple',
     },
   },
   environment: {
@@ -47,5 +48,6 @@ export const APP_CONSTANTS = {
   ErrorCodes: {
     DIFFERENT_PHARMACY: 'DIFFERENT_PHARMACY',
   },
-  Cart: 'Cart'
+  Cart: 'Cart',
+  Favorites: 'Favorites'
 };

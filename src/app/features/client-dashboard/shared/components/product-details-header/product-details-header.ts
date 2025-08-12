@@ -1,4 +1,4 @@
-import { Component, inject, Input, input, OnInit } from '@angular/core';
+import { Component, inject, Input, input, OnInit, computed } from '@angular/core';
 import { IPharmaDrug, IPharmaStock } from '../../../Details/model/IPharmaDrug';
 import { DrugDetailsService } from '../../../Details/service/drug-details-service';
 import { FavoriteService } from '../../../Favorites/Services/favorite-service';
@@ -8,10 +8,12 @@ import { IDrugDetails } from '../../../Details/model/IDrugDetials';
 import { CartStore } from '../../../Cart/Services/cart-store';
 import { ToastService } from '../../../../../shared/services/toast.service';
 import { CartItem } from '../../../Cart/Interfaces/cart-item';
+import { IDrug } from '../../../Categories_Page/models/IDrug';
+import { DrugImageComponent } from '../../../../../shared/components/drug-image/drug-image';
 
 @Component({
   selector: 'app-product-details-header',
-  imports: [CommonModule,RouterLink],
+  imports: [CommonModule, RouterLink, DrugImageComponent],
   templateUrl: './product-details-header.html',
   styleUrl: './product-details-header.css'
 })
@@ -24,14 +26,11 @@ export class ProductDetailsHeader implements OnInit {
   FavService: FavoriteService = inject(FavoriteService);
   cartStore = inject(CartStore);
   toastService = inject(ToastService);
-  private imageError = false;
-    cdr: any;
+
+  // Create a computed property that reactively tracks favorite changes
+  favoriteDrugs = computed(() => this.FavService.favoriteDrugs());
 
   ngOnInit() {
-    console.log('ProductDetailsHeader received data:');
-    console.log('drugDetails:', this.drugDetails);
-    console.log('fullDrugData:', this.fullDrugData);
-    console.log('Pharmacy info:', this.fullDrugData?.pharma_Info);
   }
 
   // Getter to ensure we have pharmacy data
@@ -40,39 +39,24 @@ export class ProductDetailsHeader implements OnInit {
   }
 
 
-       // Handle successful image loading
-  onImageLoad(event: Event) {
-    const imgElement = event.target as HTMLImageElement;
-    imgElement.classList.remove('error');
-  }
-
-  // Check if image has error
-  hasImageError(): boolean {
-    return this.imageError;
-  }
-
-    onImageError(event: Event) {
-    const imgElement = event.target as HTMLImageElement;
-
-    // Set fallback image
-    //imgElement.src = 'assets/images/error-placeholder.jpg';
-    imgElement.classList.add('error');
-
-    // Track error for this product
-      this.imageError = true;
-      this.cdr.detectChanges(); // Ensure change detection runs to update the view
-
-  }
-
-
 
   Details_ToggleFavorites(drugId: number)
   {
-    this.FavService.ToggleFavorites(drugId);
+    const drug : IDrug= {
+      drugId: this.drugDetails.drugID,
+      name: this.drugDetails.commonName,
+      description: this.drugDetails.description,
+      imageUrl: this.drugDetails.drug_UrlImg,
+      drugCategory: this.drugDetails.category
+    };
+    this.FavService.ToggleFavorites(drug);
   }
 
   Details_isFavorite(drugId: number): boolean {
-    return this.FavService.isFavorite(drugId);
+    // Use the computed property to make this reactive
+    const favorites = this.favoriteDrugs();
+    if (!Array.isArray(favorites)) return false;
+    return favorites.some(d => d.drugId === drugId);
   }
 
   addToCart(drugId: number, event?: Event) {
@@ -83,12 +67,10 @@ export class ProductDetailsHeader implements OnInit {
     }
 
     // Debug logging
-    console.log('Full drug data:', this.fullDrugData);
-    console.log('Pharmacy info:', this.fullDrugData?.pharma_Info);
 
     // Use the getter to get pharmacy information
     const firstPharmacy = this.availablePharmacy;
-    
+
     if (!firstPharmacy) {
       console.error('No pharmacy data found. Full data:', this.fullDrugData);
       this.toastService.showError('No pharmacy information available for this product.');

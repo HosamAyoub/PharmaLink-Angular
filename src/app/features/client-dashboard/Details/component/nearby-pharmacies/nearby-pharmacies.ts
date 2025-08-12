@@ -39,7 +39,6 @@ export class NearbyPharmacies implements OnInit {
 
   viewOnMap(pharmacy: NearbyPharmacy) {
     
-    console.log('View on map:', pharmacy);
   }
 
   getRatingStars(rating: number): string {

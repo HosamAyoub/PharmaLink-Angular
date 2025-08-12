@@ -24,7 +24,6 @@ export class PharmacySection {
     effect(() => {
       const location = this.userLocation();
       if (location) {
-        console.log('User location received in PharmacySection:', location);
         this.loadPharmacies(location.latitude, location.longitude);
       }
     });
@@ -58,6 +57,5 @@ export class PharmacySection {
   }
   viewAllPharmacies() {
     // TODO: Navigate to all pharmacies page or implement desired functionality
-    console.log('View all pharmacies clicked');
   }
 }

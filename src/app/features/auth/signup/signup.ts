@@ -266,23 +266,15 @@ export class SignUp {
 
     this.authService.signUp(signUpData).subscribe({
       next: (resData) => {
-        console.log(resData);
         this.isLoading.set(false);
         form.reset();
         this.router.navigate(['/login']);
       },
       error: (error) => {
-        console.log(signUpData.passwordHash);
-        console.log(signUpData.confirmPassword);
 
-        console.log('Signup error details:');
-        console.log('Full error object:', error);
-        console.log('Error status:', error.status);
-        console.log('Error body:', error.error);
 
         // Show the specific validation errors
         if (error.error && error.error.errors) {
-          console.log('Validation errors:', error.error.errors);
 
           // Extract first validation error for display
           const errors = error.error.errors;

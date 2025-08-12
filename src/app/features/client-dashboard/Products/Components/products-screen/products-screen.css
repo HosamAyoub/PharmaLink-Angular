@@ -20,6 +20,49 @@
 }
 .drug-card {
   transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  padding: 0 !important; /* Remove card padding */
+  border-radius: 15px !important; /* Add rounded corners */
+  overflow: hidden; /* Ensure content respects rounded corners */
+}
+
+.drug-card .card-body {
+  padding: 0 !important; /* Remove card-body padding */
+}
+
+/* Limit title to two lines */
+.drug-card .card-body h5 {
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2 !important;
+  line-clamp: 2 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  line-height: 1.4 !important;
+  max-height: calc(1.4em * 2) !important; /* 2 lines based on line-height */
+  padding-left: 1rem !important;
+  padding-right: 1rem !important;
+}
+
+/* Add padding for category */
+.drug-card .card-body p {
+  padding-left: 1rem !important;
+  padding-right: 1rem !important;
+}
+
+/* Add padding to all elements except image container */
+.drug-card .card-body > *:not(.text-center) {
+  padding-left: 1rem !important;
+  padding-right: 1rem !important;
+}
+
+/* Add bottom padding to the last element */
+.drug-card .card-body > *:last-child {
+  padding-bottom: 1rem !important;
+}
+
+/* Ensure image container has no padding */
+.drug-card .text-center {
+  padding: 0 !important;
 }
 
 .drug-card:hover {

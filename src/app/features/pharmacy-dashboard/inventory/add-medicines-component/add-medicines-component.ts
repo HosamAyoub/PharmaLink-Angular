@@ -68,7 +68,6 @@ export class AddMedicinesComponent implements OnInit {
   onAddToStock() {
     this.medicineService.AddPharmacyStockProduct(this.selectedMedicines).subscribe(
       response => {
-        console.log('Stock added successfully:', response);
         this.selectedMedicines = [];
         this.onSearchChange(this.searchinput.nativeElement.value);
         this.medicineService.updatePharmacyStockList();

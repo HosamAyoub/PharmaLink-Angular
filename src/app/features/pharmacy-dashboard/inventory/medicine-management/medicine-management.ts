@@ -49,14 +49,12 @@ export class MedicineManagement {
   loadMedicines(query: string) {
     const pageNumber = 1;
     const pageSize = 100;
-    console.log(`Loading medicines with query: ${query}`);
     if (query === '') {
       this.medicineService.getAllPharmacyMedicines().subscribe((res: any) => {
         this.Result = res.data.map((item: any) => ({
           pharmaproduct: item,
           isediting: false as boolean,
         }));
-        console.log('Medicines loaded:', res.data);
         this.onFilterChange(this.filterselect.nativeElement.value);
       },
       error => {
@@ -139,7 +137,6 @@ export class MedicineManagement {
   deleteMedicine(medicine: IMedicine) {
     this.medicineService.deletePharmacyStockProduct(medicine.pharmaproduct.drugId)
       .subscribe(() => {
-        console.log(`Deleted medicine with ID: ${medicine.pharmaproduct.drugId}`);
         this.medicines = this.medicines.filter(m => m.pharmaproduct.drugId !== medicine.pharmaproduct.drugId);
         this.Result = this.Result.filter(m => m.pharmaproduct.drugId !== medicine.pharmaproduct.drugId);
         this.cd.detectChanges();

@@ -22,7 +22,6 @@ export class PharmacyAvailable {
 
   @Input()
   set pharmacies(value: IPharmaStock[]) {
-    console.log('Received pharmacies:', value);
     this._pharmacies = value;
     setTimeout(() =>
     {
@@ -40,7 +39,6 @@ export class PharmacyAvailable {
 
   SendToCart(pharmacy: IPharmaStock)
   {
-    console.log('Added to cart:', pharmacy.pharma_Name);
     const cartItem: CartItem = {
       drugId: this.drug!.drugID,
       pharmacyId: pharmacy.pharma_Id,
@@ -54,7 +52,6 @@ export class PharmacyAvailable {
 
     this.cartStore.addToCart(cartItem).subscribe({
       next: (response: any) => {
-        console.log('Item added to cart successfully:', response);
       },
       error: (error: any) => {
         console.error('Error adding item to cart:', error);

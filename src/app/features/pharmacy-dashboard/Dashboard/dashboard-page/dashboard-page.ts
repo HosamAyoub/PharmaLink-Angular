@@ -36,7 +36,6 @@ export class DashboardPage implements OnInit {
         this.analysisData = data;
         //this.loading = false;
         this.cdr.detectChanges();
-        console.log('Pharmacy analysis data loaded:', this.analysisData);
       },
       error: (error) => {
         this.errorMessage = 'Error loading analysis data';
@@ -53,7 +52,6 @@ export class DashboardPage implements OnInit {
         this.stockAnalysisData = data.data;
         this.loading = false;
         this.cdr.detectChanges();
-        console.log('Pharmacy stock analysis data loaded:', this.stockAnalysisData);
       },
       error: (error) => {
         this.errorMessage = 'Error loading stock analysis data';
