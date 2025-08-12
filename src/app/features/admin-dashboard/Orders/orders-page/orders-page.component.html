@@ -1,1 +1,309 @@
-<p>orders-page works!</p>
+<div class="order-history-section">
+    <!-- Header Section -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="d-flex align-items-center gap-3">
+            <div>
+                <h2 class="fw-bold mb-1">Orders Management</h2>
+                <p class="text-muted mb-0">View, track, and manage all pharmacy orders as an administrator</p>
+            </div>
+        </div>
+        <button class="btn btn-outline-light card-hover border text-dark px-3 py-2 d-flex align-items-center"
+            (click)="exportOrdersAsCSV()">
+            <i class="fas fa-download me-2"></i> Export Orders
+        </button>
+    </div>
+    <div class="row g-3 mb-4">
+        <div class="col-md-3">
+            <div class="card border-0 card-shadow card-hover h-100">
+                <div class="card-body d-flex align-items-center">
+                    <div class="rounded-circle bg-primary-blue-light p-3 me-3">
+                        <i class="fas fa-clock text-primary-blue" style="font-size: 1.5rem;"></i>
+                    </div>
+                    <div>
+                        <h2 class="fw-bold mb-0 text-primary-blue" style="font-size: 2rem;">{{activeOrdersCount}}</h2>
+                        <p class="text-muted mb-0 small">Active Orders</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-3">
+            <div class="card border-0 card-shadow card-hover h-100">
+                <div class="card-body d-flex align-items-center">
+                    <div class="rounded-circle bg-warning-light p-3 me-3">
+                        <i class="fas fa-truck text-warning" style="font-size: 1.5rem;"></i>
+                    </div>
+                    <div>
+                        <h2 class="fw-bold mb-0 text-warning-custom" style="font-size: 2rem;">{{outForDeliveryCount}}
+                        </h2>
+                        <p class="text-muted mb-0 small">Out for Delivery</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card border-0 card-shadow card-hover h-100">
+                <div class="card-body d-flex align-items-center">
+                    <div class="rounded-circle bg-success-green-light p-3 me-3">
+                        <i class="fas fa-check-circle text-success-green" style="font-size: 1.5rem;"></i>
+                    </div>
+                    <div>
+                        <h2 class="fw-bold mb-0 text-success-green" style="font-size: 2rem;">{{deliveredCount}}</h2>
+                        <p class="text-muted mb-0 small">Delivered</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-3">
+            <div class="card border-0 card-shadow card-hover h-100">
+                <div class="card-body d-flex align-items-center">
+                    <div class="rounded-circle bg-error-red-light p-3 me-3">
+                        <i class="fas fa-times-circle text-error-red" style="font-size: 1.5rem;"></i>
+                    </div>
+                    <div>
+                        <h2 class="fw-bold mb-0 text-error-red" style="font-size: 2rem;">{{rejectedCount}}</h2>
+                        <p class="text-muted mb-0 small">Rejected</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search and Filter Section -->
+    <div class="card border card-shadow-light mb-2 px-3 py-3">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
+
+            <!-- Search Input -->
+            <div class="input-group flex-grow-1" style="max-width: 100%;">
+                <span class="input-group-text bg-white-custom border-end-0">
+                    <i class="fas fa-search text-muted"></i>
+                </span>
+                <input type="text" class="form-control border-start-0"
+                    placeholder="Search orders by pharmacy name or order ID..." [value]="query()"
+                    (input)="onQueryChange($event)" />
+            </div>
+
+            <!-- Filter Dropdown -->
+            <div class="d-flex align-items-center ms-md-3" style="min-width: 200px;">
+                <i class="fas fa-filter text-muted me-2"></i>
+                <select class="form-select" [value]="selectedStatus()" (change)="onStatusChange($event)">
+                    <option value="All">All Orders</option>
+                    <option value="UnderReview">Under Review</option>
+                    <option value="Reviewing">Reviewing</option>
+                    <option value="Pending">Pending</option>
+                    <option value="OutForDelivery">Out For Delivery</option>
+                    <option value="Delivered">Delivered</option>
+                    <option value="Rejected">Rejected</option>
+                </select>
+            </div>
+
+        </div>
+    </div>
+
+    @if (filteredOrders().length > 0) {
+    <div class="card border-1 card-shadow-light">
+        <div
+            class="card-header bg-white-custom border-bottom d-flex justify-content-between align-items-center py-3 px-4">
+            <div>
+                <h5 class="fw-bold mb-0">Orders ({{orderCount}})</h5>
+                <small class="text-muted">Monitor and control pharmacy orders from the admin panel</small>
+            </div>
+        </div>
+
+        <div class="card-body p-1">
+            <div class="table-responsive-sm">
+                <table class="table table-hover table-striped align-middle shadow-sm rounded-3 overflow-hidden">
+                    <thead class="bg-light">
+                        <tr>
+                            <th>Order Details</th>
+                            <th>Pharmacy</th>
+                            <th>Date</th>
+                            <th>Order Status</th>
+                            <th>Total Amount</th>
+                            <th>Payment Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (order of filteredOrders(); track order.orderId) {
+                        <tr>
+                            <td class="px-4 py-3">
+                                <div class="fw-semibold text-dark">ORD-{{ order.orderId }}</div>
+                                <div class="text-muted small">{{ order.orderDate | date: 'yyyy-MM-dd' }}</div>
+                                <div class="text-muted small">{{ order.orderDetails.length }} medicines</div>
+                            </td>
+                            <!-- Pharmacy Info -->
+                            <td>
+                                <div class="fw-bold">{{ order.pharmacyName }}</div>
+                                <small class="text-muted d-block">
+                                    <i class="bi bi-geo-alt me-1"></i>{{ order.pharmacyAddress }}
+                                </small>
+                                <small class="text-muted d-block">
+                                    <i class="bi bi-telephone me-1"></i>{{ order.pharmacyPhoneNumber }}
+                                </small>
+                            </td>
+
+                            <!-- Date -->
+                            <td>
+                                <i class="bi bi-calendar-event me-1 text-primary-blue-light"></i>
+                                {{ order.orderDate | date:'dd MMM yyyy, hh:mm a' }}
+                            </td>
+
+                            <!-- Order Status -->
+                            <td>
+                                <span class="badge d-inline-flex align-items-center gap-1 px-2 py-1"
+                                    [class.bg-success-green]="order.status === 'Delivered'"
+                                    [class.bg-warning-custom]="order.status === 'Pending'"
+                                    [class.bg-error-red]="order.status === 'Rejected'"
+                                    [class.bg-orange-custom]="order.status === 'UnderReview'"
+                                    [class.bg-purple-custom]="order.status === 'Reviewing'"
+                                    [class.bg-orange-custom]="order.status === 'OutForDelivery'"
+                                    [class.bg-secondary-custom]="order.status === 'Cancelled'">
+                                    <i class="bi bi-info-circle"></i> {{ order.status }}
+                                </span>
+                            </td>
+
+                            <!-- Total Amount -->
+                            <td class="fw-bold text-success-green">
+                                {{ order.totalAmount.toFixed(2) | currency:'EGP':'symbol' }}
+                            </td>
+
+                            <!-- Payment Status -->
+                            <td>
+                                @if(order.paymentStatus == 'Pending'){
+                                <span
+                                    class="badge d-inline-flex align-items-center gap-1 px-2 py-1 bg-secondary-custom">
+                                    <i class="bi bi-shield-check"></i> Cash On Delivery
+                                </span>
+                                }@else {
+                                <span class="badge d-inline-flex align-items-center gap-1 px-2 py-1"
+                                    [class.bg-success-green]="order.paymentStatus === 'Approved'"
+                                    [class.bg-error-red]="order.paymentStatus === 'Refunded' || order.paymentStatus === 'Cancelled'">
+                                    <i class="bi bi-shield-check"></i> {{ order.paymentStatus }}
+                                </span>
+                                }
+                            </td>
+
+                            <!-- Actions -->
+                            <td class="text-center">
+                                <button class="btn btn-sm bg-primary-blue-light me-2" (click)="openDetails(order)">
+                                    <i class="bi bi-eye"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    }
+    @else {
+    <!-- Placeholder for No Orders -->
+    <div class="orders-placeholder">
+        <div class="placeholder-icon">📦</div>
+        <h3>No Orders Yet</h3>
+        <p>
+            There are currently no orders to manage. Orders will appear here once pharmacies start receiving them.
+        </p>
+    </div>
+    }
+</div>
+
+
+<!-- Order Details Modal -->
+<div class="modal fade" id="orderDetailsModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content shadow-lg border-0 rounded-3">
+            <div class="modal-header bg-primary-blue-light text-dark">
+                <h5 class="modal-title">
+                    <i class="bi bi-receipt me-2"></i> Order Details (Admin View) #{{ selectedOrder?.orderId }}
+                </h5>
+                <button type="button" class="btn-close btn-close-dark" data-bs-dismiss="modal"></button>
+            </div>
+
+            @if(selectedOrder) {
+            <div class="modal-body">
+
+                <!-- Order Info -->
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <p><i class="bi bi-shop me-2"></i><strong>Pharmacy:</strong> {{ selectedOrder.pharmacyName
+                            }}</p>
+                        <p><i class="bi bi-geo-alt me-2"></i><strong>Address:</strong> {{
+                            selectedOrder.pharmacyAddress }}</p>
+                        <p><i class="bi bi-telephone me-2"></i><strong>Phone:</strong> {{
+                            selectedOrder.pharmacyPhoneNumber }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><i class="bi bi-calendar-event me-2"></i><strong>Date:</strong> {{
+                            selectedOrder.orderDate | date:'dd MMM
+                            yyyy, hh:mm a'}}</p>
+                        <p>
+                            <i class="bi bi-info-circle me-2"></i><strong>Status:</strong>
+                            <span class="badge bg-info text-dark">{{ selectedOrder.status }}</span>
+                        </p>
+                        <p>
+                            <i class="bi bi-cash me-2"></i><strong>Total Amount:</strong>
+                            <span class="fw-bold text-success">{{ selectedOrder.totalAmount.toFixed(2) |
+                                currency:'EGP':'symbol'
+                                }}</span>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Payment Info -->
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <p><i class="bi bi-credit-card me-2"></i><strong>Payment Method:</strong> {{
+                            selectedOrder.paymentMethod }}
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        <p>
+                            <i class="bi bi-shield-check me-2"></i><strong>Payment Status:</strong>
+                            <span class="badge" [class.bg-success]="selectedOrder.paymentStatus === 'Approved'"
+                                [class.bg-warning]="selectedOrder.paymentStatus !== 'Approved'">
+                                {{ selectedOrder.paymentStatus }}
+                            </span>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Delivery Address -->
+                <div class="mb-4">
+                    <p><i class="bi bi-truck me-2"></i><strong>Customer Delivery Address:</strong> {{
+                        selectedOrder.deliveryAddress }}</p>
+                </div>
+
+                <!-- Order Items Table -->
+                <h6 class="fw-bold mb-3">Order Items</h6>
+                <div class="table-responsive">
+                    <table class="table table-bordered align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Medicine Name</th>
+                                <th>Quantity Ordered</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for(item of selectedOrder.orderDetails; track item.drugName) {
+                            <tr>
+                                <td>{{ item.drugName }}</td>
+                                <td>{{ item.quantity }}</td>
+                            </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+            }
+        </div>
+    </div>
+</div>
