@@ -40,7 +40,7 @@ export class HomeScreen implements OnInit {
   }
 
   loadPharmacies(): void {
-    this.pharmacyService.getPharmacies().subscribe({
+    this.pharmacyService.getActivePharmacies().subscribe({
       next: (data) => {
         this.pharmacies = data;
         this.cdr.detectChanges(); // Ensure the view updates immediately

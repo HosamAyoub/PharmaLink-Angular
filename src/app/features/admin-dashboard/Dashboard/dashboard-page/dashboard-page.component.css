@@ -1,0 +1,21 @@
+.dashboard-page {
+    padding: 25px 100px;
+}
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 300px));
+  gap: 25px;
+  padding: 20px;
+}
+
+.loading-spinner {
+  display: flex;
+  justify-content: center;
+  padding: 40px;
+}
+
+.error-message {
+  color: var(--error-red);
+  padding: 20px;
+  text-align: center;
+}

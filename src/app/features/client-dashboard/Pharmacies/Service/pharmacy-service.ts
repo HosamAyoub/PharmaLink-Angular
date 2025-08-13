@@ -16,11 +16,18 @@ export class PharmacyService {
   constructor(private http: HttpClient) { }
 
   // get all pharmacies
-  getPharmacies(): Observable<Ipharmacy[]> {
-    const url = this.config.getApiUrl(this.ENDPOINTS.PHARMACY);
+  getActivePharmacies(): Observable<Ipharmacy[]> {
+    const url = this.config.getApiUrl(`${this.ENDPOINTS.PHARMACY_STATUS}/${1}`);
     return this.http.get<Ipharmacy[]>(url);
   }
-
+  getPendingPharmacies(): Observable<Ipharmacy[]> {
+    const url = this.config.getApiUrl(`${this.ENDPOINTS.PHARMACY_STATUS}/${2}`);
+    return this.http.get<Ipharmacy[]>(url);
+  }
+  getSuspendedPharmacies(): Observable<Ipharmacy[]> {
+    const url = this.config.getApiUrl(`${this.ENDPOINTS.PHARMACY_STATUS}/${0}`);
+    return this.http.get<Ipharmacy[]>(url);
+  }
   // get pharmacy by id
   getPharmacyById(id: number): Observable<Ipharmacy> {
     const url = this.config.getApiUrl(`${this.ENDPOINTS.PHARMACY}/${id}`);

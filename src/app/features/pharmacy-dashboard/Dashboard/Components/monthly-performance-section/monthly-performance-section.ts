@@ -182,13 +182,4 @@ private processChartData(): void {
     this.selectedYear = year;
     this.processChartData();
   }
-  private parseDate(dateString: string): Date {
-  try {
-    // Explicitly handle "MMM yyyy" format (e.g., "Jul 2023")
-    return parse(dateString, 'MMM yyyy', new Date());
-  } catch (e) {
-    console.warn(`Failed to parse date: ${dateString}`, e);
-    return new Date(); // Fallback
-  }
-}
 }

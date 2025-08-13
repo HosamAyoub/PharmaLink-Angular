@@ -5,6 +5,8 @@ export interface Ipharmacy {
   phoneNumber?: string;
   imgUrl?: string;
   rate?: number;
+  status: number;
+  joinedDate:  Date;
   startHour?: string;
   endHour?: string;
 }

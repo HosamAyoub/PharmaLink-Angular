@@ -29,6 +29,10 @@ export const APP_CONSTANTS = {
       PHARMACY_STOCK_ANALYSIS: 'PharmacyStock/InventoryStatusByID',
       ORDERS_VALIDATE_SESSION: 'Orders/validate-session',
       MULTIPLE_FAVORITES: 'Favorites/AddMultiple',
+      ADMIN_ANALYSIS:'Orders/allOrdersAnalysis',
+      PHARMACY_STATUS: 'Pharmacy/GetPharmaciesByStatus',
+      PHARMACIES_SUMMARY:'Orders/pharmacies-summary',
+
     },
   },
   environment: {
