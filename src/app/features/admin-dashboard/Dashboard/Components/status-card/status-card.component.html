@@ -1,0 +1,35 @@
+<div class="stats-card">
+    <div class="pt-3">
+        <div class="card-header">
+            <h4>{{ title }}</h4>
+            <p class="value"  [style.color]="color2">{{ value }}</p>
+        </div>
+
+        <div class="d-flex " [class.d-none]="!showTrend">
+            @if (trend) {
+            <div class="trend d-flex" [class.positive]="trend.startsWith('+')" [class.negative]="trend.startsWith('-')">
+                <p class="pe-1">{{ trend }}</p>
+                <div class="trend" [class.show]="trend.startsWith('+')" [class.hide]="trend.startsWith('-')"><svg
+                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="lucide lucide-trending-up h-4 w-4 mr-1">
+                        <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline>
+                        <polyline points="16 7 22 7 22 13"></polyline>
+                    </svg></div>
+                <div class="trend" [class.hide]="trend.startsWith('+')" [class.show]="trend.startsWith('-')"><svg
+                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="lucide lucide-trending-down h-4 w-4 mr-1">
+                        <polyline points="22 17 13.5 8.5 8.5 13.5 2 7"></polyline>
+                        <polyline points="16 17 22 17 22 11"></polyline>
+                    </svg></div>
+            </div>
+            <p class="lastMonth ps-2">vs last month</p>
+
+            }
+        </div>
+    </div>
+    <div class="icon" [style.background]="color1">
+        <i [class]="getIconClass(icon)" [style.color]="color3"></i>
+    </div>
+</div>

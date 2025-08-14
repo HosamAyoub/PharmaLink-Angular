@@ -20,19 +20,19 @@ export const routes: Routes = [
     path: 'admin',
     loadComponent: () =>
       import('./features/admin-dashboard/admin-layout/admin-layout').then(
-        m => m.AdminLayout
+        (m) => m.AdminLayout
       ),
-    // canActivate: [AuthGuard],
-    // data: { roles: ['Admin'] },
     children: [
       {
         path: '',
         loadChildren: () =>
           import('./features/admin-dashboard/admin-dashboard-routing.module').then(
-            m => m.AdminDashboardRoutingModule
+            (m) => m.AdminDashboardRoutingModule
           )
-      }
-    ]
+      },
+    ],
+    //canActivate: [AuthGuard],
+    //data: { roles: ['Admin'] },
   },
   {
     path: 'pharmacy',
