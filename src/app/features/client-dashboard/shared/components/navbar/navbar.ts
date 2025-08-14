@@ -45,20 +45,4 @@ export class Navbar {
   }
 
   LoggedUserName = computed(() => this.authService.user()?.userName);
-
-  
-  // get unreadCount(): number {
-  //   return this.signalrService.notifications.filter(n => !n.read).length;
-  // }
-
-  // clearNotifications() {
-  //   this.signalrService.notifications = [];
-  //   localStorage.removeItem('notifications');
-  // }
-
-  // markAllAsRead() {
-  //   this.signalrService.notifications.forEach(n => n.read = true);
-  //   localStorage.setItem('notifications', JSON.stringify(this.signalrService.notifications));
-  // }
-
 }

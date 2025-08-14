@@ -8,17 +8,11 @@ export class SignalrService {
   public connection!: signalR.HubConnection;
   showPopup = false;
   notificationMessage: string = '';
-  // notifications: any[] = []; 
-
-  // بدل ما تكون array عادية نخليها signal
   notifications = signal<any[]>([]);
 
-  // عدد الرسائل الغير مقروءة كـ computed signal
   unreadCount = computed(() =>
     this.notifications().filter(n => !n.read).length
   );
-  constructor() { }
-
   startConnection() {
     const userData = localStorage.getItem('userData');
     let token = '';
@@ -61,9 +55,9 @@ export class SignalrService {
 
   addNotification(payload: any) {
     const newNotif = {
-      title: payload.title || 'Order Update',
+      title: 'Order Update',
       message: payload.message,
-      status: payload.status || 'info', 
+      status: payload.status || 'info',
       timestamp: new Date(),
       read: false
     };

@@ -179,8 +179,8 @@
               role="button" data-bs-toggle="dropdown" aria-expanded="false" title="Notifications"
               (click)="signalrService.markAllAsRead()">
               <img src="assets/images/icons/notification.svg" alt="Notifications" class="me-2 me-lg-0" />
-              <!-- Badge showing number of notifications -->
 
+              <!-- Badge showing number of notifications -->
               @if(signalrService.unreadCount() > 0){
               <span class="position-absolute badge rounded-pill bg-danger text-white" style="font-size: 0.7rem; top: -2px; right: -2px; min-width: 18px;
               height: 18px; display: flex; align-items: center; justify-content: center;">{{
@@ -206,7 +206,6 @@
                   <div class="text-center text-muted py-3">
                   No notifications
                 </div>
-              
                 }
                 
                 @for(notif of signalrService.notifications(); track $index){
