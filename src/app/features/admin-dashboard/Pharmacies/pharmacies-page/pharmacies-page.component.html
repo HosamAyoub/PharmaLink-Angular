@@ -6,14 +6,20 @@
             <div class="loading-spinner">
                 <app-loading-spinner></app-loading-spinner>
             </div>
-            }  @else {
+            } @else {
             <div class="dashboard-grid">
                 @for (card of cards; track card.title) {
-                <app-status-card [title]="card.title" [value]="card.value"  [icon]="card.icon"
-                    [color1]="card.color1" [color2]="card.color2" [color3]="card.color3" />
+                <app-status-card [title]="card.title" [value]="card.value" [icon]="card.icon" [color1]="card.color1"
+                    [color2]="card.color2" [color3]="card.color3" />
                 }
             </div>
             }
+            <div class="col-md-12">
+                <app-pharmacy-management [activePharmacyData]="activePharmacyData"
+                    [pendingPharmacyData]="pendingPharmacyData" [suspendedPharmacyData]="suspendedPharmacyData"
+                    [rejectedPharmacyData]="rejectedPharmacyData" [pharmaciesData]="pharmaciesData">
+                </app-pharmacy-management>
+            </div>
         </div>
     </div>
 </div>

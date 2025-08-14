@@ -32,6 +32,11 @@ export const APP_CONSTANTS = {
       ADMIN_ANALYSIS:'Orders/allOrdersAnalysis',
       PHARMACY_STATUS: 'Pharmacy/GetPharmaciesByStatus',
       PHARMACIES_SUMMARY:'Orders/pharmacies-summary',
+      CONFIRM_PHARMACY: 'Pharmacy/ConfirmPharmacy',
+      SUSPEND_PHARMACY: 'Pharmacy/SuspendedPharmacy',
+      REJECT_PHARMACY: 'Pharmacy/RejectPharmacy',
+      CHANGE_ROLE: 'Role/changeRoleByPharmacy',
+
 
     },
   },

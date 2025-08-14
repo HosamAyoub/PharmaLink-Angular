@@ -6,11 +6,12 @@ import { Ipharmacy } from '../../../client-dashboard/shared/models/ipharmacy';
 import { AdminAnalysisInterface } from '../../Dashboard/Interface/admin-analysis-interface';
 import { AdminAnalysisServiceService } from '../../Dashboard/Services/admin-analysis-service.service';
 import { PharmacyService } from '../../../client-dashboard/Pharmacies/Service/pharmacy-service';
+import { PharmacyManagementComponent } from '../Components/pharmacy-management/pharmacy-management.component';
 
 @Component({
   selector: 'app-pharmacies-page',
   standalone: true,
-  imports: [PageHeaderComponent, LoadingSpinner, StatusCardComponent],
+  imports: [PageHeaderComponent, LoadingSpinner, StatusCardComponent,PharmacyManagementComponent],
   templateUrl: './pharmacies-page.component.html',
   styleUrl: './pharmacies-page.component.css'
 })
@@ -18,6 +19,7 @@ export class PharmaciesPageComponent implements OnInit{
   protected activePharmacyData: Ipharmacy[] | null = null;
   protected pendingPharmacyData: Ipharmacy[] | null = null;
   protected suspendedPharmacyData: Ipharmacy[] | null = null;
+  protected rejectedPharmacyData: Ipharmacy[] | null = null;
   protected pharmaciesData: AdminAnalysisInterface | null = null;
   protected errorMessage: string | null = null;
   protected loading: boolean = true;
@@ -27,6 +29,7 @@ export class PharmaciesPageComponent implements OnInit{
     this.loadActivePharmacies();
     this.loadPendingPharmacies();
     this.loadSuspendedPharmacies();
+    this.loadRejectedPharmacies()
     this.loadPharmacySummary();
   }
 
@@ -37,6 +40,7 @@ export class PharmaciesPageComponent implements OnInit{
     this.pharmacyService.getActivePharmacies().subscribe({
       next: (data) => {
         this.activePharmacyData = data;
+        //console.log('Active Pharmacies Loaded:', this.activePharmacyData);
         this.loading = false;
         this.cdr.detectChanges();
       },
@@ -69,6 +73,22 @@ export class PharmaciesPageComponent implements OnInit{
     this.pharmacyService.getPendingPharmacies().subscribe({
       next: (data) => {
         this.pendingPharmacyData = data;
+        this.loading = false;
+        this.cdr.detectChanges();
+      },
+      error: (error) => {
+        this.errorMessage = error.message;
+        this.loading = false;
+        this.cdr.detectChanges();
+      }
+    });
+  }
+    private loadRejectedPharmacies(): void {
+    this.loading = true;
+    this.errorMessage = null;
+    this.pharmacyService.getRejectedPharmacies().subscribe({
+      next: (data) => {
+        this.rejectedPharmacyData = data;
         this.loading = false;
         this.cdr.detectChanges();
       },
