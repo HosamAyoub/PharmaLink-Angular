@@ -1,4 +1,4 @@
-import { ProductStatus } from "./product-status-enum";
+import { ProductStatus } from "../../../../shared/enums/product-status-enum";
 export interface IPharmacyproduct {
     drugId: number;
     price: number;

@@ -9,6 +9,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ViewChild } from '@angular/core';
 import { ElementRef } from '@angular/core';
+import { IRequest } from '../Models/irequest';
 
 
 @Component({
@@ -24,6 +25,7 @@ export class AddMedicinesComponent implements OnInit {
   filteredMedicines: IDrugDetails[] = [];
   medicineService: MedicineService = inject(MedicineService);
   drugservice: DrugService = inject(DrugService);
+  requestData: IRequest = {} as IRequest;
 
 
   constructor(private cd: ChangeDetectorRef) {
@@ -36,7 +38,7 @@ export class AddMedicinesComponent implements OnInit {
   }
 
   onSearchChange(query: string) {
-    if (query === '' ) {
+    if (query === '') {
       this.filteredMedicines = [];
     }
     else {
@@ -88,4 +90,19 @@ export class AddMedicinesComponent implements OnInit {
     return 0;
   }
 
+
+  sendRequestToAdmin() {
+    if (this.requestData.commonName && this.requestData.activeIngredient) {
+      this.medicineService.sendRequestToAdmin(this.requestData).subscribe(
+        res => {
+          console.log('Request sent successfully:', res);
+          this.requestData = {} as IRequest;
+        },
+        err => {
+          // Optionally show an error message
+          console.error('Error sending request:', err);
+        }
+      );
+    }
+  }
 }

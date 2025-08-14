@@ -4,7 +4,7 @@ import { IMedicine } from './../Models/imedicine';
 import { IPharmaInventoryStatus } from '../Models/ipharma-inventory-status';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { ProductStatus } from '../Models/product-status-enum';
+import { ProductStatus } from '../../../../shared/enums/product-status-enum';
 
 @Component({
   selector: 'app-medicine-management',
@@ -57,9 +57,9 @@ export class MedicineManagement {
         }));
         this.onFilterChange(this.filterselect.nativeElement.value);
       },
-      error => {
-        console.error('Error loading all medicines:', error);
-      });
+        error => {
+          console.error('Error loading all medicines:', error);
+        });
     }
     else {
       this.medicineService.SearchMedicines(query, pageNumber, pageSize).subscribe((res: any) => {

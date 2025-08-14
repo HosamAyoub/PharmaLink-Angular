@@ -1,8 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { DrugsManagementComponent } from './Medicines/drugs-management/drugs-management.component';
 import { DashboardPageComponent } from '../admin-dashboard/Dashboard/dashboard-page/dashboard-page.component';
 
 const routes: Routes = [
+  { path : 'medicinesmanagement', component: DrugsManagementComponent }
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
   { path: 'dashboard', component: DashboardPageComponent },
   {

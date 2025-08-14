@@ -8,7 +8,8 @@ import { IAddToStock } from './../Models/iadd-to-stock';
 import { jwtDecode } from 'jwt-decode';
 import { IPharmaProductDetails } from '../Models/ipharma-product-details';
 import { IPharmacyproduct } from '../Models/ipharmacyproduct';
-import { ProductStatus } from '../Models/product-status-enum';
+import { ProductStatus } from '../../../../shared/enums/product-status-enum';
+import { IRequest } from '../Models/irequest';
 
 @Injectable({
   providedIn: 'root'
@@ -101,6 +102,11 @@ export class MedicineService {
       }))
     }
     return this.http.post<IPharmacyproduct[]>(url, mappedProducts);
+  }
+
+  sendRequestToAdmin(requestData: IRequest): Observable<any> {
+    const url = this.config.getApiUrl(`${this.ENDPOINTS.PHARMACY_SENDREQUEST}`);
+    return this.http.post<IRequest>(url, requestData);
   }
 
 }
