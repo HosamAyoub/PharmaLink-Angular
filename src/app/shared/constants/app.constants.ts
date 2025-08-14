@@ -5,6 +5,8 @@ export const APP_CONSTANTS = {
       PHARMACIES: 'pharmacies',
       CATEGORIES: 'categories',
       PHARMACY: 'pharmacy',
+      PHARMACY_SENDREQUEST: 'Pharmacy/SendRequestAddDrug',
+      PHARMACY_ACTIVE: 'Pharmacy/GetPharmaciesByStatus/1',
       PHARMACY_STOCK: 'PharmacyStock',
       PHARMACY_STOCK_ALL: 'PharmacyStock/allPharmaciesStock',
       BATCH_PHARMACY_STOCK_BY_ID: 'PharmacyStock/GetBatchOfPharmacyStock',

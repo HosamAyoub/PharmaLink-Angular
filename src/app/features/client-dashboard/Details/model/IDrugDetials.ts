@@ -1,3 +1,5 @@
+import { DrugStatus } from "../../../../shared/enums/drug-status";
+
 export interface IDrugDetails
 {
         drugID:number ,
@@ -15,5 +17,7 @@ export interface IDrugDetails
         description: string,
         storage_and_handling: string,
         adverse_reactions: string,
-        drug_UrlImg: string
+        drug_UrlImg: string,
+        drugStatus : DrugStatus.Requested | DrugStatus.Approved,
+        createdByPharmacy:number
 }

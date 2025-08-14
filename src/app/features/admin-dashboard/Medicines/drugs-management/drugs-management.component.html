@@ -8,7 +8,8 @@
       <h2 class="fw-bold mb-1">Medicine Management</h2>
       <p class="text-muted mb-0">Manage your pharmacy inventory</p>
     </div>
-    <button class="add-button" data-bs-toggle="modal" data-bs-target="#medicineModal" (click)="openModal(NewDrug,true)">+ Add Medicine</button>
+    <button class="add-button" data-bs-toggle="modal" data-bs-target="#medicineModal"
+      (click)="openModal(NewDrug,true)">+ Add Medicine</button>
   </div>
 
   <!-- Statistics -->
@@ -71,11 +72,11 @@
             <tr *ngFor="let req of DrugsReq" class="border-bottom">
               <!-- Name -->
               <td class="px-2 py-1 fw-semibold text-dark">
-                {{ req.requests.commonName }}
+                {{ req.drugRequests.commonName }}
               </td>
               <!-- Active Ingredient -->
               <td class="px-1 py-1">
-                <span class="text-muted small">{{ req.requests.activeIngredient }}</span>
+                <span class="text-muted small">{{ req.drugRequests.activeIngredient }}</span>
               </td>
               <!-- Pharmacy Name -->
               <td class="px-1 py-1">
@@ -84,11 +85,14 @@
               <!-- Actions -->
               <td class="px-1 py-1">
                 <div class="d-flex gap-2">
-                   <button class="btn btn-sm btn-success"  data-bs-toggle="modal" data-bs-target="#medicineModal"
-                  (click)="openModal(req.requests, true)">
+                  <button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#medicineModal"
+                  style="min-width: 5rem; width: 5rem; height: 1.9rem; padding: 0.2rem 0.3rem; font-size: 0.9rem; border-radius: 7px;"
+                  (click)="openModal(req.drugRequests, true)">
                     <span>Accept</span>
                   </button>
-                  <button class="btn btn-sm btn-danger" (click)="rejectRequest(req)">
+                  <button class="btn btn-sm btn-danger" 
+                  style="min-width: 5rem; width: 5rem; height: 1.9rem; padding: 0.2rem 0.3rem; font-size: 0.9rem; border-radius: 7px;"
+                  (click)="rejectRequest(req.drugRequests.drugID)">
                     Reject
                   </button>
                 </div>
@@ -106,26 +110,28 @@
 
 
   <!-- Search and Filter -->
-  <div class="search-filter-card mb-3">
+  <div class="search-filter-card mb-3 px-3 py-3 rounded-3 shadow-sm bg-white">
     <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
       <!-- Search Input -->
       <div class="input-group flex-grow-1" style="max-width: 100%;">
         <span class="input-group-text bg-white border-end-0">
-          <i class="bi bi-search text-muted"></i>
+          <i class="bi bi-search text-primary"></i>
         </span>
         <input type="search" class="form-control border-start-0"
-          placeholder="Search medicines by Name/Category/Active Ingredient..." #SearchInput
-          (input)="onSearchChange(SearchInput.value)" />
+          placeholder="Search medicines by Name, Category, or Ingredient..." #SearchInput
+          (input)="onSearchChange(SearchInput.value)" aria-label="Search Medicines"
+          style="font-size: 1rem; border-radius: 0 8px 8px 0;" />
       </div>
 
       <!-- Filter Dropdown -->
-      <div class="d-flex align-items-center ms-md-3"
-        style="min-width: 200px; border: 1px solid #ced4da; border-radius: 0.5rem;">
-        <i class="fas fa-filter text-muted me-2"></i>
-        <select class="form-select" #filterSelect (change)="onSearchChange(SearchInput.value)">
+      <div class="input-group ms-md-3" style="min-width: 200px;">
+        <span class="input-group-text bg-white border-end-0">
+          <i class="fas fa-filter text-primary"></i>
+        </span>
+        <select class="form-select border-start-0" #filterSelect (change)="onSearchChange(SearchInput.value)"
+          aria-label="Filter by Category" style="font-size: 1rem; border-radius: 0 8px 8px 0;">
           <option value="All" selected>All Categories</option>
-          @for( category of Categories ; track $index)
-          {
+          @for (category of Categories; track $index) {
           <option value="{{ category.name }}">{{ category.name }}</option>
           }
         </select>
@@ -144,14 +150,14 @@
 
     <div class="card-body p-1">
       <div class="table-responsive-sm" style="max-height: 400px; overflow-y: auto;">
-        <table class="table table-hover align-middle mb-0 w-100">
+        <table class="table table-hover align-middle mb-0 w-100" #SearchTable>
           <thead class="bg-light">
             <tr>
               <th class="px-2 py-1 text-muted fw-semibold border-0">ID</th>
               <th class="px-1 py-1 text-muted fw-semibold border-0">Name</th>
               <th class="px-1 py-1 text-muted fw-semibold border-0">Category</th>
               <th class="px-1 py-1 text-muted fw-semibold border-0">Act.Ingredient</th>
-              <th class="px-1 py-1 text-muted fw-semibold border-0">Alternatives ID</th>
+              <th class="px-1 py-1 text-muted fw-semibold border-0">Alter. ID</th>
               <th class="px-1 py-1 text-muted fw-semibold border-0">Status</th>
               <th class="px-1 py-1 text-muted fw-semibold border-0">Actions</th>
             </tr>
@@ -194,19 +200,19 @@
               <td class="px-1 py-1">
                 <div class="d-flex gap-2">
                   <!-- View Details -->
-                  <button class="btn btn-sm btn-light border-0" title="View Details" data-bs-toggle="modal" data-bs-target="#medicineModal"
-                  (click)="openModal(drug, false)">
+                  <button class="btn btn-sm btn-outline-light" title="View Details" data-bs-toggle="modal"
+                    data-bs-target="#medicineModal" (click)="openModal(drug, false)">
                     <i class="fa fa-eye text-primary"></i>
                   </button>
 
                   <!-- Edit -->
-                  <button class="btn btn-sm btn-light border-0" title="Edit" data-bs-toggle="modal" data-bs-target="#medicineModal"
-                  (click)="openModal(drug, true)">
+                  <button class="btn btn-sm btn-outline-light" title="Edit" data-bs-toggle="modal"
+                    data-bs-target="#medicineModal" (click)="openModal(drug, true)">
                     <i class="fa fa-edit text-muted"></i>
                   </button>
 
                   <!-- Delete -->
-                  <button class="btn btn-sm btn-light border-0 delete" title="Delete" (click)="deleteDrug(drug)">
+                  <button class="btn btn-sm btn-outline-light" title="Delete" (click)="deleteDrug(drug.drugID)">
                     <i class="fa fa-trash text-danger"></i>
                   </button>
                 </div>
@@ -221,43 +227,170 @@
   </div>
 </div>
 
-<!-- Medicine Modal -->
-<div class="modal fade" id="medicineModal" tabindex="-1" aria-labelledby="medicineModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
+<div class="modal fade" id="medicineModal" tabindex="-1" aria-labelledby="medicineModalLabel"
+  (click)="$event.target === $event.currentTarget && closeModal()">
+  <div class="modal-dialog medicine-modal" (click)="$event.stopPropagation()">
     <div class="modal-content">
-      
-      <div class="modal-header">
+      <!-- Modal Header -->
+      <div class="modal-header position-relative">
         <h5 class="modal-title" id="medicineModalLabel">
-          {{ isEditMode ? 'Edit Medicine' : 'View Medicine' }}
+          <i class="fas fa-pills"></i>
+          <span>{{ selectedMedicine.commonName }}</span>
         </h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-
+      <!-- Modal Body -->
       <div class="modal-body">
-        <form>
-          <div class="mb-3">
-            <label class="form-label">Common Name</label>
-            <input type="text" class="form-control" [(ngModel)]="selectedMedicine.commonName" name="commonName"
-                   [readonly]="!isEditMode">
+        <div class="medicine-content">
+
+          <!-- Left Side - Image and Status -->
+          <div class="medicine-image-section ">
+            <div class="medicine-image-container">
+              <img [src]="selectedMedicine.drug_UrlImg" class="medicine-image">
+            </div>
+
+            <div class="w-100" *ngIf="isEditMode">
+              <label class="form-label">Drug Image URL</label>
+              <input type="url" class="form-control" [(ngModel)]="selectedMedicine.drug_UrlImg" name="drug_UrlImg"
+                placeholder="Enter image URL">
+            </div>
           </div>
 
-          <div class="mb-3">
-            <label class="form-label">Active Ingredient</label>
-            <input type="text" class="form-control" [(ngModel)]="selectedMedicine.activeIngredient" name="activeIngredient"
-                   [readonly]="!isEditMode">
-          </div>
+          <!-- Right Side - Form Details -->
+          <div class="medicine-details">
+            <form #medicineForm="ngForm">
 
-          <div class="mb-3">
-            <label class="form-label">Description</label>
-            <textarea class="form-control" [(ngModel)]="selectedMedicine.description" name="description"
-                      [readonly]="!isEditMode"></textarea>
+              <!-- Basic Information Section -->
+              <div class="form-section">
+                <h6 class="section-title">
+                  <i class="fas fa-info-circle"></i>
+                  Basic Information
+                </h6>
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <label class="form-label">Common Name</label>
+                    <input type="text" class="form-control" [(ngModel)]="selectedMedicine.commonName" name="commonName"
+                      [readonly]="!isEditMode">
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label">Category</label>
+                    <input type="text" class="form-control" [(ngModel)]="selectedMedicine.category" name="category"
+                      [readonly]="!isEditMode">
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label">Active Ingredient</label>
+                    <input type="text" class="form-control" [(ngModel)]="selectedMedicine.activeIngredient"
+                      name="activeIngredient" [readonly]="!isEditMode">
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label">Alternative Names</label>
+                    <input type="text" class="form-control" [(ngModel)]="selectedMedicine.alternatives_names"
+                      name="alternatives_names" [readonly]="!isEditMode">
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label">Alternative Group ID</label>
+                    <input type="number" class="form-control" [(ngModel)]="selectedMedicine.alternativesGpID"
+                      name="alternativesGpID" min="0" [readonly]="!isEditMode">
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label">Drug Status</label>
+                    <select class="form-select" [(ngModel)]="selectedMedicine.drugStatus" name="drugStatus"
+                      [disabled]="!isEditMode">
+                      <option [ngValue]="0">Requested</option>
+                      <option [ngValue]="1">Approved</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Clinical Information Section -->
+              <div class="form-section">
+                <h6 class="section-title">
+                  <i class="fas fa-stethoscope"></i>
+                  Clinical Information
+                </h6>
+                <div class="mb-3">
+                  <label class="form-label">Indications and Usage</label>
+                  <textarea class="form-control textarea-large" [(ngModel)]="selectedMedicine.indications_and_usage"
+                    name="indications_and_usage" [readonly]="!isEditMode"></textarea>
+                </div>
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <label class="form-label">Dosage and Administration</label>
+                    <textarea class="form-control" [(ngModel)]="selectedMedicine.dosage_and_administration"
+                      name="dosage_and_administration" [readonly]="!isEditMode"></textarea>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label">Dosage Forms and Strengths</label>
+                    <textarea class="form-control" [(ngModel)]="selectedMedicine.dosage_forms_and_strengths"
+                      name="dosage_forms_and_strengths" [readonly]="!isEditMode"></textarea>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Safety Information Section -->
+              <div class="form-section">
+                <h6 class="section-title">
+                  <i class="fas fa-exclamation-triangle"></i>
+                  Safety Information
+                </h6>
+                <div class="mb-3">
+                  <label class="form-label">Contraindications</label>
+                  <textarea class="form-control" [(ngModel)]="selectedMedicine.contraindications"
+                    name="contraindications" [readonly]="!isEditMode"></textarea>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Warnings and Cautions</label>
+                  <textarea class="form-control textarea-large" [(ngModel)]="selectedMedicine.warnings_and_cautions"
+                    name="warnings_and_cautions" [readonly]="!isEditMode"></textarea>
+                </div>
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <label class="form-label">Drug Interactions</label>
+                    <textarea class="form-control" [(ngModel)]="selectedMedicine.drug_interactions"
+                      name="drug_interactions" [readonly]="!isEditMode"></textarea>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label">Adverse Reactions</label>
+                    <textarea class="form-control" [(ngModel)]="selectedMedicine.adverse_reactions"
+                      name="adverse_reactions" [readonly]="!isEditMode"></textarea>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Additional Information Section -->
+              <div class="form-section">
+                <h6 class="section-title">
+                  <i class="fas fa-file-alt"></i>
+                  Additional Information
+                </h6>
+                <div class="mb-3">
+                  <label class="form-label">Description</label>
+                  <textarea class="form-control textarea-large" [(ngModel)]="selectedMedicine.description"
+                    name="description" [readonly]="!isEditMode"></textarea>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Storage and Handling</label>
+                  <textarea class="form-control" [(ngModel)]="selectedMedicine.storage_and_handling"
+                    name="storage_and_handling" [readonly]="!isEditMode"></textarea>
+                </div>
+              </div>
+
+            </form>
           </div>
-        </form>
+        </div>
       </div>
 
+      <!-- Modal Footer -->
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button *ngIf="isEditMode" type="button" class="btn btn-primary" (click)="saveChanges()">Save</button>
+        <button type="button" class="btn btn-secondary" (click)="closeModal()" data-bs-toggle="modal"
+          data-bs-target="#medicineModal">
+          <i class="fas fa-times"></i>
+          Close</button>
+        <button *ngIf="isEditMode" type="button" class="btn btn-secondary" (click)="saveChanges()"
+          data-bs-toggle="modal" data-bs-target="#medicineModal" [disabled]="!medicineForm.valid">
+          <i class="fas fa-save"></i>
+          Save Changes
+        </button>
       </div>
 
     </div>
