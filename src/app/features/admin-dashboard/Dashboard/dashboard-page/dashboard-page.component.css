@@ -1,10 +1,10 @@
 .dashboard-page {
-    padding: 25px 100px;
+    padding: 25px 60px;
 }
 .dashboard-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 300px));
-  gap: 25px;
+  gap: 22px;
   padding: 20px;
 }
 

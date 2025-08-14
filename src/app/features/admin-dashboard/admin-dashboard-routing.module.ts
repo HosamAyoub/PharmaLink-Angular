@@ -4,7 +4,6 @@ import { DrugsManagementComponent } from './Medicines/drugs-management/drugs-man
 import { DashboardPageComponent } from '../admin-dashboard/Dashboard/dashboard-page/dashboard-page.component';
 
 const routes: Routes = [
-  { path : 'medicinesmanagement', component: DrugsManagementComponent }
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
   { path: 'dashboard', component: DashboardPageComponent },
   {
@@ -12,6 +11,7 @@ const routes: Routes = [
     loadComponent: () =>
       import('./Pharmacies/pharmacies-page/pharmacies-page.component').then((m) => m.PharmaciesPageComponent),
   },
+  { path : 'medicinesmanagement', component: DrugsManagementComponent }
 
 ];
 
