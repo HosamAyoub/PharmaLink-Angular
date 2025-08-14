@@ -6,6 +6,7 @@ import { AuthService } from '../../../../../shared/services/auth.service';
 import { CartStore } from '../../../Cart/Services/cart-store';
 import { Subscription } from 'rxjs';
 import { ProfileService } from '../../../profile/services/profile-service';
+import { SignalrService } from '../../services/signalr.service';
 
 @Component({
   selector: 'client-navbar',
@@ -14,33 +15,50 @@ import { ProfileService } from '../../../profile/services/profile-service';
   styleUrl: './navbar.css',
 })
 export class Navbar {
+  public signalrService = inject(SignalrService)
   private authService = inject(AuthService);
   private profileService = inject(ProfileService);
   switchTab(tab: string) {
     this.profileService.switchTab(tab);
   }
   private cartStore = inject(CartStore);
-  
+
   // Computed properties for reactive updates
   cartItemCount = computed(() => {
     const items = this.cartStore.cartItems();
     // Return the number of unique items (different products), not total quantity
     return items.length;
   });
-  
+
   // Display cart count with 99+ limit for UI
   cartDisplayCount = computed(() => {
     const count = this.cartItemCount();
     return count > 99 ? '99+' : count.toString();
   });
-  
+
   get isAuthenticated() {
     return Boolean(this.authService.user());
   }
-  
+
   onLogout() {
     this.authService.logout();
   }
-  
+
   LoggedUserName = computed(() => this.authService.user()?.userName);
+
+  
+  // get unreadCount(): number {
+  //   return this.signalrService.notifications.filter(n => !n.read).length;
+  // }
+
+  // clearNotifications() {
+  //   this.signalrService.notifications = [];
+  //   localStorage.removeItem('notifications');
+  // }
+
+  // markAllAsRead() {
+  //   this.signalrService.notifications.forEach(n => n.read = true);
+  //   localStorage.setItem('notifications', JSON.stringify(this.signalrService.notifications));
+  // }
+
 }
