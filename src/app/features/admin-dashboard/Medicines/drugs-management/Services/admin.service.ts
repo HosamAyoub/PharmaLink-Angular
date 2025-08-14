@@ -19,4 +19,25 @@ export class AdminService {
     return this.http.get<any>(url);
   }
 
+  deleteDrug(drugId: number) {
+    const url = this.config.getApiUrl(`${this.ENDPOINTS.DRUG_BY_ID}/${drugId}`);
+    return this.http.delete(url);
+  }
+
+  updateDrug(drugData: IDrugDetails) {
+    const url = this.config.getApiUrl(`${this.ENDPOINTS.DRUG_BY_ID}`);
+    console.log('Updating drug:', drugData);
+    return this.http.put(url, drugData);
+  }
+
+  saveNewDrug(drugData: IDrugDetails) {
+    const url = this.config.getApiUrl(`${this.ENDPOINTS.DRUG_BY_ID}`);
+    return this.http.post(url, drugData);
+  }
+
+  getActivePharmacies() {
+    const url = this.config.getApiUrl(`${this.ENDPOINTS.PHARMACY_ACTIVE}`);
+    return this.http.get<any>(url);
+  }
+
 }

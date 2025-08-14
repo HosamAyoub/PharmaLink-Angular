@@ -34,7 +34,7 @@
         <input type="search" #searchInput (input)="onSearchChange(searchInput.value)"
           placeholder="Search by medicine name or category or active ingredient..." class="search-input">
       </div>
-      <button class="medicine-not-listed-btn">
+      <button class="medicine-not-listed-btn" data-bs-toggle="modal" data-bs-target="#requestAdminModal">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
           <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
         </svg>
@@ -118,7 +118,7 @@
           @if (selectedMedicines.length > 0) {
           <div class="table-responsive">
             <table class="table table-bordered align-middle">
-              <thead class="bg-primary text-white">
+              <thead class=" text-white">
                 <tr style="justify-content: center; align-items: center;">
                   <th style="width: 8px;">Image</th>
                   <th style="width: 40px;">Name</th>
@@ -158,6 +158,46 @@
           <button type="button" class="btn btn-success" (click)="onAddToStock()"
             data-bs-dismiss="modal">Confirm</button>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Request Admin Medicine Modal -->
+  <div class="modal fade" id="requestAdminModal" tabindex="-1" aria-labelledby="requestAdminModalLabel">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="requestAdminModalLabel">Request To Add New Medicine</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <form (ngSubmit)="sendRequestToAdmin()" #requestForm="ngForm">
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="commonName" class="form-label fw-semibold">Common Name</label>
+              <input type="text" id="commonName" name="commonName" class="form-control"
+                [(ngModel)]="requestData.commonName" required #commonName="ngModel"
+                style="border-radius: 8px; font-size: 1rem; padding: 0.7rem;" />
+            </div>
+            <div *ngIf="(requestForm.submitted || commonName.touched) && commonName.invalid"
+              class="text-danger small ms-2 mb-2">
+              Please enter the medicine name.
+            </div>
+            <div class="mb-3">
+              <label for="activeIngredient" class="form-label fw-semibold">Active Ingredient</label>
+              <input type="text" id="activeIngredient" name="activeIngredient" class="form-control"
+                [(ngModel)]="requestData.activeIngredient" required #activeIngredient="ngModel"
+                style="border-radius: 8px; font-size: 1rem; padding: 0.7rem;" />
+            </div>
+            <div *ngIf="(requestForm.submitted || activeIngredient.touched) && activeIngredient.invalid"
+              class="text-danger small ms-2 mb-2">
+              Please enter the active ingredient.
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn submit-button" >Send Request</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>

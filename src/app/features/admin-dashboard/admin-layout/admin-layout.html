@@ -1,7 +1,6 @@
 <div class="app-container">
-  <app-admin-side-bar></app-admin-side-bar>
-  <main class="main-content">
-        <!-- Your main content goes here -->
+  <app-admin-side-bar [isSidebarOpen]="isSidebarOpen" (toggle)="toggleSidebar()"></app-admin-side-bar>
+  <main class="main-content" [class.full-width]="!isSidebarOpen">
     <router-outlet></router-outlet>
   </main>
 </div>

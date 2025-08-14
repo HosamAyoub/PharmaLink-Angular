@@ -10,6 +10,7 @@
   align-items: center;
   gap: 2rem;
   margin-bottom: 1rem;
+  padding-top: 2rem;
   /* No border for header */
 }
 
@@ -23,7 +24,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  background: var(--primary-blue);
+  background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-blue-dark) 100%);
   color: var(--background-white);
   border: 2.5px solid var(--border-light);
   border-radius: 12px;
@@ -36,7 +37,7 @@
 }
 
 .add-button:hover {
-  background: var(--primary-blue-dark);
+  background: linear-gradient(135deg, var(--primary-blue-dark) 0%, var(--primary-blue-dark) 100%);
   box-shadow: 0 2px 8px var(--shadow-primary);
 }
 
@@ -284,53 +285,53 @@ thead th {
 
 }
 
-  /* Modern style for filter dropdown container */
-  .search-filter-card .filter-dropdown,
-  .d-flex.align-items-center.ms-md-3 {
-    min-width: 200px;
-    border: 2.5px solid var(--border-light);
-    border-radius: 8px;
-    background: var(--background-white);
-    box-shadow: 0 1px 4px var(--shadow-overlay-075);
-    padding: 0.3rem 0.8rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    transition: border-color 0.2s, box-shadow 0.2s;
-  }
+/* Modern style for filter dropdown container */
+.search-filter-card .filter-dropdown,
+.d-flex.align-items-center.ms-md-3 {
+  min-width: 200px;
+  border: 2.5px solid var(--border-light);
+  border-radius: 8px;
+  background: var(--background-white);
+  box-shadow: 0 1px 4px var(--shadow-overlay-075);
+  padding: 0.3rem 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
 
-  /* Icon style */
-  .d-flex.align-items-center.ms-md-3 i,
-  .search-filter-card .filter-dropdown i {
-    font-size: 1.5rem;
-    color: var(--primary-blue);
-    margin-right: 0.5rem;
-    transition: color 0.2s;
-  }
+/* Icon style */
+.d-flex.align-items-center.ms-md-3 i,
+.search-filter-card .filter-dropdown i {
+  font-size: 1.5rem;
+  color: var(--primary-blue);
+  margin-right: 0.5rem;
+  transition: color 0.2s;
+}
 
-  /* Select style */
-  .form-select {
-    border: none;
-    box-shadow: none;
-    background: transparent;
-    color: var(--primary-blue);
-    font-size: 1.1rem;
-    font-weight: 600;
-    padding: 0.5rem 1rem;
-    outline: none;
-    transition: color 0.2s;
-  }
+/* Select style */
+.form-select {
+  border: none;
+  box-shadow: none;
+  background: transparent;
+  color: var(--primary-blue);
+  font-size: 1.1rem;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  outline: none;
+  transition: color 0.2s;
+}
 
-  /* Focus effect for container and select */
-  .search-filter-card .filter-dropdown:focus-within,
-  .d-flex.align-items-center.ms-md-3:focus-within {
-    border-color: var(--primary-blue);
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
-  }
+/* Focus effect for container and select */
+.search-filter-card .filter-dropdown:focus-within,
+.d-flex.align-items-center.ms-md-3:focus-within {
+  border-color: var(--primary-blue);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
 
-  .form-select:focus {
-    color: var(--primary-blue-dark);
-  }
+.form-select:focus {
+  color: var(--primary-blue-dark);
+}
 
 .bg-primary-blue-light {
   background-color: var(--primary-blue-light) !important;

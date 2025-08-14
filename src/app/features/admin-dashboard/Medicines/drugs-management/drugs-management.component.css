@@ -1,6 +1,196 @@
+/* Main container and header */
+.container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 24px;
+}
+
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.title-group h2 {
+  font-size: 2rem;
+}
+
+.add-button {
+  min-width: 120px;
+  font-size: 1rem;
+  padding: 0.5rem 1.2rem;
+  border-radius: 8px;
+}
+
+/* Stats cards */
+.stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  flex: 1 1 180px;
+  min-width: 140px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.07);
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+/* Table responsiveness */
+.table-responsive-sm {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.table {
+  min-width: 600px;
+  font-size: 1rem;
+}
+
+.table th,
+.table td {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  font-size: 1rem;
+  padding: 0.5rem;
+}
+
+/* Search & filter section */
+.search-filter-card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(37, 99, 235, 0.07);
+  padding: 1rem 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.input-group-text,
+.form-select,
+.form-control {
+  font-size: 1rem;
+}
+
+/* Modal responsiveness */
+.medicine-modal {
+  max-width: 700px;
+  width: 98vw;
+  margin: 1.2rem auto;
+}
+
+@media (max-width: 1024px) {
+  .container {
+    padding: 12px;
+  }
+
+  .title-group h2 {
+    font-size: 1.5rem;
+  }
+
+  .table {
+    font-size: 0.95rem;
+    min-width: 500px;
+  }
+
+  .table th,
+  .table td {
+    font-size: 0.95rem;
+    padding: 0.4rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .stats {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .stat-card {
+    min-width: 0;
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .search-filter-card {
+    padding: 0.7rem 0.5rem;
+    border-radius: 10px;
+  }
+
+  .table {
+    font-size: 0.9rem;
+    min-width: 400px;
+  }
+
+  .table th,
+  .table td {
+    font-size: 0.85rem;
+    padding: 0.3rem;
+  }
+
+  .medicine-modal {
+    max-width: 98vw;
+    padding: 0.5rem;
+  }
+
+  .form-section .row.g-3>div {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 4px;
+  }
+
+  .title-group h2 {
+    font-size: 1.1rem;
+  }
+
+  .add-button {
+    font-size: 0.9rem;
+    padding: 0.4rem 0.8rem;
+  }
+
+  .table {
+    font-size: 0.8rem;
+    min-width: 320px;
+  }
+
+  .table th,
+  .table td {
+    font-size: 0.75rem;
+    padding: 0.2rem;
+  }
+
+  .medicine-modal {
+    max-width: 100vw;
+    padding: 0.2rem;
+  }
+
+  .form-section .row.g-3>div {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+}
+
 /* Main container */
 .container {
-  max-width: 100%;
+  width: 100%;
   font-family: var(--fa-font-regular), Arial, sans-serif;
 }
 
@@ -23,7 +213,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  background: var(--primary-blue);
+  background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-blue-dark) 100%);
   color: var(--background-white);
   border: 2.5px solid var(--border-light);
   border-radius: 12px;
@@ -36,7 +226,7 @@
 }
 
 .add-button:hover {
-  background: var(--primary-blue-dark);
+  background: linear-gradient(135deg, var(--primary-blue-dark) 0%, var(--primary-blue-dark) 100%);
   box-shadow: 0 2px 8px var(--shadow-primary);
 }
 
@@ -112,7 +302,7 @@
   border-radius: 16px;
   box-shadow: 0 2px 12px var(--shadow-overlay-075);
   padding: 2rem 1.5rem 1.5rem 1.5rem;
-  margin-top: 2rem;
+  margin-top: 1rem;
   border: 2.5px solid var(--border-light);
 }
 
@@ -222,12 +412,11 @@ thead th {
 
 /* Medicine Management Search & Filter Card */
 .search-filter-card {
-  border: 2.5px solid var(--border-light);
+  background: #fff;
   border-radius: 16px;
-  box-shadow: 0 1px 4px var(--shadow-overlay-075);
-  background: var(--background-white);
+  box-shadow: 0 2px 12px rgba(37, 99, 235, 0.07);
+  padding: 1rem 1rem;
   margin-bottom: 1.5rem;
-  padding: 1.5rem 1rem;
 }
 
 /* Flex layout for search/filter row */
@@ -245,30 +434,48 @@ thead th {
   }
 }
 
+@media (max-width: 640px) {
+  .search-filter-card {
+    padding: 0.7rem 0.5rem;
+    border-radius: 10px;
+  }
+
+  .input-group {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .form-control,
+  .form-select {
+    font-size: 0.95rem;
+    padding: 0.5rem 0.7rem;
+    border-radius: 8px;
+  }
+}
+
 /* Search input group */
 .input-group {
   max-width: 100%;
 }
 
 .input-group-text {
-  background: var(--background-white);
-  border-right: none;
-  color: var(--text-secondary);
-  font-size: 1.5rem;
+  background: #f3f4f6;
+  border: none;
+  border-radius: 8px 0 0 8px;
+  font-size: 1.2rem;
+  color: #2563eb;
 }
 
-.form-control {
-  border-left: none;
+.form-control,
+.form-select {
+  border: 2px solid #e5e7eb;
+  border-radius: 0 8px 8px 0;
   font-size: 1rem;
   padding: 0.6rem 1rem;
-  border-radius: 8px;
   box-shadow: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-.form-control:focus {
-  border-color: var(--primary-blue);
-  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.10);
-}
 
 /* Filter dropdown */
 .filter-dropdown {
@@ -284,53 +491,43 @@ thead th {
 
 }
 
-  /* Modern style for filter dropdown container */
-  .search-filter-card .filter-dropdown,
-  .d-flex.align-items-center.ms-md-3 {
-    min-width: 200px;
-    border: 2.5px solid var(--border-light);
-    border-radius: 8px;
-    background: var(--background-white);
-    box-shadow: 0 1px 4px var(--shadow-overlay-075);
-    padding: 0.3rem 0.8rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    transition: border-color 0.2s, box-shadow 0.2s;
-  }
+/* Modern style for filter dropdown container */
+.search-filter-card .filter-dropdown,
+.d-flex.align-items-center.ms-md-3 {
+  min-width: 200px;
+  border: 2.5px solid var(--border-light);
+  border-radius: 8px;
+  background: var(--background-white);
+  box-shadow: 0 1px 4px var(--shadow-overlay-075);
+  padding: 0.3rem 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
 
-  /* Icon style */
-  .d-flex.align-items-center.ms-md-3 i,
-  .search-filter-card .filter-dropdown i {
-    font-size: 1.5rem;
-    color: var(--primary-blue);
-    margin-right: 0.5rem;
-    transition: color 0.2s;
-  }
+/* Icon style */
+.d-flex.align-items-center.ms-md-3 i,
+.search-filter-card .filter-dropdown i {
+  font-size: 1.5rem;
+  color: var(--primary-blue);
+  margin-right: 0.5rem;
+  transition: color 0.2s;
+}
 
-  /* Select style */
-  .form-select {
-    border: none;
-    box-shadow: none;
-    background: transparent;
-    color: var(--primary-blue);
-    font-size: 1.1rem;
-    font-weight: 600;
-    padding: 0.5rem 1rem;
-    outline: none;
-    transition: color 0.2s;
-  }
 
-  /* Focus effect for container and select */
-  .search-filter-card .filter-dropdown:focus-within,
-  .d-flex.align-items-center.ms-md-3:focus-within {
-    border-color: var(--primary-blue);
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
-  }
+/* Focus effect for container and select */
+.search-filter-card .filter-dropdown:focus-within,
+.d-flex.align-items-center.ms-md-3:focus-within {
+  border-color: var(--primary-blue);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
 
-  .form-select:focus {
-    color: var(--primary-blue-dark);
-  }
+.form-control:focus,
+.form-select:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.12);
+}
 
 .bg-primary-blue-light {
   background-color: var(--primary-blue-light) !important;
@@ -338,4 +535,599 @@ thead th {
 
 .bg-success-green {
   background-color: var(--success-green) !important;
+}
+
+
+:root {
+  --primary-color: #2c5282;
+  --secondary-color: #4a90e2;
+  --success-color: #48bb78;
+  --warning-color: #ed8936;
+  --danger-color: #f56565;
+  --info-color: #4299e1;
+  --light-bg: #f7fafc;
+  --border-color: #e2e8f0;
+  --text-primary: #2d3748;
+  --text-secondary: #718096;
+}
+
+.medicine-modal {
+  --bs-modal-width: 90vw;
+  max-width: 1200px;
+}
+
+.modal-content {
+  border: none;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+  border-radius: 15px;
+  overflow: hidden;
+}
+
+.modal-header {
+  color: white;
+  border-bottom: none;
+  padding: 1.5rem 2rem;
+}
+
+.modal-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.modal-title i {
+  font-size: 1.25rem;
+}
+
+.btn-close {
+  filter: brightness(0) invert(1);
+  opacity: 0.8;
+  transition: opacity 0.2s;
+}
+
+.btn-close:hover {
+  opacity: 1;
+}
+
+.modal-body {
+  padding: 0;
+}
+
+.medicine-content {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  min-height: 600px;
+}
+
+.medicine-image-section {
+  background: white;
+  padding: 2rem;
+  border-right: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.medicine-image-container {
+  width: 200px;
+  height: 200px;
+  border-radius: 15px;
+  overflow: hidden;
+  border: 2px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--light-bg);
+  position: relative;
+}
+
+.medicine-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.image-placeholder {
+  color: var(--text-secondary);
+  font-size: 3rem;
+}
+
+.status-badge {
+  padding: 0.5rem 1rem;
+  border-radius: 25px;
+  font-weight: 600;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.status-active {
+  background: rgba(72, 187, 120, 0.15);
+  color: var(--success-color);
+  border: 2px solid var(--success-color);
+}
+
+.status-inactive {
+  background: rgba(245, 101, 101, 0.15);
+  color: var(--danger-color);
+  border: 2px solid var(--danger-color);
+}
+
+.status-discontinued {
+  background: rgba(237, 137, 54, 0.15);
+  color: var(--warning-color);
+  border: 2px solid var(--warning-color);
+}
+
+.medicine-details {
+  background: linear-gradient(180deg, #1a1d29 20%, #16192a 80%);
+  padding: 2rem;
+  overflow-y: auto;
+  max-height: 600px;
+}
+
+.form-section {
+  margin-bottom: 2rem;
+  background: white;
+  border-radius: 10px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  border-left: 4px solid var(--secondary-color);
+}
+
+.section-title {
+  color: var(--primary-color);
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.section-title i {
+  font-size: 1rem;
+  color: var(--secondary-color);
+}
+
+.form-label {
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+
+.form-control,
+.form-select {
+  border: 2px solid var(--border-color);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  background-color: white;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--secondary-color);
+  box-shadow: 0 0 0 0.2rem rgba(74, 144, 226, 0.15);
+  background-color: white;
+}
+
+.form-control[readonly] {
+  background-color: var(--light-bg);
+  border-color: var(--border-color);
+  color: var(--text-secondary);
+}
+
+.form-control.is-invalid {
+  border-color: var(--danger-color);
+}
+
+.textarea-large {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.row.g-3>.col-md-6 {
+  margin-bottom: 1rem;
+}
+
+.modal-footer {
+  border-top: 1px solid var(--border-color);
+  padding: 1.5rem 2rem;
+  gap: 1rem;
+}
+
+.btn {
+  padding: 0.75rem 2rem;
+  font-weight: 600;
+  border-radius: 8px;
+  border: none;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  color: white;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(44, 82, 130, 0.3);
+}
+
+.btn-secondary {
+  background: var(--text-secondary);
+  color: white;
+}
+
+.btn-secondary:hover {
+  background: var(--text-primary);
+  transform: translateY(-2px);
+}
+
+.edit-toggle-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: rgba(255, 255, 255, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  padding: 0.5rem;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.edit-toggle-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+
+
+/* Responsive Design */
+@media (max-width: 992px) {
+  .medicine-content {
+    grid-template-columns: 1fr;
+  }
+
+  .medicine-image-section {
+    border-right: none;
+    border-bottom: 1px solid var(--border-color);
+    flex-direction: row;
+    justify-content: space-around;
+    padding: 1.5rem;
+  }
+
+  .medicine-image-container {
+    width: 150px;
+    height: 150px;
+  }
+}
+
+@media (max-width: 768px) {
+  .medicine-modal {
+    --bs-modal-width: 95vw;
+  }
+
+  .modal-header,
+  .modal-footer {
+    padding: 1rem;
+  }
+
+  .medicine-details {
+    padding: 1rem;
+  }
+
+  .form-section {
+    padding: 1rem;
+  }
+
+  .medicine-image-section {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+/* Custom scrollbar */
+.medicine-details::-webkit-scrollbar {
+  width: 6px;
+}
+
+.medicine-details::-webkit-scrollbar-track {
+  background: var(--light-bg);
+}
+
+.medicine-details::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 3px;
+}
+
+.medicine-details::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
+}
+
+
+#medicineModal {
+
+  .medicine-modal {
+    background: linear-gradient(180deg, #1a1d29 0%, #16192a 100%);
+    --bs-modal-width: 90vw;
+    max-width: 1000px;
+  }
+
+  .modal-content {
+    background: transparent;
+    color: #f5f5f5;
+    border: none;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    border-radius: 15px;
+    overflow: hidden;
+  }
+
+  .modal-header {
+    background: transparent;
+    color: #fff;
+    border-bottom: none;
+    padding: 1.5rem 2rem;
+  }
+
+  .modal-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .modal-title i {
+    font-size: 1.25rem;
+  }
+
+  .btn-close {
+    filter: brightness(0) invert(1);
+    opacity: 0.8;
+    transition: opacity 0.2s;
+  }
+
+  .btn-close:hover {
+    opacity: 1;
+  }
+
+  .modal-body {
+    padding: 0;
+    background: transparent;
+  }
+
+  .medicine-image-section {
+    background: transparent;
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .medicine-image-container {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .image-placeholder {
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  .status-badge {
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .status-active {
+    background: rgba(72, 187, 120, 0.2);
+    color: var(--success-color);
+    border: 1px solid var(--success-color);
+  }
+
+  .status-inactive {
+    background: rgba(245, 101, 101, 0.2);
+    color: var(--danger-color);
+    border: 1px solid var(--danger-color);
+  }
+
+  .status-discontinued {
+    background: rgba(237, 137, 54, 0.2);
+    color: var(--warning-color);
+    border: 1px solid var(--warning-color);
+  }
+
+  .form-section {
+    background: rgba(255, 255, 255, 0.05);
+    border-left: 4px solid var(--secondary-color);
+    color: #f5f5f5;
+  }
+
+  .section-title {
+    color: #fff;
+  }
+
+  .section-title i {
+    color: var(--secondary-color);
+  }
+
+  .form-label {
+    color: #ccc;
+  }
+
+  .form-control,
+  .form-select,
+  textarea {
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .form-control:focus,
+  .form-select:focus {
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 0.2rem rgba(74, 144, 226, 0.4);
+    background: rgba(255, 255, 255, 0.12);
+    color: #fff;
+  }
+
+  .form-control[readonly] {
+    background-color: rgba(255, 255, 255, 0.05);
+    color: #aaa;
+  }
+
+  .modal-footer {
+    background: transparent;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: #fff;
+  }
+
+  .btn-secondary {
+    background: rgba(255, 255, 255, 0.15);
+    color: #fff;
+  }
+
+  .btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.25);
+  }
+}
+
+/* Style for filter dropdown select (outside modal) */
+.filter-dropdown .form-select,
+.search-filter-card .form-select {
+  border: none;
+  box-shadow: none;
+  background: transparent;
+  color: var(--primary-blue);
+  font-size: 1.1rem;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  outline: none;
+  transition: color 0.2s;
+}
+
+.filter-dropdown .form-select:focus,
+.search-filter-card .form-select:focus {
+  color: var(--primary-blue-dark);
+}
+
+/* Style for form select inside modal */
+#medicineModal .form-select,
+.medicine-modal .form-select {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  border: 1.5px solid var(--secondary-color);
+  border-radius: 10px;
+  padding: 0.85rem 1.2rem;
+  font-size: 1rem;
+  font-weight: 500;
+  box-shadow: 0 2px 12px rgba(74, 144, 226, 0.10);
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+  outline: none;
+  appearance: none;
+}
+
+/* When select is focused (active), add glow and shadow */
+#medicineModal .form-select:focus,
+.medicine-modal .form-select:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.18), 0 2px 12px rgba(74, 144, 226, 0.18);
+  background: rgba(255, 255, 255, 0.18);
+  color: #fff;
+}
+
+/* Custom dropdown arrow */
+#medicineModal .form-select,
+.medicine-modal .form-select {
+  background-image: url("data:image/svg+xml,%3Csvg width='16' height='16' fill='white' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4 6l4 4 4-4' stroke='%234a90e2' stroke-width='2' fill='none'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 1.2em;
+}
+
+/* Enhance dropdown list (options) appearance for Webkit browsers */
+#medicineModal .form-select option,
+.medicine-modal .form-select option {
+  background: #23263a;
+  color: #fff;
+  font-size: 1rem;
+  padding: 0.6rem 1rem;
+  border-radius: 0;
+}
+
+/* For better effect on Chrome/Edge, use ::-webkit-scrollbar for dropdowns */
+#medicineModal .form-select::-webkit-scrollbar,
+.medicine-modal .form-select::-webkit-scrollbar {
+  width: 8px;
+  background: #23263a;
+}
+
+#medicineModal .form-select::-webkit-scrollbar-thumb,
+.medicine-modal .form-select::-webkit-scrollbar-thumb {
+  background: #4a90e2;
+  border-radius: 4px;
+}
+
+/* Add border and shadow to search input and filter dropdown */
+.search-filter-card .input-group,
+.search-filter-card .filter-dropdown,
+.d-flex.align-items-center.ms-md-3 {
+  border: 2px solid #e5e7eb;
+  border-radius: 10px;
+  box-shadow: 0 2px 12px rgba(37, 99, 235, 0.10);
+  background: #fff;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+/* Focus effect for search and filter */
+.search-filter-card .input-group:focus-within,
+.search-filter-card .filter-dropdown:focus-within,
+.d-flex.align-items-center.ms-md-3:focus-within {
+  border-color: linear-gradient(135deg, #2563eb, #4f46e5);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+/* Minimize action buttons in medicines search table section */
+.card .table .btn,
+.card .table .btn-sm,
+.card .table .btn-warning,
+.card .table .delete {
+  min-width: 1.7rem;
+  width: 1.9rem;
+  height: 1.9rem;
+  padding: 0.2rem 0.3rem;
+  font-size: 0.9rem;
+  border-radius: 7px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.1rem;
+}
+
+/* Minimize icon size inside buttons */
+.card .table .btn i,
+.card .table .delete i {
+  font-size: 1rem;
 }

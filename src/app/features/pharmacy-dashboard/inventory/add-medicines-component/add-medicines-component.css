@@ -655,12 +655,12 @@
   }
 }
 
-.table thead.bg-primary {
-  background-color: var(--primary-blue-light) !important;
+.table thead {
+  background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-blue-dark) 100%) !important;
 }
 
-.table thead.bg-primary th {
-  background-color: var(--primary-blue-light) !important;
+.table thead th {
+  background: linear-gradient(135deg, var(--primary-blue-light) 0%, var(--primary-blue-light) 100%) !important;
   color: #fff !important;
 }
 
@@ -695,8 +695,117 @@
 }
 
 /* Add shadow to modal table header */
-.modal-content .table thead.bg-primary {
+.modal-content .table thead {
   box-shadow: 0 4px 24px rgba(13, 110, 253, 0.15);
   position: relative;
   z-index: 1;
+}
+
+/* Modal request: gradient background and compact width */
+#requestAdminModal .modal-dialog {
+  max-width: 600px;
+  width: 98vw;
+  margin: 1.2rem auto;
+}
+
+/* Modal request: off-white background, dark text, and shadowed elements */
+#requestAdminModal .modal-content {
+  background: #f9fafb !important;
+  /* Off-white background */
+  border-radius: 18px;
+  box-shadow: 0 6px 32px rgba(37, 99, 235, 0.13), 0 2px 8px rgba(0, 0, 0, 0.10);
+  color: #222;
+  /* Dark text */
+  padding: 1.2rem 1.5rem;
+}
+
+#requestAdminModal .modal-header,
+#requestAdminModal .modal-footer {
+  border: none;
+  background: transparent;
+  padding-bottom: 0.5rem;
+}
+
+#requestAdminModal .modal-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #222;
+}
+
+#requestAdminModal .form-label {
+  font-size: 0.98rem;
+  font-weight: 500;
+  color: #222;
+  margin-bottom: 0;
+  margin-right: 12px;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+}
+
+#requestAdminModal .mb-3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 1rem;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.08);
+  padding: 0.5rem 0.7rem;
+}
+
+#requestAdminModal .form-control {
+  width: 100%;
+  min-width: 0;
+  font-size: 1.1rem;
+  padding: 0.8rem 1.2rem;
+  box-sizing: border-box;
+  border-radius: 8px;
+  font-size: 1rem;
+  padding: 0.6rem 1rem;
+  border: 1.5px solid #d1d5db;
+  background: #fff;
+  color: #222;
+  box-shadow: 0 1px 4px rgba(37, 99, 235, 0.07);
+  transition: border-color 0.2s, background 0.2s;
+}
+
+#requestAdminModal .form-control:focus {
+  border-color: var(--primary-blue-light);
+  background: #f3f4f6;
+  color: #222;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.13);
+}
+
+#requestAdminModal .submit-button {
+  background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-blue-dark) 100%) !important;
+  color: #fff !important;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 0.5rem 1.2rem;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.10);
+  opacity: 1 !important;
+  filter: none !important;
+}
+
+#requestAdminModal .submit-button:hover {
+  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.18);
+}
+
+.modal-footer .btn.submit-button {
+  background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-blue-dark) 100%) !important;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 0.5rem 1.2rem;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.10);
+  transition: box-shadow 0.2s;
+}
+
+.modal-footer .btn.submit-button:hover {
+  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.18);
 }
