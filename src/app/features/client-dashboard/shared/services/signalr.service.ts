@@ -1,5 +1,8 @@
-import { computed, Injectable, signal } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
 import * as signalR from '@microsoft/signalr';
+import { HttpClient } from '@angular/common/http';
+import { APP_CONSTANTS } from '../../../../shared/constants/app.constants';
+import { ConfigService } from '../../../../shared/services/config.service';
 
 @Injectable({
   providedIn: 'root'
@@ -9,6 +12,9 @@ export class SignalrService {
   showPopup = false;
   notificationMessage: string = '';
   notifications = signal<any[]>([]);
+  config = inject(ConfigService);
+  endPoint = APP_CONSTANTS.API.ENDPOINTS;
+  http = inject(HttpClient)
 
   unreadCount = computed(() =>
     this.notifications().filter(n => !n.read).length
@@ -34,12 +40,6 @@ export class SignalrService {
       .withAutomaticReconnect()
       .build();
 
-    // this.connection.on('ReceiveNotification', (payload: any) => {
-    //   console.log('Notification:', payload);
-    //   this.notificationMessage = payload.message;
-    //   this.showPopup = true;
-    // });
-
     this.connection
       .start()
       .then(() => console.log('Notification hub connected'))
@@ -53,38 +53,34 @@ export class SignalrService {
     }
   }
 
-  addNotification(payload: any) {
-    const newNotif = {
-      title: 'Order Update',
-      message: payload.message,
-      status: payload.status || 'info',
-      timestamp: new Date(),
-      read: false
-    };
-
-    this.notifications.update(n => [newNotif, ...n].slice(0, 50));
-    localStorage.setItem('notifications', JSON.stringify(this.notifications));
-  }
-
-
-  loadNotificationsFromStorage() {
-    const saved = localStorage.getItem('notifications');
-    if (saved) {
-      this.notifications.set(JSON.parse(saved));
-    }
+  loadNotificationsFromApi() {
+    this.http.get<any[]>(this.config.getApiUrl('notifications/notifications'))
+      .subscribe({
+        next: (res) => {
+        const mapped = res.map(n => ({
+          ...n,
+          title: 'Order Update',
+          read: n.isRead
+        }));
+        this.notifications.set(mapped);
+        console.log(this.notifications());
+      },
+        error: (err) => {
+          console.error('Error loading notifications:', err);
+        }
+      });
   }
 
   markAllAsRead() {
-    this.notifications.update(n =>
-      n.map(notif => ({ ...notif, read: true }))
-    );
-    localStorage.setItem('notifications', JSON.stringify(this.notifications()));
-  }
-
-  clearNotifications() {
-    this.notifications.set([]);
-    localStorage.removeItem('notifications');
-  }
-
+  this.http.post(this.config.getApiUrl('notifications/markAllAsRead'), {})
+    .subscribe({
+      next: () => {
+      const updated = this.notifications().map(n => ({ ...n, isRead: true }));
+      this.notifications.set(updated);
+      this.loadNotificationsFromApi();
+    },
+      error: err => console.error('Error marking as read:', err)
+    });
+}
 
 }

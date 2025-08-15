@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '../../../../../shared/services/auth.service';
 import { CartStore } from '../../../Cart/Services/cart-store';
-import { Subscription } from 'rxjs';
 import { ProfileService } from '../../../profile/services/profile-service';
 import { SignalrService } from '../../services/signalr.service';
 
@@ -14,8 +13,8 @@ import { SignalrService } from '../../services/signalr.service';
   templateUrl: './navbar.html',
   styleUrl: './navbar.css',
 })
-export class Navbar {
-  public signalrService = inject(SignalrService)
+export class Navbar implements OnInit {
+  public signalrService = inject(SignalrService);
   private authService = inject(AuthService);
   private profileService = inject(ProfileService);
   switchTab(tab: string) {
@@ -45,4 +44,9 @@ export class Navbar {
   }
 
   LoggedUserName = computed(() => this.authService.user()?.userName);
+
+  ngOnInit(): void {
+    this.signalrService.loadNotificationsFromApi();
+    this.signalrService.startConnection();
+  }
 }

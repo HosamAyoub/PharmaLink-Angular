@@ -15,22 +15,24 @@ export class StatusChangeComponent implements OnInit, OnDestroy {
   ordersHistoryService = inject(PatientOrdersService)
   ngOnInit() {
     this.signalrService.startConnection();
-    this.signalrService.loadNotificationsFromStorage();
+    this.signalrService.loadNotificationsFromApi();
     this.subscribeToNewOrders()
     this.cd.detectChanges();
   }
 
-  
+
 
   private subscribeToNewOrders() {
     this.signalrService.connection.on('ReceiveNotification', (payload: any) => {
       console.log('Notification:', payload);
       this.signalrService.notificationMessage = payload.message;
       this.signalrService.showPopup = true;
-      this.signalrService.addNotification(payload);
       this.playSound();
-      
-    this.ordersHistoryService.loadPatientOrders();
+
+      this.signalrService.loadNotificationsFromApi();
+      this.cd.detectChanges();
+
+      this.ordersHistoryService.loadPatientOrders();
       this.cd.detectChanges();
 
       setTimeout(() => {
@@ -40,7 +42,7 @@ export class StatusChangeComponent implements OnInit, OnDestroy {
     });
   }
 
- private playSound() {
+  private playSound() {
     const audio = new Audio();
     audio.src = 'assets/notification.mp3';
     audio.play().catch(err => {
