@@ -16,13 +16,13 @@ export class StatusChangeComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.signalrService.startConnection();
     this.signalrService.loadNotificationsFromApi();
-    this.subscribeToNewOrders()
+    this.subscribeToNewOrderStatus()
     this.cd.detectChanges();
   }
 
 
 
-  private subscribeToNewOrders() {
+  private subscribeToNewOrderStatus() {
     this.signalrService.connection.on('ReceiveNotification', (payload: any) => {
       console.log('Notification:', payload);
       this.signalrService.notificationMessage = payload.message;

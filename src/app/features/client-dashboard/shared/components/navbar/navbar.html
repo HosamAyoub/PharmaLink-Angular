@@ -173,21 +173,42 @@
             </a>
           </li>
 
-          <!-- Notifications Dropdown -->
+          <!-- Notifications Icon -->
           <li class="nav-item dropdown me-3 me-lg-3 mb-2 mb-lg-0 p-2">
-            <a class="nav-link p-2 position-relative d-flex align-items-center justify-content-center" href="#"
-              role="button" data-bs-toggle="dropdown" aria-expanded="false" title="Notifications"
-              (click)="signalrService.markAllAsRead()">
-              <img src="assets/images/icons/notification.svg" alt="Notifications" class="me-2 me-lg-0" />
-              <span class="d-lg-none">Notifications</span>
-              <!-- Badge showing number of notifications -->
-              @if(signalrService.unreadCount() > 0){
-              <span class="position-absolute badge rounded-pill bg-danger text-white" style="font-size: 0.7rem; top: -2px; right: -2px; min-width: 18px;
-              height: 18px; display: flex; align-items: center; justify-content: center;">{{
-                signalrService.unreadCount()}}
+            <a
+              class="nav-link p-2 position-relative d-flex align-items-center justify-content-center"
+              data-bs-toggle="dropdown"
+              href="#"
+              role="button"
+              aria-expanded="false"
+              title="Notifications"
+              (click)="signalrService.markAllAsRead()"
+            >
+              <img
+                src="assets/images/icons/notification.svg"
+                alt="Notifications"
+                class="me-2 me-lg-0"
+              />
+               @if(signalrService.unreadCount() > 0){
+              <span
+                class="position-absolute badge rounded-pill bg-warning"
+                style="
+                  font-size: 0.6rem;
+                  top: -2px;
+                  right: -2px;
+                  min-width: 18px;
+                  height: 18px;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                "
+              >
+                {{signalrService.unreadCount()}}
               </span>
-              }
+            }
+              <span class="d-lg-none">Notifications</span>
             </a>
+
             <!-- Dropdown Menu -->
             <div class="dropdown-menu dropdown-menu-end p-0" style="width: 350px;">
               <!-- Header -->
@@ -196,12 +217,12 @@
               </div>
               <!-- List -->
               <div class="notifications-list">
-                @if(signalrService.notifications().length === 0){
+                @if(signalrService.patientNotifications().length === 0){
                   <div class="text-center text-muted py-3">
                   No notifications
                 </div>
                 }
-                @for(notif of signalrService.notifications(); track $index){
+                @for(notif of signalrService.patientNotifications(); track $index){
                   <div class="notification-item d-flex align-items-start gap-3" [class.unread]="!notif.read">
                   <!-- Icon -->
                   <div class="icon">

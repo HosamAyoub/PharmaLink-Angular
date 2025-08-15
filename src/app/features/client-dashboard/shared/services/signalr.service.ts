@@ -11,13 +11,13 @@ export class SignalrService {
   public connection!: signalR.HubConnection;
   showPopup = false;
   notificationMessage: string = '';
-  notifications = signal<any[]>([]);
+  patientNotifications = signal<any[]>([]);
   config = inject(ConfigService);
   endPoint = APP_CONSTANTS.API.ENDPOINTS;
   http = inject(HttpClient)
 
   unreadCount = computed(() =>
-    this.notifications().filter(n => !n.read).length
+    this.patientNotifications().filter(n => !n.read).length
   );
   startConnection() {
     const userData = localStorage.getItem('userData');
@@ -57,14 +57,14 @@ export class SignalrService {
     this.http.get<any[]>(this.config.getApiUrl('notifications/notifications'))
       .subscribe({
         next: (res) => {
-        const mapped = res.map(n => ({
-          ...n,
-          title: 'Order Update',
-          read: n.isRead
-        }));
-        this.notifications.set(mapped);
-        console.log(this.notifications());
-      },
+          const mapped = res.map(n => ({
+            ...n,
+            title: 'Order Update',
+            read: n.isRead
+          }));
+          this.patientNotifications.set(mapped);
+          console.log(this.patientNotifications());
+        },
         error: (err) => {
           console.error('Error loading notifications:', err);
         }
@@ -72,15 +72,16 @@ export class SignalrService {
   }
 
   markAllAsRead() {
-  this.http.post(this.config.getApiUrl('notifications/markAllAsRead'), {})
-    .subscribe({
-      next: () => {
-      const updated = this.notifications().map(n => ({ ...n, isRead: true }));
-      this.notifications.set(updated);
-      this.loadNotificationsFromApi();
-    },
-      error: err => console.error('Error marking as read:', err)
-    });
-}
+    this.http.post(this.config.getApiUrl('notifications/markAllAsRead'), {})
+      .subscribe({
+        next: () => {
+          const updated = this.patientNotifications().map(n => ({ ...n, isRead: true }));
+          this.patientNotifications.set(updated);
+          this.loadNotificationsFromApi();
+        },
+        error: err => console.error('Error marking as read:', err)
+      });
+  }
 
+  
 }
