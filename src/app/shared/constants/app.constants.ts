@@ -15,6 +15,7 @@ export const APP_CONSTANTS = {
       PHARMACYSTOCK_SEARCH_ALL: 'PharmacyStock/SearchFor',
       SEARCH: 'search',
       ACCOUNT_REGISTER: 'Account/Register',
+      PHARMACY_REGISTER: 'Account/RegisterPharmacy',
       ACCOUNT_LOGIN: 'Account/Login',
       ACCOUNT_VERIFY_TOKEN: 'Account/VerifyToken',
       DRUG_CATEGORY: 'Drug/Category',

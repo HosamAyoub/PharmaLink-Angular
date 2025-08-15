@@ -66,7 +66,7 @@ export class PharmacyManagementComponent implements OnInit, OnChanges {
       );
       const displayPharmacy: PharmacyDisplayData = {
         ...pharmacy,
-        license: `LIC-2023-${String(pharmacy.pharmacyID).padStart(3, '0')}`,
+        license: `LIC-2025-${String(pharmacy.pharmacyID).padStart(3, '0')}`,
         totalOrders: summary?.totalOrders || 0,
         totalRevenue: summary?.totalRevenue || 0,
         totalMedicineInStock: summary?.totalMedicineInStock || 0
@@ -147,19 +147,19 @@ export class PharmacyManagementComponent implements OnInit, OnChanges {
 
   this.pharmacyService.suspendPharmacy(pharmacyId).pipe(
     switchMap((suspendResponse) => {
-      console.log('Suspend response:', suspendResponse);
+      //console.log('Suspend response:', suspendResponse);
       return this.pharmacyService.changePharmacyUserRole(pharmacyId, 'Suspended');
     })
   ).subscribe({
     next: (roleChangeResponse) => {
-      console.log('Role change response:', roleChangeResponse);
+      //console.log('Role change response:', roleChangeResponse);
       // Update the local state immediately for better UX
       pharmacy.status = 0; // Assuming 0 is suspended status
       this.reloadData();
       this.closeModal();
     },
     error: (error) => {
-      console.error(`Error: ${error.status}, ${error.error}`);
+      //console.error(`Error: ${error.status}, ${error.error}`);
       this.isLoading = false;
     },
     complete: () => {
