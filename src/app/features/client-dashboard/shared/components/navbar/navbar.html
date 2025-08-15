@@ -174,17 +174,22 @@
           </li>
 
           <!-- Notifications Icon -->
-          <li class="nav-item me-3 me-lg-3 mb-2 mb-lg-0 p-2">
+          <li class="nav-item dropdown me-3 me-lg-3 mb-2 mb-lg-0 p-2">
             <a
               class="nav-link p-2 position-relative d-flex align-items-center justify-content-center"
-              data-bs-toggle="tooltip"
+              data-bs-toggle="dropdown"
+              href="#"
+              role="button"
+              aria-expanded="false"
               title="Notifications"
+              (click)="signalrService.markAllAsRead()"
             >
               <img
                 src="assets/images/icons/notification.svg"
                 alt="Notifications"
                 class="me-2 me-lg-0"
               />
+               @if(signalrService.unreadCount() > 0){
               <span
                 class="position-absolute badge rounded-pill bg-warning"
                 style="
@@ -198,10 +203,49 @@
                   justify-content: center;
                 "
               >
-                2
+                {{signalrService.unreadCount()}}
               </span>
+            }
               <span class="d-lg-none">Notifications</span>
             </a>
+
+            <!-- Dropdown Menu -->
+            <div class="dropdown-menu dropdown-menu-end p-0" style="width: 350px;">
+              <!-- Header -->
+              <div class="d-flex justify-content-between align-items-center px-3 py-2 border-bottom">
+                <span class="fw-bold">Notifications</span>
+              </div>
+              <!-- List -->
+              <div class="notifications-list">
+                @if(signalrService.patientNotifications().length === 0){
+                  <div class="text-center text-muted py-3">
+                  No notifications
+                </div>
+                }
+                @for(notif of signalrService.patientNotifications(); track $index){
+                  <div class="notification-item d-flex align-items-start gap-3" [class.unread]="!notif.read">
+                  <!-- Icon -->
+                  <div class="icon">
+                    @if(notif.status === 'OutForDelivery'){
+                      <i class="bi bi-check-circle-fill text-success"></i>
+                    } @else if(notif.status === 'Pending'){
+                      <i class="bi bi-exclamation-triangle-fill text-warning"></i>
+                    } @else if(notif.status === 'Rejected'){
+                      <i class="bi bi-x-circle-fill text-danger"></i>
+                    } @else {
+                      <i class="bi bi-bell-fill text-primary"></i>
+                    }
+                  </div>
+                  <!-- Content -->
+                  <div class="content" routerLink="profile" (click)="switchTab('orders')">
+                    <div class="title">{{ notif.title }}</div>
+                    <div class="time">{{ notif.timestamp | date:'short' }}</div>
+                    <div class="message">{{ notif.message }}</div>
+                  </div>
+                </div>
+                }
+              </div>
+            </div>
           </li>
 
           <!-- Profile Dropdown -->

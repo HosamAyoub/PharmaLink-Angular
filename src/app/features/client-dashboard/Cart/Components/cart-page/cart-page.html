@@ -187,3 +187,25 @@
   </div>
 </div>
 }
+
+<div class="modal fade" id="stockLimitModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content shadow-lg rounded-4 border-0">
+      <div class="modal-header bg-light border-0">
+        <div class="d-flex align-items-center">
+          <i class="bi bi-exclamation-circle-fill text-warning-custom fs-3 me-2"></i>
+          <h5 class="modal-title fw-semibold text-dark m-0">Stock Limit Reached</h5>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body text-secondary fs-6">
+        {{ cartStore.modalMessage }}
+      </div>
+      <div class="modal-footer border-0">
+        <button type="button" class="btn  bg-warning-custom rounded-pill px-4" data-bs-dismiss="modal">
+          OK
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

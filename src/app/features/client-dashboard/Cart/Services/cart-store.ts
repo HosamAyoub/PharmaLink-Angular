@@ -24,9 +24,10 @@ export class CartStore {
   orderSummary = signal<OrderSummary | null>(null);
   public isLoading = signal<boolean>(false);
   toastService = inject(ToastService);
+  modalMessage: string = '';
 
 
-  constructor(private cartService: CartService, private http: HttpClient, private router: Router, private config: ConfigService) { 
+  constructor(private cartService: CartService, private http: HttpClient, private router: Router, private config: ConfigService) {
     // Initialize cart on service creation
     this.loadCart();
   }
@@ -39,7 +40,7 @@ export class CartStore {
         this.cartItems.set(data);
         // get summery 
         this.getOrderSummary();
-        
+
         // Calculate totals manually for both authenticated and non-authenticated users
         this.calculateTotals();
       },
@@ -71,9 +72,9 @@ export class CartStore {
       }
     });
   }
-  
 
- 
+
+
   // Calculate totals for cart items
   private calculateTotals() {
     const items = this.cartItems();
@@ -101,7 +102,7 @@ export class CartStore {
    * Call this method when user successfully logs in
    */
   syncCartAfterLogin(): void {
-     
+
     this.cartService.syncCartAfterLogin().subscribe({
       next: () => {
         // Reload cart from database after sync
@@ -152,7 +153,7 @@ export class CartStore {
       });
     });
   }
-  
+
   // Actions
   increment(item: CartItem) {
     const dto: CartUpdateDto = {
@@ -160,11 +161,27 @@ export class CartStore {
       pharmacyId: item.pharmacyId,
       quantity: 1 // Always increment by 1
     };
-      this.cartService.incrementItem(dto).subscribe({
-        next: () => this.loadCart(),
-        error: (err: any) => console.error('Increment error:', err)
-      });
+    this.cartService.incrementItem(dto).subscribe({
+      next: () => this.loadCart(),
+      error: (err: any) => {
+        if (err.error?.type === 'StockLimitExceeded') {
+          this.showStockLimitModal(err.error.message);
+        } else {
+          console.error('Increment error:', err)
+        }
+      }
+    });
+  }
+
+  showStockLimitModal(message: string) {
+    this.modalMessage = message;
+    const modalElement = document.getElementById('stockLimitModal');
+    if (modalElement) {
+      const modal = new bootstrap.Modal(modalElement);
+      modal.show();
     }
+  }
+
 
   decrement(item: CartItem) {
     const dto: CartUpdateDto = {
@@ -173,15 +190,15 @@ export class CartStore {
       quantity: 1 // Always decrement by 1
     };
 
-      if (item.quantity === 1) {
-        // Remove item if quantity becomes 0
-        this.remove(item);
-      } else {
-        this.cartService.decrementItem(dto).subscribe({
-          next: () => this.loadCart(),
-          error: (err: any) => console.error('Decrement error:', err)
-        });
-      }
+    if (item.quantity === 1) {
+      // Remove item if quantity becomes 0
+      this.remove(item);
+    } else {
+      this.cartService.decrementItem(dto).subscribe({
+        next: () => this.loadCart(),
+        error: (err: any) => console.error('Decrement error:', err)
+      });
+    }
   }
 
 
@@ -298,8 +315,12 @@ export class CartStore {
         this.isLoading.set(false);
       },
       error: (err) => {
-        console.error('Order submission failed', err);
-        alert("Order submission failed");
+        if (err.error?.errorType === 'Validation') {
+          this.showStockLimitModal(err.error.message);
+        } else {
+          console.error('Order submission failed', err);
+          alert("Order submission failed");
+        }
         this.isLoading.set(false);
       }
 
