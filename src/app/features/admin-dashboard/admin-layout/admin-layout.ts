@@ -14,4 +14,6 @@ export class AdminLayout {
   toggleSidebar() {
     this.isSidebarOpen = !this.isSidebarOpen;
   }
+
+  
 }

@@ -69,11 +69,11 @@
             <tr *ngFor="let req of DrugsReq" class="border-bottom">
               <!-- Name -->
               <td class="px-2 py-1 fw-semibold text-dark">
-                {{ req.drugRequests.commonName }}
+                {{ req.newDrug.commonName }}
               </td>
               <!-- Active Ingredient -->
               <td class="px-1 py-1">
-                <span class="text-muted small">{{ req.drugRequests.activeIngredient }}</span>
+                <span class="text-muted small">{{ req.newDrug.activeIngredient }}</span>
               </td>
               <!-- Pharmacy Name -->
               <td class="px-1 py-1">
@@ -84,12 +84,12 @@
                 <div class="d-flex gap-2">
                   <button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#medicineModal"
                   style="min-width: 5rem; width: 5rem; height: 1.9rem; padding: 0.2rem 0.3rem; font-size: 0.9rem; border-radius: 7px;"
-                  (click)="openModal(req.drugRequests, true)">
+                  (click)="openModal(req.newDrug, true)">
                     <span>Accept</span>
                   </button>
                   <button class="btn btn-sm btn-danger" 
                   style="min-width: 5rem; width: 5rem; height: 1.9rem; padding: 0.2rem 0.3rem; font-size: 0.9rem; border-radius: 7px;"
-                  (click)="rejectRequest(req.drugRequests.drugID)">
+                  (click)="rejectRequest(req)">
                     Reject
                   </button>
                 </div>

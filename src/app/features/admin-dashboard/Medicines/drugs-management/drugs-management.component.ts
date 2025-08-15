@@ -7,6 +7,7 @@ import { IDrugDetails } from '../../../client-dashboard/Details/model/IDrugDetia
 import { FirstWordPipe } from './Pipes/first-word.pipe';
 import { AdminService } from './Services/admin.service';
 import { FormsModule } from '@angular/forms';
+import { AdminSignalRService } from '../../Shared/admin-signal-r.service';
 
 interface ResponseStatus {
   approved: number;
@@ -38,6 +39,7 @@ export class DrugsManagementComponent {
   @ViewChild('searchInput') searchInput!: ElementRef;
   Status: ResponseStatus = {} as ResponseStatus;
   Active_Pharmacies: number = 0;
+  AdminSignalRService: AdminSignalRService = inject(AdminSignalRService);
 
   constructor(private cd: ChangeDetectorRef) { }
 
@@ -45,6 +47,10 @@ export class DrugsManagementComponent {
     // load inventory stats
     this.getStatus();
     this.getActivePharmacies();
+    this.AdminSignalRService.startConnection();
+    this.AdminSignalRService.receiveRequestsFromPharmacy().subscribe(() => {
+      this.getStatus();
+    });
   }
 
   getStatus() {
@@ -121,22 +127,28 @@ export class DrugsManagementComponent {
     this.loadMedicines(this.searchInput.nativeElement.value);
   }
 
-  rejectRequest(reqID: number) {
-    this.adminService.deleteDrug(reqID).subscribe({
+  rejectRequest(req: any) {
+    this.adminService.deleteDrug(req.newDrug.drugID).subscribe({
       next: () => {
         // Handle successful deletion
-        this.DrugsReq = this.DrugsReq.filter(r => r !== reqID);
+        this.DrugsReq = this.DrugsReq.filter(r => r !== req.newDrug.drugID);
         this.getStatus();
       },
       error: (err) => {
-        // Handle error
         console.error('Error deleting drug request:', err);
       }
+    });
+
+    console.log(req.pharmacy);
+    this.AdminSignalRService.sendRejectionToPharmacy(req.pharmacy.pharmacy_Id.toString(), "Request rejected").then(() => {
+      console.log("Rejection sent to pharmacy");
+      this.cd.detectChanges();
     });
   }
 
   acceptRequest(req: IDrugDetails) {
     this.selectedMedicine = req;
+    this.AdminSignalRService.sendAcceptanceToAll("Request accepted");
   }
 
   openModal(medicine: IDrugDetails, editMode: boolean) {
