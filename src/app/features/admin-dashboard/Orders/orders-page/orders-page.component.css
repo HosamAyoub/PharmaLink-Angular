@@ -90,6 +90,11 @@
   color: var(--blue-navbar) !important;
 }
 
+.bg-blue-navbar {
+  background-color: var(--blue-navbar) !important;
+}
+
+
 .bg-warning-light {
   background-color: var(--warning-yellow-light) !important;
 }
