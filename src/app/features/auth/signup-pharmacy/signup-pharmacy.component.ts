@@ -4,6 +4,7 @@ import { Router, RouterLink } from '@angular/router';
 import { FormsModule, NgForm } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { LoadingSpinner } from '../../../shared/components/loading-spinner/loading-spinner';
+import { RequestsSignalRService } from '../../pharmacy-dashboard/Shared/Services/requests-signal-r.service';
 
 @Component({
   selector: 'app-signup-pharmacy',
@@ -13,9 +14,15 @@ import { LoadingSpinner } from '../../../shared/components/loading-spinner/loadi
   styleUrl: './signup-pharmacy.component.css'
 })
 export class SignupPharmacyComponent {
+  requestsignalrservice: RequestsSignalRService = inject(RequestsSignalRService);
   isLoading = signal(false);
   displayedError = '';
   acceptedTerms = false;
+
+
+  ngOnInit() {
+    this.requestsignalrservice.startConnection();
+  }
 
   // Model for pharmacy registration
   formModel: any = {
@@ -293,7 +300,15 @@ export class SignupPharmacyComponent {
           formData.append('pharmacy.endHour', this.formModel.pharmacy.endHour);
         }
 
-        result = await this.authService.signUpPharmacy(formData).toPromise();
+        result = await this.authService.signUpPharmacy(formData).subscribe({
+          next: (response) => {
+            console.log('Pharmacy registration successful:', response);
+            this.requestsignalrservice.sendRegistrationRequest(response);
+          },
+          error: (error) => {
+            console.error('Pharmacy registration failed:', error);
+          }
+        });
       } else {
         // Without file - use JSON
         const signUpData = {

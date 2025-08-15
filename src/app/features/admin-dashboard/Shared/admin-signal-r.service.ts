@@ -20,7 +20,7 @@ export class AdminSignalRService {
       .configureLogging(signalR.LogLevel.Information)
       .build();
 
-      this.hubConnection.onreconnecting(err => {
+    this.hubConnection.onreconnecting(err => {
       console.warn("SignalR reconnecting...", err);
     });
 
@@ -32,21 +32,31 @@ export class AdminSignalRService {
       console.error("SignalR connection closed", err);
     });
 
-    try
-    {
+    try {
       this.hubConnection
-      .start()
-      .then(() => {
-        console.log("Connected to adminHub");
-      })
-      .catch(err => console.error("Error starting connection:", err));
+        .start()
+        .then(() => {
+          console.log("Connected to adminHub");
+        })
+        .catch(err => console.error("Error starting connection:", err));
 
-    this.receiveRequestsFromPharmacy();
+      this.receiveRequestsFromPharmacy();
+      this.newUserRegistration();
     }
     catch (error) {
       console.error("Error starting connection:", error);
     }
-    
+
+  }
+
+
+  newUserRegistration(): Observable<void> {
+    return new Observable((observer) => {
+      this.hubConnection.on('NewUserRegistration', (message) => {
+        console.log('Admin got new user registration:', message);
+        observer.next();
+      });
+    });
   }
 
   sendAcceptanceToAll(message: string) {

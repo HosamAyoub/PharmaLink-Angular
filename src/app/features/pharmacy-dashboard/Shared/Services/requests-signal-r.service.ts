@@ -51,6 +51,11 @@ export class RequestsSignalRService {
       .catch(err => console.error('Error sending drug request:', err));
   }
 
+  sendRegistrationRequest(message: string) {
+    return this.hubConnection.invoke('SendRegistrationRequest', message)
+      .catch(err => console.error('Error sending registration request:', err));
+  }
+
   acceptanceNotification(): void {
     this.hubConnection.on('DrugRequestAccepted', (message) => {
       console.log("your request has been accepted:", message);
