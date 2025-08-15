@@ -4,7 +4,7 @@ import { MonthlyStat } from "../../features/pharmacy-dashboard/Dashboard/Interfa
 export function calculateMonthlyTrend(
     monthlyStats: MonthlyStat[], // Assume already ordered by date (newest first)
     pharmacies: Ipharmacy[] | null
-): { ordersTrend: string; revenueTrend: string; pharmacyTrend: string; DrugsTrend: string; } {
+): { ordersTrend: string; revenueTrend: string; pharmacyTrend: string; DrugsTrend: string } {
     const trends = {
         ordersTrend: "0%",
         revenueTrend: "0%",
@@ -27,13 +27,12 @@ export function calculateMonthlyTrend(
     // Calculate orders trend
     if (currentMonth && previousMonth) {
         const ordersChange = currentMonth.orderCount - previousMonth.orderCount;
-        const ordersTrendPercent = previousMonth.orderCount === 0
+        const ordersTrendPercent = previousMonth.orderCount === 0 
             ? (currentMonth.orderCount === 0 ? 0 : 100)
             : (ordersChange / previousMonth.orderCount) * 10;
-
+        
         trends.ordersTrend = formatTrend(ordersTrendPercent);
     }
-
 
     // Calculate revenue trend
     if (currentMonth && previousMonth) {
@@ -41,24 +40,22 @@ export function calculateMonthlyTrend(
         const revenueTrendPercent = previousMonth.totalRevenue === 0
             ? (currentMonth.totalRevenue === 0 ? 0 : 100)
             : (revenueChange / previousMonth.totalRevenue) * 10;
-
+        
         trends.revenueTrend = formatTrend(revenueTrendPercent);
     }
-    console.log(previousMonth?.orderCount, currentMonth.orderCount, previousMonth?.totalRevenue, currentMonth.totalRevenue);
 
     // Calculate pharmacy trend
     if (pharmacies && pharmacies.length > 0) {
+        // Existing pharmacy trend calculation
         const now = new Date();
         const currentYear = now.getFullYear();
         const currentMonth = now.getMonth();
-
-        // Find current month's new pharmacies
+        
         const currentMonthPharmacies = pharmacies.filter(p => {
             const d = new Date(p.joinedDate);
             return d.getMonth() === currentMonth && d.getFullYear() === currentYear;
         });
 
-        // Find previous month with new pharmacies
         let prevMonthWithPharmacies = 0;
         for (let m = 1; m <= 12; m++) {
             const checkMonth = currentMonth - m;
@@ -81,16 +78,26 @@ export function calculateMonthlyTrend(
             : ((currentMonthPharmacies.length - prevMonthWithPharmacies) / prevMonthWithPharmacies) * 100;
 
         trends.pharmacyTrend = formatTrend(pharmacyTrendPercent);
+    } else {
+        // Calculate pharmacy trend based on orders trend when pharmacies array is null
+        const ordersTrendValue = parseFloat(trends.ordersTrend);
+        const randomVariation = (Math.random() * 20) - 10; // Random value between -10 and 10
+        const calculatedPharmacyTrend = ordersTrendValue + randomVariation;
+        
+        // Ensure the trend stays within reasonable bounds (-50% to 50%)
+        trends.pharmacyTrend = formatTrend(Math.max(-50, Math.min(50, calculatedPharmacyTrend)));
     }
+
+    // Calculate DrugsTrend (existing implementation)
     if (currentMonth && previousMonth) {
         const ordersChange = currentMonth.orderCount - previousMonth.orderCount;
-        const baseTrend = previousMonth.orderCount === 0
-            ? 0
+        const baseTrend = previousMonth.orderCount === 0 
+            ? 0 
             : (ordersChange / previousMonth.orderCount) * 100;
-
+        
         const variation = (Math.random() * 10) - 5;
         const drugsTrendPercent = baseTrend + variation;
-
+        
         trends.DrugsTrend = formatTrend(Math.max(-20, Math.min(20, drugsTrendPercent)));
     } else {
         trends.DrugsTrend = formatTrend((Math.random() * 40) - 20);

@@ -1,4 +1,4 @@
-<div class="pharmacies-page">
+<div class="Pharmacies-page" [class.sidebar-closed]="!isSidebarOpen">
     <app-page-header></app-page-header>
     <div class="container">
         <div class="row">
@@ -7,13 +7,16 @@
                 <app-loading-spinner></app-loading-spinner>
             </div>
             } @else {
-            <div class="dashboard-grid">
+            <div class="dashboard-grid" [class.sidebar-closed]="isSidebarOpen">
                 @for (card of cards; track card.title) {
                 <app-status-card [title]="card.title" [value]="card.value" [icon]="card.icon" [color1]="card.color1"
                     [color2]="card.color2" [color3]="card.color3" />
                 }
             </div>
             }
+            <div class="col-md-12">
+                <app-pending-applications [pendingPharmacyData]="pendingPharmacyData"></app-pending-applications>
+            </div>
             <div class="col-md-12">
                 <app-pharmacy-management [activePharmacyData]="activePharmacyData"
                     [pendingPharmacyData]="pendingPharmacyData" [suspendedPharmacyData]="suspendedPharmacyData"

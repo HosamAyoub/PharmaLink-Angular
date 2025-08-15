@@ -8,3 +8,6 @@
     color: var(--text-muted);
     font-weight: 400;
 }
+.pharmacy-header{
+  margin-left: 25px;
+}

@@ -12,6 +12,7 @@ import { MonthlyPerformanceComponent } from '../Components/monthly-performance/m
 import { AdminAnalysisInterface } from '../Interface/admin-analysis-interface';
 import { PharmaciesSummaryComponent } from '../Components/pharmacies-summary/pharmacies-summary.component';
 import { RecentActivity } from '../../../pharmacy-dashboard/Dashboard/Components/recent-activity/recent-activity';
+import { SidebarStateServiceService } from '../../Shared/sidebar-state-service.service';
 
 @Component({
   selector: 'app-dashboard-page',
@@ -37,9 +38,14 @@ export class DashboardPageComponent implements OnInit {
     pharmacyTrend: '0%',
     DrugsTrend: '0%'
   };
-  constructor(private adminAnalysisService: AdminAnalysisServiceService, private cdr: ChangeDetectorRef, private pharmacyService: PharmacyService) { }
+  isSidebarOpen = true;
+  constructor(private adminAnalysisService: AdminAnalysisServiceService, private cdr: ChangeDetectorRef, private pharmacyService: PharmacyService, private sidebarService: SidebarStateServiceService) { }
 
   ngOnInit(): void {
+    this.sidebarService.isOpen$.subscribe(isOpen => {
+      this.isSidebarOpen = isOpen;
+      this.cdr.detectChanges(); // Trigger change detection
+    });
     this.loadAnalysisData();
     this.loadPharmacyData();
     this.loadPharmacySummary();

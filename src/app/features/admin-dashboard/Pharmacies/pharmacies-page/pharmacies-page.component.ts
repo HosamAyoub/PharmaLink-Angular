@@ -7,11 +7,13 @@ import { AdminAnalysisInterface } from '../../Dashboard/Interface/admin-analysis
 import { AdminAnalysisServiceService } from '../../Dashboard/Services/admin-analysis-service.service';
 import { PharmacyService } from '../../../client-dashboard/Pharmacies/Service/pharmacy-service';
 import { PharmacyManagementComponent } from '../Components/pharmacy-management/pharmacy-management.component';
+import { SidebarStateServiceService } from '../../Shared/sidebar-state-service.service';
+import { PendingApplicationsComponent } from '../Components/pending-applications/pending-applications.component';
 
 @Component({
   selector: 'app-pharmacies-page',
   standalone: true,
-  imports: [PageHeaderComponent, LoadingSpinner, StatusCardComponent,PharmacyManagementComponent],
+  imports: [PageHeaderComponent, LoadingSpinner, StatusCardComponent,PharmacyManagementComponent,PendingApplicationsComponent],
   templateUrl: './pharmacies-page.component.html',
   styleUrl: './pharmacies-page.component.css'
 })
@@ -23,9 +25,14 @@ export class PharmaciesPageComponent implements OnInit{
   protected pharmaciesData: AdminAnalysisInterface | null = null;
   protected errorMessage: string | null = null;
   protected loading: boolean = true;
+  isSidebarOpen = true;
 
-    constructor(private adminAnalysisService: AdminAnalysisServiceService, private cdr: ChangeDetectorRef, private pharmacyService: PharmacyService) { }
+    constructor(private adminAnalysisService: AdminAnalysisServiceService, private cdr: ChangeDetectorRef, private pharmacyService: PharmacyService,private sidebarService: SidebarStateServiceService) { }
    ngOnInit(): void {
+    this.sidebarService.isOpen$.subscribe(isOpen => {
+      this.isSidebarOpen = isOpen;
+      this.cdr.detectChanges(); // Trigger change detection
+    });
     this.loadActivePharmacies();
     this.loadPendingPharmacies();
     this.loadSuspendedPharmacies();

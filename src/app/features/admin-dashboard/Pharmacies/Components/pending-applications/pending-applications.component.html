@@ -1,20 +1,9 @@
 <div class="pharmacy-management">
     <!-- Header with Search and Filter -->
     <div class="header-controls">
-        <div class="search-container">
-            <input type="text" placeholder="Search pharmacies..." [(ngModel)]="searchTerm" (input)="onSearch()"
-                class="search-input">
-            <i class="search-icon"><i class="fa-brands fa-searchengin"></i></i>
-        </div>
-
-        <div class="filter-container w-25">
-            <select [(ngModel)]="selectedStatus" (change)="onStatusFilter()" class="status-filter">
-                <option value="all">All Status</option>
-                <option value="active">Active</option>
-                <option value="pending">Pending</option>
-                <option value="suspended">Suspended</option>
-                <option value="rejected">Rejected</option>
-            </select>
+        <div class="card-header">
+            <h4><i class="fa-regular fa-clock" [style.color]="'var(--blue-200)'"></i> Pending Applications</h4>
+            <p [style.color]="'var(--gray-800)'">Recent Registered Pharmacies</p>
         </div>
     </div>
 
@@ -24,13 +13,13 @@
             <div class="header-cell pharmacy-col">PHARMACY</div>
             <div class="header-cell owner-col">OWNER</div>
             <div class="header-cell contact-col">CONTACT</div>
-            <div class="header-cell performance-col">PERFORMANCE</div>
-            <div class="header-cell status-col">STATUS</div>
+            <div class="header-cell performance-col">APPLICATION DATE</div>
+            <div class="header-cell status-col">DOCUMENTS</div>
             <div class="header-cell actions-col">ACTIONS</div>
         </div>
 
         <div class="table-body">
-            @for(pharmacy of filteredPharmacies; track pharmacy.pharmacyID){
+            @for(pharmacy of pendingPharmacyData; track pharmacy.pharmacyID){
             <div class="table-row">
                 <!-- Pharmacy Info -->
                 <div class="cell pharmacy-cell">
@@ -47,7 +36,6 @@
                             </svg>
                             <span class="address">{{ pharmacy.address }}</span>
                         </div>
-                        <div class="license">{{ pharmacy.license }}</div>
                     </div>
                 </div>
 
@@ -60,11 +48,11 @@
                 <div class="cell contact-cell">
                     <div class="contact-info">
                         <div class="contact-item">
-                            <i class="email-icon"><i class="fa-solid fa-envelope"></i></i>
+                            <!-- <i class="email-icon"><i class="fa-solid fa-envelope"></i></i> -->
                             <span>{{ pharmacy.email }}</span>
                         </div>
                         <div class="contact-item">
-                            <i class="phone-icon"><i class="fa-solid fa-phone"></i></i>
+                            <!-- <i class="phone-icon"><i class="fa-solid fa-phone"></i></i> -->
                             <span>{{ pharmacy.phoneNumber }}</span>
                         </div>
                     </div>
@@ -72,41 +60,27 @@
 
                 <!-- Performance -->
                 <div class="cell performance-cell">
-                    <div class="performance-metrics">
-                        <div class="metric-item">
-                            <span class="metric-label">Orders:</span>
-                            <span class="metric-value">{{ pharmacy.totalOrders }}</span>
-                        </div>
-                        <div class="metric-item">
-                            <span class="metric-label">Medicines:</span>
-                            <span class="metric-value">{{ pharmacy.totalMedicineInStock }}</span>
-                        </div>
-                        <div class="d-flex">
-                            <span class="metric-label">Rating:</span>
-                            <span class="metric-value rating">{{ pharmacy.rate || 'N/A' }}</span>
-                            <span *ngIf="pharmacy.rate" class="star">⭐</span>
-                        </div>
-                        <div class="metric-item">
-                            <span class="metric-label">Revenue:</span>
-                            <span class="metric-value">${{ pharmacy.totalRevenue }}</span>
-                        </div>
-                        <div class="metric-item revenue">
-                            <span class="metric-label">Site Profit:</span>
-                            <span class="revenue-amount">${{ (pharmacy.totalRevenue * 0.08).toLocaleString() }}</span>
-                        </div>
-                    </div>
+                    <span>{{pharmacy.joinedDate}}</span>
                 </div>
 
                 <!-- Status -->
                 <div class="cell status-cell">
-                    <span class="status-badge" [ngClass]="getStatusClass(pharmacy.status)">
-                        {{ getStatusText(pharmacy.status) }}
-                    </span>
+                    <div class="document-badge-container">
+                        <a><span class="document-badge" (click)="viewDocument(pharmacy.docURL)">
+                                <i class="fas fa-file-pdf"></i> View Document
+                            </span></a>
+                    </div>
                 </div>
 
                 <!-- Actions -->
                 <div class="cell actions-cell">
                     <div class="action-buttons">
+                        <button class="action-btn activate-btn" (click)="activatePharmacy(pharmacy)" title="Activate">
+                            <i class="fa-regular fa-circle-check"></i>
+                        </button>
+                        <button class="action-btn suspend-btn" (click)="rejectPharmacy(pharmacy)" title="Reject">
+                            <i class="fa-regular fa-circle-xmark"></i>
+                        </button>
                         <button class="action-btn view-btn" (click)="viewDetails(pharmacy)" title="View Details">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
                                 fill="none" stroke="#3B82F6" stroke-width="2" stroke-linecap="round"
@@ -117,23 +91,15 @@
                                 <circle cx="12" cy="12" r="3"></circle>
                             </svg>
                         </button>
-                        <button *ngIf="pharmacy.status === 1 || pharmacy.status === 2" class="action-btn suspend-btn"
-                            (click)="suspendPharmacy(pharmacy)" title="Suspend">
-                            <i class="fa-regular fa-circle-xmark"></i>
-                        </button>
-                        <button *ngIf="pharmacy.status === 3 || pharmacy.status === 0" class="action-btn activate-btn"
-                            (click)="activatePharmacy(pharmacy)" title="Activate">
-                            ✅
-                        </button>
                     </div>
                 </div>
             </div>
             }
         </div>
     </div>
-
+    <app-document-viewer></app-document-viewer>
     <!-- No results message -->
-    <div *ngIf="filteredPharmacies.length === 0" class="no-results">
+    <div *ngIf="pendingPharmacyData?.length === 0" class="no-results">
         <p>No pharmacies found matching your criteria.</p>
     </div>
 </div>
@@ -145,8 +111,8 @@
             <h2>Pharmacy Details - {{ selectedPharmacy?.name }}</h2>
             <button class="close-btn" (click)="closeModal()">✕</button>
         </div>
-
-        <div class="modal-body" *ngIf="selectedPharmacy">
+        @if(selectedPharmacy){
+        <div class="modal-body">
             <div class="details-grid">
                 <!-- Basic Information -->
                 <div class="detail-section">
@@ -158,10 +124,6 @@
                     <div class="detail-item">
                         <label>Owner:</label>
                         <span>{{ selectedPharmacy.ownerName }}</span>
-                    </div>
-                    <div class="detail-item">
-                        <label>License:</label>
-                        <span>{{ selectedPharmacy.license }}</span>
                     </div>
                     <div class="detail-item">
                         <label>Join Date:</label>
@@ -187,48 +149,27 @@
                 </div>
             </div>
 
-            <!-- Performance Metrics -->
-            <div class="performance-section">
-                <h3>Performance Metrics</h3>
-                <div class="metrics-grid">
-                    <div class="metric-card medicines">
-                        <div class="metric-number">{{ selectedPharmacy.totalMedicineInStock }}</div>
-                        <div class="metric-label">Medicines</div>
-                    </div>
-                    <div class="metric-card orders">
-                        <div class="metric-number">{{ selectedPharmacy.totalOrders }}</div>
-                        <div class="metric-label">Orders</div>
-                    </div>
-                    <div class="metric-card rate">
-                        <div class="metric-number">{{ selectedPharmacy.rate || 'N/A' }}</div>
-                        <div class="metric-label">Rating</div>
-                    </div>
-                    <div class="metric-card revenue">
-                        <div class="metric-number">${{ selectedPharmacy.totalRevenue.toLocaleString() }}</div>
-                        <div class="metric-label">Revenue</div>
-                    </div>
-                </div>
-            </div>
+
+
 
             <!-- Status and Actions -->
             <div class="status-section">
                 <div class="current-status">
                     <label>Current Status:</label>
-                    <span class="status-badge" [ngClass]="getStatusClass(selectedPharmacy.status)">
-                        {{ getStatusText(selectedPharmacy.status) }}
+                    <span class="status-badge status-pending">
+                        Pending
                     </span>
                 </div>
                 <div class="modal-actions">
-                    <button *ngIf="selectedPharmacy.status === 1 || selectedPharmacy.status === 2" class="btn btn-danger"
-                        (click)="suspendPharmacy(selectedPharmacy)">
+                    <button class="btn btn-danger" (click)="rejectPharmacy(selectedPharmacy)">
                         Suspend
                     </button>
-                    <button *ngIf="selectedPharmacy.status === 0 || selectedPharmacy.status === 3"
-                        class="btn btn-success" (click)="activatePharmacy(selectedPharmacy)">
+                    <button class="btn btn-success" (click)="activatePharmacy(selectedPharmacy)">
                         Activate
                     </button>
                 </div>
             </div>
         </div>
+        }
     </div>
 </div>

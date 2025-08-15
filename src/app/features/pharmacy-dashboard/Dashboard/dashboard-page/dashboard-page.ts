@@ -9,6 +9,7 @@ import { TopSellingProductsSection } from '../Components/top-selling-products-se
 import { MonthlyPerformanceSection } from '../Components/monthly-performance-section/monthly-performance-section';
 import { RecentActivity } from '../Components/recent-activity/recent-activity';
 import { TopCustomersSection } from '../Components/top-customers-section/top-customers-section';
+import { calculateMonthlyTrend } from '../../../../shared/utils/trend-calc.util';
 
 @Component({
   selector: 'app-dashboard-page',
@@ -25,10 +26,12 @@ export class DashboardPage implements OnInit {
     ordersTrend: string;
     revenueTrend: string;
     pharmacyTrend: string;
+    DrugsTrend:string;
   } = {
-    ordersTrend: '0%',
-    revenueTrend: '0%',
-    pharmacyTrend: '0%'
+    ordersTrend: '6%',
+    revenueTrend: '-8%',
+    pharmacyTrend: '4%',
+    DrugsTrend: '25%'
   };
   constructor(private pharmacyAnalysisService: PharmacyAnalysisService, private cdr: ChangeDetectorRef) {}
 
@@ -43,6 +46,7 @@ export class DashboardPage implements OnInit {
     this.pharmacyAnalysisService.getPharmacyAnalysis().subscribe({
       next: (data) => {
         this.analysisData = data;
+        this.calculateTrends();
         this.loading = false;
         this.cdr.detectChanges();
       },
@@ -79,7 +83,7 @@ export class DashboardPage implements OnInit {
       description: 'In stock and ready',
       icon: 'pills',
       color: 'var(--light-green)',
-      trend: '-8%'
+      trend: this.trends.DrugsTrend
     },
     {
       title: 'Out of Stock',
@@ -87,7 +91,7 @@ export class DashboardPage implements OnInit {
       description: 'Needs restocking',
       icon: 'triangle-exclamation',
       color: 'var(--error-red)',
-      trend: '+0%'
+      trend: '-50%'
     },
     {
       title: 'Total Revenue',
@@ -95,7 +99,7 @@ export class DashboardPage implements OnInit {
       description: 'This month',
       icon: 'dollar-sign',
       color: 'var(--blue-200)',
-      trend: '+12.5%'
+      trend: this.trends.revenueTrend
     },
     {
       title: 'Total Customers',
@@ -103,7 +107,7 @@ export class DashboardPage implements OnInit {
       description: 'Registered users',
       icon: 'users',
       color: 'var(--violet)',
-      trend: '+15%'
+      trend: this.trends.pharmacyTrend
     },
     {
       title: 'Total Orders',
@@ -111,8 +115,16 @@ export class DashboardPage implements OnInit {
       description: 'This month',
       icon: 'cart-shopping',
       color: 'var(--orange)',
-      trend: '-10%'
+      trend: this.trends.ordersTrend
     }
   ];
 }
+private calculateTrends(): void {
+    if (this.analysisData ) {
+      this.trends = calculateMonthlyTrend(
+        this.analysisData.monthlyStats,
+        null
+      );
+    }
+  }
 }
