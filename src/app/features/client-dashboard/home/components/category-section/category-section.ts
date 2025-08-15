@@ -15,6 +15,5 @@ export class CategorySection {
 
   viewAllCategories() {
     // TODO: Navigate to all categories page or implement desired functionality
-    console.log('View all categories clicked');
   }
 }

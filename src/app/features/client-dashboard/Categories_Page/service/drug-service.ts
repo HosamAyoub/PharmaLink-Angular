@@ -17,7 +17,6 @@ export class DrugService {
     const url = this.config.getApiUrl(
       `${this.ENDPOINTS.DRUG_CATEGORY}?Cname=${categoryName}`
     );
-    console.log(url);
 
     return this.http.get<IDrug[]>(url);
   }

@@ -113,7 +113,6 @@ export class ErrorHandling implements OnInit {
 
   contactSupport(): void {
     // Navigate to contact page or open email/chat
-    console.log('Contact support clicked');
     // You can implement your contact logic here
     // this.router.navigate(['/contact']);
   }

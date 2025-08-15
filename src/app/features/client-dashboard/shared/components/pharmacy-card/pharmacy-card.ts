@@ -43,9 +43,6 @@ export class PharmacyCard {
     const startTime = startH * 60 + startM;
     const endTime = endH * 60 + endM;
 
-    console.log('current time: ', currentTime);
-    console.log('start time: ', startTime);
-    console.log('end time: ', endTime);
 
     return currentTime >= startTime && currentTime <= endTime;
   }

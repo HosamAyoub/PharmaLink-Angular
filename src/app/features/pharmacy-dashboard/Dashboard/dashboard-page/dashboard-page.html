@@ -6,10 +6,6 @@
       <div class="loading-spinner">
         <app-loading-spinner></app-loading-spinner>
       </div>
-      } @else if (errorMessage) {
-      <div class="error-message error-alert">
-        {{ errorMessage }}
-      </div>
       } @else {
       <div class="dashboard-grid">
         @for (card of cards; track card.title) {

@@ -9,6 +9,9 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ViewChild } from '@angular/core';
 import { ElementRef } from '@angular/core';
+import { IRequest } from '../Models/irequest';
+
+
 @Component({
   selector: 'app-add-medicines',
   imports: [RouterLink, CommonModule, FormsModule],
@@ -22,6 +25,7 @@ export class AddMedicinesComponent implements OnInit {
   filteredMedicines: IDrugDetails[] = [];
   medicineService: MedicineService = inject(MedicineService);
   drugservice: DrugService = inject(DrugService);
+  requestData: IRequest = {} as IRequest;
 
 
   constructor(private cd: ChangeDetectorRef) {
@@ -53,17 +57,10 @@ export class AddMedicinesComponent implements OnInit {
       this.selectedMedicines = this.selectedMedicines.filter(m => m.drugdetails.drugID !== medicine.drugID);
     }
     else if (!this.medicineService.PharmacyStockList().some(m => m.drugId === medicine.drugID)) {
-      this.selectedMedicines.push({ drugdetails: medicine, quantity: 0, price: 0 });
+      this.selectedMedicines.push({ drugdetails: medicine, quantity: 0, price: 1 });
     }
   }
 
-  onMedicineSelect(medicine: IDrugDetails) {
-    if (this.selectedMedicines.some(m => m.drugdetails.drugID === medicine.drugID)) {
-      this.selectedMedicines.push({ drugdetails: medicine, quantity: 0, price: 0 });
-    } else {
-      this.selectedMedicines = this.selectedMedicines.filter(m => m.drugdetails.drugID !== medicine.drugID);
-    }
-  }
 
   removeMedicine(medicine: IAddToStock) {
     this.selectedMedicines = this.selectedMedicines.filter(m => m.drugdetails.drugID !== medicine.drugdetails.drugID);
@@ -71,10 +68,8 @@ export class AddMedicinesComponent implements OnInit {
 
 
   onAddToStock() {
-    console.log('Adding to stock:', this.selectedMedicines);
     this.medicineService.AddPharmacyStockProduct(this.selectedMedicines).subscribe(
       response => {
-        console.log('Stock added successfully:', response);
         this.selectedMedicines = [];
         this.onSearchChange(this.searchinput.nativeElement.value);
         this.medicineService.updatePharmacyStockList();
@@ -95,4 +90,19 @@ export class AddMedicinesComponent implements OnInit {
     return 0;
   }
 
+
+  sendRequestToAdmin() {
+    if (this.requestData.commonName && this.requestData.activeIngredient) {
+      this.medicineService.sendRequestToAdmin(this.requestData).subscribe(
+        res => {
+          console.log('Request sent successfully:', res);
+          this.requestData = {} as IRequest;
+        },
+        err => {
+          // Optionally show an error message
+          console.error('Error sending request:', err);
+        }
+      );
+    }
+  }
 }

@@ -1,11 +1,17 @@
 import { Component } from '@angular/core';
+import { AdminSideBarComponent } from '../admin-side-bar/admin-side-bar.component';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-admin-layout',
-  imports: [],
+  imports: [AdminSideBarComponent, RouterOutlet],
   templateUrl: './admin-layout.html',
-  styleUrl: './admin-layout.css'
+  styleUrls: ['./admin-layout.css']
 })
 export class AdminLayout {
+  isSidebarOpen = true;
 
+  toggleSidebar() {
+    this.isSidebarOpen = !this.isSidebarOpen;
+  }
 }

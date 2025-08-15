@@ -6,22 +6,24 @@ import { Observable } from 'rxjs';
 import { IDrugDetails } from '../../../client-dashboard/Details/model/IDrugDetials';
 import { IAddToStock } from './../Models/iadd-to-stock';
 import { jwtDecode } from 'jwt-decode';
-import { IPharmaProduct } from './../Models/ipharma-product';
+import { IPharmaProductDetails } from '../Models/ipharma-product-details';
+import { IPharmacyproduct } from '../Models/ipharmacyproduct';
+import { ProductStatus } from '../../../../shared/enums/product-status-enum';
+import { IRequest } from '../Models/irequest';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MedicineService {
   private ENDPOINTS = APP_CONSTANTS.API.ENDPOINTS;
-  PharmacyStockList = signal<IPharmaProduct[]>([]);
+  PharmacyStockList = signal<IPharmaProductDetails[]>([]);
   private accountId: number = 0;
 
-  constructor(private http: HttpClient, private config: ConfigService) 
-  {
+  constructor(private http: HttpClient, private config: ConfigService) {
     this.getUserDataFromToken();
   }
 
-   getUserDataFromToken() {
+  getUserDataFromToken() {
     const userDataString = localStorage.getItem('userData');
     if (!userDataString) {
       return;
@@ -48,22 +50,16 @@ export class MedicineService {
     });
   }
 
-  getAllPharmacyMedicines(pagenumber: number, pagesize: number): Observable<any> {
-    const url = this.config.getApiUrl(`${this.ENDPOINTS.BATCH_PHARMACY_STOCK_BY_ID}?`);
-    return this.http.get<any>(url, {
-      params: {
-        pharmacyId: this.accountId,
-        pageNumber: pagenumber,
-        pageSize: pagesize
-      }
-    });
+  getAllPharmacyMedicines(): Observable<any> {
+    const url = this.config.getApiUrl(`${this.ENDPOINTS.GET_ALLINVENTORY}`);
+    return this.http.get<any>(url);
   }
 
 
   updatePharmacyStockList() {
-    
-    this.getAllPharmacyMedicines(1, 100).subscribe((res: any) => {
-      this.PharmacyStockList.set(res.data.items);
+
+    this.getAllPharmacyMedicines().subscribe((res: any) => {
+      this.PharmacyStockList.set(res.data);
     });
   }
 
@@ -76,14 +72,15 @@ export class MedicineService {
     });
   }
 
-  EditPharmacyStockProduct(drugId: number, productPrice: number, quantity: number): Observable<any> {
+  EditPharmacyStockProduct(drugId: number, productPrice: number, quantity: number, Product_status: ProductStatus): Observable<any> {
     const url = this.config.getApiUrl(`${this.ENDPOINTS.PHARMACY_STOCK}`);
-    console.log('Editing product with ID:', drugId, 'Price:', productPrice, 'Quantity:', quantity);
-    return this.http.put<any>(url,
+    console.log('Editing product with ID:', drugId, 'Price:', productPrice, 'Quantity:', quantity, 'Status:', Product_status);
+    return this.http.put<IPharmacyproduct>(url,
       {
         drugId: drugId,
         price: productPrice,
-        quantityAvailable: quantity
+        quantityAvailable: quantity,
+        status: quantity > 0 ? Product_status : ProductStatus.NotAvailable
       });
   }
 
@@ -100,10 +97,16 @@ export class MedicineService {
       products: medicinesData.map(medicine => ({
         drugId: medicine.drugdetails.drugID,
         quantityAvailable: medicine.quantity,
-        price: medicine.price
+        price: medicine.price,
+        status: medicine.quantity > 0 ? ProductStatus.Available : ProductStatus.NotAvailable
       }))
     }
-    return this.http.post<any>(url, mappedProducts);
+    return this.http.post<IPharmacyproduct[]>(url, mappedProducts);
+  }
+
+  sendRequestToAdmin(requestData: IRequest): Observable<any> {
+    const url = this.config.getApiUrl(`${this.ENDPOINTS.PHARMACY_SENDREQUEST}`);
+    return this.http.post<IRequest>(url, requestData);
   }
 
 }

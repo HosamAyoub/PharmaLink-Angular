@@ -42,14 +42,12 @@ export class ProfileService {
   }
 
   switchTab(tab: string) {
-    console.log('Switching to tab:', tab);
     this.activeTab.set(tab);
   }
 
   loadProfile() {
     const userDataString = localStorage.getItem('userData');
     if (!userDataString) {
-      console.log('No user data found in localStorage');
       this.isLoading.set(UiState.Error);
       return;
     }
@@ -57,7 +55,6 @@ export class ProfileService {
     const userData = JSON.parse(userDataString);
     const token = userData._token;
     if (!token) {
-      console.log('No token found in user data');
       this.isLoading.set(UiState.Error);
       return;
     }
@@ -69,16 +66,13 @@ export class ProfileService {
       ];
 
     if (!this.accountId) {
-      console.log('No account ID found in token claims');
       this.isLoading.set(UiState.Error);
       return;
     }
 
-    console.log('Making API request for account ID:', this.accountId);
     const params = new HttpParams().set('accountId', this.accountId);
     this.http.get<Patient>(this.url, { params }).subscribe({
       next: (profileData) => {
-        console.log('Profile data received:', profileData);
         this.profile.set(profileData);
         this.originalProfile.set(profileData);
         this.isLoading.set(UiState.Success);
@@ -114,7 +108,6 @@ export class ProfileService {
       return;
     }
 
-    console.log('Saving profile:', this.profile());
     this.originalProfile.set(this.profile());
     this.editMode.set(false);
 
@@ -129,7 +122,6 @@ export class ProfileService {
       allergies: this.profile()?.allergies,
     };
 
-    console.log('edited profile: ', editedData);
 
     const urlWithId = `${this.urlEdit}/${this.accountId}`;
     this.http.put(urlWithId, editedData).subscribe({
@@ -140,7 +132,6 @@ export class ProfileService {
         this.alertState.set(FormState.Success);
 
         this.alertMessage.set('Profile updated successfully!');
-        console.log(this.alertMessage());
       },
       error: () => {
         this.isLoading.set(UiState.Error);

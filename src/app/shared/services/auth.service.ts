@@ -7,6 +7,7 @@ import { ResponseData, SignUpData, User } from '../models/user.model';
 import { ConfigService } from './config.service';
 import { APP_CONSTANTS } from '../constants/app.constants';
 import { CartStore } from '../../features/client-dashboard/Cart/Services/cart-store';
+import { FavoriteService } from '../../features/client-dashboard/Favorites/Services/favorite-service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -15,6 +16,7 @@ export class AuthService {
   router = inject(Router);
   route = inject(ActivatedRoute);
   cartStore = inject(CartStore);
+  favService = inject(FavoriteService);
   private tokenExpirationDuration: any;
   config = inject(ConfigService);
   private ENDPOINTS = APP_CONSTANTS.API.ENDPOINTS;
@@ -39,8 +41,6 @@ export class AuthService {
       },
     };
     const url = this.config.getApiUrl(this.ENDPOINTS.ACCOUNT_REGISTER);
-    console.log('Sending signup payload:', payload);
-    console.log('To URL:', url);
     return this.http.post(url, payload).pipe(catchError(this.handleError));
   }
 
@@ -70,6 +70,10 @@ export class AuthService {
           
           // Synchronize cart after successful login
           this.cartStore.syncCartAfterLogin();
+          this.favService.syncFavoritesAfterLogin().subscribe({
+            next: () => console.log('Favorites sync completed'),
+            error: (err) => console.error('Favorites sync failed:', err)
+          });
         })
       );
   }
@@ -90,7 +94,6 @@ export class AuthService {
       },
       error: (e) => {
         // If token is invalid, log out the user
-        console.log(e);
         this.logout();
       },
     });
@@ -112,7 +115,6 @@ export class AuthService {
         'Content-Type': 'application/json', // or 'application/json' if sending as object
       };
 
-      console.log(typeof userData._token);
 
       return this.http
         .post<ResponseData>(url, JSON.stringify(userData._token), { headers })
@@ -127,11 +129,9 @@ export class AuthService {
               resData.value.role
             );
 
-            console.log(resData);
 
             this.user.set(user);
 
-            console.log(this.user());
 
             localStorage.setItem('userData', JSON.stringify(user));
             const expirationDate = new Date(resData.value.expiration);
@@ -160,15 +160,10 @@ export class AuthService {
   }
 
   private handleError(errorResponse: HttpErrorResponse) {
-    console.log('🔥 HTTP Error Details:', errorResponse);
-    console.log('Status:', errorResponse.status);
-    console.log('Error body:', errorResponse.error);
 
     // Log specific validation errors
     if (errorResponse.error && errorResponse.error.errors) {
-      console.log('Detailed validation errors:');
       Object.keys(errorResponse.error.errors).forEach((field) => {
-        console.log(`${field}:`, errorResponse.error.errors[field]);
       });
     }
 

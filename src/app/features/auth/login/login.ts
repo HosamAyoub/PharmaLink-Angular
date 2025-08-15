@@ -66,7 +66,6 @@ export class Login {
 
         // Check for return URL first, then redirect based on role
         const returnUrl = this.route.snapshot.queryParams['returnUrl'];
-        console.log(`returnUrl from query params: ${returnUrl}`);
         
         let redirectUrl = '/client/home'; // default for client
         if (role == 'Admin') {
@@ -74,11 +73,9 @@ export class Login {
         } else if (role == 'Pharmacy') {
           redirectUrl = '/pharmacy/dashboard';
         }
-        console.log(`defaultRedirectUrl based on role: ${redirectUrl}`);
 
         // Use return URL if provided, otherwise use role-based redirect
         const finalUrl = returnUrl || redirectUrl;
-        console.log(`finalUrl: ${finalUrl}`);
         this.router.navigate([finalUrl]);
       },
       error: (error) => {
@@ -93,9 +90,6 @@ export class Login {
   }
 
   private getErrorMessage(error: any): string {
-    console.log('Login Error Details:', error);
-    console.log('Status:', error.status);
-    console.log('Error body:', error.error);
 
     // Check for specific authentication errors
     if (error.status === 401 || error.status === 400) {

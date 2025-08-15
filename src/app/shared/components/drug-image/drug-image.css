@@ -1,0 +1,117 @@
+/* Drug Image Component - Force full container coverage */
+:host {
+  display: flex !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 100% !important;
+  flex: 1 !important;
+  align-self: stretch !important;
+}
+
+app-drug-image {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 100% !important;
+  flex: 1 !important;
+  align-self: stretch !important;
+}
+
+.product-image {
+  transition: all 0.3s ease;
+  /* Hide broken image icons */
+  font-size: 0;
+  color: transparent;
+  /* Take full available space with !important to override inline styles */
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  display: block !important;
+  /* Ensure no margin or padding interferes */
+  margin: 0 !important;
+  padding: 0 !important;
+  /* Ensure it takes full container space */
+  max-width: 100% !important;
+  max-height: 100% !important;
+  min-height: 100% !important;
+  min-width: 100% !important;
+  /* Remove any borders */
+  border: none !important;
+  outline: none !important;
+  /* Force height expansion */
+  flex: 1 !important;
+  align-self: stretch !important;
+}
+
+.product-image.error {
+  opacity: 0.8;
+  filter: grayscale(50%);
+  /* Remove border */
+  border: none !important;
+  /* Ensure error images also take full space */
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  display: block !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  min-height: 100% !important;
+  min-width: 100% !important;
+  /* Force height expansion */
+  flex: 1 !important;
+  align-self: stretch !important;
+}
+
+.product-image:hover {
+  transform: scale(1.02);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Hide broken image icons completely */
+img[src=""],
+img:not([src]),
+img[src*="undefined"],
+img[src*="null"] {
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* Ensure fallback images display properly and take full space */
+img[src*="error-image.jpg"] {
+  opacity: 1 !important;
+  visibility: visible !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  display: block !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  min-height: 100% !important;
+  min-width: 100% !important;
+  border: none !important;
+  flex: 1 !important;
+  align-self: stretch !important;
+}
+
+/* Additional fallback for any assets/images/ error images */
+img[src*="assets/images/error"],
+img[src*="assets/images/placeholder"],
+img[src*="assets/images/fallback"] {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  display: block !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  min-height: 100% !important;
+  min-width: 100% !important;
+  border: none !important;
+  flex: 1 !important;
+  align-self: stretch !important;
+}

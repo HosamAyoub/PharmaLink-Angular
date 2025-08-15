@@ -1,14 +1,11 @@
 <div class="category-card-wrapper">
   <div class="card">
     <div class="product-image-container">
-      <img
-        [src]="getImageSource()"
+      <app-drug-image
+        [src]="product.drugImageUrl"
         [alt]="product.drugName"
-        class="product-image"
-        (error)="onImageError($event, index)"
-        (load)="onImageLoad($event)"
-        [class.error]="hasImageError()"
-      />
+        classes="product-image"
+      ></app-drug-image>
     </div>
     <div class="card-body text-start">
       <h5>{{ product.drugName }}</h5>
@@ -34,7 +31,11 @@
           </p>
         </div>
         <i
-          class="fa-regular fa-heart fav-icon"
+          [ngClass]="
+            isFavorite()
+              ? 'fa-solid fa-heart text-danger'
+              : 'fa-regular fa-heart text-secondary'
+          "
           style="font-size: 20px; cursor: pointer"
           (click)="toggleFavorite($event)"
         ></i>

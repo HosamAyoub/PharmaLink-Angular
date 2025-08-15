@@ -1,0 +1,11 @@
+<div class="chart-container">
+  <h3><i class="fa-solid fa-chart-pie me-2" [style.color]="'var(--blue-200)'"></i>Revenue Distribution</h3>
+  <p [style.color]="'var(--gray-800)'">All Pharmacies revenue Distribution Percent</p>
+  <div class="chart-wrapper ms-5">
+    <canvas baseChart 
+            [data]="pieChartData" 
+            [options]="pieChartOptions" 
+            [type]="pieChartType">
+    </canvas>
+  </div>
+</div>

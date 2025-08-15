@@ -44,7 +44,6 @@ export class SideBar implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    console.log('Selected Category on Init:', this.selectedCategory());
     this.onclickCategory();
   }
 
@@ -62,7 +61,6 @@ export class SideBar implements OnInit, OnDestroy {
   onclickCategory(category: string = this.route.snapshot.paramMap.get('categoryName') || '') {
     this.categoryNameSelected.emit(category);
     this.selectedCategory.set(category);
-    console.log('Selected Category hhah:', category);
     if (this.isSmallScreen) {
       setTimeout(() => {
         this.closeSidebar();

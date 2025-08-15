@@ -38,7 +38,6 @@ export class PharamcyProductDetails {
     this.drugService.getDrugById(this.drugId()).subscribe({
       next: (data) => {
         this.drugDetails.set(data);
-        console.log('Drug Details:', this.drugDetails());
       },
       error: (error) => {
         console.error('Error fetching drug details:', error);

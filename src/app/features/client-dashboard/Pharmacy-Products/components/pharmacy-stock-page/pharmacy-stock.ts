@@ -71,11 +71,9 @@ export class PharmacyStock {
   }
 
   loadPharmacy() {
-    console.log('Loading pharmacy with ID:', this.pharmacyId());
     if (this.pharmacyId()) {
       this.pharmacyService.getPharmacy(this.pharmacyId()).subscribe({
         next: (data) => {
-          console.log('Pharmacy data loaded:', data);
           this.uiState.set(UiState.Success);
           this.pharmacyDetails.set(data);
         },
@@ -91,7 +89,6 @@ export class PharmacyStock {
   }
 
   loadPharmacyProducts() {
-    console.log('Loading pharmacy products for ID:', this.pharmacyId());
     if (this.pharmacyId()) {
       this.pharmacyService
         .getPharmacyProducts(
@@ -125,10 +122,6 @@ export class PharmacyStock {
   }
 
   loadPharmacyProductsByCategory() {
-    console.log(
-      'Loading pharmacy products by category:',
-      this.selectedCategory
-    );
     if (this.pharmacyId() && this.selectedCategory) {
       this.uiState.set(UiState.Loading);
       this.pharmacyService
@@ -177,8 +170,7 @@ export class PharmacyStock {
   onCategoryNameSelected(category: string) {
     this.selectedCategory = category;
     this.currentPage.set(1); // Reset to first page on category change
-    console.log('Selected Category:', this.selectedCategory);
-    if (this.selectedCategory == '') {
+    if(this.selectedCategory== '') {
       this.loadPharmacyProducts();
     } else {
       this.loadPharmacyProductsByCategory();

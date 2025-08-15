@@ -5,9 +5,12 @@ export const APP_CONSTANTS = {
       PHARMACIES: 'pharmacies',
       CATEGORIES: 'categories',
       PHARMACY: 'pharmacy',
+      PHARMACY_SENDREQUEST: 'Pharmacy/SendRequestAddDrug',
+      PHARMACY_ACTIVE: 'Pharmacy/GetPharmaciesByStatus/1',
       PHARMACY_STOCK: 'PharmacyStock',
       PHARMACY_STOCK_ALL: 'PharmacyStock/allPharmaciesStock',
       BATCH_PHARMACY_STOCK_BY_ID: 'PharmacyStock/GetBatchOfPharmacyStock',
+      GET_ALLINVENTORY: 'PharmacyStock/AllInventory',
       PHARMACYSTOCK_INVENTORY_STATUS_BY_ID: 'PharmacyStock/InventoryStatusByID',
       PHARMACYSTOCK_SEARCH_ALL: 'PharmacyStock/SearchFor',
       SEARCH: 'search',
@@ -18,6 +21,7 @@ export const APP_CONSTANTS = {
       DRUG_RANDOM: 'Drug/2',
       DRUG_BY_ID: 'Drug',
       DRUG_SEARCH: 'Drug/Search',
+      DRUG_ADMINDATA: 'Drug/GetAdminData',
       FAVORITES: 'favorites',
       ORDERS_SUBMIT: 'Orders/submit',
       ORDER_SUMMARY: 'Orders/order-summary',
@@ -26,7 +30,17 @@ export const APP_CONSTANTS = {
       PATIENT_PROFILE_EDIT: 'Patient/UpdateProfile',
       PHARMACY_ANALYSIS: 'Orders/analysis',
       PHARMACY_STOCK_ANALYSIS: 'PharmacyStock/InventoryStatusByID',
-      ORDERS_VALIDATE_SESSION: 'orders/validate-session',
+      ORDERS_VALIDATE_SESSION: 'Orders/validate-session',
+      MULTIPLE_FAVORITES: 'Favorites/AddMultiple',
+      ADMIN_ANALYSIS:'Orders/allOrdersAnalysis',
+      PHARMACY_STATUS: 'Pharmacy/GetPharmaciesByStatus',
+      PHARMACIES_SUMMARY:'Orders/pharmacies-summary',
+      CONFIRM_PHARMACY: 'Pharmacy/ConfirmPharmacy',
+      SUSPEND_PHARMACY: 'Pharmacy/SuspendedPharmacy',
+      REJECT_PHARMACY: 'Pharmacy/RejectPharmacy',
+      CHANGE_ROLE: 'Role/changeRoleByPharmacy',
+
+
     },
   },
   environment: {
@@ -42,8 +56,9 @@ export const APP_CONSTANTS = {
     },
   },
 
-  ErrorCodes:{
-    DIFFERENT_PHARMACY : 'DIFFERENT_PHARMACY',
+  ErrorCodes: {
+    DIFFERENT_PHARMACY: 'DIFFERENT_PHARMACY',
   },
-  Cart: 'Cart'
+  Cart: 'Cart',
+  Favorites: 'Favorites'
 };

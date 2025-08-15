@@ -34,7 +34,7 @@
         <input type="search" #searchInput (input)="onSearchChange(searchInput.value)"
           placeholder="Search by medicine name or category or active ingredient..." class="search-input">
       </div>
-      <button class="medicine-not-listed-btn">
+      <button class="medicine-not-listed-btn" data-bs-toggle="modal" data-bs-target="#requestAdminModal">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
           <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
         </svg>
@@ -59,7 +59,7 @@
       </button>
     </div>
     <div class="selected-medicines-list">
-      @for (medicine of selectedMedicines; track medicine) {
+      @for (medicine of selectedMedicines; track medicine.drugdetails.drugID) {
       <div class="selected-medicine-tag">
         {{ medicine.drugdetails.commonName }}
         <button class="remove-tag" (click)="removeMedicine(medicine)">
@@ -73,7 +73,7 @@
 
   <!-- Medicine Cards Grid -->
   <div class="medicines-grid">
-    @for (medicine of filteredMedicines; track medicine) {
+    @for (medicine of filteredMedicines; track medicine.drugID) {
     <div class="medicine-card m-0 " [class.selected]="checkSelectedMedicine(medicine)===2"
       (click)="onMedicineClick(medicine)">
       <div class="medicine-card-content m-0 ">
@@ -90,8 +90,7 @@
           In Stock
         </div>
       </div>
-      <div id="checkbox{{ medicine.drugID }}" class="selection-checkbox"
-        (click)="$event.stopPropagation(); onMedicineSelect(medicine)">
+      <div id="checkbox{{ medicine.drugID }}" class="selection-checkbox">
         <div class="checkbox" [class.checked]="checkSelectedMedicine(medicine) === 2">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="white" *ngIf="checkSelectedMedicine(medicine)===2">
             <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
@@ -103,12 +102,12 @@
   </div>
 
   <!-- Add Medicine Details Modal -->
-  <div class="modal fade" id="addStockModal" tabindex="-1" aria-labelledby="addStockModalLabel">
+  <div class="modal fade" id="addStockModal" tabindex="-1">
     <div class="modal-dialog modal-lg modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="addStockModalLabel">Add Selected Medicines to Stock</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
         <div class="modal-body">
           @if (selectedMedicines.length === 0) {
@@ -119,7 +118,7 @@
           @if (selectedMedicines.length > 0) {
           <div class="table-responsive">
             <table class="table table-bordered align-middle">
-              <thead class="bg-primary text-white">
+              <thead class=" text-white">
                 <tr style="justify-content: center; align-items: center;">
                   <th style="width: 8px;">Image</th>
                   <th style="width: 40px;">Name</th>
@@ -129,7 +128,7 @@
                 </tr>
               </thead>
               <tbody>
-                @for (medicine of selectedMedicines; track medicine) {
+                @for (medicine of selectedMedicines; track medicine.drugdetails.drugID) {
                 <tr style="justify-content: center; align-items: center;">
                   <td>
                     <img [src]="medicine.drugdetails.drug_UrlImg" alt="{{ medicine.drugdetails.commonName }}"
@@ -142,8 +141,8 @@
                   <td style="text-align: center;">
                     <div style="display: flex; align-items: center;">
                       <input class="form-control" style="width: 5rem; height: 2rem; padding: 0.5rem; margin-right: 6px;"
-                        [ngModel]="medicine.price" (ngModelChange)="medicine.price = $event" type="number" min="0"
-                        step="0.01" />
+                        [ngModel]="medicine.price" (ngModelChange)="medicine.price = $event" type="number" min="1"
+                        step="1" />
                       <span>EGP</span>
                     </div>
                   </td>
@@ -159,6 +158,46 @@
           <button type="button" class="btn btn-success" (click)="onAddToStock()"
             data-bs-dismiss="modal">Confirm</button>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Request Admin Medicine Modal -->
+  <div class="modal fade" id="requestAdminModal" tabindex="-1" aria-labelledby="requestAdminModalLabel">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="requestAdminModalLabel">Request To Add New Medicine</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <form (ngSubmit)="sendRequestToAdmin()" #requestForm="ngForm">
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="commonName" class="form-label fw-semibold">Common Name</label>
+              <input type="text" id="commonName" name="commonName" class="form-control"
+                [(ngModel)]="requestData.commonName" required #commonName="ngModel"
+                style="border-radius: 8px; font-size: 1rem; padding: 0.7rem;" />
+            </div>
+            <div *ngIf="(requestForm.submitted || commonName.touched) && commonName.invalid"
+              class="text-danger small ms-2 mb-2">
+              Please enter the medicine name.
+            </div>
+            <div class="mb-3">
+              <label for="activeIngredient" class="form-label fw-semibold">Active Ingredient</label>
+              <input type="text" id="activeIngredient" name="activeIngredient" class="form-control"
+                [(ngModel)]="requestData.activeIngredient" required #activeIngredient="ngModel"
+                style="border-radius: 8px; font-size: 1rem; padding: 0.7rem;" />
+            </div>
+            <div *ngIf="(requestForm.submitted || activeIngredient.touched) && activeIngredient.invalid"
+              class="text-danger small ms-2 mb-2">
+              Please enter the active ingredient.
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn submit-button" >Send Request</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>

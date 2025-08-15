@@ -30,10 +30,9 @@ export class NearbyPharmaciesPage implements OnInit {
     this.Loading = true;
     this.errorMessage = null;
 
-    this.pharmacyService.getPharmacies().subscribe({
+    this.pharmacyService.getActivePharmacies().subscribe({
       next: (data) => {
         this.pharmacies.set(data);
-        console.log('Nearby pharmacies loaded:', this.pharmacies());
         this.Loading = false;
         this.cdr.detectChanges(); // Ensure the view updates immediately
       },

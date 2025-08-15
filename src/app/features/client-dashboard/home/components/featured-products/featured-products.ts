@@ -17,14 +17,12 @@ export class FeaturedProducts {
   imageErrors = new Set<number>(); // Track which images failed to load
 
   constructor(){
-    console.log('FeaturedProducts component initialized');
     this.getProducts();
   }
 
 
   getProducts() {
     this.homeSerivice.getFeaturedProducts().subscribe(response => {
-      console.log('Featured Products Response:', response);
 
       if (response.success) {
       this.products.set(response.data);
@@ -45,7 +43,6 @@ export class FeaturedProducts {
 
   viewAllProducts() {
     // TODO: Navigate to all products page or implement desired functionality
-    console.log('View all products clicked');
   }
 
 }

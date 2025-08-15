@@ -1,18 +1,13 @@
 <div class="drug-header d-flex align-items-center gap-3">
   <div class="drug-icon">
-    <img
-      [src]="
-        hasImageError()
-          ? 'assets/images/error-image.jpg'
-          : drugDetails.drug_UrlImg
-      "
+    <app-drug-image
+      [src]="drugDetails.drug_UrlImg"
       alt="Drug Image"
-      class="img-fluid shadow product-image"
-      (error)="onImageError($event)"
-      (load)="onImageLoad($event)"
-      [class.error]="hasImageError()"
-      style="width: 200px; object-fit: cover; border-radius: 12px"
-    />
+      width="200px"
+      height="200px"
+      borderRadius="0px"
+      classes="img-fluid product-image"
+    ></app-drug-image>
   </div>
   <div class="drug-info" *ngIf="drugDetails">
     <h1 class="drug-name">{{ drugDetails.commonName }}</h1>
