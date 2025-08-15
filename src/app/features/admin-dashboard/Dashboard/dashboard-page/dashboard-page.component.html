@@ -1,4 +1,4 @@
-<div class="dashboard-page">
+<div class="dashboard-page" [class.sidebar-closed]="!isSidebarOpen">
     <app-dashboard-header></app-dashboard-header>
     <div class="container">
         <div class="row">
@@ -7,7 +7,7 @@
                 <app-loading-spinner></app-loading-spinner>
             </div>
             } @else {
-            <div class="dashboard-grid">
+            <div class="dashboard-grid" [class.sidebar-closed]="isSidebarOpen">
                 @for (card of cards; track card.title) {
                 <app-status-card [title]="card.title" [value]="card.value" [trend]="card.trend" [icon]="card.icon"
                     [color1]="card.color" />

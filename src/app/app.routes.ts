@@ -4,6 +4,7 @@ import { Login } from './features/auth/login/login';
 import { SignUp } from './features/auth/signup/signup';
 import { AuthGuard } from './shared/guards/auth.guard';
 import { NotAuthorized } from './shared/components/not-authorized/not-authorized';
+import { SignupPharmacyComponent } from './features/auth/signup-pharmacy/signup-pharmacy.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/client', pathMatch: 'full' },
@@ -14,6 +15,10 @@ export const routes: Routes = [
   {
     path: 'signup',
     component: SignUp,
+  },
+  {
+    path: 'register-pharmacy',
+    component: SignupPharmacyComponent,
   },
   { path: 'loading', component: LoadingSpinner },
   {

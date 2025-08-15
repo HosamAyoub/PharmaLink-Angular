@@ -47,6 +47,26 @@ export interface Patient {
   allergies?: string;
 }
 
+export interface IsignupPharmacy {
+    userName:        string;
+    email:           string;
+    passwordHash:    string;
+    confirmPassword: string;
+    phoneNumber:     string;
+    pharmacy:        Pharmacy;
+}
+
+export interface Pharmacy {
+    name:      string;
+    ownerName: string;
+    country:   string;
+    address:   string;
+    doc:       string;
+    startHour: string;
+    endHour:   string;
+}
+
+
 export enum Roles {
   Admin = 'Admin',
   Pharmacy = 'Pharmacy',

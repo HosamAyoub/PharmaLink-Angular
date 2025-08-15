@@ -1,0 +1,287 @@
+<div class="signup-container">
+    <div class="signup-card">
+        <!-- Logo Section -->
+        <div class="logo-section">
+            <a routerLink="/client/home">
+                <img src="assets/images/logos/logo.png" alt="PharmaLink Logo" class="logo"
+                    style="width: 80px; height: 80px" />
+            </a>
+        </div>
+
+        <!-- Title & Subtitle -->
+        <h1 class="signup-title">Register Your Pharmacy</h1>
+        <p class="signup-subtitle">
+            Join PharmaLink to manage your pharmacy operations
+        </p>
+
+        <!-- Error Message -->
+        @if (displayedError) {
+        <div class="error-alert">
+            <p>{{ displayedError }}</p>
+        </div>
+        }
+
+        <!-- Loading Spinner -->
+        @if (isLoading()) {
+        <div class="loading-container">
+            <app-loading-spinner />
+        </div>
+        } @else {
+            <div class="modal fade" id="regulationsModal" tabindex="-1" aria-labelledby="regulationsModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="regulationsModalLabel">PharmaLink Terms & Conditions</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <h4>Pharmacy Registration Agreement</h4>
+                        <p>By registering with PharmaLink, you agree to the following terms:</p>
+                        
+                        <h5>1. Commission Structure</h5>
+                        <p>PharmaLink will deduct an 8% commission fee from the total value of each order processed through our platform.</p>
+                        
+                        <h5>2. Payment Terms</h5>
+                        <p>Payments to pharmacies will be processed weekly, minus the commission fee and any applicable transaction charges.</p>
+                        
+                        <h5>3. Order Fulfillment</h5>
+                        <p>You agree to fulfill all orders received through PharmaLink within the agreed timeframe.</p>
+                        
+                        <h5>4. Pricing Accuracy</h5>
+                        <p>You are responsible for maintaining accurate and up-to-date pricing information.</p>
+                        
+                        <h5>5. License Verification</h5>
+                        <p>You certify that all provided pharmacy licenses and documents are current and valid.</p>
+                        
+                        <h5>6. Data Privacy</h5>
+                        <p>Patient information must be handled in accordance with all applicable privacy laws.</p>
+                        
+                        <h5>7. Service Fees</h5>
+                        <p>The 8% commission is subject to change with 30 days notice.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Signup Form -->
+        <form #signupForm="ngForm" (ngSubmit)="onSubmit(signupForm)" class="signup-form" autocomplete="off">
+            <div class="step-content">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="userName" class="form-label required">User Name</label>
+                        <input type="text" id="userName" name="userName" class="form-input"
+                            [(ngModel)]="formModel.userName" required placeholder="Enter a user name"
+                            (input)="clearError()" #userNameField="ngModel"
+                            [class.invalid]="getUserNameInvalid(userNameField)" [class]="getUsernameCssClass()" />
+                        @if (getUserNameInvalid(userNameField)) {
+                        <div class="field-error">
+                            {{ getUserNameErrorMessage(userNameField) }}
+                        </div>
+                        }
+                    </div>
+                    <div class="form-group">
+                        <label for="email" class="form-label required">Email</label>
+                        <input type="email" id="email" name="email" class="form-input" [(ngModel)]="formModel.email"
+                            required email placeholder="Enter your email" (input)="clearError()" #emailField="ngModel"
+                            [class.invalid]="isEmailInvalid(emailField)" />
+                        @if (isEmailInvalid(emailField)) {
+                        <div class="field-error">
+                            {{ getEmailErrorMessage(emailField) }}
+                        </div>
+                        }
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="password" class="form-label required">Password</label>
+                        <input type="password" id="password" name="password" class="form-input"
+                            [(ngModel)]="formModel.passwordHash" required minlength="6" placeholder="Create a password"
+                            (input)="clearError()" #passwordField="ngModel"
+                            [class.invalid]="isPasswordInvalid(passwordField)" [class]="getPasswordCssClass()" />
+                        @if (isPasswordInvalid(passwordField)) {
+                        <div class="field-error">
+                            {{ getPasswordErrorMessage(passwordField) }}
+                        </div>
+                        }
+
+                        <!-- Password Requirements -->
+                        @if (isPasswordInvalid(passwordField)) {
+                        <div class="password-requirements">
+                            <h4>Password Requirements:</h4>
+                            <div class="requirement" [class.met]="
+                  getPasswordRequirements(formModel.passwordHash).minLength
+                " [class.not-met]="
+                  !getPasswordRequirements(formModel.passwordHash).minLength
+                ">
+                                At least 6 characters
+                            </div>
+                            <div class="requirement" [class.met]="
+                  getPasswordRequirements(formModel.passwordHash).hasLower
+                " [class.not-met]="
+                  !getPasswordRequirements(formModel.passwordHash).hasLower
+                ">
+                                Lowercase letter (a-z)
+                            </div>
+                            <div class="requirement" [class.met]="
+                  getPasswordRequirements(formModel.passwordHash).hasUpper
+                " [class.not-met]="
+                  !getPasswordRequirements(formModel.passwordHash).hasUpper
+                ">
+                                Uppercase letter (A-Z)
+                            </div>
+                            <div class="requirement" [class.met]="
+                  getPasswordRequirements(formModel.passwordHash).hasNumber
+                " [class.not-met]="
+                  !getPasswordRequirements(formModel.passwordHash).hasNumber
+                ">
+                                Number (0-9)
+                            </div>
+                            <div class="requirement" [class.met]="
+                  getPasswordRequirements(formModel.passwordHash).hasSymbol
+                " [class.not-met]="
+                  !getPasswordRequirements(formModel.passwordHash).hasSymbol
+                ">
+                                Special character (!&#64;#$%^&*...)
+                            </div>
+                        </div>
+                        }
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmPassword" class="form-label required">Confirm Password</label>
+                        <input type="password" id="confirmPassword" name="confirmPassword" class="form-input"
+                            [(ngModel)]="formModel.confirmPassword" required minlength="6"
+                            placeholder="Confirm your password" (input)="clearError()" #confirmPasswordField="ngModel"
+                            [class.invalid]="isConfirmPasswordInvalid(confirmPasswordField)"
+                            [class]="getConfirmPasswordCssClass()" />
+                        @if (isConfirmPasswordInvalid(confirmPasswordField)) {
+                        <div class="field-error">
+                            {{ getConfirmPasswordErrorMessage(confirmPasswordField) }}
+                        </div>
+                        }
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="phoneNumber" class="form-label required">Mobile Number</label>
+                        <input type="tel" id="phoneNumber" name="phoneNumber" class="form-input"
+                            [(ngModel)]="formModel.phoneNumber" required placeholder="Enter your mobile number"
+                            (input)="clearError()" #phoneField="ngModel" [class.invalid]="isPhoneInvalid(phoneField)" />
+                        @if (isPhoneInvalid(phoneField)) {
+                        <div class="field-error">
+                            {{ getPhoneErrorMessage(phoneField) }}
+                        </div>
+                        }
+                    </div>
+                </div>
+
+                <h3 class="section-title">Pharmacy Information</h3>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="pharmacyName" class="form-label required">Pharmacy Name</label>
+                        <input type="text" id="pharmacyName" name="pharmacyName" class="form-input"
+                            [(ngModel)]="formModel.pharmacy.name" required placeholder="Enter pharmacy name"
+                            #pharmacyNameField="ngModel" [class.invalid]="isPharmacyNameInvalid(pharmacyNameField)" />
+                        @if (isPharmacyNameInvalid(pharmacyNameField)) {
+                        <div class="field-error">
+                            {{ getPharmacyNameErrorMessage(pharmacyNameField) }}
+                        </div>
+                        }
+                    </div>
+                    <div class="form-group">
+                        <label for="ownerName" class="form-label required">Owner Name</label>
+                        <input type="text" id="ownerName" name="ownerName" class="form-input"
+                            [(ngModel)]="formModel.pharmacy.ownerName" required placeholder="Enter owner's full name"
+                            #ownerNameField="ngModel" [class.invalid]="isOwnerNameInvalid(ownerNameField)" />
+                        @if (isOwnerNameInvalid(ownerNameField)) {
+                        <div class="field-error">
+                            {{ getOwnerNameErrorMessage(ownerNameField) }}
+                        </div>
+                        }
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="pharmacyCountry" class="form-label required">Country</label>
+                        <select id="pharmacyCountry" name="pharmacyCountry" class="form-input"
+                            [(ngModel)]="formModel.pharmacy.country" required #pharmacyCountryField="ngModel"
+                            [class.invalid]="isPharmacyCountryInvalid(pharmacyCountryField)">
+                            <option value="" disabled selected>Select country</option>
+                            <option value="egypt">Egypt</option>
+                            <option value="ksa">KSA</option>
+                            <option value="uae">UAE</option>
+                            <option value="other">Other</option>
+                        </select>
+                        @if (isPharmacyCountryInvalid(pharmacyCountryField)) {
+                        <div class="field-error">
+                            {{ getPharmacyCountryErrorMessage(pharmacyCountryField) }}
+                        </div>
+                        }
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="pharmacyAddress" class="form-label required">Pharmacy Address</label>
+                    <input type="text" id="pharmacyAddress" name="pharmacyAddress" class="form-input"
+                        [(ngModel)]="formModel.pharmacy.address" required placeholder="Enter pharmacy full address"
+                        #pharmacyAddressField="ngModel" [class.invalid]="isAddressInvalid(pharmacyAddressField)" />
+                    @if (isAddressInvalid(pharmacyAddressField)) {
+                    <div class="field-error">
+                        {{ getAddressErrorMessage(pharmacyAddressField) }}
+                    </div>
+                    }
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="startHour" class="form-label required mt-3">Opening Time</label>
+                        <input type="time" id="startHour" name="startHour" class="form-input"
+                            [(ngModel)]="formModel.pharmacy.startHour" placeholder="Opening time (optional)" />
+                    </div>
+                    <div class="form-group">
+                        <label for="endHour" class="form-label required mt-3">Closing Time</label>
+                        <input type="time" id="endHour" name="endHour" class="form-input"
+                            [(ngModel)]="formModel.pharmacy.endHour" placeholder="Closing time (optional)" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="doc" class="form-label optional">Pharmacy License</label>
+                    <input type="file" id="doc" name="doc" class="form-input" (change)="onFileChange($event)"
+                        accept=".pdf,.jpg,.jpeg,.png" />
+                    <small class="file-hint">Upload pharmacy license document (PDF or image)</small>
+                </div>
+
+                 <div class="form-group terms-checkbox">
+            <div class="form-check d-flex align-items-center justify-content-start">
+                <input class="checkbox" type="checkbox" id="acceptTerms" [(ngModel)]="acceptedTerms" 
+                       name="acceptTerms" #termsCheck="ngModel" required>
+                <label class="form-check-label check-label" for="acceptTerms">
+                    I agree to the <a href="#" data-bs-toggle="modal" data-bs-target="#regulationsModal">Terms and Conditions</a>
+                    including the 8% commission on all orders.
+                </label>
+            </div>
+            @if (termsCheck.invalid && termsCheck.touched) {
+                <div class="field-error">You must accept the terms and conditions</div>
+            }
+        </div>
+
+        <!-- Update your submit button to include terms check -->
+        <button type="submit" class="signup-btn" 
+                [disabled]="!signupForm.valid || !acceptedTerms || isLoading()">
+            {{ isLoading() ? "Registering Pharmacy..." : "Register Pharmacy" }}
+        </button>
+            </div>
+        </form>
+        }
+        <div class="signin-link">
+            Already have an account? <a routerLink="/login">Sign in</a>
+        </div>
+    </div>
+</div>

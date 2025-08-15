@@ -1,11 +1,22 @@
-.pharmacies-page {
-    padding: 25px 50px;
+.Pharmacies-page {
+  padding: 25px 30px;
+  transition: padding 0.3s ease;
 }
+
+.Pharmacies-page.sidebar-closed {
+  padding-left: 30px; /* Reduced padding when sidebar is closed */
+}
+
 .dashboard-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 300px));
-  gap: 25px;
+  gap: 22px;
   padding: 20px;
+  transition: all 0.3s ease;
+}
+
+.dashboard-grid.sidebar-closed {
+  grid-template-columns: repeat(auto-fill, minmax(150px, 500px));
 }
 
 .loading-spinner {

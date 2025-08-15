@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
+import { SidebarStateServiceService } from '../Shared/sidebar-state-service.service';
 
 
 @Component({
@@ -11,13 +12,12 @@ import { Router, RouterLink } from '@angular/router';
   styleUrls: ['./admin-side-bar.component.css']
 })
 export class AdminSideBarComponent implements OnInit {
-  @Input() isSidebarOpen = true;
   @Output() toggle = new EventEmitter<void>();
 
   activeItem: string = 'dashboard';
   systemStatus: string = 'Online';
 
-  constructor(private router: Router) {}
+  constructor(private router: Router,public sidebarService: SidebarStateServiceService) {}
 
   ngOnInit() {
     this.checkScreen();
@@ -35,6 +35,9 @@ export class AdminSideBarComponent implements OnInit {
       this.activeItem = found.id;
     }
   }
+  get isSidebarOpen() {
+    return this.sidebarService.isOpen$;
+  }
 
   menuItems = [
     { id: 'dashboard', label: 'Dashboard', icon: 'speedometer2', route: '/admin/dashboard' },
@@ -45,22 +48,22 @@ export class AdminSideBarComponent implements OnInit {
     { id: 'settings', label: 'Settings', icon: 'gear', route: '/admin/settings' }
   ];
 
-  toggleSidebar() {
-    this.isSidebarOpen = !this.isSidebarOpen;
-    this.toggle.emit();
+ toggleSidebar() {
+    this.sidebarService.toggle();
   }
+
 
 
   checkScreen() {
     if (window.innerWidth <= 768) {
-      this.isSidebarOpen = false;
+      this.sidebarService.setState(false);
     }
   }
 
-  onItemClick(itemId: string) {
+ onItemClick(itemId: string) {
     this.activeItem = itemId;
     if (window.innerWidth <= 768) {
-      this.isSidebarOpen = false;
+      this.sidebarService.setState(false);
     }
   }
 }

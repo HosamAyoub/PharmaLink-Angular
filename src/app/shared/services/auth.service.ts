@@ -1,9 +1,9 @@
 import { Injectable, signal, inject } from '@angular/core';
 import { catchError, tap } from 'rxjs/operators';
 import { throwError } from 'rxjs';
-import { HttpErrorResponse, HttpClient } from '@angular/common/http';
+import { HttpErrorResponse, HttpClient, HttpHeaders } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ResponseData, SignUpData, User } from '../models/user.model';
+import { IsignupPharmacy, ResponseData, SignUpData, User } from '../models/user.model';
 import { ConfigService } from './config.service';
 import { APP_CONSTANTS } from '../constants/app.constants';
 import { CartStore } from '../../features/client-dashboard/Cart/Services/cart-store';
@@ -43,6 +43,31 @@ export class AuthService {
     const url = this.config.getApiUrl(this.ENDPOINTS.ACCOUNT_REGISTER);
     return this.http.post(url, payload).pipe(catchError(this.handleError));
   }
+  signUpPharmacy(formData: FormData) {
+  // Remove Content-Type header - let browser set it automatically with boundary
+  const headers = new HttpHeaders();
+  //headers.delete('Content-Type');
+  const url = this.config.getApiUrl(this.ENDPOINTS.PHARMACY_REGISTER);
+  return this.http.post(url, formData, {
+    headers: headers,
+    reportProgress: true,
+    observe: 'response'
+  }).pipe(
+    catchError(error => {
+      console.error('API Error:', error);
+      return throwError(() => error);
+    })
+  );
+}
+signUpPharmacyJson(data: any) {
+  const headers = new HttpHeaders({
+    'Content-Type': 'application/json'
+  });
+  const url = this.config.getApiUrl(this.ENDPOINTS.ACCOUNT_REGISTER);
+  return this.http.post(url, data, {
+    headers: headers
+  });
+}
 
   login(email: string, password: string, rememberMe: boolean) {
     const url = this.config.getApiUrl(this.ENDPOINTS.ACCOUNT_LOGIN);

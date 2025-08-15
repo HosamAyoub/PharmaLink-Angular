@@ -1,10 +1,10 @@
-<button class="sidebar-fixed-toggle" *ngIf="!isSidebarOpen" (click)="toggleSidebar()">
+<button class="sidebar-fixed-toggle" *ngIf="!(sidebarService.isOpen$ | async)" (click)="toggleSidebar()">
     <i class="bi bi-list"></i>
 </button>
 
-<div class="sidebar" [class.open]="isSidebarOpen">
+<div class="sidebar" [class.open]="sidebarService.isOpen$ | async">
     <!-- Close button inside sidebar -->
-    <button class="toggle-btn" *ngIf="isSidebarOpen" (click)="toggleSidebar()">
+    <button class="toggle-btn" *ngIf="sidebarService.isOpen$ | async" (click)="toggleSidebar()">
         <i class="bi bi-x-lg"></i>
     </button>
 

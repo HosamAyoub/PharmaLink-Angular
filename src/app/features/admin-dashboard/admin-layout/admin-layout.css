@@ -1,6 +1,8 @@
 .app-container {
   display: flex;
   height: 100vh;
+  width: 100%;
+  overflow: hidden;
 }
 
 .main-content {
@@ -8,17 +10,21 @@
   margin-left: 280px;
   padding: 20px;
   overflow-y: auto;
-  background-color: #f5f5f5;
-  transition: margin-left 0.3s;
+  transition: all 0.3s ease;
+  width: calc(100% - 280px);
+  min-height: 100vh;
 }
 
-.main-content.full-width {
-  margin-left: 0 !important;
+.main-content.sidebar-closed {
+  margin-left: 20px;
+  width: 100%;
 }
 
-/* Responsive for mobile */
+/* For mobile */
 @media (max-width: 768px) {
   .main-content {
     margin-left: 0;
+    width: 100%;
+    padding: 15px;
   }
 }
