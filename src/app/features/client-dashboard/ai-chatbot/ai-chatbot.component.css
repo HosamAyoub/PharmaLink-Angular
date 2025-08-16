@@ -1,4 +1,19 @@
-/* Floating Chat Toggle Button */
+/*
+ * AI Chatbot Component Styles
+ * 
+ * This stylesheet provides a modern, professional chat interface for the PharmaLink AI assistant.
+ * Features include: responsive design, smooth animations, pharmaceutical theme colors,
+ * and accessibility considerations.
+ * 
+ * Color Scheme: Blue theme representing trust and medical professionalism
+ * Layout: Floating bottom-right positioning with mobile adaptations
+ */
+
+/* ============================================================================
+   FLOATING CHAT TOGGLE BUTTON
+   ============================================================================ */
+
+/* Main floating button - entry point for the chat */
 .chat-toggle {
   position: fixed;
   bottom: 20px;
@@ -22,16 +37,19 @@
   font-size: 24px;
 }
 
+/* Hover effect for toggle button */
 .chat-toggle:hover {
   transform: scale(1.1);
   box-shadow: 0 6px 25px var(--shadow-primary);
 }
 
+/* Hidden state when chat is open */
 .chat-toggle.hidden {
   opacity: 0;
   pointer-events: none;
 }
 
+/* Notification badge for unread messages */
 .notification-badge {
   position: absolute;
   top: -5px;

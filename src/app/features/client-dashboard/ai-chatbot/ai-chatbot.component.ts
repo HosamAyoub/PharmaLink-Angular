@@ -6,12 +6,18 @@ import {
   AfterViewChecked,
   HostListener,
   ChangeDetectorRef,
+  signal,
+  computed,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { environment } from '../../../../environments/environment';
 
+/**
+ * Interface defining the structure of a chat message
+ * Supports both text and image messages with metadata
+ */
 export interface ChatMessage {
   id: string;
   content: string;
@@ -24,6 +30,18 @@ export interface ChatMessage {
   };
 }
 
+/**
+ * AI Chatbot Component for PharmaLink
+ *
+ * This component provides an intelligent pharmaceutical assistant that can:
+ * - Answer medication-related questions
+ * - Analyze prescription images and pill photos
+ * - Provide drug information and alternatives
+ * - Maintain conversation context
+ *
+ * The component uses Google's Gemini AI model for natural language processing
+ * and image analysis capabilities.
+ */
 @Component({
   selector: 'app-ai-chatbot',
   standalone: true,
@@ -32,51 +50,58 @@ export interface ChatMessage {
   styleUrl: './ai-chatbot.component.css',
 })
 export class AIChatbotComponent implements OnInit, AfterViewChecked {
+  // Template references for DOM manipulation
   @ViewChild('chatMessages') chatMessagesElement!: ElementRef;
   @ViewChild('chatInput') chatInputElement!: ElementRef;
 
-  // Chat state
-  isChatOpen = false;
-  isTyping = false;
-  isLoading = false;
-  isOnline = true;
-  hasUnreadMessages = false;
-  currentMessage = '';
-  messages: ChatMessage[] = [];
-  isMobile = false;
-  showQuickActions = true;
+  // Chat state management with signals for reactive updates
+  isChatOpen = signal(false); // Controls chat window visibility
+  isTyping = signal(false); // Shows typing indicator during AI response
+  isLoading = signal(false); // Disables inputs during processing
+  isOnline = signal(true); // Connection status indicator
+  hasUnreadMessages = signal(false); // Shows notification badge
+  currentMessage = signal(''); // Current user input
+  messages = signal<ChatMessage[]>([]); // Chat conversation history
+  isMobile = signal(false); // Responsive design flag
+  showQuickActions = signal(true); // Quick action buttons visibility
 
-  // Image upload state
-  currentImageData: {
+  // Image upload state with signal
+  currentImageData = signal<{
     data: string;
     mimeType: string;
     name: string;
-  } | null = null;
+  } | null>(null);
 
-  // Quick actions for user convenience
-  quickActions = [
-    // 'What are the side effects of aspirin?',
-    // 'What medications do you have for headaches?',
-    // 'What are alternatives to ibuprofen?',
-    // 'Tell me about paracetamol dosage',
-  ];
+  // Quick action suggestions (currently disabled)
+  quickActions = [];
 
   // AI Configuration
   private genAI: GoogleGenerativeAI;
   private model: any;
-  private shouldScrollToBottom = false;
+  private shouldScrollToBottom = false; // Auto-scroll trigger flag
 
+  /**
+   * Constructor initializes the AI service and checks device type
+   */
   constructor(private cdr: ChangeDetectorRef) {
     this.genAI = new GoogleGenerativeAI(environment.GEMINI_API_KEY);
     this.initializeAI();
     this.checkMobile();
   }
 
+  /**
+   * Component initialization
+   * Sets up welcome message and connection monitoring
+   */
   ngOnInit() {
     this.addWelcomeMessage();
     this.checkConnection();
   }
 
+  /**
+   * Handles auto-scrolling after view updates
+   * Ensures latest messages are visible
+   */
   ngAfterViewChecked() {
     if (this.shouldScrollToBottom) {
       this.scrollToBottom();
@@ -84,40 +109,56 @@ export class AIChatbotComponent implements OnInit, AfterViewChecked {
     }
   }
 
+  /**
+   * Responsive design handler
+   * Updates mobile flag on window resize
+   */
   @HostListener('window:resize')
   onResize() {
     this.checkMobile();
   }
 
+  /**
+   * Detects mobile devices for responsive UI
+   */
   private checkMobile() {
-    this.isMobile = window.innerWidth <= 768;
+    this.isMobile.set(window.innerWidth <= 768);
   }
 
+  /**
+   * Initializes the Google Gemini AI model
+   * Configures generation parameters for pharmaceutical assistance
+   */
   private async initializeAI() {
     try {
       this.model = this.genAI.getGenerativeModel({
         model: 'gemini-2.5-pro',
-        generationConfig: {
-          temperature: 0.75,
-          topP: 0.8,
-          topK: 40,
-          maxOutputTokens: 2048,
-        },
+        // generationConfig: {
+        //   temperature: 0.75, // Balanced creativity/accuracy
+        //   topP: 0.8, // Nucleus sampling
+        //   topK: 40, // Top-k sampling
+        //   maxOutputTokens: 2048, // Response length limit
+        // },
       });
-      this.isOnline = true;
+      this.isOnline.set(true);
     } catch (error) {
-      console.error('Failed to initialize AI:', error);
-      this.isOnline = false;
+      this.isOnline.set(false);
     }
   }
 
+  /**
+   * Monitors connection status periodically
+   * Checks both network connectivity and AI model availability
+   */
   private checkConnection() {
-    // Simple connection check
     setInterval(() => {
-      this.isOnline = navigator.onLine && !!this.model;
+      this.isOnline.set(navigator.onLine && !!this.model);
     }, 5000);
   }
 
+  /**
+   * Adds the initial welcome message to start conversation
+   */
   private addWelcomeMessage() {
     const welcomeMessage: ChatMessage = {
       id: this.generateId(),
@@ -125,247 +166,260 @@ export class AIChatbotComponent implements OnInit, AfterViewChecked {
       isUser: false,
       timestamp: new Date(),
     };
-    this.messages.push(welcomeMessage);
+    this.messages.update((messages) => [...messages, welcomeMessage]);
   }
 
+  /**
+   * Toggles chat window visibility
+   * Focuses input and clears notifications when opened
+   */
   toggleChat() {
-    this.isChatOpen = !this.isChatOpen;
-    if (this.isChatOpen) {
-      this.hasUnreadMessages = false;
+    this.isChatOpen.update((isOpen) => !isOpen);
+    if (this.isChatOpen()) {
+      this.hasUnreadMessages.set(false);
       setTimeout(() => {
         this.focusInput();
       }, 300);
     }
   }
 
+  /**
+   * Closes the chat window
+   */
   closeChat() {
-    this.isChatOpen = false;
+    this.isChatOpen.set(false);
   }
 
+  /**
+   * Minimizes the chat window (same as close for now)
+   */
   minimizeChat() {
-    this.isChatOpen = false;
+    this.isChatOpen.set(false);
   }
 
+  /**
+   * Sends user message to AI and handles the conversation flow
+   * Validates input, creates user message, and triggers AI response
+   */
   async sendMessage() {
-    if (!this.currentMessage.trim() && !this.currentImageData) {
-      console.log('❌ Send message blocked: no message or image');
+    // Validate input requirements
+    if (!this.currentMessage().trim() && !this.currentImageData()) {
       return;
     }
 
-    if (this.isLoading || !this.isOnline) {
-      console.log('❌ Send message blocked:', {
-        isLoading: this.isLoading,
-        isOnline: this.isOnline,
-      });
+    // Prevent duplicate requests
+    if (this.isLoading() || !this.isOnline()) {
       return;
     }
 
-    console.log('📨 Sending message:', this.currentMessage.trim());
-
+    // Create user message object
     const userMessage: ChatMessage = {
       id: this.generateId(),
-      content: this.currentMessage.trim() || 'Uploaded an image',
+      content: this.currentMessage().trim() || 'Uploaded an image',
       isUser: true,
       timestamp: new Date(),
-      image: this.currentImageData ? { ...this.currentImageData } : undefined,
+      image: this.currentImageData()
+        ? { ...this.currentImageData()! }
+        : undefined,
     };
 
-    this.messages.push(userMessage);
+    // Add to conversation and prepare for AI request
+    this.messages.update((messages) => [...messages, userMessage]);
     const messageToSend =
-      this.currentMessage.trim() || 'Please analyze this image';
-    this.currentMessage = '';
+      this.currentMessage().trim() || 'Please analyze this image';
+    this.currentMessage.set('');
 
-    // Store image data temporarily for the AI request
-    const imageForAI = this.currentImageData;
-
-    // Clear the image preview after sending
+    // Store image temporarily and clear preview
+    const imageForAI = this.currentImageData();
     this.removeImagePreview();
 
     this.shouldScrollToBottom = true;
 
-    console.log('🎯 Calling generateAIResponse...');
+    // Generate AI response
     await this.generateAIResponse(messageToSend, imageForAI);
   }
 
+  /**
+   * Generates AI response using Google Gemini API
+   * Handles both text and image inputs with comprehensive error handling
+   *
+   * @param userMessage - The user's text message
+   * @param imageData - Optional image data for analysis
+   */
   private async generateAIResponse(
     userMessage: string,
     imageData?: { data: string; mimeType: string; name: string } | null
   ) {
-    this.isLoading = true;
-    this.isTyping = true;
+    // Set loading states to update UI
+    this.isLoading.set(true);
+    this.isTyping.set(true);
     this.shouldScrollToBottom = true;
 
-    console.log('🚀 Starting AI response generation...');
-    console.log('📝 User message:', userMessage);
-    console.log('📷 Has image:', !!imageData);
-
-    const startTime = performance.now();
-
     try {
-      // Use the exact same API configuration as working JavaScript code
-      const apiUrl =
-        'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:generateContent';
+      // Send request to Google Gemini API
+      const response = await this.sendGeminiRequest(userMessage, imageData);
 
-      console.log('🔗 API URL:', apiUrl);
-      console.log('🔑 API Key exists:', !!environment.GEMINI_API_KEY);
-      console.log(
-        '🔑 API Key preview:',
-        environment.GEMINI_API_KEY
-          ? environment.GEMINI_API_KEY.substring(0, 10) + '...'
-          : 'NOT SET'
-      );
-
-      const requestBody = {
-        contents: this.buildPrompt(userMessage, imageData),
-        generationConfig: {
-          temperature: 0.75,
-          topP: 0.8,
-          topK: 40,
-          maxOutputTokens: 2048,
-        },
-      };
-
-      console.log(
-        '📦 Request body prepared, conversation history length:',
-        requestBody.contents.length
-      );
-      console.log('⚙️ Generation config:', requestBody.generationConfig);
-
-      const fetchStartTime = performance.now();
-      console.log('📡 Sending request to Gemini API...');
-
-      const response = await fetch(
-        `${apiUrl}?key=${environment.GEMINI_API_KEY}`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(requestBody),
-        }
-      );
-
-      const fetchEndTime = performance.now();
-      console.log(
-        `⏱️ Fetch completed in ${(fetchEndTime - fetchStartTime).toFixed(2)}ms`
-      );
-      console.log('📊 Response status:', response.status);
-      console.log('📊 Response ok:', response.ok);
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error('❌ API Error Response:', errorText);
-        throw new Error(
-          `HTTP error! status: ${response.status}, details: ${errorText}`
-        );
-      }
-
-      console.log('📥 Parsing JSON response...');
-      const data = await response.json();
-      console.log('✅ JSON parsed successfully');
-      console.log('📋 Response data structure:', {
-        hasCandidates: !!data.candidates,
-        candidatesLength: data.candidates?.length,
-        hasContent: !!data.candidates?.[0]?.content,
-        hasText: !!data.candidates?.[0]?.content?.parts?.[0]?.text,
-      });
-
-      if (data.candidates && data.candidates[0] && data.candidates[0].content) {
-        const aiResponse = data.candidates[0].content.parts[0].text;
-        console.log('✨ AI Response received, length:', aiResponse.length);
-        console.log(
-          '📝 AI Response preview:',
-          aiResponse.substring(0, 100) + '...'
-        );
-
-        console.log('🔄 Updating UI state: isTyping=false, isLoading=false');
-        this.isTyping = false;
-        this.isLoading = false;
-
-        const aiMessage: ChatMessage = {
-          id: this.generateId(),
-          content: this.formatAIResponse(aiResponse),
-          isUser: false,
-          timestamp: new Date(),
-        };
-
-        console.log('💬 Adding AI message to chat');
-        this.messages.push(aiMessage);
-        this.shouldScrollToBottom = true;
-
-        if (!this.isChatOpen) {
-          this.hasUnreadMessages = true;
-        }
-
-        console.log('🔄 Triggering change detection');
-        this.cdr.detectChanges();
-
-        console.log('🔄 Final UI state check:', {
-          isTyping: this.isTyping,
-          isLoading: this.isLoading,
-          messagesCount: this.messages.length,
-        });
-
-        const totalTime = performance.now() - startTime;
-        console.log(`🎉 Total response time: ${totalTime.toFixed(2)}ms`);
-      } else {
-        console.error('❌ Invalid response structure:', data);
-        this.isTyping = false;
-        this.isLoading = false;
-        throw new Error('Invalid response format from API');
-      }
+      // Process successful response
+      await this.processSuccessfulResponse(response);
     } catch (error: any) {
-      const totalTime = performance.now() - startTime;
-      console.error(`❌ Error after ${totalTime.toFixed(2)}ms:`, error);
-      console.error('Error details:', {
-        name: error?.name || 'Unknown',
-        message: error?.message || 'Unknown error',
-        stack: error?.stack || 'No stack trace',
-      });
+      // Handle any errors that occur during the process
+      this.handleAIResponseError(error);
+    } finally {
+      // Always clear loading states regardless of success or failure
+      this.clearLoadingStates();
+    }
+  }
 
-      console.log('🔄 Clearing loading states due to error');
-      this.isTyping = false;
-      this.isLoading = false;
+  /**
+   * Sends the actual HTTP request to Google Gemini API
+   *
+   * @param userMessage - User's text message
+   * @param imageData - Optional image data
+   * @returns Promise with the API response
+   */
+  private async sendGeminiRequest(
+    userMessage: string,
+    imageData?: { data: string; mimeType: string; name: string } | null
+  ): Promise<Response> {
+    const apiUrl =
+      'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:generateContent';
 
-      const errorMessage: ChatMessage = {
+    const requestBody = {
+      contents: this.buildPrompt(userMessage, imageData),
+      generationConfig: this.getGenerationConfig(),
+    };
+
+    const response = await fetch(
+      `${apiUrl}?key=${environment.GEMINI_API_KEY}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(requestBody),
+      }
+    );
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(
+        `HTTP error! status: ${response.status}, details: ${errorText}`
+      );
+    }
+
+    return response;
+  }
+
+  /**
+   * AI Generation Configuration
+   * These parameters control how the AI generates responses
+   *
+   * @returns Configuration object for AI text generation
+   */
+  private getGenerationConfig() {
+    return {
+      /* TEMPERATURE (0.0 - 2.0): Controls creativity vs consistency */
+      temperature: 0.75,
+
+      /* TOP-P (0.0 - 1.0): Nucleus sampling - controls diversity of word choices */
+      topP: 0.8,
+
+      /* TOP-K (1 - 100): Limits to top K most likely next words */
+      topK: 40,
+
+      /* MAX OUTPUT TOKENS: Maximum length of the AI response */
+      maxOutputTokens: 2048,
+    };
+  }
+
+  /**
+   * Processes a successful API response
+   *
+   * @param response - The HTTP response from Gemini API
+   */
+  private async processSuccessfulResponse(response: Response): Promise<void> {
+    const data = await response.json();
+
+    // Validate response structure
+    if (data.candidates?.[0]?.content?.parts?.[0]?.text) {
+      const aiResponse = data.candidates[0].content.parts[0].text;
+
+      // Create AI message object
+      const aiMessage: ChatMessage = {
         id: this.generateId(),
-        content: `Sorry, I'm having trouble connecting right now. Please try again in a moment. (Error: ${
-          error?.message || 'Unknown error'
-        })`,
+        content: this.formatAIResponse(aiResponse),
         isUser: false,
         timestamp: new Date(),
       };
 
-      this.messages.push(errorMessage);
+      // Add to conversation and update UI
+      this.messages.update((messages) => [...messages, aiMessage]);
       this.shouldScrollToBottom = true;
 
-      console.log('🔄 Triggering change detection after error');
-      this.cdr.detectChanges();
-    } finally {
-      console.log('🔄 Finally block: ensuring all loading states are cleared');
-      this.isLoading = false;
-      this.isTyping = false;
-      const totalTime = performance.now() - startTime;
-      console.log(
-        `🏁 generateAIResponse completed in ${totalTime.toFixed(2)}ms`
-      );
-      console.log('🔄 Final state in finally block:', {
-        isTyping: this.isTyping,
-        isLoading: this.isLoading,
-      });
-
-      // Trigger change detection to ensure UI updates with final loading states
-      console.log('🔄 Triggering change detection in finally block');
-      this.cdr.detectChanges();
+      // Show notification if chat is closed
+      if (!this.isChatOpen()) {
+        this.hasUnreadMessages.set(true);
+      }
+    } else {
+      throw new Error('Invalid response format from API');
     }
   }
 
+  /**
+   * Handles errors during AI response generation
+   *
+   * @param error - The error that occurred
+   */
+  private handleAIResponseError(error: any): void {
+    const errorMessage: ChatMessage = {
+      id: this.generateId(),
+      content: `Sorry, I'm having trouble connecting right now. Please try again in a moment.`,
+      isUser: false,
+      timestamp: new Date(),
+    };
+
+    this.messages.update((messages) => [...messages, errorMessage]);
+    this.shouldScrollToBottom = true;
+  }
+
+  /**
+   * Clears all loading states to restore normal UI
+   */
+  private clearLoadingStates(): void {
+    this.isLoading.set(false);
+    this.isTyping.set(false);
+  }
+
+  /**
+   * Builds the conversation prompt for the AI model
+   * Creates a complete conversation context including system instructions and message history
+   *
+   * @param userMessage - Current user message text
+   * @param imageData - Optional image data for analysis
+   * @returns Formatted conversation array for Gemini API
+   */
   private buildPrompt(
     userMessage: string,
     imageData?: { data: string; mimeType: string; name: string } | null
   ): any[] {
-    // Build conversation history exactly like the working JavaScript code
-    const conversationHistory = [
+    // Initialize conversation with system instructions and AI's initial response
+    const conversationHistory = this.createSystemPrompt();
+
+    // Add all previous conversation messages (excluding the current one being sent)
+    this.addConversationHistory(conversationHistory);
+
+    // Add the current user message with optional image
+    this.addCurrentMessage(conversationHistory, userMessage, imageData);
+
+    return conversationHistory;
+  }
+
+  /**
+   * Creates the system prompt with AI assistant instructions
+   * This defines the AI's role, capabilities, and behavior guidelines
+   *
+   * @returns Initial conversation array with system instructions
+   */
+  private createSystemPrompt(): any[] {
+    return [
       {
         role: 'user',
         parts: [
@@ -373,8 +427,7 @@ export class AIChatbotComponent implements OnInit, AfterViewChecked {
             text: `You are the PharmaLink virtual assistant. Your job is to help patients look up medication information from our internal Excel database and, when appropriate, augment it with up‑to‑date details from the web. You can also analyze images of medications, prescriptions, or medical documents. Always remain professional, clear, and patient‑focused.
 
 1. **Greeting**  
-   - On session start, say:  
-     "Welcome to PharmaLink. How can I help you today?"
+   - On session start, say: "Welcome to PharmaLink. How can I help you today?"
 
 2. **Image Analysis Capabilities**
    - When users share images, you can:
@@ -400,8 +453,7 @@ export class AIChatbotComponent implements OnInit, AfterViewChecked {
    b. **From the Excel sheet**, find X's AlternativeGpID.  
    c. **Retrieve all drugs** sharing that AlternativeGpID.  
    d. **Filter** out any alternatives that conflict with the patient's stated history, contraindications, or warnings.  
-   e. **If none remain**, respond:  
-      "I'm sorry, I don't have any safe alternatives to X in our database right now."  
+   e. **If none remain**, respond: "I'm sorry, I don't have any safe alternatives to X in our database right now."  
    f. **If one or more remain**, list each with:  
       1. **Name**  
       2. **Key info** (active ingredient, main indications, major warnings)  
@@ -452,29 +504,43 @@ export class AIChatbotComponent implements OnInit, AfterViewChecked {
         ],
       },
     ];
+  }
 
-    // Add conversation history from current chat (skip current message, it will be added separately)
-    this.messages.forEach((msg, index) => {
-      if (index < this.messages.length - 1) {
+  /**
+   * Adds previous conversation messages to maintain context
+   * This allows the AI to remember the entire conversation history
+   *
+   * @param conversationHistory - The conversation array to append to
+   */
+  private addConversationHistory(conversationHistory: any[]): void {
+    const currentMessages = this.messages();
+
+    // Add all messages except the last one (which is the current user message being processed)
+    currentMessages.forEach((msg, index) => {
+      if (index < currentMessages.length - 1) {
         conversationHistory.push({
           role: msg.isUser ? 'user' : 'model',
-          parts: [
-            {
-              text: msg.content,
-            },
-          ],
+          parts: [{ text: msg.content }],
         });
       }
     });
+  }
 
-    // Add the current user message with optional image
-    const currentMessageParts: any[] = [
-      {
-        text: userMessage,
-      },
-    ];
+  /**
+   * Adds the current user message with optional image to the conversation
+   *
+   * @param conversationHistory - The conversation array to append to
+   * @param userMessage - The current user's text message
+   * @param imageData - Optional image data for analysis
+   */
+  private addCurrentMessage(
+    conversationHistory: any[],
+    userMessage: string,
+    imageData?: { data: string; mimeType: string; name: string } | null
+  ): void {
+    const currentMessageParts: any[] = [{ text: userMessage }];
 
-    // Add image data if available
+    // Add image data if provided for multimodal analysis
     if (imageData) {
       currentMessageParts.push({
         inline_data: {
@@ -488,24 +554,40 @@ export class AIChatbotComponent implements OnInit, AfterViewChecked {
       role: 'user',
       parts: currentMessageParts,
     });
-
-    return conversationHistory;
   }
 
+  /**
+   * Formats AI response text for better HTML display
+   * Converts markdown-style formatting to HTML tags
+   *
+   * @param response - Raw AI response text
+   * @returns HTML-formatted response string
+   */
   private formatAIResponse(response: string): string {
-    // Basic formatting for better readability
     return response
-      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-      .replace(/\*(.*?)\*/g, '<em>$1</em>')
-      .replace(/\n/g, '<br>')
-      .replace(/• /g, '• ');
+      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') // Bold text
+      .replace(/\*(.*?)\*/g, '<em>$1</em>') // Italic text
+      .replace(/\n/g, '<br>') // Line breaks
+      .replace(/• /g, '• '); // Bullet points
   }
 
+  /**
+   * Handles quick action button clicks
+   * Sets the message and sends it automatically
+   *
+   * @param action - Pre-defined quick action text
+   */
   selectQuickAction(action: string) {
-    this.currentMessage = action;
+    this.currentMessage.set(action);
     this.sendMessage();
   }
 
+  /**
+   * Handles keyboard shortcuts in the input field
+   * Enter sends message, Shift+Enter creates new line
+   *
+   * @param event - Keyboard event
+   */
   onKeyDown(event: KeyboardEvent) {
     if (event.key === 'Enter' && !event.shiftKey) {
       event.preventDefault();
@@ -513,6 +595,10 @@ export class AIChatbotComponent implements OnInit, AfterViewChecked {
     }
   }
 
+  /**
+   * Scrolls chat messages to the bottom
+   * Ensures latest messages are visible
+   */
   private scrollToBottom() {
     if (this.chatMessagesElement) {
       const element = this.chatMessagesElement.nativeElement;
@@ -520,16 +606,33 @@ export class AIChatbotComponent implements OnInit, AfterViewChecked {
     }
   }
 
+  /**
+   * Focuses the chat input field
+   * Called when chat window opens
+   */
   private focusInput() {
     if (this.chatInputElement) {
       this.chatInputElement.nativeElement.focus();
     }
   }
 
+  /**
+   * Generates unique ID for messages
+   * Combines timestamp and random string for uniqueness
+   *
+   * @returns Unique message ID
+   */
   private generateId(): string {
     return Date.now().toString() + Math.random().toString(36).substr(2, 9);
   }
 
+  /**
+   * Formats timestamp for message display
+   * Shows time in user's local format
+   *
+   * @param date - Message timestamp
+   * @returns Formatted time string
+   */
   formatTime(date: Date): string {
     return date.toLocaleTimeString('en-US', {
       hour: '2-digit',
@@ -538,11 +641,17 @@ export class AIChatbotComponent implements OnInit, AfterViewChecked {
     });
   }
 
-  // Image handling methods
+  /**
+   * Handles file upload for image analysis
+   * Validates file type and converts to base64
+   *
+   * @param event - File input change event
+   */
   handleFileUpload(event: any) {
     const file = event.target.files[0];
     if (!file) return;
 
+    // Validate supported image formats
     const supportedImageTypes = [
       'image/jpeg',
       'image/jpg',
@@ -557,37 +666,56 @@ export class AIChatbotComponent implements OnInit, AfterViewChecked {
       return;
     }
 
+    // Convert file to base64
     const reader = new FileReader();
     reader.onload = (e: any) => {
-      this.currentImageData = {
-        data: e.target.result.split(',')[1], // Remove data:image/...;base64, prefix
+      this.currentImageData.set({
+        data: e.target.result.split(',')[1], // Remove data URL prefix
         mimeType: file.type,
         name: file.name,
-      };
-      console.log('📷 Image uploaded:', file.name);
+      });
     };
     reader.readAsDataURL(file);
   }
 
+  /**
+   * Removes the current image preview
+   * Clears both the preview data and file input
+   */
   removeImagePreview() {
-    this.currentImageData = null;
-    // Clear the file input
+    this.currentImageData.set(null);
+
+    // Clear the file input element
     const fileInput = document.querySelector(
       'input[type="file"]'
     ) as HTMLInputElement;
     if (fileInput) {
       fileInput.value = '';
     }
-    console.log('🗑️ Image preview removed');
   }
 
+  /**
+   * Gets the image preview URL for display
+   * Constructs data URL from base64 image data
+   *
+   * @returns Data URL for image display
+   */
   getImagePreviewUrl(): string {
-    if (this.currentImageData) {
-      return `data:${this.currentImageData.mimeType};base64,${this.currentImageData.data}`;
+    const imageData = this.currentImageData();
+    if (imageData) {
+      return `data:${imageData.mimeType};base64,${imageData.data}`;
     }
     return '';
   }
 
+  /**
+   * TrackBy function for Angular's *ngFor optimization
+   * Helps Angular track message changes efficiently
+   *
+   * @param index - Array index
+   * @param message - Chat message object
+   * @returns Unique identifier for tracking
+   */
   trackByMessage(index: number, message: ChatMessage): string {
     return message.id;
   }
