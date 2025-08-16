@@ -15,7 +15,7 @@ export class RequestsSignalRService {
     const token = userData ? JSON.parse(userData)._token : '';
 
     this.hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl('http://localhost:5278/adminhub', {
+      .withUrl('http://localhost:5278/hubs/adminhub', {
         accessTokenFactory: () => token || ''
       })
       .withAutomaticReconnect()
@@ -38,9 +38,6 @@ export class RequestsSignalRService {
       await this.hubConnection.start();
       console.log("Connected to adminHub");
 
-      this.acceptanceNotification();
-      this.rejectionNotification();
-
     } catch (err) {
       console.error("Error starting connection:", err);
     }
@@ -56,20 +53,4 @@ export class RequestsSignalRService {
       .catch(err => console.error('Error sending registration request:', err));
   }
 
-  acceptanceNotification(): void {
-    this.hubConnection.on('DrugRequestAccepted', (message) => {
-      console.log("your request has been accepted:", message);
-    });
-  }
-
-  rejectionNotification(): void {
-    this.hubConnection.on('DrugRequestRejected', (message) => {
-      console.log("your request has been rejected:", message);
-    });
-  }
-
-  async adminNotification(): Promise<void> {
-    this.acceptanceNotification();
-    this.rejectionNotification();
-  }
 }

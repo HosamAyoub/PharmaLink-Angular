@@ -1,19 +1,21 @@
-import { Injectable, signal } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import * as signalR from '@microsoft/signalr';
 import { Observable } from 'rxjs';
+import { ToastService } from '../../../shared/services/toast.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AdminSignalRService {
 
+  toastservice: ToastService = inject(ToastService);
   private hubConnection!: signalR.HubConnection;
 
   startConnection() {
     const userData = localStorage.getItem('userData');
     const token = userData ? JSON.parse(userData)._token : '';
     this.hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl('http://localhost:5278/adminhub', {
+      .withUrl('http://localhost:5278/hubs/adminhub', {
         accessTokenFactory: () => token || ''
       })
       .withAutomaticReconnect()
@@ -40,8 +42,18 @@ export class AdminSignalRService {
         })
         .catch(err => console.error("Error starting connection:", err));
 
-      this.receiveRequestsFromPharmacy();
-      this.newUserRegistration();
+      this.receiveRequestsFromPharmacy().subscribe({
+        next: () => {
+          console.log("New drug request received");
+          this.toastservice.showSuccess("New drug request received");
+        }
+      });
+      this.newUserRegistration().subscribe({
+        next: () => {
+          console.log("New user registration received");
+          this.toastservice.showSuccess("New Pharmacy registration received");
+        }
+      });
     }
     catch (error) {
       console.error("Error starting connection:", error);

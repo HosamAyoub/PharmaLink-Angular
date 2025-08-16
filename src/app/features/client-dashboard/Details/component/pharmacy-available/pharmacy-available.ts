@@ -16,6 +16,7 @@ import { IDrugDetails } from '../../model/IDrugDetials';
   styleUrls: ['./pharmacy-available.css'],
 })
 export class PharmacyAvailable {
+  private cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
   private _pharmacies: IPharmaStock[] = [];
   @ViewChild('QuantityInput') el!: ElementRef;
   cartStore = inject(CartStore);
@@ -35,7 +36,7 @@ export class PharmacyAvailable {
     return this._pharmacies;
   }
 
-  constructor(private cdr: ChangeDetectorRef) {}
+  constructor() {}
 
   SendToCart(pharmacy: IPharmaStock)
   {

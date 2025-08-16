@@ -1,20 +1,21 @@
-import { inject, Injectable, signal } from '@angular/core';
+import { ChangeDetectorRef, effect, inject, Injectable, signal } from '@angular/core';
 import * as signalR from '@microsoft/signalr';
 import { ConfigService } from '../../../../shared/services/config.service';
 import { APP_CONSTANTS } from '../../../../shared/constants/app.constants';
 import { HttpClient } from '@angular/common/http';
+import { ActivityNotification } from '../../Dashboard/Interface/activity-notification';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class OrdersSignalrServiceService {
-  public hubConnection!: signalR.HubConnection;
-  showPopup = false;
 
-  pharmacyNotifications = signal<any[]>([]);
+  public hubConnection!: signalR.HubConnection;
   config = inject(ConfigService);
   endPoint = APP_CONSTANTS.API.ENDPOINTS;
-  http = inject(HttpClient)
+  http = inject(HttpClient);
+
 
   startConnection(pharmacyId: number) {
     this.hubConnection = new signalR.HubConnectionBuilder()
@@ -37,21 +38,11 @@ export class OrdersSignalrServiceService {
     }
   }
 
-  loadPharmacyOrdersNotifications() {
-    this.http.get<any[]>(this.config.getApiUrl('notifications/pharmacyOrdersNotifications'))
-      .subscribe({
-        next: (res) => {
-          const mapped = res.map(n => ({
-            ...n,
-            title: 'New Order'
-          }));
-          this.pharmacyNotifications.set(mapped);
-          console.log(this.pharmacyNotifications());
-        },
-        error: (err) => {
-          console.error('Error loading notifications:', err);
-        }
-      });
+
+  loadPharmacyOrdersNotifications(): Observable<ActivityNotification | null> {
+    const url = this.config.getApiUrl(APP_CONSTANTS.API.ENDPOINTS.PHARMACY_NOTIFICATIONS);
+    return this.http.get<ActivityNotification>(url);
   }
+
 
 }

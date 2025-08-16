@@ -148,7 +148,6 @@ export class DrugsManagementComponent {
 
   acceptRequest(req: IDrugDetails) {
     this.selectedMedicine = req;
-    this.AdminSignalRService.sendAcceptanceToAll("Request accepted");
   }
 
   openModal(medicine: IDrugDetails, editMode: boolean) {
@@ -162,6 +161,10 @@ export class DrugsManagementComponent {
       this.adminService.updateDrug(this.selectedMedicine).subscribe({
         next: () => {
           // Handle successful update
+          this.AdminSignalRService.sendAcceptanceToAll("Request accepted").then(() => {
+            console.log("Acceptance sent to all");
+            this.cd.detectChanges();
+          });
           this.closeModal();
           this.getStatus();
           this.DrugsReq = this.DrugsReq.filter(r => r.drugID !== this.selectedMedicine.drugID);
