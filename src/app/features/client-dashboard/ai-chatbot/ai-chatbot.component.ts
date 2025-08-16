@@ -353,6 +353,10 @@ export class AIChatbotComponent implements OnInit, AfterViewChecked {
         isTyping: this.isTyping,
         isLoading: this.isLoading,
       });
+
+      // Trigger change detection to ensure UI updates with final loading states
+      console.log('🔄 Triggering change detection in finally block');
+      this.cdr.detectChanges();
     }
   }
 

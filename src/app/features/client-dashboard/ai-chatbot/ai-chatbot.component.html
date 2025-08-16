@@ -1,7 +1,9 @@
 <!-- Floating Chat Toggle Button -->
 <div class="chat-toggle" [class.hidden]="isChatOpen" (click)="toggleChat()">
-  <i class="fas fa-comments"></i>
-  <span class="notification-badge" *ngIf="hasUnreadMessages">!</span>
+  <i class="bi bi-openai"></i>
+  @if (hasUnreadMessages) {
+  <span class="notification-badge">!</span>
+  }
 </div>
 
 <!-- Chat Window -->
@@ -31,23 +33,31 @@
 
   <!-- Chat Messages -->
   <div class="chat-messages" #chatMessages>
-    <div
-      class="message-container"
-      *ngFor="let message of messages; trackBy: trackByMessage"
-    >
+    @for (message of messages; track trackByMessage($index, message)) {
+    <div class="message-container">
       <div
         class="message"
         [class.user]="message.isUser"
         [class.bot]="!message.isUser"
       >
         <!-- Bot avatar on the left -->
-        <div class="message-avatar" *ngIf="!message.isUser">
+        @if (!message.isUser) {
+        <div class="message-avatar">
           <i class="fas fa-robot"></i>
         </div>
+        }
+
+        <!-- User avatar on the right -->
+        @if (message.isUser) {
+        <div class="message-avatar">
+          <i class="fas fa-user"></i>
+        </div>
+        }
 
         <div class="message-content">
           <!-- Display image if present -->
-          <div class="message-image" *ngIf="message.image">
+          @if (message.image) {
+          <div class="message-image">
             <img
               [src]="
                 'data:' +
@@ -63,19 +73,17 @@
               {{ message.image.name }}
             </div>
           </div>
+          }
           <div class="message-bubble" [innerHTML]="message.content"></div>
           <div class="message-time">{{ formatTime(message.timestamp) }}</div>
         </div>
-
-        <!-- User avatar on the right -->
-        <div class="message-avatar" *ngIf="message.isUser">
-          <i class="fas fa-user"></i>
-        </div>
       </div>
     </div>
+    }
 
     <!-- Typing Indicator -->
-    <div class="message-container" *ngIf="isTyping">
+    @if (isTyping) {
+    <div class="message-container">
       <div class="message bot">
         <div class="message-avatar">
           <i class="fas fa-robot"></i>
@@ -89,6 +97,7 @@
         </div>
       </div>
     </div>
+    }
   </div>
 
   <!-- Chat Input -->
@@ -103,7 +112,8 @@
     />
 
     <!-- Image Preview -->
-    <div class="image-preview" *ngIf="currentImageData">
+    @if (currentImageData) {
+    <div class="image-preview">
       <div class="image-preview-header">
         <span class="image-preview-title">
           <i class="fas fa-image me-2"></i>
@@ -124,6 +134,7 @@
         />
       </div>
     </div>
+    }
 
     <div class="chat-input-wrapper">
       <button
@@ -131,6 +142,7 @@
         (click)="fileInput.click()"
         title="Upload image"
         type="button"
+        [disabled]="isLoading || !isOnline"
       >
         <i class="fas fa-paperclip"></i>
       </button>
@@ -139,7 +151,7 @@
         [(ngModel)]="currentMessage"
         (keydown)="onKeyDown($event)"
         placeholder="Ask about medications, side effects, dosages... (Shift+Enter for new line)"
-        rows="1"
+        rows="2"
         class="chat-input"
         [disabled]="isLoading || !isOnline"
       ></textarea>
@@ -149,29 +161,29 @@
         [disabled]="!currentMessage.trim() || isLoading || !isOnline"
         title="Send message"
       >
-        <i class="fas fa-paper-plane" *ngIf="!isLoading"></i>
-        <i class="fas fa-spinner fa-spin" *ngIf="isLoading"></i>
+        @if (!isLoading) {
+        <i class="fas fa-paper-plane"></i>
+        } @if (isLoading) {
+        <i class="fas fa-spinner fa-spin"></i>
+        }
       </button>
     </div>
 
     <!-- Disclaimer -->
     <div class="chat-disclaimer">
       <i class="fas fa-shield-alt"></i>
-      <span
-        >This information is for educational purposes. Always consult your
-        healthcare provider.</span
-      >
+      <span>Always consult your doctor.</span>
     </div>
 
-    <div class="quick-actions" *ngIf="showQuickActions">
-      <button
-        *ngFor="let action of quickActions"
-        class="quick-action-btn"
-        (click)="selectQuickAction(action)"
-      >
+    @if (showQuickActions) {
+    <div class="quick-actions">
+      @for (action of quickActions; track action) {
+      <button class="quick-action-btn" (click)="selectQuickAction(action)">
         {{ action }}
       </button>
+      }
     </div>
+    }
   </div>
 </div>
 
