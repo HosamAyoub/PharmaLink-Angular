@@ -3,7 +3,6 @@ import { DashboardHeaderComponent } from '../Components/dashboard-header/dashboa
 import { IPharmacyAnalysis } from '../../../pharmacy-dashboard/Dashboard/Interface/pharmacy-analysis-interface';
 import { AdminAnalysisServiceService } from '../Services/admin-analysis-service.service';
 import { PharmacyService } from '../../../client-dashboard/Pharmacies/Service/pharmacy-service';
-import { IPharmacy } from '../../../client-dashboard/home/models/home.types';
 import { Ipharmacy } from '../../../client-dashboard/shared/models/ipharmacy';
 import { LoadingSpinner } from "../../../../shared/components/loading-spinner/loading-spinner";
 import { StatusCardComponent } from '../Components/status-card/status-card.component';
@@ -132,7 +131,7 @@ export class DashboardPageComponent implements OnInit {
         icon: 'cart-shopping',
         color: 'var(--violet)',
         trend: this.trends.ordersTrend
-      },      
+      },
       {
         title: 'Total Revenue',
         value: '$' + (this.analysisData?.totalRevenue?.toLocaleString() || '0'),
