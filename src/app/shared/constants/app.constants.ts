@@ -29,10 +29,12 @@ export const APP_CONSTANTS = {
       ORDERS_CREATE_CHECKOUT_SESSION: 'Orders/CreateCheckoutSession',
       PATIENT_PROFILE: 'Patient/Profile',
       PATIENT_PROFILE_EDIT: 'Patient/UpdateProfile',
+      PATIENT_MEDICAL_INFO: 'Patient/MedicalInfo',
       PHARMACY_ANALYSIS: 'Orders/analysis',
       PHARMACY_STOCK_ANALYSIS: 'PharmacyStock/InventoryStatusByID',
       ORDERS_VALIDATE_SESSION: 'Orders/validate-session',
       MULTIPLE_FAVORITES: 'Favorites/AddMultiple',
+      SHARED: 'Shared',
       ADMIN_ANALYSIS: 'Orders/allOrdersAnalysis',
       PHARMACY_STATUS: 'Pharmacy/GetPharmaciesByStatus',
       PHARMACIES_SUMMARY: 'Orders/pharmacies-summary',
@@ -51,6 +53,10 @@ export const APP_CONSTANTS = {
     apiVersion: 'v1',
     appName: 'PharmaLink',
     googleApiKey: 'AIzaSyCsSmpYJNb9htQSnH1NM-yHmM4bOSzZnUU',
+    GEMINI_API:
+      'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:generateContent',
+    GEMINI_API_KEY: 'AIzaSyCTmMYS8l_bl_H4G0FWTTkkWA-Jw_gLvEU',
+
     features: {
       enableNotifications: true,
       enableGeolocation: true,
@@ -62,5 +68,5 @@ export const APP_CONSTANTS = {
     DIFFERENT_PHARMACY: 'DIFFERENT_PHARMACY',
   },
   Cart: 'Cart',
-  Favorites: 'Favorites'
+  Favorites: 'Favorites',
 };

@@ -1,0 +1,243 @@
+<!-- AI Chatbot Component Template -->
+<!-- 
+  This template creates a floating AI assistant for pharmaceutical queries.
+  Features include: text/image messaging, typing indicators, mobile responsiveness,
+  and comprehensive medication assistance capabilities.
+-->
+
+<!-- Floating Chat Toggle Button -->
+<!-- Main entry point - floating button with notification badge -->
+<div class="chat-toggle" [class.hidden]="isChatOpen()" (click)="toggleChat()">
+  <i class="bi bi-openai"></i>
+  <!-- Notification badge for unread messages -->
+  @if (hasUnreadMessages()) {
+  <span class="notification-badge">!</span>
+  }
+</div>
+
+<!-- Main Chat Window -->
+<!-- Complete chat interface with header, messages, and input -->
+<div class="chat-window" [class.open]="isChatOpen()">
+  <!-- Chat Header Section -->
+  <!-- Shows assistant info, status, and window controls -->
+  <div class="chat-header">
+    <!-- Assistant identification and status -->
+    <div class="chat-header-info">
+      <div class="chat-avatar">
+        <i class="fas fa-robot"></i>
+      </div>
+      <div class="chat-title">
+        <h4>PharmaLink Assistant</h4>
+        <!-- Online/offline status indicator -->
+        <span class="chat-status" [class.online]="isOnline()">{{
+          isOnline() ? "Online" : "Offline"
+        }}</span>
+      </div>
+    </div>
+
+    <!-- Window control buttons -->
+    <div class="chat-actions">
+      <button class="chat-action-btn" (click)="minimizeChat()" title="Minimize">
+        <i class="fas fa-minus"></i>
+      </button>
+      <button class="chat-action-btn" (click)="closeChat()" title="Close">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Chat Messages Container -->
+  <!-- Scrollable area displaying conversation history -->
+  <div class="chat-messages" #chatMessages>
+    <!-- Message Loop - Display all conversation messages -->
+    @for (message of messages(); track trackByMessage($index, message)) {
+    <div class="message-container">
+      <div
+        class="message"
+        [class.user]="message.isUser"
+        [class.bot]="!message.isUser"
+      >
+        <!-- Bot Avatar (left side for AI responses) -->
+        @if (!message.isUser) {
+        <div class="message-avatar">
+          <i class="fas fa-robot"></i>
+        </div>
+        }
+
+        <!-- User Avatar (right side for user messages) -->
+        @if (message.isUser) {
+        <div class="message-avatar">
+          <i class="fas fa-user"></i>
+        </div>
+        }
+
+        <!-- Message Content Area -->
+        <div class="message-content">
+          <!-- Image Display (if message contains an image) -->
+          @if (message.image) {
+          <div class="message-image">
+            <img
+              [src]="
+                'data:' +
+                message.image.mimeType +
+                ';base64,' +
+                message.image.data
+              "
+              [alt]="message.image.name"
+              class="chat-message-image"
+            />
+            <!-- Image caption with filename -->
+            <div class="image-caption">
+              <i class="fas fa-image me-1"></i>
+              {{ message.image.name }}
+            </div>
+          </div>
+          }
+
+          <!-- Message text bubble -->
+          <div class="message-bubble" [innerHTML]="message.content"></div>
+
+          <!-- Message timestamp -->
+          <div class="message-time">{{ formatTime(message.timestamp) }}</div>
+        </div>
+      </div>
+    </div>
+    }
+
+    <!-- Typing Indicator -->
+    <!-- Shows when AI is processing a response -->
+    @if (isTyping()) {
+    <div class="message-container">
+      <div class="message bot">
+        <div class="message-avatar">
+          <i class="fas fa-robot"></i>
+        </div>
+        <div class="message-content">
+          <!-- Animated typing dots -->
+          <div class="typing-indicator">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    }
+  </div>
+
+  <!-- Chat Input Section -->
+  <!-- User input area with file upload and send controls -->
+  <div class="chat-input-container">
+    <!-- Hidden File Upload Input -->
+    <!-- Accepts image files for medication analysis -->
+    <input
+      type="file"
+      #fileInput
+      (change)="handleFileUpload($event)"
+      accept="image/*"
+      style="display: none"
+    />
+
+    <!-- Image Preview Section -->
+    <!-- Shows selected image before sending -->
+    @if (currentImageData()) {
+    <div class="image-preview">
+      <!-- Preview header with filename and remove button -->
+      <div class="image-preview-header">
+        <span class="image-preview-title">
+          <i class="fas fa-image me-2"></i>
+          {{ currentImageData()!.name }}
+        </span>
+        <button
+          class="btn btn-sm btn-outline-danger"
+          (click)="removeImagePreview()"
+        >
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <!-- Image preview display -->
+      <div class="image-preview-container">
+        <img
+          [src]="getImagePreviewUrl()"
+          [alt]="currentImageData()!.name"
+          class="image-preview-img"
+        />
+      </div>
+    </div>
+    }
+
+    <!-- Input Controls Row -->
+    <div class="chat-input-wrapper">
+      <!-- Attachment Button -->
+      <!-- Triggers file upload for image analysis -->
+      <button
+        class="attachment-btn"
+        (click)="fileInput.click()"
+        title="Upload image"
+        type="button"
+        [disabled]="isLoading() || !isOnline()"
+      >
+        <i class="fas fa-paperclip"></i>
+      </button>
+
+      <!-- Message Text Input -->
+      <!-- Multi-line textarea for user messages -->
+      <textarea
+        #chatInput
+        [value]="currentMessage()"
+        (input)="currentMessage.set($any($event.target).value)"
+        (keydown)="onKeyDown($event)"
+        placeholder="Ask about medications, side effects, dosages... (Shift+Enter for new line)"
+        rows="2"
+        class="chat-input"
+        [disabled]="isLoading() || !isOnline()"
+      ></textarea>
+
+      <!-- Send Button -->
+      <!-- Submits message with loading state indication -->
+      <button
+        class="send-btn"
+        (click)="sendMessage()"
+        [disabled]="!currentMessage().trim() || isLoading() || !isOnline()"
+        title="Send message"
+      >
+        <!-- Normal state: paper plane icon -->
+        @if (!isLoading()) {
+        <i class="fas fa-paper-plane"></i>
+        }
+        <!-- Loading state: spinning icon -->
+        @if (isLoading()) {
+        <i class="fas fa-spinner fa-spin"></i>
+        }
+      </button>
+    </div>
+
+    <!-- Medical Disclaimer -->
+    <!-- Important safety notice for users -->
+    <div class="chat-disclaimer">
+      <i class="fas fa-shield-alt"></i>
+      <span>Always consult your doctor.</span>
+    </div>
+
+    <!-- Quick Actions Section -->
+    <!-- Pre-defined common questions (currently disabled) -->
+    @if (showQuickActions()) {
+    <div class="quick-actions">
+      @for (action of quickActions; track action) {
+      <button class="quick-action-btn" (click)="selectQuickAction(action)">
+        {{ action }}
+      </button>
+      }
+    </div>
+    }
+  </div>
+</div>
+
+<!-- Mobile Overlay -->
+<!-- Background overlay for mobile chat experience -->
+<div
+  class="chat-overlay"
+  [class.visible]="isChatOpen() && isMobile()"
+  (click)="closeChat()"
+></div>

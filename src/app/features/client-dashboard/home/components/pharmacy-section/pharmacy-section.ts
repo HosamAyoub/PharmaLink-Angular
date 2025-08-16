@@ -1,8 +1,9 @@
 import { Component, inject, signal, input, effect } from '@angular/core';
-import { IPharmacy, UserLocation } from '../../models/home.types';
+import {  UserLocation } from '../../models/home.types';
 import { HomeService } from '../../services/home-service';
 import { RouterLink } from '@angular/router';
 import { RouterModule } from '@angular/router';
+import { Ipharmacy } from '../../../shared/models/ipharmacy';
 
 @Component({
   selector: 'pharmacy-section',
@@ -12,7 +13,7 @@ import { RouterModule } from '@angular/router';
 })
 export class PharmacySection {
   homeService = inject(HomeService);
-  pharmacies = signal<IPharmacy[]>([]);
+  pharmacies = signal<Ipharmacy[]>([]);
 
   // Input to receive user location from parent component
   userLocation = input<UserLocation | null>(null);
@@ -45,7 +46,7 @@ export class PharmacySection {
 
 
           // Check if pharmacy is open now
-          pharmacy.isOpen = currentTime >= pharmacy.startHour && currentTime <= pharmacy.endHour;
+          pharmacy.isOpen = currentTime >= pharmacy.startHour! && currentTime <= pharmacy.endHour!;
 
         });
         this.pharmacies.set(pharmaciesData);

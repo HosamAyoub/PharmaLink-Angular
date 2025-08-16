@@ -23,6 +23,19 @@
     align-items: center;
     gap: 12px;
 }
+.logout a{
+    color: rgb(226, 70, 70) !important;
+    transition: all 0.3s ease !important;
+    font-weight: 500;
+    font-size: 18px !important;
+}
+.logout a:hover{
+    color: #fff !important;
+}
+.logout:hover{
+   background: rgb(226, 70, 70) !important;
+   
+}
 
 .logo img {
     width: 60px;

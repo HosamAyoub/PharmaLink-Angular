@@ -13,6 +13,7 @@ import { PharamcyProductDetails } from './pharamcy-product-details/pharamcy-prod
 import { Profile } from './profile/profile';
 import { ProductsScreen } from './Products/Components/products-screen/products-screen';
 import { Categories } from './Categories_Page/components/categories/categories';
+import { Maps } from './maps/maps.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -27,7 +28,6 @@ const routes: Routes = [
   {
     path: 'categories',
     component: Categories,
-
   },
   {
     path: 'products/:categoryName',
@@ -49,8 +49,15 @@ const routes: Routes = [
     path: 'pharmacyProduct/:id',
     component: PharamcyProductDetails,
   },
-  { path: 'cart', component: CartPage
-    // , canActivate: [AuthGuard] 
+  {
+    path: 'cart',
+    component: CartPage,
+    // , canActivate: [AuthGuard]
+  },
+  {
+    path: 'map',
+    component: Maps,
+    // , canActivate: [AuthGuard]
   },
   { path: 'success', component: SuccessPage },
   { path: 'cancel', component: CancelPage },

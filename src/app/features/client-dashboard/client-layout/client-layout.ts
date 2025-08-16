@@ -5,10 +5,11 @@ import { Footer } from '../shared/components/footer/footer';
 import { Router, NavigationEnd } from '@angular/router';
 import { StatusChangeComponent } from "../shared/components/status-change/status-change.component";
 import { SignalrService } from '../shared/services/signalr.service';
+import { AIChatbotComponent } from '../ai-chatbot/ai-chatbot.component';
 
 @Component({
   selector: 'app-client-layout',
-  imports: [Navbar, Footer, RouterOutlet, StatusChangeComponent],
+  imports: [Navbar, Footer, RouterOutlet, StatusChangeComponent, AIChatbotComponent],
   templateUrl: './client-layout.html',
   styleUrl: './client-layout.css',
 })

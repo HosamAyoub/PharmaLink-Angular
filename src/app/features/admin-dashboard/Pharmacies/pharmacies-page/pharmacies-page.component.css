@@ -16,7 +16,8 @@
 }
 
 .dashboard-grid.sidebar-closed {
-  grid-template-columns: repeat(auto-fill, minmax(150px, 500px));
+  grid-template-columns: repeat(auto-fill, minmax(150px, 525px));
+  gap: 25px;
 }
 
 .loading-spinner {

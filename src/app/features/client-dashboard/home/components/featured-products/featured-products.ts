@@ -1,4 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
+import { Router } from '@angular/router';
 import { HomeService } from '../../services/home-service';
 import { Product } from "../../../shared/components/product/product";
 import { IProduct } from '../../../shared/models/IProduct';
@@ -15,6 +16,8 @@ export class FeaturedProducts {
   homeSerivice = inject(HomeService);
   products  = signal<IProduct[]>([]);
   imageErrors = new Set<number>(); // Track which images failed to load
+
+  router = inject(Router);
 
   constructor(){
     this.getProducts();
@@ -43,6 +46,10 @@ export class FeaturedProducts {
 
   viewAllProducts() {
     // TODO: Navigate to all products page or implement desired functionality
+  }
+
+  goToDrugDetails(drugId: number) {
+    this.router.navigate(['/client/DrugDetails', drugId]);
   }
 
 }
