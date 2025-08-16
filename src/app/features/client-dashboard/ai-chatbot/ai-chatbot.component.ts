@@ -78,6 +78,12 @@ export class AIChatbotComponent implements OnInit, AfterViewChecked {
   endPoint = APP_CONSTANTS.API.ENDPOINTS;
   url = this.config.getApiUrl(this.endPoint.PATIENT_MEDICAL_INFO);
 
+  // Chat persistence and user tracking
+  private currentUserId: string | null = null;
+  private readonly CHAT_STORAGE_KEY = 'pharmalink_chat_session';
+  private readonly USER_ID_STORAGE_KEY = 'pharmalink_current_user';
+  private welcomeMessageAdded = false; // Track if welcome message has been added
+
   // Image upload state with signal
   currentImageData = signal<{
     data: string;
@@ -97,21 +103,20 @@ export class AIChatbotComponent implements OnInit, AfterViewChecked {
    * Constructor initializes the AI service and checks device type
    */
   constructor(private cdr: ChangeDetectorRef) {
-    this.genAI = new GoogleGenerativeAI(environment.GEMINI_API_KEY);
+    this.genAI = new GoogleGenerativeAI(APP_CONSTANTS.environment.GEMINI_API_KEY);
     this.initializeAI();
     this.checkMobile();
   }
 
   /**
    * Component initialization
-   * Sets up welcome message and connection monitoring
+   * Sets up connection monitoring, loads patient medical info, and restores chat if same user
    */
   ngOnInit() {
-    this.addWelcomeMessage();
     this.checkConnection();
+    this.checkUserAndRestoreChat();
     this.loadPatientMedicalInfo();
   }
-
   /**
    * Handles auto-scrolling after view updates
    * Ensures latest messages are visible
@@ -172,15 +177,188 @@ export class AIChatbotComponent implements OnInit, AfterViewChecked {
 
   /**
    * Adds the initial welcome message to start conversation
+   * Uses patient name if available for personalized greeting
+   * Only adds if no messages exist to prevent duplicates
    */
   private addWelcomeMessage() {
+    // Check if welcome message has already been added
+    if (this.welcomeMessageAdded) {
+      console.log('Welcome message already added, skipping');
+      return;
+    }
+
+    // Check if messages already exist to prevent duplicates
+    if (this.messages().length > 0) {
+      console.log('Messages already exist, skipping welcome message');
+      this.welcomeMessageAdded = true;
+      return;
+    }
+
+    const medicalData = this.medicalInfo();
+    const welcomeText = medicalData
+      ? `Welcome to PharmaLink, ${medicalData.name}. How can I help you today?`
+      : `Welcome to PharmaLink. How can I help you today?`;
+
     const welcomeMessage: ChatMessage = {
       id: this.generateId(),
-      content: `Welcome to PharmaLink. How can I help you today?`,
+      content: welcomeText,
       isUser: false,
       timestamp: new Date(),
     };
+
+    console.log('Adding welcome message:', welcomeText);
     this.messages.update((messages) => [...messages, welcomeMessage]);
+    this.saveChatToSession(); // Save after adding welcome message
+    this.welcomeMessageAdded = true; // Mark as added
+  }
+
+  /**
+   * Checks if user has changed and restores chat session if same user
+   * Clears chat if different user logged in
+   */
+  private checkUserAndRestoreChat() {
+    const userDataString = localStorage.getItem('userData');
+
+    if (!userDataString) {
+      // No user logged in, clear everything and show generic welcome
+      this.clearChatSession();
+      this.currentUserId = null;
+      setTimeout(() => this.addWelcomeMessage(), 100);
+      return;
+    }
+
+    try {
+      const userData = JSON.parse(userDataString);
+      const token = userData._token;
+
+      if (!token) {
+        // No valid token, clear everything
+        this.clearChatSession();
+        this.currentUserId = null;
+        setTimeout(() => this.addWelcomeMessage(), 100);
+        return;
+      }
+
+      const claims = jwtDecode(token) as Record<string, any>;
+      const userId =
+        claims[
+          'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'
+        ];
+
+      if (!userId) {
+        // No user ID in token, clear everything
+        this.clearChatSession();
+        this.currentUserId = null;
+        setTimeout(() => this.addWelcomeMessage(), 100);
+        return;
+      }
+
+      // Check if this is the same user as before
+      const previousUserId = sessionStorage.getItem(this.USER_ID_STORAGE_KEY);
+
+      if (previousUserId && previousUserId !== userId) {
+        // Different user logged in, clear previous chat
+        console.log('Different user detected, clearing chat session');
+        this.clearChatSession();
+      }
+
+      // Update current user ID
+      this.currentUserId = userId;
+      sessionStorage.setItem(this.USER_ID_STORAGE_KEY, userId);
+
+      // Try to restore chat session for current user
+      const chatRestored = this.restoreChatFromSession();
+
+      // Only add welcome message if no chat was restored
+      if (!chatRestored) {
+        setTimeout(() => this.addWelcomeMessage(), 100);
+      }
+    } catch (error) {
+      console.error('Error checking user and restoring chat:', error);
+      this.clearChatSession();
+      this.currentUserId = null;
+      setTimeout(() => this.addWelcomeMessage(), 100);
+    }
+  }
+
+  /**
+   * Saves current chat messages to sessionStorage
+   * Only persists during browser session, cleared when browser closes
+   */
+  private saveChatToSession() {
+    if (!this.currentUserId) return;
+
+    try {
+      const chatData = {
+        userId: this.currentUserId,
+        messages: this.messages(),
+        timestamp: new Date().toISOString(),
+      };
+
+      sessionStorage.setItem(this.CHAT_STORAGE_KEY, JSON.stringify(chatData));
+    } catch (error) {
+      console.error('Error saving chat to session:', error);
+    }
+  }
+
+  /**
+   * Restores chat messages from sessionStorage
+   * Only if messages exist and belong to current user
+   */
+  /**
+   * Restores chat messages from sessionStorage for current user
+   * Returns true if chat was restored, false if no chat was found
+   */
+  private restoreChatFromSession(): boolean {
+    try {
+      const savedChatString = sessionStorage.getItem(this.CHAT_STORAGE_KEY);
+
+      if (!savedChatString) {
+        // No saved chat found
+        return false;
+      }
+
+      const savedChat = JSON.parse(savedChatString);
+
+      // Verify the saved chat belongs to current user
+      if (savedChat.userId !== this.currentUserId) {
+        console.log('Saved chat belongs to different user, clearing');
+        this.clearChatSession();
+        return false;
+      }
+
+      // Restore messages with proper Date objects
+      const restoredMessages = savedChat.messages.map((msg: any) => ({
+        ...msg,
+        timestamp: new Date(msg.timestamp),
+      }));
+
+      this.messages.set(restoredMessages);
+      console.log(`Restored ${restoredMessages.length} messages from session`);
+
+      // Mark welcome message as added if messages were restored
+      if (restoredMessages.length > 0) {
+        this.welcomeMessageAdded = true;
+      }
+
+      // Return true if messages were actually restored
+      return restoredMessages.length > 0;
+    } catch (error) {
+      console.error('Error restoring chat from session:', error);
+      this.clearChatSession();
+      return false;
+    }
+  }
+
+  /**
+   * Clears chat session and resets messages
+   * Called when user changes or session is invalid
+   */
+  private clearChatSession() {
+    sessionStorage.removeItem(this.CHAT_STORAGE_KEY);
+    this.messages.set([]);
+    this.welcomeMessageAdded = false; // Reset welcome message flag
+    console.log('Chat session cleared');
   }
 
   /**
@@ -239,6 +417,8 @@ export class AIChatbotComponent implements OnInit, AfterViewChecked {
 
     // Add to conversation and prepare for AI request
     this.messages.update((messages) => [...messages, userMessage]);
+    this.saveChatToSession(); // Save chat after adding user message
+
     const messageToSend =
       this.currentMessage().trim() || 'Please analyze this image';
     this.currentMessage.set('');
@@ -295,8 +475,7 @@ export class AIChatbotComponent implements OnInit, AfterViewChecked {
     userMessage: string,
     imageData?: { data: string; mimeType: string; name: string } | null
   ): Promise<Response> {
-    const apiUrl =
-      'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:generateContent';
+    const apiUrl = APP_CONSTANTS.environment.GEMINI_API;
 
     const requestBody = {
       contents: this.buildPrompt(userMessage, imageData),
@@ -304,7 +483,7 @@ export class AIChatbotComponent implements OnInit, AfterViewChecked {
     };
 
     const response = await fetch(
-      `${apiUrl}?key=${environment.GEMINI_API_KEY}`,
+      `${apiUrl}?key=${APP_CONSTANTS.environment.GEMINI_API_KEY}`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -366,6 +545,7 @@ export class AIChatbotComponent implements OnInit, AfterViewChecked {
 
       // Add to conversation and update UI
       this.messages.update((messages) => [...messages, aiMessage]);
+      this.saveChatToSession(); // Save chat after adding AI response
       this.shouldScrollToBottom = true;
 
       // Show notification if chat is closed
@@ -391,6 +571,7 @@ export class AIChatbotComponent implements OnInit, AfterViewChecked {
     };
 
     this.messages.update((messages) => [...messages, errorMessage]);
+    this.saveChatToSession(); // Save chat after adding error message
     this.shouldScrollToBottom = true;
   }
 
@@ -428,22 +609,86 @@ export class AIChatbotComponent implements OnInit, AfterViewChecked {
 
   /**
    * Creates the system prompt with AI assistant instructions
+   * Includes patient medical information for personalized responses
    * This defines the AI's role, capabilities, and behavior guidelines
    *
    * @returns Initial conversation array with system instructions
    */
   private createSystemPrompt(): any[] {
+    const medicalData = this.medicalInfo();
+
+    // Build patient context string if medical info exists
+    let patientContext = '';
+    if (medicalData) {
+      const age = this.calculateAge(medicalData.dateOfBirth);
+
+      patientContext = `\n\n**PATIENT INFORMATION:**
+Patient Name: ${medicalData.name}
+Age: ${age} years old
+Gender: ${medicalData.gender === 1 ? 'Male' : 'Female'}
+Date of Birth: ${new Date(medicalData.dateOfBirth).toLocaleDateString()}`;
+
+      if (medicalData.allergies && medicalData.allergies.trim()) {
+        patientContext += `\nKnown Allergies: ${medicalData.allergies}`;
+      }
+
+      if (medicalData.medicalHistory && medicalData.medicalHistory.trim()) {
+        patientContext += `\nMedical History: ${medicalData.medicalHistory}`;
+      }
+
+      if (medicalData.medications && medicalData.medications.trim()) {
+        patientContext += `\nCurrent Medications: ${medicalData.medications}`;
+      }
+
+      patientContext += `\n\n**IMPORTANT INSTRUCTIONS:**
+- Always address the patient by their name (${medicalData.name})
+- Consider their age (${age}) when providing dosage recommendations
+- ALWAYS check medication interactions with their current medications: ${
+        medicalData.medications || 'None listed'
+      }
+- ALWAYS consider their allergies when suggesting alternatives: ${
+        medicalData.allergies || 'None listed'
+      }
+- Take their medical history into account: ${
+        medicalData.medicalHistory || 'None listed'
+      }
+- Filter out any medications that could be harmful based on their profile
+- Provide age-appropriate and gender-specific recommendations when relevant`;
+    }
+
     return [
       {
         role: 'user',
         parts: [
           {
-            text: `You are the PharmaLink virtual assistant. Your job is to help patients look up medication information from our internal Excel database and, when appropriate, augment it with up‑to‑date details from the web. You can also analyze images of medications, prescriptions, or medical documents. Always remain professional, clear, and patient‑focused.
+            text: `You are the PharmaLink virtual assistant. Your job is to help patients look up medication information from our internal Excel database and, when appropriate, augment it with up‑to‑date details from the web. You can also analyze images of medications, prescriptions, or medical documents. Always remain professional, clear, and patient‑focused.${patientContext}
 
 1. **Greeting**  
-   - On session start, say: "Welcome to PharmaLink. How can I help you today?"
+   - On session start, say: "Welcome to PharmaLink${
+     medicalData ? `, ${medicalData.name}` : ''
+   }. How can I help you today?"
+   - Always use the patient's name when addressing them throughout the conversation
 
-2. **Image Analysis Capabilities**
+2. **Personalized Recommendations**
+   ${
+     medicalData
+       ? `- ALWAYS consider ${
+           medicalData.name
+         }'s specific medical profile when making recommendations
+   - Check for drug interactions with current medications: ${
+     medicalData.medications || 'None'
+   }
+   - Avoid medications that conflict with known allergies: ${
+     medicalData.allergies || 'None'
+   }
+   - Consider their age (${this.calculateAge(
+     medicalData.dateOfBirth
+   )}) and medical history when suggesting dosages
+   - Reference their specific conditions from medical history when relevant`
+       : '- Ask about patient allergies, current medications, and medical conditions before suggesting alternatives'
+   }
+
+3. **Image Analysis Capabilities**
    - When users share images, you can:
      * Identify medications from pill images (shape, color, markings, imprints)
      * Read prescription labels and extract medication names, dosages, instructions
@@ -451,61 +696,123 @@ export class AIChatbotComponent implements OnInit, AfterViewChecked {
      * Help identify potential drug interactions from medication photos
    - Always cross-reference identified medications with the Excel database when possible
    - For prescription images, remind users to verify information with their pharmacist
+   ${
+     medicalData
+       ? `- Check identified medications against ${medicalData.name}'s current medications and allergies`
+       : ''
+   }
 
-3. **Data Lookup Workflow**  
+4. **Data Lookup Workflow**  
    When a user asks about any attribute of a medication (e.g. active ingredient, indications, dosage, contraindications, warnings, alternatives), do the following steps in order:  
    a. **Parse the request** to identify the drug name and the specific field requested.  
    b. **Query the Excel sheet** for that drug's record.  
    c. **If found**, extract the raw text for the requested field (e.g. "insulin detemir" for active ingredient).  
-   d. **Human‑readable rewrite**: Rephrase and organize that raw text into short, clear sentences or bullet points.  
-   e. **Optional web lookup**: Offer to enrich or clarify your answer by searching reliable online sources (e.g. FDA labels, WHO, PubMed abstracts). If you do so, cite or mention the source.  
-   f. **Deliver the answer** in one coherent response.
+   d. **Safety check**: ${
+     medicalData
+       ? `Compare against ${medicalData.name}'s profile for any contraindications or interactions`
+       : 'Ask about patient allergies and current medications'
+   }
+   e. **Human‑readable rewrite**: Rephrase and organize that raw text into short, clear sentences or bullet points.  
+   f. **Optional web lookup**: Offer to enrich or clarify your answer by searching reliable online sources (e.g. FDA labels, WHO, PubMed abstracts). If you do so, cite or mention the source.  
+   g. **Deliver the answer** in one coherent response with personalized safety notes.
 
-4. **Alternative‑Drug Logic**  
+5. **Alternative‑Drug Logic**  
    When a user asks "What are the alternatives to X?":  
-   a. **Clarify patient context**: Ask about the patient's relevant history (e.g. "Do you have any known allergies, chronic conditions, or current medications?").  
+   ${
+     medicalData
+       ? `a. **Use patient profile**: Reference ${
+           medicalData.name
+         }'s known allergies (${
+           medicalData.allergies || 'None'
+         }), current medications (${
+           medicalData.medications || 'None'
+         }), and medical history (${medicalData.medicalHistory || 'None'})`
+       : 'a. **Clarify patient context**: Ask about the patient\'s relevant history (e.g. "Do you have any known allergies, chronic conditions, or current medications?")'
+   }  
    b. **From the Excel sheet**, find X's AlternativeGpID.  
    c. **Retrieve all drugs** sharing that AlternativeGpID.  
-   d. **Filter** out any alternatives that conflict with the patient's stated history, contraindications, or warnings.  
-   e. **If none remain**, respond: "I'm sorry, I don't have any safe alternatives to X in our database right now."  
+   d. **Filter for safety**: Remove any alternatives that:
+      - Contain allergens the patient is allergic to
+      - Are contraindicated for the patient's medical conditions
+      - Could interact with the patient's current medications
+      - Are inappropriate for the patient's age or gender
+   e. **If none remain**, respond: ${
+     medicalData
+       ? `"Based on ${medicalData.name}'s medical profile, I don't have any safe alternatives to X in our database right now. Please consult your doctor for personalized alternatives."`
+       : '"I\'m sorry, I don\'t have any safe alternatives to X in our database right now."'
+   }  
    f. **If one or more remain**, list each with:  
       1. **Name**  
       2. **Key info** (active ingredient, main indications, major warnings)  
-      3. **Tailored note** (e.g. "Because you have gout, Aspirin is not recommended; here are your options.")  
-      4. **Dosage disclaimer**: "Please consult your doctor or pharmacist to confirm dosage and appropriateness for your situation."
+      3. **Personalized safety note** ${
+        medicalData
+          ? `(e.g. "This appears safe for ${medicalData.name} given their current medications and medical history")`
+          : ''
+      }  
+      4. **Dosage disclaimer**: "Please consult your doctor or pharmacist to confirm dosage and appropriateness for your specific situation."
 
-5. **Out‑of‑Scope Questions**  
+6. **Out‑of‑Scope Questions**  
    If the user asks anything beyond medication information or image analysis (e.g. legal advice, insurance questions, unrelated medical diagnostics), respond:  
-   "I'm here to help with medication information and image analysis only. For other questions, please consult a qualified professional."
+   ${
+     medicalData
+       ? `"${medicalData.name}, I'm here to help with medication information and image analysis only. For other questions, please consult a qualified professional."`
+       : '"I\'m here to help with medication information and image analysis only. For other questions, please consult a qualified professional."'
+   }
 
-6. **Tone & Style**  
+7. **Tone & Style**  
    - Use short paragraphs or bullet lists.  
+   ${
+     medicalData
+       ? `- Always address the patient as ${medicalData.name}`
+       : "- Ask for the patient's name to personalize responses"
+   }
    - Avoid medical jargon where possible; explain any necessary technical terms.  
+   - Always include personalized safety reminders based on their profile
    - Always include a friendly reminder to verify dosage and treatment plans with a healthcare provider.
 
-7. **Medicine Not in Database**
+8. **Medicine Not in Database**
    - If a medicine name doesn't exist in the CommonName column, say: "This medicine isn't available in any nearby pharmacies right now"
    - Then provide basic general information about the medicine from reliable sources
+   ${
+     medicalData
+       ? `- Always check against ${medicalData.name}'s medical profile for safety considerations`
+       : '- Ask about patient allergies and conditions for safety'
+   }
    - Always clarify that this information is from external sources, not our internal database
 
-8. **Alternative Medicine Logic**
+9. **Alternative Medicine Logic**
    - Medicines with the same active ingredient are alternatives to each other
    - For example: "eptifibatide Injection" and "Eptifibatide" are alternatives (same active ingredient)
    - But "Abciximab" and "tinzaparin sodium" are NOT alternatives (different active ingredients)
    - Use both CommonName and ActiveIngredient columns to determine alternatives
+   ${
+     medicalData
+       ? `- ALWAYS filter alternatives based on ${medicalData.name}'s medical profile`
+       : '- Always ask about patient profile before suggesting alternatives'
+   }
 
-9. **Conversation Context**
+10. **Conversation Context**
    - Remember all previous medications, patient history, and context discussed in this conversation
+   ${
+     medicalData
+       ? `- Reference ${medicalData.name}'s medical profile throughout the conversation`
+       : ''
+   }
    - Reference previous information when relevant (e.g., "You mentioned earlier that you have diabetes..." or "Regarding the aspirin we discussed...")
    - Build upon previous answers and maintain conversation continuity
 
 **Database Instructions:**
 - Search for any medicine name in the column called "CommonName", then find its details in the same row
 - Make the AI chat work for all medicines in the Excel, not just specific ones
-- Don't answer about any medicine whose name doesn't exist in the CommonName - follow rule 7 above
+- Don't answer about any medicine whose name doesn't exist in the CommonName - follow rule 8 above
 - Both CommonName (medicine name) and ActiveIngredient are key columns in the excel
+${
+  medicalData
+    ? `- ALWAYS cross-reference recommendations with ${medicalData.name}'s medical profile for safety`
+    : '- Always ask about patient profile for safety recommendations'
+}
 
-**Important:** Don't mention "from our data" - just answer the user's question naturally. You can search for additional details if the medicine exists in the Excel sheet.`,
+**Important:** Don't mention "from our data" - just answer the user's question naturally. You can search for additional details if the medicine exists in the Excel sheet. Always prioritize patient safety based on their medical profile.`,
           },
         ],
       },
@@ -513,7 +820,9 @@ export class AIChatbotComponent implements OnInit, AfterViewChecked {
         role: 'model',
         parts: [
           {
-            text: `Welcome to PharmaLink. How can I help you today?`,
+            text: `Welcome to PharmaLink${
+              medicalData ? `, ${medicalData.name}` : ''
+            }. How can I help you today?`,
           },
         ],
       },
@@ -734,6 +1043,29 @@ export class AIChatbotComponent implements OnInit, AfterViewChecked {
     return message.id;
   }
 
+  /**
+   * Calculates patient age from date of birth
+   * Used for age-appropriate medication recommendations
+   *
+   * @param dateOfBirth - Patient's date of birth
+   * @returns Age in years
+   */
+  private calculateAge(dateOfBirth: Date): number {
+    const today = new Date();
+    const birthDate = new Date(dateOfBirth);
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+
+    if (
+      monthDiff < 0 ||
+      (monthDiff === 0 && today.getDate() < birthDate.getDate())
+    ) {
+      age--;
+    }
+
+    return age;
+  }
+
   private loadPatientMedicalInfo() {
     const userDataString = localStorage.getItem('userData');
     if (!userDataString) {
@@ -746,24 +1078,29 @@ export class AIChatbotComponent implements OnInit, AfterViewChecked {
       return;
     }
 
-    const claims = jwtDecode(token) as Record<string, any>;
-    this.accountId =
-      claims[
-        'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'
-      ];
+    try {
+      const claims = jwtDecode(token) as Record<string, any>;
+      this.accountId =
+        claims[
+          'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'
+        ];
 
-    if (!this.accountId) {
-      return;
+      if (!this.accountId) {
+        return;
+      }
+
+      const params = new HttpParams().set('accountId', this.accountId);
+      this.http.get<PatientMedicalInfo>(this.url, { params }).subscribe({
+        next: (profileData: PatientMedicalInfo) => {
+          this.medicalInfo.set(profileData);
+          console.log('Medical info loaded:', profileData);
+        },
+        error: (error: any) => {
+          console.error('Error loading profile:', error);
+        },
+      });
+    } catch (error) {
+      console.error('Error decoding JWT:', error);
     }
-
-    const params = new HttpParams().set('accountId', this.accountId);
-    this.http.get<PatientMedicalInfo>(this.url, { params }).subscribe({
-      next: (profileData: PatientMedicalInfo) => {
-        this.medicalInfo.set(profileData);
-      },
-      error: (error: any) => {
-        console.error('Error loading profile:', error);
-      },
-    });
   }
 }

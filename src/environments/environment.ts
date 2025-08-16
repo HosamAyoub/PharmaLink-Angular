@@ -13,5 +13,4 @@ export const environment = {
     carouselInterval: 5000,
     animationDuration: 300,
   },
-  GEMINI_API_KEY: 'AIzaSyCTmMYS8l_bl_H4G0FWTTkkWA-Jw_gLvEU',
 };
