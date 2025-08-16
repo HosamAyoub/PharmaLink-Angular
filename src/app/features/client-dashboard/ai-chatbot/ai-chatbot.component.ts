@@ -8,11 +8,18 @@ import {
   ChangeDetectorRef,
   signal,
   computed,
+  inject,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { environment } from '../../../../environments/environment';
+import { jwtDecode } from 'jwt-decode';
+import { HttpParams } from '@angular/common/http';
+import { PatientMedicalInfo } from '../../../shared/models/user.model';
+import { HttpClient } from '@angular/common/http';
+import { ConfigService } from '../../../shared/services/config.service';
+import { APP_CONSTANTS } from '../../../shared/constants/app.constants';
 
 /**
  * Interface defining the structure of a chat message
@@ -64,6 +71,12 @@ export class AIChatbotComponent implements OnInit, AfterViewChecked {
   messages = signal<ChatMessage[]>([]); // Chat conversation history
   isMobile = signal(false); // Responsive design flag
   showQuickActions = signal(true); // Quick action buttons visibility
+  accountId = '';
+  medicalInfo = signal<PatientMedicalInfo | null>(null);
+  http = inject(HttpClient);
+  config = inject(ConfigService);
+  endPoint = APP_CONSTANTS.API.ENDPOINTS;
+  url = this.config.getApiUrl(this.endPoint.PATIENT_MEDICAL_INFO);
 
   // Image upload state with signal
   currentImageData = signal<{
@@ -96,6 +109,7 @@ export class AIChatbotComponent implements OnInit, AfterViewChecked {
   ngOnInit() {
     this.addWelcomeMessage();
     this.checkConnection();
+    this.loadPatientMedicalInfo();
   }
 
   /**
@@ -718,5 +732,38 @@ export class AIChatbotComponent implements OnInit, AfterViewChecked {
    */
   trackByMessage(index: number, message: ChatMessage): string {
     return message.id;
+  }
+
+  private loadPatientMedicalInfo() {
+    const userDataString = localStorage.getItem('userData');
+    if (!userDataString) {
+      return;
+    }
+
+    const userData = JSON.parse(userDataString);
+    const token = userData._token;
+    if (!token) {
+      return;
+    }
+
+    const claims = jwtDecode(token) as Record<string, any>;
+    this.accountId =
+      claims[
+        'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'
+      ];
+
+    if (!this.accountId) {
+      return;
+    }
+
+    const params = new HttpParams().set('accountId', this.accountId);
+    this.http.get<PatientMedicalInfo>(this.url, { params }).subscribe({
+      next: (profileData: PatientMedicalInfo) => {
+        this.medicalInfo.set(profileData);
+      },
+      error: (error: any) => {
+        console.error('Error loading profile:', error);
+      },
+    });
   }
 }

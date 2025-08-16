@@ -28,6 +28,7 @@ export const APP_CONSTANTS = {
       ORDERS_CREATE_CHECKOUT_SESSION: 'Orders/CreateCheckoutSession',
       PATIENT_PROFILE: 'Patient/Profile',
       PATIENT_PROFILE_EDIT: 'Patient/UpdateProfile',
+      PATIENT_MEDICAL_INFO: 'Patient/MedicalInfo',
       PHARMACY_ANALYSIS: 'Orders/analysis',
       PHARMACY_STOCK_ANALYSIS: 'PharmacyStock/InventoryStatusByID',
       ORDERS_VALIDATE_SESSION: 'Orders/validate-session',
