@@ -20,7 +20,12 @@ export const iconMap: Record<string, string> = {
   // Shopping
   'cart-shopping': 'fa-solid fa-cart-shopping',
   'basket-shopping': 'fa-solid fa-basket-shopping',
-  
+  'pharmacy':'fa-solid fa-shop',
+  //checks
+  'check-true': "fa-regular fa-circle-check",
+  'check-false': "fa-regular fa-circle-xmark",
+  'check-pending': "fa-regular fa-circle-question",
+
   // Default fallback
   'default': 'fa-solid fa-circle-question'
 };

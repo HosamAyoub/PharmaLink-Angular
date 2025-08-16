@@ -1,9 +1,12 @@
+import { PendingPageComponent } from './features/auth/pending -suspended/pending-page/pending-page.component';
 import { Routes } from '@angular/router';
 import { LoadingSpinner } from './shared/components/loading-spinner/loading-spinner';
 import { Login } from './features/auth/login/login';
 import { SignUp } from './features/auth/signup/signup';
 import { AuthGuard } from './shared/guards/auth.guard';
 import { NotAuthorized } from './shared/components/not-authorized/not-authorized';
+import { SignupPharmacyComponent } from './features/auth/signup-pharmacy/signup-pharmacy.component';
+import { SuspendedPageComponent } from './features/auth/pending -suspended/suspended-page/suspended-page.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/client', pathMatch: 'full' },
@@ -15,15 +18,40 @@ export const routes: Routes = [
     path: 'signup',
     component: SignUp,
   },
+  {
+    path: "pending",
+    component:PendingPageComponent,
+    canActivate: [AuthGuard],
+    data: { roles: ['pending'] },
+  },
+  {
+    path: "suspended",
+    component:SuspendedPageComponent,
+    canActivate: [AuthGuard],
+    data: {roles: ['suspended']}
+  },
+  {
+    path: 'register-pharmacy',
+    component: SignupPharmacyComponent,
+  },
   { path: 'loading', component: LoadingSpinner },
   {
     path: 'admin',
-    loadChildren: () =>
-      import('./features/admin-dashboard/admin-dashboard.module').then(
-        (m) => m.AdminDashboardModule
+    loadComponent: () =>
+      import('./features/admin-dashboard/admin-layout/admin-layout').then(
+        (m) => m.AdminLayout
       ),
-    canActivate: [AuthGuard],
-    data: { roles: ['Admin'] },
+    children: [
+      {
+        path: '',
+        loadChildren: () =>
+          import('./features/admin-dashboard/admin-dashboard-routing.module').then(
+            (m) => m.AdminDashboardRoutingModule
+          )
+      },
+    ],
+    //canActivate: [AuthGuard],
+    //data: { roles: ['Admin'] },
   },
   {
     path: 'pharmacy',

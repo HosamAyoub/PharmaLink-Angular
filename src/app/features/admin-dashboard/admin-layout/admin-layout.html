@@ -1,1 +1,6 @@
-<p>admin-layout works!</p>
+<div class="app-container">
+  <app-admin-side-bar></app-admin-side-bar>
+  <main class="main-content" [class.sidebar-closed]="!(sidebarService.isOpen$ | async)">
+    <router-outlet></router-outlet>
+  </main>
+</div>

@@ -2,5 +2,31 @@
     <div class="card-header">
         <h4><i class="fa-solid fa-bell" [style.color]="'var(--blue-200)'"></i> Recent Activity</h4>
         <p [style.color]="'var(--gray-800)'">Latest updates and notifications</p>
+
+        <div class="notifications-list">
+                @if(pharmacyNotifications().length === 0){
+                  <div class="text-center text-muted py-3">
+                  No notifications
+                </div>
+                }
+                @for(notif of pharmacyNotifications(); track $index){
+                  <div class="notification-item d-flex align-items-start gap-3">
+                  <!-- Icon -->
+                  <div class="icon">
+                    @if(notif.title === 'New Order'){
+                      <i class="bi bi-check-circle-fill text-success"></i>
+                    } @else {
+                      <i class="bi bi-bell-fill text-primary"></i>
+                    }
+                  </div>
+                  <!-- Content -->
+                  <div class="content" routerLink="ordersManagment">
+                    <div class="title">{{ notif.title }}</div>
+                    <div class="time">{{ notif.timestamp | date:'short' }}</div>
+                    <div class="message">{{ notif.message }}</div>
+                  </div>
+                </div>
+                }
+              </div>
     </div>
 </div>

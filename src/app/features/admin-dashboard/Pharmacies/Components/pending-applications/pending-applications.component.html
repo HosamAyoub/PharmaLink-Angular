@@ -1,0 +1,175 @@
+<div class="pharmacy-management">
+    <!-- Header with Search and Filter -->
+    <div class="header-controls">
+        <div class="card-header">
+            <h4><i class="fa-regular fa-clock" [style.color]="'var(--blue-200)'"></i> Pending Applications</h4>
+            <p [style.color]="'var(--gray-800)'">Recent Registered Pharmacies</p>
+        </div>
+    </div>
+
+    <!-- Pharmacy Table -->
+    <div class="pharmacy-table">
+        <div class="table-header">
+            <div class="header-cell pharmacy-col">PHARMACY</div>
+            <div class="header-cell owner-col">OWNER</div>
+            <div class="header-cell contact-col">CONTACT</div>
+            <div class="header-cell performance-col">APPLICATION DATE</div>
+            <div class="header-cell status-col">DOCUMENTS</div>
+            <div class="header-cell actions-col">ACTIONS</div>
+        </div>
+
+        <div class="table-body">
+            @for(pharmacy of pendingPharmacyData; track pharmacy.pharmacyID){
+            <div class="table-row">
+                <!-- Pharmacy Info -->
+                <div class="cell pharmacy-cell">
+                    <div class="pharmacy-info">
+                        <h3 class="pharmacy-name">{{ pharmacy.name }}</h3>
+                        <div class="pharmacy-details">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24"
+                                fill="none" stroke="var(--orange)" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="lucide lucide-map-pin h-3 w-3 mr-1">
+                                <path
+                                    d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0">
+                                </path>
+                                <circle cx="12" cy="10" r="3"></circle>
+                            </svg>
+                            <span class="address">{{ pharmacy.address }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Owner -->
+                <div class="cell owner-cell">
+                    <span class="owner-name">{{pharmacy.ownerName}}</span>
+                </div>
+
+                <!-- Contact -->
+                <div class="cell contact-cell">
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <!-- <i class="email-icon"><i class="fa-solid fa-envelope"></i></i> -->
+                            <span>{{ pharmacy.email }}</span>
+                        </div>
+                        <div class="contact-item">
+                            <!-- <i class="phone-icon"><i class="fa-solid fa-phone"></i></i> -->
+                            <span>{{ pharmacy.phoneNumber }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Performance -->
+                <div class="cell performance-cell">
+                    <span>{{pharmacy.joinedDate}}</span>
+                </div>
+
+                <!-- Status -->
+                <div class="cell status-cell">
+                    <div class="document-badge-container">
+                        <a><span class="document-badge" (click)="viewDocument(pharmacy.docURL)">
+                                <i class="fas fa-file-pdf"></i> View Document
+                            </span></a>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="cell actions-cell">
+                    <div class="action-buttons">
+                        <button class="action-btn activate-btn" (click)="activatePharmacy(pharmacy)" title="Activate">
+                            <i class="fa-regular fa-circle-check"></i>
+                        </button>
+                        <button class="action-btn suspend-btn" (click)="rejectPharmacy(pharmacy)" title="Reject">
+                            <i class="fa-regular fa-circle-xmark"></i>
+                        </button>
+                        <button class="action-btn view-btn" (click)="viewDetails(pharmacy)" title="View Details">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                fill="none" stroke="#3B82F6" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="lucide lucide-eye h-4 w-4">
+                                <path
+                                    d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0">
+                                </path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            }
+        </div>
+    </div>
+    <app-document-viewer></app-document-viewer>
+    <!-- No results message -->
+    <div *ngIf="pendingPharmacyData?.length === 0" class="no-results">
+        <p>No pharmacies found matching your criteria.</p>
+    </div>
+</div>
+
+<!-- Details Modal -->
+<div *ngIf="showDetailsModal" class="modal-overlay" (click)="closeModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+            <h2>Pharmacy Details - {{ selectedPharmacy?.name }}</h2>
+            <button class="close-btn" (click)="closeModal()">✕</button>
+        </div>
+        @if(selectedPharmacy){
+        <div class="modal-body">
+            <div class="details-grid">
+                <!-- Basic Information -->
+                <div class="detail-section">
+                    <h3>Basic Information</h3>
+                    <div class="detail-item">
+                        <label>Name:</label>
+                        <span>{{ selectedPharmacy.name }}</span>
+                    </div>
+                    <div class="detail-item">
+                        <label>Owner:</label>
+                        <span>{{ selectedPharmacy.ownerName }}</span>
+                    </div>
+                    <div class="detail-item">
+                        <label>Join Date:</label>
+                        <span>{{ formatDate(selectedPharmacy.joinedDate) }}</span>
+                    </div>
+                </div>
+
+                <!-- Contact Information -->
+                <div class="detail-section">
+                    <h3>Contact Information</h3>
+                    <div class="detail-item">
+                        <label>Email:</label>
+                        <span>{{ selectedPharmacy.email }}</span>
+                    </div>
+                    <div class="detail-item">
+                        <label>Phone:</label>
+                        <span>{{ selectedPharmacy.phoneNumber }}</span>
+                    </div>
+                    <div class="detail-item">
+                        <label>Address:</label>
+                        <span>{{ selectedPharmacy.address }}</span>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+            <!-- Status and Actions -->
+            <div class="status-section">
+                <div class="current-status">
+                    <label>Current Status:</label>
+                    <span class="status-badge status-pending">
+                        Pending
+                    </span>
+                </div>
+                <div class="modal-actions">
+                    <button class="btn btn-danger" (click)="rejectPharmacy(selectedPharmacy)">
+                        Suspend
+                    </button>
+                    <button class="btn btn-success" (click)="activatePharmacy(selectedPharmacy)">
+                        Activate
+                    </button>
+                </div>
+            </div>
+        </div>
+        }
+    </div>
+</div>

@@ -1,0 +1,7 @@
+.text-warning-custom {
+  color: var(--warning-yellow) !important;
+}
+
+.bg-warning-custom {
+  background-color: var(--warning-yellow) !important;
+}

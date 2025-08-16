@@ -1,0 +1,34 @@
+<div class="dashboard-page" [class.sidebar-closed]="!isSidebarOpen">
+    <app-dashboard-header></app-dashboard-header>
+    <div class="container">
+        <div class="row">
+            @if (loading) {
+            <div class="loading-spinner">
+                <app-loading-spinner></app-loading-spinner>
+            </div>
+            } @else {
+            <div class="dashboard-grid" [class.sidebar-closed]="isSidebarOpen">
+                @for (card of cards; track card.title) {
+                <app-status-card [title]="card.title" [value]="card.value" [trend]="card.trend" [icon]="card.icon"
+                    [color1]="card.color" />
+                }
+            </div>
+            }
+            <div class="col-md-7 mt-5">
+                <div class="pharmacies-summary">
+                    <app-pharmacies-summary [analysisData]="pharmacySummary"></app-pharmacies-summary>
+                </div>
+            </div>
+            <div class="col-md-5 mt-3">
+                <div class="recent-activity">
+                    <app-recent-activity></app-recent-activity>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="monthly-performance">
+                    <app-monthly-performance [monthlyStats]="analysisData?.monthlyStats"></app-monthly-performance>
+                </div>
+            </div>            
+        </div>
+    </div>
+</div>

@@ -10,8 +10,4 @@ import { th } from 'date-fns/locale';
   styleUrls: ['./pharmacy-layout.css']
 })
 export class PharmacyLayout {
-  orderSignal = inject(OrdersSignalrServiceService);
-
-  public showPopup = this.orderSignal;
-
 }

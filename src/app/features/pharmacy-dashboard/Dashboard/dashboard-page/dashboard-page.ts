@@ -9,10 +9,11 @@ import { TopSellingProductsSection } from '../Components/top-selling-products-se
 import { MonthlyPerformanceSection } from '../Components/monthly-performance-section/monthly-performance-section';
 import { RecentActivity } from '../Components/recent-activity/recent-activity';
 import { TopCustomersSection } from '../Components/top-customers-section/top-customers-section';
+import { calculateMonthlyTrend } from '../../../../shared/utils/trend-calc.util';
 
 @Component({
   selector: 'app-dashboard-page',
-  imports: [DashboardHeader,StatsCard,QuickActions,LoadingSpinner,TopSellingProductsSection,MonthlyPerformanceSection,RecentActivity,TopCustomersSection],
+  imports: [DashboardHeader,StatsCard,QuickActions,LoadingSpinner,TopSellingProductsSection,MonthlyPerformanceSection,RecentActivity],
   templateUrl: './dashboard-page.html',
   styleUrl: './dashboard-page.css'
 })
@@ -21,6 +22,17 @@ export class DashboardPage implements OnInit {
   protected stockAnalysisData: IPharmacystockAnalysis | null = null;
   protected errorMessage: string | null = null;
   protected loading: boolean = true;
+  protected trends: {
+    ordersTrend: string;
+    revenueTrend: string;
+    pharmacyTrend: string;
+    DrugsTrend:string;
+  } = {
+    ordersTrend: '6%',
+    revenueTrend: '-8%',
+    pharmacyTrend: '4%',
+    DrugsTrend: '25%'
+  };
   constructor(private pharmacyAnalysisService: PharmacyAnalysisService, private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
@@ -34,7 +46,8 @@ export class DashboardPage implements OnInit {
     this.pharmacyAnalysisService.getPharmacyAnalysis().subscribe({
       next: (data) => {
         this.analysisData = data;
-        //this.loading = false;
+        this.calculateTrends();
+        this.loading = false;
         this.cdr.detectChanges();
       },
       error: (error) => {
@@ -62,49 +75,56 @@ export class DashboardPage implements OnInit {
   }
   
   get cards() {
-  if (!this.analysisData || !this.stockAnalysisData) return [];
 
   return [
     {
       title: 'Available Medicines',
-      value: this.stockAnalysisData.inStockCount || 0,
+      value: this.stockAnalysisData?.inStockCount || 0,
       description: 'In stock and ready',
       icon: 'pills',
       color: 'var(--light-green)',
-      trend: '-8%'
+      trend: this.trends.DrugsTrend
     },
     {
       title: 'Out of Stock',
-      value: this.stockAnalysisData.outOfStockCount || 0,
+      value: this.stockAnalysisData?.outOfStockCount || 0,
       description: 'Needs restocking',
       icon: 'triangle-exclamation',
       color: 'var(--error-red)',
-      trend: '+0%'
+      trend: '-50%'
     },
     {
       title: 'Total Revenue',
-      value: '$' + (this.analysisData.totalRevenue?.toLocaleString() || '0'),
+      value: '$' + (this.analysisData?.totalRevenue?.toLocaleString() || '0'),
       description: 'This month',
       icon: 'dollar-sign',
       color: 'var(--blue-200)',
-      trend: '+12.5%'
+      trend: this.trends.revenueTrend
     },
     {
       title: 'Total Customers',
-      value: this.analysisData.totalUniqueCustomers || 0,
+      value: this.analysisData?.totalUniqueCustomers || 0,
       description: 'Registered users',
       icon: 'users',
       color: 'var(--violet)',
-      trend: '+15%'
+      trend: this.trends.pharmacyTrend
     },
     {
       title: 'Total Orders',
-      value: this.analysisData.totalOrders || 0,
+      value: this.analysisData?.totalOrders || 0,
       description: 'This month',
       icon: 'cart-shopping',
       color: 'var(--orange)',
-      trend: '-10%'
+      trend: this.trends.ordersTrend
     }
   ];
 }
+private calculateTrends(): void {
+    if (this.analysisData ) {
+      this.trends = calculateMonthlyTrend(
+        this.analysisData.monthlyStats,
+        null
+      );
+    }
+  }
 }

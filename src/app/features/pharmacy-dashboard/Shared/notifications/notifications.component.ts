@@ -45,6 +45,9 @@ export class NotificationsComponent implements OnInit, OnDestroy {
       this.orderService.loadOrders();
       this.cd.detectChanges();
 
+      this.signalRService.loadPharmacyOrdersNotifications();
+      this.cd.detectChanges();
+
       setTimeout(() => {
         this.showPopup = false;
         this.cd.detectChanges();

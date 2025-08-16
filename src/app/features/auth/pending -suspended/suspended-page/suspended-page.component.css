@@ -1,0 +1,49 @@
+.dashboard-page {
+    padding: 25px 100px;
+}
+/* Add to your component's CSS or global styles */
+.account-status-alert {
+    margin: 20px 0;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.account-status-alert.alert-danger {
+    background-color: #f8d7da;
+    border-left: 5px solid #dc3545;
+    color: #721c24;
+}
+
+.account-status-alert.alert-warning {
+    background-color: #fff3cd;
+    border-left: 5px solid #ffc107;
+    color: #856404;
+}
+
+.alert-content {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+}
+
+.alert-content i {
+    font-size: 24px;
+    margin-top: 3px;
+}
+
+.alert-content h4 {
+    margin-top: 0;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.alert-content p {
+    margin-bottom: 0;
+}
+
+.alert-content a {
+    color: inherit;
+    text-decoration: underline;
+    font-weight: 500;
+}

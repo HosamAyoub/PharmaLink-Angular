@@ -142,7 +142,7 @@
     position: absolute !important;
     top: 100% !important;
     left: auto !important;
-    right: 0 !important;
+    right: auto !important;
   }
 }
 
@@ -265,4 +265,51 @@
 
 .search-dropdown li:last-child {
   border-bottom: none;
+}
+
+/********************************/
+
+.notifications-list {
+  max-height: 300px;
+  overflow-y: auto;
+  background: white;
+}
+
+.notification-item {
+  padding: 10px 15px;
+  border-bottom: 1px solid #f0f0f0;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.notification-item:hover {
+  background-color: #f8f9fa;
+}
+
+.notification-item.unread {
+  background-color: #eef5ff;
+}
+
+.notification-item .icon i {
+  font-size: 1.5rem;
+}
+
+.notification-item .content {
+  flex-grow: 1;
+}
+
+.notification-item .content .title {
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.notification-item .content .time {
+  font-size: 0.75rem;
+  color: #888;
+  margin-bottom: 4px;
+}
+
+.notification-item .content .message {
+  font-size: 0.85rem;
+  color: #555;
 }

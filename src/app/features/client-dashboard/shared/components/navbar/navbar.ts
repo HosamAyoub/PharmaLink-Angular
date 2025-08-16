@@ -7,6 +7,7 @@ import { CartStore } from '../../../Cart/Services/cart-store';
 import { debounceTime, Subscription, switchMap } from 'rxjs';
 import { ProfileService } from '../../../profile/services/profile-service';
 import { SharedService } from '../../services/shared-service';
+import { SignalrService } from '../../services/signalr.service';
 
 @Component({
   selector: 'client-navbar',
@@ -14,7 +15,8 @@ import { SharedService } from '../../services/shared-service';
   templateUrl: './navbar.html',
   styleUrl: './navbar.css',
 })
-export class Navbar {
+export class Navbar implements OnInit {
+  public signalrService = inject(SignalrService);
   private authService = inject(AuthService);
   private profileService = inject(ProfileService);
   private sharedService = inject(SharedService);
@@ -47,6 +49,7 @@ export class Navbar {
   get isAuthenticated() {
     return Boolean(this.authService.user());
   }
+
 
   onSearch(query: string) {
     this.searchQuery = query;
@@ -120,4 +123,9 @@ export class Navbar {
   }
 
   LoggedUserName = computed(() => this.authService.user()?.userName);
+
+  ngOnInit(): void {
+    this.signalrService.loadNotificationsFromApi();
+    this.signalrService.startConnection();
+  }
 }

@@ -1,0 +1,13 @@
+.pharmacy-header h1 {
+  margin: 0;
+  color: var(--text-dark);
+  font-weight: 700;
+  padding-bottom: 5px;
+}
+.pharmacy-header h6 {
+    color: var(--text-muted);
+    font-weight: 400;
+}
+.pharmacy-header{
+  margin-left: 25px;
+}

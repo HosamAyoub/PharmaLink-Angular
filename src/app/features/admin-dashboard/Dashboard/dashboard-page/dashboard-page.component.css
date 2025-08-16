@@ -1,0 +1,42 @@
+.dashboard-page {
+  padding: 25px 30px;
+  transition: padding 0.3s ease;
+}
+
+.dashboard-page.sidebar-closed {
+  padding-left: 30px; /* Reduced padding when sidebar is closed */
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 300px));
+  gap: 22px;
+  padding: 20px;
+  transition: all 0.3s ease;
+}
+
+.dashboard-grid.sidebar-closed {
+  grid-template-columns: repeat(auto-fill, minmax(150px, 525px));
+  gap: 25px;
+}
+
+
+.loading-spinner {
+  display: flex;
+  justify-content: center;
+  padding: 40px;
+}
+
+.error-message {
+  color: var(--error-red);
+  padding: 20px;
+  text-align: center;
+}
+@media (max-width: 768px) {
+  .dashboard-page {
+    padding: 15px;
+  }
+  .dashboard-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+}
