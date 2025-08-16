@@ -47,6 +47,15 @@ export interface Patient {
   allergies?: string;
 }
 
+export interface PatientMedicalInfo {
+  name: string;
+  gender: number;
+  dateOfBirth: Date;
+  medicalHistory: string;
+  medications: string;
+  allergies: string;
+}
+
 export interface IsignupPharmacy {
     userName:        string;
     email:           string;
@@ -74,3 +83,4 @@ export enum Roles {
   Pending = 'pending',
   Suspended = 'suspended',
 }
+
