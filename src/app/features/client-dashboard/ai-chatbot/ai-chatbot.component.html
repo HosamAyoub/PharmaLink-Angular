@@ -1,0 +1,183 @@
+<!-- Floating Chat Toggle Button -->
+<div class="chat-toggle" [class.hidden]="isChatOpen" (click)="toggleChat()">
+  <i class="fas fa-comments"></i>
+  <span class="notification-badge" *ngIf="hasUnreadMessages">!</span>
+</div>
+
+<!-- Chat Window -->
+<div class="chat-window" [class.open]="isChatOpen">
+  <!-- Chat Header -->
+  <div class="chat-header">
+    <div class="chat-header-info">
+      <div class="chat-avatar">
+        <i class="fas fa-robot"></i>
+      </div>
+      <div class="chat-title">
+        <h4>PharmaLink Assistant</h4>
+        <span class="chat-status" [class.online]="isOnline">{{
+          isOnline ? "Online" : "Offline"
+        }}</span>
+      </div>
+    </div>
+    <div class="chat-actions">
+      <button class="chat-action-btn" (click)="minimizeChat()" title="Minimize">
+        <i class="fas fa-minus"></i>
+      </button>
+      <button class="chat-action-btn" (click)="closeChat()" title="Close">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Chat Messages -->
+  <div class="chat-messages" #chatMessages>
+    <div
+      class="message-container"
+      *ngFor="let message of messages; trackBy: trackByMessage"
+    >
+      <div
+        class="message"
+        [class.user]="message.isUser"
+        [class.bot]="!message.isUser"
+      >
+        <!-- Bot avatar on the left -->
+        <div class="message-avatar" *ngIf="!message.isUser">
+          <i class="fas fa-robot"></i>
+        </div>
+
+        <div class="message-content">
+          <!-- Display image if present -->
+          <div class="message-image" *ngIf="message.image">
+            <img
+              [src]="
+                'data:' +
+                message.image.mimeType +
+                ';base64,' +
+                message.image.data
+              "
+              [alt]="message.image.name"
+              class="chat-message-image"
+            />
+            <div class="image-caption">
+              <i class="fas fa-image me-1"></i>
+              {{ message.image.name }}
+            </div>
+          </div>
+          <div class="message-bubble" [innerHTML]="message.content"></div>
+          <div class="message-time">{{ formatTime(message.timestamp) }}</div>
+        </div>
+
+        <!-- User avatar on the right -->
+        <div class="message-avatar" *ngIf="message.isUser">
+          <i class="fas fa-user"></i>
+        </div>
+      </div>
+    </div>
+
+    <!-- Typing Indicator -->
+    <div class="message-container" *ngIf="isTyping">
+      <div class="message bot">
+        <div class="message-avatar">
+          <i class="fas fa-robot"></i>
+        </div>
+        <div class="message-content">
+          <div class="typing-indicator">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chat Input -->
+  <div class="chat-input-container">
+    <!-- File Upload (Hidden) -->
+    <input
+      type="file"
+      #fileInput
+      (change)="handleFileUpload($event)"
+      accept="image/*"
+      style="display: none"
+    />
+
+    <!-- Image Preview -->
+    <div class="image-preview" *ngIf="currentImageData">
+      <div class="image-preview-header">
+        <span class="image-preview-title">
+          <i class="fas fa-image me-2"></i>
+          {{ currentImageData.name }}
+        </span>
+        <button
+          class="btn btn-sm btn-outline-danger"
+          (click)="removeImagePreview()"
+        >
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="image-preview-container">
+        <img
+          [src]="getImagePreviewUrl()"
+          [alt]="currentImageData.name"
+          class="image-preview-img"
+        />
+      </div>
+    </div>
+
+    <div class="chat-input-wrapper">
+      <button
+        class="attachment-btn"
+        (click)="fileInput.click()"
+        title="Upload image"
+        type="button"
+      >
+        <i class="fas fa-paperclip"></i>
+      </button>
+      <textarea
+        #chatInput
+        [(ngModel)]="currentMessage"
+        (keydown)="onKeyDown($event)"
+        placeholder="Ask about medications, side effects, dosages... (Shift+Enter for new line)"
+        rows="1"
+        class="chat-input"
+        [disabled]="isLoading || !isOnline"
+      ></textarea>
+      <button
+        class="send-btn"
+        (click)="sendMessage()"
+        [disabled]="!currentMessage.trim() || isLoading || !isOnline"
+        title="Send message"
+      >
+        <i class="fas fa-paper-plane" *ngIf="!isLoading"></i>
+        <i class="fas fa-spinner fa-spin" *ngIf="isLoading"></i>
+      </button>
+    </div>
+
+    <!-- Disclaimer -->
+    <div class="chat-disclaimer">
+      <i class="fas fa-shield-alt"></i>
+      <span
+        >This information is for educational purposes. Always consult your
+        healthcare provider.</span
+      >
+    </div>
+
+    <div class="quick-actions" *ngIf="showQuickActions">
+      <button
+        *ngFor="let action of quickActions"
+        class="quick-action-btn"
+        (click)="selectQuickAction(action)"
+      >
+        {{ action }}
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Chat Overlay (for mobile) -->
+<div
+  class="chat-overlay"
+  [class.visible]="isChatOpen && isMobile"
+  (click)="closeChat()"
+></div>

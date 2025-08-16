@@ -3,10 +3,11 @@ import { RouterOutlet } from '@angular/router';
 import { Navbar } from '../../../features/client-dashboard/shared/components/navbar/navbar';
 import { Footer } from '../shared/components/footer/footer';
 import { Router, NavigationEnd } from '@angular/router';
+import { AIChatbotComponent } from '../ai-chatbot/ai-chatbot.component';
 
 @Component({
   selector: 'app-client-layout',
-  imports: [Navbar, Footer, RouterOutlet],
+  imports: [Navbar, Footer, RouterOutlet, AIChatbotComponent],
   templateUrl: './client-layout.html',
   styleUrl: './client-layout.css',
 })

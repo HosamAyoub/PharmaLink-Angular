@@ -1,0 +1,5 @@
+/* Ensure the AI chatbot appears above other content */
+app-ai-chatbot {
+  position: relative;
+  z-index: 9999;
+}
