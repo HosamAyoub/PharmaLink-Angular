@@ -22,4 +22,7 @@ export class DashboardHeader implements OnInit{
       year: 'numeric'
     });
   }
+  logout() {
+    this.authservice.logout();
+  }
 }

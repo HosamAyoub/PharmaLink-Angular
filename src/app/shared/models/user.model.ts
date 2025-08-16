@@ -71,4 +71,6 @@ export enum Roles {
   Admin = 'Admin',
   Pharmacy = 'Pharmacy',
   Patient = 'Patient',
+  Pending = 'pending',
+  Suspended = 'suspended',
 }

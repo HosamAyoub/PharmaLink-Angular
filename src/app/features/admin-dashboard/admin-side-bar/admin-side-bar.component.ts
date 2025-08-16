@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { SidebarStateServiceService } from '../Shared/sidebar-state-service.service';
+import { AuthService } from '../../../shared/services/auth.service';
 
 
 @Component({
@@ -17,7 +18,7 @@ export class AdminSideBarComponent implements OnInit {
   activeItem: string = 'dashboard';
   systemStatus: string = 'Online';
 
-  constructor(private router: Router,public sidebarService: SidebarStateServiceService) {}
+  constructor(private router: Router,public sidebarService: SidebarStateServiceService,private authservice: AuthService) {}
 
   ngOnInit() {
     this.checkScreen();
@@ -26,6 +27,9 @@ export class AdminSideBarComponent implements OnInit {
     this.router.events.subscribe(() => {
       this.setActiveItemByRoute();
     });
+  }
+  logout() {
+    this.authservice.logout();
   }
 
   setActiveItemByRoute() {
@@ -44,8 +48,6 @@ export class AdminSideBarComponent implements OnInit {
     { id: 'orders', label: 'Orders', icon: 'cart', route: '/admin/orders' },
     { id: 'medicines', label: 'Medicines', icon: 'capsule', route: '/admin/medicinesmanagement' },
     { id: 'pharmacies', label: 'Pharmacies', icon: 'shop', route: '/admin/PharmaciesManagement' },
-    { id: 'users', label: 'Users', icon: 'people', route: '/admin/users' },
-    { id: 'settings', label: 'Settings', icon: 'gear', route: '/admin/settings' }
   ];
 
  toggleSidebar() {

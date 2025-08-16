@@ -1,7 +1,10 @@
-<header class="pharmacy-header">
-    <div>
-      <h1>Pharmacy Dashboard</h1>
-      <h6>Welcome back {{ userName}}! Here's your pharmacy overview</h6>
-      <h6><i class="fa-solid fa-calendar-days me-1"></i> {{ formattedDate }}</h6>
-    </div>
-  </header>
+<header class="pharmacy-header d-flex justify-content-between align-items-center">
+  <div>
+    <h1>Pharmacy Dashboard</h1>
+    <h6>Welcome back {{ userName}}! Here's your pharmacy overview</h6>
+    <h6><i class="fa-solid fa-calendar-days me-1"></i> {{ formattedDate }}</h6>
+  </div>
+  <div class="header-actions">
+    <button class="btn btn-danger ps-3 pe-3 pt-2 pb-2" (click)="logout()">Logout <i class="fa-solid fa-arrow-right-from-bracket ms-2"></i></button>
+  </div>
+</header>

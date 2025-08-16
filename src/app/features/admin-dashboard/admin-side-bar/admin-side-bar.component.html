@@ -22,13 +22,21 @@
     </div>
 
     <!-- Navigation Menu -->
-    <nav class="sidebar-nav">
+    <nav class="sidebar-nav d-flex flex-column justify-content-between">
         <ul class="nav-list">
             <li *ngFor="let item of menuItems" class="nav-item" [class.active]="activeItem === item.id"
                 (click)="onItemClick(item.id)">
                 <a class="nav-link" [routerLink]="item.route">
                     <i [class]="'bi bi-' + item.icon" class="nav-icon"></i>
                     <span>{{ item.label }}</span>
+                </a>
+            </li>
+        </ul>
+        <ul class="nav-list">
+            <li class="nav-item logout">
+                <a class="nav-link" (click)="logout()">
+                    <i class="bi bi-box-arrow-left nav-icon"></i>
+                    <span>Logout</span>
                 </a>
             </li>
         </ul>
