@@ -103,7 +103,9 @@ export class AIChatbotComponent implements OnInit, AfterViewChecked {
    * Constructor initializes the AI service and checks device type
    */
   constructor(private cdr: ChangeDetectorRef) {
-    this.genAI = new GoogleGenerativeAI(APP_CONSTANTS.environment.GEMINI_API_KEY);
+    this.genAI = new GoogleGenerativeAI(
+      APP_CONSTANTS.environment.GEMINI_API_KEY
+    );
     this.initializeAI();
     this.checkMobile();
   }
@@ -625,7 +627,7 @@ export class AIChatbotComponent implements OnInit, AfterViewChecked {
       patientContext = `\n\n**PATIENT INFORMATION:**
 Patient Name: ${medicalData.name}
 Age: ${age} years old
-Gender: ${medicalData.gender === 1 ? 'Male' : 'Female'}
+Gender: ${medicalData.gender === 0 ? 'Male' : 'Female'}
 Date of Birth: ${new Date(medicalData.dateOfBirth).toLocaleDateString()}`;
 
       if (medicalData.allergies && medicalData.allergies.trim()) {
