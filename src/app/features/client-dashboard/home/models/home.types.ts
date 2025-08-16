@@ -1,14 +1,14 @@
 
-// Pharmacy related types
-export interface IPharmacy {
-  name: string;
-  address: string;
-  rate: number;
-  startHour: string;
-  endHour: string;
-  isOpen: boolean;
+// // Pharmacy related types
+// export interface IPharmacy {
+//   name: string;
+//   address: string;
+//   rate: number;
+//   startHour: string;
+//   endHour: string;
+//   isOpen: boolean;
 
-}
+// }
 
 // Category related types
 export interface Category {

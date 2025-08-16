@@ -8,7 +8,10 @@
   <!-- This section used to highlight the services offered by the pharmacy -->
   <div class="d-flex justify-content-center flex-wrap category-cards-container">
     @for (product of products().slice(0, 4); track $index) {
-    <div class="category-card-wrapper">
+    <div
+      class="category-card-wrapper"
+      (click)="goToDrugDetails(product.drugId)"
+    >
       <app-product [product]="product" [index]="$index"></app-product>
     </div>
     }

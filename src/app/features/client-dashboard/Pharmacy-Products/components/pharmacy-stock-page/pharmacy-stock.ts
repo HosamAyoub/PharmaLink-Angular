@@ -179,6 +179,6 @@ export class PharmacyStock {
 
   // Navigate to product details page
   navigateToProduct(drugId: number) {
-    this.router.navigate(['/client/pharmacyProduct', drugId]);
+  this.router.navigate(['/client/pharmacyProduct', drugId]);
   }
 }

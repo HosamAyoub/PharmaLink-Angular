@@ -17,7 +17,7 @@
         <!-- Desktop Layout -->
         <div class="desktop-layout">
           <div class="pharmacy-info">
-            <div class="pharmacy-name">{{pharmacy.pharma_Name}}</div>
+            <div class="pharmacy-name">{{ pharmacy.pharma_Name }}</div>
             <div class="pharmacy-location">
               <span class="location-icon">📍</span>
               {{ pharmacy.pharma_Address }}
@@ -26,20 +26,33 @@
 
           <div class="pharmacy-status">
             <span class="status-badge">
-              <input #QuantityInput type="number" class="form-control quantity-input shadow-sm" min="1"
-                max="{{ pharmacy.quantityAvailable }}" value="1" />
+              <input
+                #quantityDesktop
+                type="number"
+                (change)="changeprice($event, pharmacy)"
+                class="form-control quantity-input shadow-sm"
+                min="1"
+                max="{{ pharmacy.quantityAvailable }}"
+                value="1"
+              />
             </span>
           </div>
 
-
           <div class="pharmacy-price">
-            {{ pharmacy.price }}<span class="currency text-primary"> $</span>
+            {{ getTotal(pharmacy) }}
+            <span class="currency text-primary"> $</span>
           </div>
 
-
           <div class="pharmacy-action">
-            <button class="buy-button" [disabled]="pharmacy.quantityAvailable === 0"
-              (click)="SendToCart(pharmacy)">+</button>
+            <button
+              class="buy-button"
+              [disabled]="pharmacy.quantityAvailable === 0"
+              (click)="SendToCart(pharmacy, quantityDesktop)"
+              title="Add to Cart"
+            >
+              <i class="fas fa-cart-plus me-1"></i>
+              Add
+            </button>
           </div>
         </div>
 
@@ -49,15 +62,21 @@
             <div class="pharmacy-name">{{ pharmacy.pharma_Name }}</div>
             <div class="pharmacy-location">
               <span class="location-icon">📍</span>
-              {{ pharmacy.pharma_Location }}
+              {{ pharmacy.pharma_Address }}
             </div>
           </div>
-
 
           <div class="mobile-row">
             <span class="mobile-label">Quantity:</span>
             <span class="status-badge">
-              <input #QuantityInput type="number" class="form-control quantity-input shadow-sm" min="1" value="1" />
+              <input
+                #quantityMobile
+                type="number"
+                class="form-control quantity-input shadow-sm"
+                min="1"
+                max="{{ pharmacy.quantityAvailable }}"
+                value="1"
+              />
             </span>
           </div>
 
@@ -68,9 +87,15 @@
             </div>
           </div>
 
-
-
-          <button class="buy-button" (click)="SendToCart(pharmacy)">+</button>
+          <button
+            class="buy-button"
+            [disabled]="pharmacy.quantityAvailable === 0"
+            (click)="SendToCart(pharmacy, quantityMobile)"
+            title="Add to Cart"
+          >
+            <i class="fas fa-cart-plus me-1"></i>
+            Add to Cart
+          </button>
         </div>
       </div>
     </div>

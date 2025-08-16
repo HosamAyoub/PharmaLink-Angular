@@ -27,6 +27,7 @@
     <div class="container">
       <client-pharmacy-card
         [pharmacy]="pharmacyDetails()"
+        [showViewButton]="false"
       ></client-pharmacy-card>
       <div class="row g-3">
         @for(product of pharmacyProducts(); track product.drugId) {

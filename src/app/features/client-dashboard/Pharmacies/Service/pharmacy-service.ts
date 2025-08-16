@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { Ipharmacy } from '../../shared/models/ipharmacy';
 import { APP_CONSTANTS } from '../../../../shared/constants/app.constants';
 import { ConfigService } from '../../../../shared/services/config.service';
+import { PharmacyDisplayDTO } from '../../../pharmacy-dashboard/profile/Interfaces/pharmacy-display-dto';
 
 @Injectable({
   providedIn: 'root'
@@ -50,4 +51,6 @@ export class PharmacyService {
     const url = this.config.getApiUrl(`${this.ENDPOINTS.PHARMACY}/${id}`);
     return this.http.delete<Ipharmacy>(url);
   }
+
+
 }

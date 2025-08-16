@@ -14,6 +14,7 @@ import { DecimalPipe } from '@angular/common';
 })
 export class PharmacyCard {
   @Input() pharmacy!: Ipharmacy;
+  @Input() showViewButton: boolean = true;
 
   getStars(rate: number | undefined): string {
     if (!rate) return '';

@@ -29,6 +29,7 @@ export const APP_CONSTANTS = {
       PHARMACY_STOCK_ANALYSIS: 'PharmacyStock/InventoryStatusByID',
       ORDERS_VALIDATE_SESSION: 'Orders/validate-session',
       MULTIPLE_FAVORITES: 'Favorites/AddMultiple',
+      SHARED: 'Shared'
     },
   },
   environment: {
