@@ -2,7 +2,10 @@ import { Component, Input, OnInit, OnChanges, effect, signal, inject } from '@an
 import { DatePipe } from '@angular/common';
 import { ActivityNotification } from '../../Interface/activity-notification';
 import { OrdersSignalrServiceService } from '../../../Shared/Services/orders-signalr-service.service';
-import { th } from 'date-fns/locale';
+import { DrugStatus } from '../../../../../shared/enums/drug-status';
+
+
+
 
 @Component({
   selector: 'app-recent-activity',
@@ -16,9 +19,22 @@ export class RecentActivity implements OnInit, OnChanges {
   activityList: any[] = [];
 
 
+  constructor() {
+    this.signalRService.loadPharmacyOrdersNotifications().subscribe({
+      next: (notifications) => {
+        this.notifications = notifications;
+        this.prepareActivityList();
+      },
+      error: (err) => {
+        console.error('Error loading pharmacy orders notifications:', err);
+      }
+    });
+  }
+
   ngOnInit(): void {
     this.signalRService.loadPharmacyOrdersNotifications().subscribe({
       next: (notifications) => {
+        console.log('Initial Notifications:', notifications);
         this.notifications = notifications;
         this.prepareActivityList();
         console.log('Activity List Initialized:', this.activityList);
@@ -67,7 +83,7 @@ export class RecentActivity implements OnInit, OnChanges {
         ...this.notifications.drugRequestNotifications.map(drug => ({
           type: 'drug',
           title: 'Drug Request',
-          message: `Request for "${drug.commonName}"`,
+          message: `Your Request for "${drug.commonName}" has been ${drug.drugStatus === DrugStatus.Approved ? 'approved' : 'rejected'}.`,
           timestamp: drug.timestamp,
           drugStatus: drug.drugStatus,
           drugID: drug.drugID,

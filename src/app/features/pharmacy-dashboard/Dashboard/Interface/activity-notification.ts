@@ -1,3 +1,4 @@
+import { DrugStatus } from "../../../../shared/enums/drug-status";
 
 interface OrderNotification {
   orderID: number;
@@ -9,7 +10,7 @@ interface OrderNotification {
 interface DrugRequestNotification {
   drugID: number;
   commonName: string;
-  drugStatus: number;
+  drugStatus: DrugStatus;
   isRead: boolean;
   timestamp: string;
 }

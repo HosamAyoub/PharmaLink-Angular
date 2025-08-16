@@ -17,15 +17,16 @@
         <!-- Icon -->
         <div class="icon">
           @if(notif.type === 'order'){
-          <i class="bi bi-cart-check-fill text-success"></i>
+          <i class="bi bi-cart-check-fill fs-4 text-success"></i>
           } @else {
-          <i class="bi bi-capsule-pill text-primary"></i>
+          <i class="bi bi-capsule-pill fs-4 text-primary"></i>
           }
         </div>
         <!-- Content -->
         <div class="content">
           <div class="title fw-semibold">
-            @if(notif.type === 'order'){
+            @if(notif.type === 'order')
+            {
             Order #{{ notif.orderID }} - {{ notif.status }}
             } @else {
             Drug Request: {{ notif.message }}
