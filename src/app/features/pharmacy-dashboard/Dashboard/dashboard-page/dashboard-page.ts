@@ -1,7 +1,7 @@
 import { QuickActions } from './../Components/quick-actions/quick-actions';
 import { StatsCard } from './../Components/stats-card/stats-card';
 import { DashboardHeader } from './../Components/dashboard-header/dashboard-header';
-import { Component, ChangeDetectorRef, OnInit, inject, signal } from '@angular/core';
+import { Component, ChangeDetectorRef, OnInit, inject, signal, effect } from '@angular/core';
 import { PharmacyAnalysisService } from '../Services/pharmacy-analysis-service';
 import { IPharmacyAnalysis, IPharmacystockAnalysis } from '../Interface/pharmacy-analysis-interface';
 import { LoadingSpinner } from '../../../../shared/components/loading-spinner/loading-spinner';
@@ -21,10 +21,12 @@ import { ActivityNotification } from '../Interface/activity-notification';
 })
 export class DashboardPage implements OnInit {
   private cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
+  private SignalRService: OrdersSignalrServiceService = inject(OrdersSignalrServiceService);
   protected analysisData: IPharmacyAnalysis | null = null;
   protected stockAnalysisData: IPharmacystockAnalysis | null = null;
   protected errorMessage: string | null = null;
   protected loading: boolean = true;
+  Notifications : ActivityNotification | null = null;
   protected trends: {
     ordersTrend: string;
     revenueTrend: string;
@@ -36,11 +38,24 @@ export class DashboardPage implements OnInit {
       pharmacyTrend: '4%',
       DrugsTrend: '25%'
     };
-  constructor(private pharmacyAnalysisService: PharmacyAnalysisService) { }
+  constructor(private pharmacyAnalysisService: PharmacyAnalysisService)
+  {
+    effect(() => {
+      this.Notifications = this.SignalRService.Notifications();
+    });
+  }
 
   ngOnInit(): void {
     this.loadAnalysisData();
     this.loadPharmacyStockAnalysis();
+    this.SignalRService.loadPharmacyOrdersNotifications().subscribe({
+      next: (res: ActivityNotification | null) => {
+        this.Notifications = res;
+        this.SignalRService.Notifications.set(res);
+        console.log('Received notifications:', this.Notifications);
+        this.cdr.detectChanges();
+      }
+    });
   }
 
   private loadAnalysisData(): void {

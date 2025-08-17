@@ -1,0 +1,35 @@
+<div class="recent-activity-section">
+  <div class="card-header">
+    <div class="recent-activity-title">
+      <h4>
+        <i class="fa-solid fa-bell" [style.color]="'var(--blue-200)'"></i>
+        Recent Activity
+      </h4>
+      <p [style.color]="'var(--gray-800)'">Latest updates and notifications</p>
+    </div>
+  </div>
+  <div class="notifications-list">
+    @if(activityList.length === 0){
+    <div class="text-center text-muted py-3">
+      No notifications
+    </div>
+    }
+    @for(notif of activityList; track $index){
+    <div class="notification-item d-flex align-items-start gap-3"
+    (click)="onNotificationClick(notif)"
+    >
+      <!-- Icon -->
+      <div class="icon">
+        <i class="bi bi-capsule-pill fs-4 text-primary"></i>
+      </div>
+      <!-- Content -->
+      <div class="content">
+        <div class="title fw-semibold">
+          Drug Request: {{ notif.message }}
+        </div>
+        <div class="time text-muted small">{{ notif.timestamp | date:'short' }}</div>
+      </div>
+    </div>
+    }
+  </div>
+</div>

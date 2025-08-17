@@ -5,6 +5,7 @@ import { OrdersService } from '../../orders/Services/orders-service';
 import { CommonModule } from '@angular/common';
 import { RequestsSignalRService } from '../Services/requests-signal-r.service';
 import { ToastService } from '../../../../shared/services/toast.service';
+import { ActivityNotification } from '../../Dashboard/Interface/activity-notification';
 
 @Component({
   selector: 'app-notifications',
@@ -44,8 +45,13 @@ export class NotificationsComponent implements OnInit, OnDestroy {
       this.playSound();
       this.toastservice.showSuccess("New Order Received!");
       this.orderService.loadOrders();
-
-      this.cd.detectChanges();
+      this.signalRService.loadPharmacyOrdersNotifications().subscribe({
+        next: (res: ActivityNotification | null ) => {
+          this.signalRService.Notifications.set(res);
+          console.log('Received notifications:', this.signalRService.Notifications);
+          this.cd.detectChanges();
+        }
+      });
     });
   }
 
@@ -54,13 +60,23 @@ export class NotificationsComponent implements OnInit, OnDestroy {
       console.log("your request has been rejected:", message);
       this.playSound();
       this.toastservice.showError("Your request has been rejected!");
-      this.cd.detectChanges();
+      this.signalRService.loadPharmacyOrdersNotifications().subscribe({
+        next: (res: ActivityNotification | null ) => {
+          this.signalRService.Notifications.set(res);
+          this.cd.detectChanges();
+        }
+      });
     });
      this.RequestsSignalRService.hubConnection.on('DrugRequestAccepted', (message) => {
       console.log("your request has been accepted:", message);
       this.playSound();
       this.toastservice.showSuccess("Your request has been accepted!");
-      this.cd.detectChanges();
+      this.signalRService.loadPharmacyOrdersNotifications().subscribe({
+        next: (res: ActivityNotification | null ) => {
+          this.signalRService.Notifications.set(res);
+          this.cd.detectChanges();
+        }
+      });
     });
   }
 
