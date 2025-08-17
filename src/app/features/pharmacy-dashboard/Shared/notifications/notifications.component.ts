@@ -31,6 +31,7 @@ export class NotificationsComponent implements OnInit, OnDestroy {
           this.signalRService.startConnection(pharmacyId);
           this.subscribeToNewOrders();
           this.adminRequestReplay();
+          this.subscribeToCancelOrder();
         }
       },
       error: (err) => {
@@ -45,6 +46,15 @@ export class NotificationsComponent implements OnInit, OnDestroy {
       this.toastservice.showSuccess("New Order Received!");
       this.orderService.loadOrders();
 
+      this.cd.detectChanges();
+    });
+  }
+
+  private subscribeToCancelOrder() {
+    this.signalRService.hubConnection.on('CancelOrder', () => {
+      this.playSound();
+      this.toastservice.showError("Order has been Cancelled!");
+      this.orderService.loadOrders();
       this.cd.detectChanges();
     });
   }

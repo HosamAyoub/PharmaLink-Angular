@@ -7,6 +7,13 @@ interface OrderNotification {
   timestamp: string;
 }
 
+interface CancelOrderNotification {
+  orderID: number;
+  status: string;
+  message: string;
+  timestamp: string;
+}
+
 interface DrugRequestNotification {
   drugID: number;
   commonName: string;
@@ -19,5 +26,6 @@ interface DrugRequestNotification {
 export interface ActivityNotification {
   orderNotifications: OrderNotification[];
   drugRequestNotifications: DrugRequestNotification[];
+  cancelOrderNotification: CancelOrderNotification[];
 }
 

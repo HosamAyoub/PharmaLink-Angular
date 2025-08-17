@@ -51,6 +51,20 @@ export class RecentActivity  {
       );
     }
 
+    // Add cancel order notifications
+    if (this.notifications.cancelOrderNotification) {
+      this.activityList.push(
+        ...this.notifications.orderNotifications.map(order => ({
+          type: 'cancelOrder',
+          title: 'Order Cancelled',
+          message: order.message,
+          timestamp: order.timestamp,
+          status: order.status,
+          orderID: order.orderID
+        }))
+      );
+    }
+
     // Add drug request notifications
     if (this.notifications.drugRequestNotifications) {
       this.activityList.push(
@@ -72,7 +86,7 @@ export class RecentActivity  {
 
 
   onNotificationClick(notif: any) {
-    if (notif.type === 'order') {
+    if (notif.type === 'order' || notif.type === 'cancelOrder') {
       this.router.navigate(['pharmacy/ordersManagement']);
     } else {
       this.router.navigate(['pharmacy/medicinemanagement']);
