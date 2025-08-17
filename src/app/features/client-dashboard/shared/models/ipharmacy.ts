@@ -4,6 +4,8 @@ export interface Ipharmacy {
   ownerName?:string;
   email?: string;
   address: string;
+  latitude: number;
+  longitude: number;
   phoneNumber?: string;
   imgUrl?: string;
   docURL?: string;
@@ -12,4 +14,6 @@ export interface Ipharmacy {
   joinedDate:  Date;
   startHour?: string;
   endHour?: string;
+  isOpen: boolean;
+
 }

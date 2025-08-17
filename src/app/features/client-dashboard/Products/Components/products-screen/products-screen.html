@@ -7,32 +7,8 @@
   >
   </app-side-bar>
 
-  <!-- component for displaying loading spinner -->
-  <div
-    *ngIf="uiState() === UiState.Loading"
-    style="
-      flex-grow: 1;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    "
-  >
-    <app-loading-spinner></app-loading-spinner>
-  </div>
-
-  <!-- component for displaying error messages -->
-  <div *ngIf="uiState() === UiState.Error" style="flex-grow: 1">
-    <app-error-handling
-      [httpError]="httpError() || undefined"
-    ></app-error-handling>
-  </div>
-
   <!-- Main Content -->
-  <div
-    *ngIf="uiState() === UiState.Success"
-    class="flex-grow-1"
-    id="pageContent"
-  >
+  <div class="flex-grow-1" id="pageContent">
     <div class="container-fluid px-0">
       <div class="card-list-grid">
         @for (drug of Drugs(); track $index) {

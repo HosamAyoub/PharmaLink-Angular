@@ -50,8 +50,8 @@ export const routes: Routes = [
           )
       },
     ],
-    //canActivate: [AuthGuard],
-    //data: { roles: ['Admin'] },
+    canActivate: [AuthGuard],
+    data: { roles: ['Admin'] },
   },
   {
     path: 'pharmacy',

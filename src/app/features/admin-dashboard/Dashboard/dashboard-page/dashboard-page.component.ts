@@ -1,9 +1,8 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { DashboardHeaderComponent } from '../Components/dashboard-header/dashboard-header.component';
 import { IPharmacyAnalysis } from '../../../pharmacy-dashboard/Dashboard/Interface/pharmacy-analysis-interface';
 import { AdminAnalysisServiceService } from '../Services/admin-analysis-service.service';
 import { PharmacyService } from '../../../client-dashboard/Pharmacies/Service/pharmacy-service';
-import { IPharmacy } from '../../../client-dashboard/home/models/home.types';
 import { Ipharmacy } from '../../../client-dashboard/shared/models/ipharmacy';
 import { LoadingSpinner } from "../../../../shared/components/loading-spinner/loading-spinner";
 import { StatusCardComponent } from '../Components/status-card/status-card.component';
@@ -22,6 +21,7 @@ import { SidebarStateServiceService } from '../../Shared/sidebar-state-service.s
   styleUrl: './dashboard-page.component.css'
 })
 export class DashboardPageComponent implements OnInit {
+  private cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
   protected analysisData: IPharmacyAnalysis | null = null;
   protected pharmacyData: Ipharmacy[] | null = null;
   protected pharmacySummary: AdminAnalysisInterface | null = null;
@@ -39,7 +39,7 @@ export class DashboardPageComponent implements OnInit {
     DrugsTrend: '0%'
   };
   isSidebarOpen = true;
-  constructor(private adminAnalysisService: AdminAnalysisServiceService, private cdr: ChangeDetectorRef, private pharmacyService: PharmacyService, private sidebarService: SidebarStateServiceService) { }
+  constructor(private adminAnalysisService: AdminAnalysisServiceService, private pharmacyService: PharmacyService, private sidebarService: SidebarStateServiceService) { }
 
   ngOnInit(): void {
     this.sidebarService.isOpen$.subscribe(isOpen => {
@@ -132,7 +132,7 @@ export class DashboardPageComponent implements OnInit {
         icon: 'cart-shopping',
         color: 'var(--violet)',
         trend: this.trends.ordersTrend
-      },      
+      },
       {
         title: 'Total Revenue',
         value: '$' + (this.analysisData?.totalRevenue?.toLocaleString() || '0'),

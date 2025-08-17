@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { PageHeaderComponent } from '../Components/page-header/page-header.component';
 import { LoadingSpinner } from '../../../../shared/components/loading-spinner/loading-spinner';
 import { StatusCardComponent } from '../../Dashboard/Components/status-card/status-card.component';
@@ -18,6 +18,7 @@ import { PendingApplicationsComponent } from '../Components/pending-applications
   styleUrl: './pharmacies-page.component.css'
 })
 export class PharmaciesPageComponent implements OnInit{
+  private cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
   protected activePharmacyData: Ipharmacy[] | null = null;
   protected pendingPharmacyData: Ipharmacy[] | null = null;
   protected suspendedPharmacyData: Ipharmacy[] | null = null;
@@ -27,7 +28,7 @@ export class PharmaciesPageComponent implements OnInit{
   protected loading: boolean = true;
   isSidebarOpen = true;
 
-    constructor(private adminAnalysisService: AdminAnalysisServiceService, private cdr: ChangeDetectorRef, private pharmacyService: PharmacyService,private sidebarService: SidebarStateServiceService) { }
+    constructor(private adminAnalysisService: AdminAnalysisServiceService, private pharmacyService: PharmacyService,private sidebarService: SidebarStateServiceService) { }
    ngOnInit(): void {
     this.sidebarService.isOpen$.subscribe(isOpen => {
       this.isSidebarOpen = isOpen;

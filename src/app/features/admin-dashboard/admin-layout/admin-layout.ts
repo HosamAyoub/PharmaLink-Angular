@@ -20,4 +20,6 @@ import { AsyncPipe, CommonModule } from '@angular/common';
   toggleSidebar() {
     this.sidebarService.toggle();
   }
+
+  
 }

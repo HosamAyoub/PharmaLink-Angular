@@ -25,6 +25,7 @@
     "@angular/core": "^20.0.0",
     "@angular/forms": "^20.0.0",
     "@angular/google-maps": "^20.1.5",
+    "@angular/platform-browser": "^20.0.0",
     "@angular/router": "^20.0.0",
     "@fortawesome/angular-fontawesome": "^3.0.0",
     "@fortawesome/fontawesome": "^1.1.8",
