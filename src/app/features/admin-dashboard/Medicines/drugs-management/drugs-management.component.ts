@@ -8,6 +8,7 @@ import { FirstWordPipe } from './Pipes/first-word.pipe';
 import { AdminService } from './Services/admin.service';
 import { FormsModule } from '@angular/forms';
 import { AdminSignalRService } from '../../Shared/admin-signal-r.service';
+import { DrugStatus } from '../../../../shared/enums/drug-status';
 
 interface ResponseStatus {
   approved: number;
@@ -128,7 +129,8 @@ export class DrugsManagementComponent {
   }
 
   rejectRequest(req: any) {
-    this.adminService.deleteDrug(req.newDrug.drugID).subscribe({
+    req.newDrug.drugStatus = DrugStatus.Rejected;
+    this.adminService.updateDrug(req.newDrug).subscribe({
       next: () => {
         // Handle successful deletion
         this.DrugsReq = this.DrugsReq.filter(r => r !== req.newDrug.drugID);
@@ -148,6 +150,7 @@ export class DrugsManagementComponent {
 
   acceptRequest(req: IDrugDetails) {
     this.selectedMedicine = req;
+    req.drugStatus = 1; // Set status to Approved
   }
 
   openModal(medicine: IDrugDetails, editMode: boolean) {

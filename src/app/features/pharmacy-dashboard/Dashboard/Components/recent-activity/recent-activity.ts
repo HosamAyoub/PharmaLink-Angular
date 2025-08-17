@@ -3,6 +3,7 @@ import { DatePipe } from '@angular/common';
 import { ActivityNotification } from '../../Interface/activity-notification';
 import { OrdersSignalrServiceService } from '../../../Shared/Services/orders-signalr-service.service';
 import { DrugStatus } from '../../../../../shared/enums/drug-status';
+import { Router } from '@angular/router';
 
 
 
@@ -13,44 +14,17 @@ import { DrugStatus } from '../../../../../shared/enums/drug-status';
   templateUrl: './recent-activity.html',
   styleUrl: './recent-activity.css'
 })
-export class RecentActivity implements OnInit, OnChanges {
+export class RecentActivity  {
   notifications: ActivityNotification | null = null;
-  signalRService: OrdersSignalrServiceService = inject(OrdersSignalrServiceService);
   activityList: any[] = [];
-
+  signalRService: OrdersSignalrServiceService = inject(OrdersSignalrServiceService);
+  router: Router = inject(Router);
 
   constructor() {
     this.signalRService.loadPharmacyOrdersNotifications().subscribe({
       next: (notifications) => {
         this.notifications = notifications;
         this.prepareActivityList();
-      },
-      error: (err) => {
-        console.error('Error loading pharmacy orders notifications:', err);
-      }
-    });
-  }
-
-  ngOnInit(): void {
-    this.signalRService.loadPharmacyOrdersNotifications().subscribe({
-      next: (notifications) => {
-        console.log('Initial Notifications:', notifications);
-        this.notifications = notifications;
-        this.prepareActivityList();
-        console.log('Activity List Initialized:', this.activityList);
-      },
-      error: (err) => {
-        console.error('Error loading pharmacy orders notifications:', err);
-      }
-    });
-  }
-
-  ngOnChanges(): void {
-    this.signalRService.loadPharmacyOrdersNotifications().subscribe({
-      next: (notifications) => {
-        this.notifications = notifications;
-        this.prepareActivityList();
-        console.log('Activity List Updated:', this.activityList);
       },
       error: (err) => {
         console.error('Error loading pharmacy orders notifications:', err);
@@ -95,4 +69,16 @@ export class RecentActivity implements OnInit, OnChanges {
     // Sort by timestamp descending
     this.activityList.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
   }
+
+
+  onNotificationClick(notif: any) {
+    if (notif.type === 'order') {
+      this.router.navigate(['pharmacy/ordersManagement']);
+    } else {
+      this.router.navigate(['pharmacy/medicinemanagement']);
+    }
+  }
+
+
+
 }

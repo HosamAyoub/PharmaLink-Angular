@@ -99,7 +99,6 @@ export class AddMedicinesComponent implements OnInit {
       this.medicineService.sendRequestToAdmin(this.requestData).subscribe(
         res => {
           console.log('Request sent successfully:', res);
-          this.requestData = {} as IRequest;
           this.RequestsSignalRService.sendDrugRequestToAdmin('Send drug request from pharmacy');
         },
         err => {
@@ -108,5 +107,10 @@ export class AddMedicinesComponent implements OnInit {
         }
       );
     }
+    else {
+      console.error('Request data is incomplete');
+
+    }
+    this.requestData = {} as IRequest;
   }
 }
