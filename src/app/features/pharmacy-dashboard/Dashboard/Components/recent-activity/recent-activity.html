@@ -22,6 +22,8 @@
       <div class="icon">
         @if(notif.type === 'order'){
         <i class="bi bi-cart-check-fill fs-4 text-success"></i>
+        }  @else if (notif.type === 'cancelOrder'){
+          <i class="bi bi-x-circle-fill fs-4 text-danger"></i>
         } @else {
         <i class="bi bi-capsule-pill fs-4 text-primary"></i>
         }
