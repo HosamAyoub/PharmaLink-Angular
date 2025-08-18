@@ -2,6 +2,7 @@ import { inject, Injectable, signal } from '@angular/core';
 import * as signalR from '@microsoft/signalr';
 import { Observable } from 'rxjs';
 import { ToastService } from '../../../shared/services/toast.service';
+import { AdminNotificationsService } from './admin-notifications.service';
 
 @Injectable({
   providedIn: 'root'
@@ -9,6 +10,7 @@ import { ToastService } from '../../../shared/services/toast.service';
 export class AdminSignalRService {
 
   toastservice: ToastService = inject(ToastService);
+  AdminNotifications : AdminNotificationsService = inject(AdminNotificationsService);
   private hubConnection!: signalR.HubConnection;
 
   startConnection() {
@@ -46,6 +48,7 @@ export class AdminSignalRService {
         next: () => {
           console.log("New drug request received");
           this.toastservice.showSuccess("New drug request received");
+          this.AdminNotifications.GetAdminNotifications();
         }
       });
       this.newUserRegistration().subscribe({

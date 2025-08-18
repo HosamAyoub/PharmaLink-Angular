@@ -1,46 +1,41 @@
-import { Component, Input, OnInit, OnChanges, effect, signal, inject } from '@angular/core';
+import { Component, Input, OnInit, OnChanges, effect, signal, inject, WritableSignal } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { ActivityNotification } from '../../Interface/activity-notification';
 import { OrdersSignalrServiceService } from '../../../Shared/Services/orders-signalr-service.service';
 import { DrugStatus } from '../../../../../shared/enums/drug-status';
 import { Router } from '@angular/router';
 
-
-
-
 @Component({
   selector: 'app-recent-activity',
   imports: [DatePipe],
   templateUrl: './recent-activity.html',
-  styleUrl: './recent-activity.css'
+  styleUrls: ['./recent-activity.css']
 })
-export class RecentActivity  {
-  notifications: ActivityNotification | null = null;
+export class RecentActivity {
   activityList: any[] = [];
   signalRService: OrdersSignalrServiceService = inject(OrdersSignalrServiceService);
   router: Router = inject(Router);
+  private _notifications = signal<ActivityNotification | null>(null);
+
+@Input() set notifications(value: ActivityNotification | null) {
+  this._notifications.set(value);
+}
 
   constructor() {
-    this.signalRService.loadPharmacyOrdersNotifications().subscribe({
-      next: (notifications) => {
-        this.notifications = notifications;
-        this.prepareActivityList();
-      },
-      error: (err) => {
-        console.error('Error loading pharmacy orders notifications:', err);
-      }
-    });
+   effect((_notifications) => {
+     this.prepareActivityList();
+   });
   }
 
   prepareActivityList() {
-    console.log('Received notifications:', this.notifications);
+    console.log('Received notifications:', this._notifications());
     this.activityList = [];
-    if (!this.notifications) return;
+    if (!this._notifications()) return;
 
     // Add order notifications
-    if (this.notifications.orderNotifications) {
+    if (this._notifications()?.orderNotifications) {
       this.activityList.push(
-        ...this.notifications.orderNotifications.map(order => ({
+        ...((this._notifications()?.orderNotifications as Array<any>) ?? []).map((order: any) => ({
           type: 'order',
           title: 'New Order',
           message: order.message,
@@ -66,9 +61,9 @@ export class RecentActivity  {
     }
 
     // Add drug request notifications
-    if (this.notifications.drugRequestNotifications) {
+    if (this._notifications()?.drugRequestNotifications) {
       this.activityList.push(
-        ...this.notifications.drugRequestNotifications.map(drug => ({
+        ...(this._notifications()?.drugRequestNotifications as Array<any> ?? []).map((drug: any) => ({
           type: 'drug',
           title: 'Drug Request',
           message: `Your Request for "${drug.commonName}" has been ${drug.drugStatus === DrugStatus.Approved ? 'approved' : 'rejected'}.`,

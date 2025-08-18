@@ -1,6 +1,6 @@
 import { DrugStatus } from "../../../../shared/enums/drug-status";
 
-interface OrderNotification {
+export interface OrderNotification {
   orderID: number;
   status: string;
   message: string;
@@ -8,11 +8,12 @@ interface OrderNotification {
   type: string;
 }
 
-interface DrugRequestNotification {
+export interface DrugRequestNotification {
   drugID: number;
   commonName: string;
   drugStatus: DrugStatus;
   isRead: boolean;
+  pharmacyName: string;
   timestamp: string
 }
 
