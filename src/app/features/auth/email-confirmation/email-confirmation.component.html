@@ -1,0 +1,6 @@
+<div class="confirm-email">
+  <h2>Email Confirmation</h2>
+  <p [ngClass]="{ success: isSuccess(), error: isSuccess() === false }">
+    {{ statusMessage() }}
+  </p>
+</div>

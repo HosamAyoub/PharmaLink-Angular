@@ -7,6 +7,7 @@ import { AuthGuard } from './shared/guards/auth.guard';
 import { NotAuthorized } from './shared/components/not-authorized/not-authorized';
 import { SignupPharmacyComponent } from './features/auth/signup-pharmacy/signup-pharmacy.component';
 import { SuspendedPageComponent } from './features/auth/pending -suspended/suspended-page/suspended-page.component';
+import { EmailConfirmationComponent } from './features/auth/email-confirmation/email-confirmation.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/client', pathMatch: 'full' },
@@ -18,6 +19,8 @@ export const routes: Routes = [
     path: 'signup',
     component: SignUp,
   },
+   { path: 'confirm-email', component: EmailConfirmationComponent },
+
   {
     path: "pending",
     component:PendingPageComponent,
