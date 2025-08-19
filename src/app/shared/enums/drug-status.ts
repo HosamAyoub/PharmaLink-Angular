@@ -1,4 +1,5 @@
 export enum DrugStatus {
-    Requested=0,
-    Approved=1
+    Rejected = 0,
+    Approved = 1,
+    Pending = 2
 }

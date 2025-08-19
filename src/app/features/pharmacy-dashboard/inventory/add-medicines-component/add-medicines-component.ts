@@ -10,6 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { ViewChild } from '@angular/core';
 import { ElementRef } from '@angular/core';
 import { IRequest } from '../Models/irequest';
+import { RequestsSignalRService } from '../../Shared/Services/requests-signal-r.service';
 
 
 @Component({
@@ -26,6 +27,8 @@ export class AddMedicinesComponent implements OnInit {
   medicineService: MedicineService = inject(MedicineService);
   drugservice: DrugService = inject(DrugService);
   requestData: IRequest = {} as IRequest;
+  RequestsSignalRService: RequestsSignalRService = inject(RequestsSignalRService);
+
 
 
   constructor(private cd: ChangeDetectorRef) {
@@ -96,7 +99,7 @@ export class AddMedicinesComponent implements OnInit {
       this.medicineService.sendRequestToAdmin(this.requestData).subscribe(
         res => {
           console.log('Request sent successfully:', res);
-          this.requestData = {} as IRequest;
+          this.RequestsSignalRService.sendDrugRequestToAdmin('Send drug request from pharmacy');
         },
         err => {
           // Optionally show an error message
@@ -104,5 +107,10 @@ export class AddMedicinesComponent implements OnInit {
         }
       );
     }
+    else {
+      console.error('Request data is incomplete');
+
+    }
+    this.requestData = {} as IRequest;
   }
 }

@@ -66,15 +66,15 @@ export class Login {
 
         // Check for return URL first, then redirect based on role
         const returnUrl = this.route.snapshot.queryParams['returnUrl'];
-        
+
         let redirectUrl = '/client/home'; // default for client
         if (role == 'Admin') {
           redirectUrl = '/admin/dashboard';
         } else if (role == 'Pharmacy') {
           redirectUrl = '/pharmacy/dashboard';
-        }else if (role == 'pending'){
+        } else if (role == 'pending') {
           redirectUrl = 'pending';
-        }else if (role == 'suspended'){
+        } else if (role == 'suspended') {
           redirectUrl = 'suspended';
         }
 

@@ -1,6 +1,6 @@
 import { Injectable, signal, inject } from '@angular/core';
 import { catchError, tap } from 'rxjs/operators';
-import { throwError } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { HttpErrorResponse, HttpClient, HttpHeaders } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IsignupPharmacy, ResponseData, SignUpData, User } from '../models/user.model';
@@ -44,7 +44,7 @@ export class AuthService {
     return this.http.post(url, payload).pipe(
       catchError(this.handleError));
   }
-  signUpPharmacy(formData: FormData) {
+  signUpPharmacy(formData: FormData): Observable<any> {
   // Remove Content-Type header - let browser set it automatically with boundary
   const headers = new HttpHeaders();
   //headers.delete('Content-Type');

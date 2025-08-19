@@ -3,6 +3,9 @@ import { OrdersSignalrServiceService } from '../Services/orders-signalr-service.
 import { PharmacyService } from '../../profile/Services/pharmacy-service';
 import { OrdersService } from '../../orders/Services/orders-service';
 import { CommonModule } from '@angular/common';
+import { RequestsSignalRService } from '../Services/requests-signal-r.service';
+import { ToastService } from '../../../../shared/services/toast.service';
+import { ActivityNotification } from '../../Dashboard/Interface/activity-notification';
 
 @Component({
   selector: 'app-notifications',
@@ -14,15 +17,13 @@ import { CommonModule } from '@angular/common';
 export class NotificationsComponent implements OnInit, OnDestroy {
   signalRService = inject(OrdersSignalrServiceService);
   pharmacyService = inject(PharmacyService);
+  RequestsSignalRService = inject(RequestsSignalRService);
   orderService = inject(OrdersService);
+  toastservice : ToastService = inject(ToastService);
   cd = inject(ChangeDetectorRef);
 
-  showPopup = this.signalRService.showPopup;
-
-
   ngOnInit(): void {
-    this.orderService.loadOrders();
-
+    this.RequestsSignalRService.startConnection();
     this.pharmacyService.getPharmacyProfile().subscribe({
       next: (pharmacy) => {
         const pharmacyId = pharmacy.pharmacyID;
@@ -30,6 +31,7 @@ export class NotificationsComponent implements OnInit, OnDestroy {
         if (pharmacyId) {
           this.signalRService.startConnection(pharmacyId);
           this.subscribeToNewOrders();
+          this.adminRequestReplay();
         }
       },
       error: (err) => {
@@ -40,24 +42,44 @@ export class NotificationsComponent implements OnInit, OnDestroy {
 
   private subscribeToNewOrders() {
     this.signalRService.hubConnection.on('NewOrder', () => {
-      this.showPopup = true;
       this.playSound();
+      this.toastservice.showSuccess("New Order Received!");
       this.orderService.loadOrders();
-      this.cd.detectChanges();
-
-      this.signalRService.loadPharmacyOrdersNotifications();
-      this.cd.detectChanges();
-
-      setTimeout(() => {
-        this.showPopup = false;
-        this.cd.detectChanges();
-      }, 5000);
+      this.signalRService.loadPharmacyOrdersNotifications().subscribe({
+        next: (res: ActivityNotification | null ) => {
+          this.signalRService.Notifications.set(res);
+          console.log('Received notifications:', this.signalRService.Notifications);
+          this.cd.detectChanges();
+        }
+      });
     });
   }
 
-  closePopup() {
-    this.showPopup = false;
+  adminRequestReplay() {
+    this.RequestsSignalRService.hubConnection.on('DrugRequestRejected', (message) => {
+      console.log("your request has been rejected:", message);
+      this.playSound();
+      this.toastservice.showError("Your request has been rejected!");
+      this.signalRService.loadPharmacyOrdersNotifications().subscribe({
+        next: (res: ActivityNotification | null ) => {
+          this.signalRService.Notifications.set(res);
+          this.cd.detectChanges();
+        }
+      });
+    });
+     this.RequestsSignalRService.hubConnection.on('DrugRequestAccepted', (message) => {
+      console.log("your request has been accepted:", message);
+      this.playSound();
+      this.toastservice.showSuccess("Your request has been accepted!");
+      this.signalRService.loadPharmacyOrdersNotifications().subscribe({
+        next: (res: ActivityNotification | null ) => {
+          this.signalRService.Notifications.set(res);
+          this.cd.detectChanges();
+        }
+      });
+    });
   }
+
 
   ngOnDestroy(): void {
     this.signalRService.stopConnection();

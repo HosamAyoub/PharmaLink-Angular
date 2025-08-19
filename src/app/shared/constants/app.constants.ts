@@ -42,6 +42,9 @@ export const APP_CONSTANTS = {
       SUSPEND_PHARMACY: 'Pharmacy/SuspendedPharmacy',
       REJECT_PHARMACY: 'Pharmacy/RejectPharmacy',
       CHANGE_ROLE: 'Role/changeRoleByPharmacy',
+      ADMIN_NOTIFICATIONS: 'Notifications/AdminNotifications',
+      PHARMACY_NOTIFICATIONS: 'notifications/pharmacyOrdersNotifications'
+
     },
   },
   environment: {

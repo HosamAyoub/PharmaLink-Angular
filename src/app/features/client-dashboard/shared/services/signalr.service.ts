@@ -9,8 +9,6 @@ import { ConfigService } from '../../../../shared/services/config.service';
 })
 export class SignalrService {
   public connection!: signalR.HubConnection;
-  showPopup = false;
-  notificationMessage: string = '';
   patientNotifications = signal<any[]>([]);
   config = inject(ConfigService);
   endPoint = APP_CONSTANTS.API.ENDPOINTS;
@@ -49,7 +47,6 @@ export class SignalrService {
   stopConnection() {
     if (this.connection) {
       this.connection.stop();
-      this.showPopup = false;
     }
   }
 

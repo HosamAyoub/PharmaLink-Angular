@@ -18,6 +18,6 @@ export interface IDrugDetails
         storage_and_handling: string,
         adverse_reactions: string,
         drug_UrlImg: string,
-        drugStatus : DrugStatus.Requested | DrugStatus.Approved,
+        drugStatus : DrugStatus.Rejected | DrugStatus.Pending | DrugStatus.Approved,
         createdByPharmacy:number
 }

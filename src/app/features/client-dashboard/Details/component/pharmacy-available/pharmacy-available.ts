@@ -17,6 +17,7 @@ import { APP_CONSTANTS } from '../../../../../shared/constants/app.constants';
   styleUrls: ['./pharmacy-available.css'],
 })
 export class PharmacyAvailable {
+  private cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
   private _pharmacies: IPharmaStock[] = [];
   cartStore = inject(CartStore);
   toastService = inject(ToastService);
@@ -39,7 +40,7 @@ export class PharmacyAvailable {
     return this._pharmacies;
   }
 
-  constructor(private cdr: ChangeDetectorRef) {}
+  constructor() {}
 
   SendToCart(pharmacy: IPharmaStock, quantityInput: HTMLInputElement)
   {
