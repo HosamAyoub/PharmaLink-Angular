@@ -19,7 +19,7 @@ export class NotificationsComponent implements OnInit, OnDestroy {
   pharmacyService = inject(PharmacyService);
   RequestsSignalRService = inject(RequestsSignalRService);
   orderService = inject(OrdersService);
-  toastservice : ToastService = inject(ToastService);
+  toastservice: ToastService = inject(ToastService);
   cd = inject(ChangeDetectorRef);
 
   ngOnInit(): void {
@@ -46,12 +46,8 @@ export class NotificationsComponent implements OnInit, OnDestroy {
       this.playSound();
       this.toastservice.showSuccess("New Order Received!");
       this.orderService.loadOrders();
-      this.signalRService.loadPharmacyOrdersNotifications().subscribe({
-        next: (res: ActivityNotification | null ) => {
-          this.signalRService.Notifications.set(res);
-          console.log('Received notifications:', this.signalRService.Notifications);
-          this.cd.detectChanges();
-        }
+      this.signalRService.loadPharmacyOrdersNotifications().subscribe(data => {
+        this.signalRService._notifications.set(data);
       });
     });
   }
@@ -61,6 +57,9 @@ export class NotificationsComponent implements OnInit, OnDestroy {
       this.playSound();
       this.toastservice.showError("Order has been Cancelled!");
       this.orderService.loadOrders();
+      this.signalRService.loadPharmacyOrdersNotifications().subscribe(data => {
+        this.signalRService._notifications.set(data);
+      });
       this.cd.detectChanges();
     });
   }
@@ -70,23 +69,21 @@ export class NotificationsComponent implements OnInit, OnDestroy {
       console.log("your request has been rejected:", message);
       this.playSound();
       this.toastservice.showError("Your request has been rejected!");
-      this.signalRService.loadPharmacyOrdersNotifications().subscribe({
-        next: (res: ActivityNotification | null ) => {
-          this.signalRService.Notifications.set(res);
-          this.cd.detectChanges();
-        }
+      this.signalRService.loadPharmacyOrdersNotifications().subscribe(data => {
+        this.signalRService._notifications.set(data);
+        this.cd.detectChanges();
       });
+      this.cd.detectChanges();
     });
-     this.RequestsSignalRService.hubConnection.on('DrugRequestAccepted', (message) => {
+    this.RequestsSignalRService.hubConnection.on('DrugRequestAccepted', (message) => {
       console.log("your request has been accepted:", message);
       this.playSound();
       this.toastservice.showSuccess("Your request has been accepted!");
-      this.signalRService.loadPharmacyOrdersNotifications().subscribe({
-        next: (res: ActivityNotification | null ) => {
-          this.signalRService.Notifications.set(res);
-          this.cd.detectChanges();
-        }
+      this.signalRService.loadPharmacyOrdersNotifications().subscribe(data => {
+        this.signalRService._notifications.set(data);
+        this.cd.detectChanges();
       });
+      this.cd.detectChanges();
     });
   }
 

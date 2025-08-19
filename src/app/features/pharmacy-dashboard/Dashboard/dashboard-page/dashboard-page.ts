@@ -40,22 +40,22 @@ export class DashboardPage implements OnInit {
     };
   constructor(private pharmacyAnalysisService: PharmacyAnalysisService)
   {
-    effect(() => {
-      this.Notifications = this.SignalRService.Notifications();
-    });
+    // effect(() => {
+    //   this.Notifications = this.SignalRService.Notifications();
+    // });
   }
 
   ngOnInit(): void {
     this.loadAnalysisData();
     this.loadPharmacyStockAnalysis();
-    this.SignalRService.loadPharmacyOrdersNotifications().subscribe({
-      next: (res: ActivityNotification | null) => {
-        this.Notifications = res;
-        this.SignalRService.Notifications.set(res);
-        console.log('Received notifications:', this.Notifications);
-        this.cdr.detectChanges();
-      }
-    });
+    // this.SignalRService.loadPharmacyOrdersNotifications().subscribe({
+    //   next: (res: ActivityNotification | null) => {
+    //     this.Notifications = res;
+    //     this.SignalRService.Notifications.set(res);
+    //     console.log('Received notifications:', this.Notifications);
+    //     this.cdr.detectChanges();
+    //   }
+    // });
   }
 
   private loadAnalysisData(): void {

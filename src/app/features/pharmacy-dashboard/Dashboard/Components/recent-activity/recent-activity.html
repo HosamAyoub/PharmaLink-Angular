@@ -9,12 +9,12 @@
     </div>
   </div>
   <div class="notifications-list">
-    @if(activityList.length === 0){
+    @if(activityList().length === 0){
     <div class="text-center text-muted py-3">
       No notifications
     </div>
     }
-    @for(notif of activityList; track $index){
+    @for(notif of activityList(); track $index){
     <div class="notification-item d-flex align-items-start gap-3"
     (click)="onNotificationClick(notif)"
     >
