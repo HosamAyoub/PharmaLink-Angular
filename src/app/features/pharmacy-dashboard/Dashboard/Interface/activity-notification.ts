@@ -5,6 +5,7 @@ export interface OrderNotification {
   status: string;
   message: string;
   timestamp: string;
+  type: string;
 }
 
 export interface DrugRequestNotification {
@@ -13,7 +14,7 @@ export interface DrugRequestNotification {
   drugStatus: DrugStatus;
   isRead: boolean;
   pharmacyName: string;
-  timestamp: string;
+  timestamp: string
 }
 
 

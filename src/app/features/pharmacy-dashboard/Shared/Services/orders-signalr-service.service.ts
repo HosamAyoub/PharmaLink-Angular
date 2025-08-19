@@ -9,11 +9,12 @@ import { ToastService } from '../../../../shared/services/toast.service';
 import { OrdersService } from '../../orders/Services/orders-service';
 import { RequestsSignalRService } from './requests-signal-r.service';
 import { PharmacyService } from '../../profile/Services/pharmacy-service';
+import { DrugStatus } from '../../../../shared/enums/drug-status';
 
 @Injectable({
   providedIn: 'root'
 })
-export class OrdersSignalrServiceService  {
+export class OrdersSignalrServiceService {
 
   public hubConnection!: signalR.HubConnection;
   config = inject(ConfigService);
@@ -24,9 +25,19 @@ export class OrdersSignalrServiceService  {
 
   endPoint = APP_CONSTANTS.API.ENDPOINTS;
   http = inject(HttpClient);
-  Notifications = signal<ActivityNotification | null>(null);
+  // Notifications = signal<ActivityNotification | null>(null);
 
-  
+  activityList = signal<any[]>([]);  
+  _notifications = signal<ActivityNotification | null>(null);
+  today = this.getStartOfDay(new Date());
+
+  constructor() {
+    effect(() => {
+      this.prepareActivityList();
+    });
+  }
+
+
   startConnection(pharmacyId: number) {
     this.hubConnection = new signalR.HubConnectionBuilder()
       .withUrl('http://localhost:5278/orderHub')
@@ -54,4 +65,56 @@ export class OrdersSignalrServiceService  {
     return this.http.get<ActivityNotification>(url);
   }
 
+
+  prepareActivityList() {
+    console.log('Received notifications:', this._notifications());
+    if (!this._notifications()) {
+      this.activityList.set([]); 
+      return;
+    }
+
+    let tempList: any[] = [];
+
+    // Add order notifications
+    if (this._notifications()?.orderNotifications) {
+      tempList.push(
+        ...((this._notifications()?.orderNotifications as Array<any>) ?? [])
+          .filter((order: any) => this.getStartOfDay(new Date(order.timestamp)) === this.today)
+          .map((order: any) => ({
+            type: order.status === 'Cancelled' ? 'cancelOrder' : 'order',
+            title: order.status === 'Cancelled' ? 'Order Cancelled' : 'New Order',
+            message: order.message,
+            timestamp: order.timestamp,
+            status: order.status,
+            orderID: order.orderID
+          }))
+      );
+    }
+
+    // Add drug request notifications
+    if (this._notifications()?.drugRequestNotifications) {
+      tempList.push(
+        ...(this._notifications()?.drugRequestNotifications as Array<any> ?? []).map((drug: any) => ({
+          type: 'drug',
+          title: 'Drug Request',
+          message: `Your Request for "${drug.commonName}" has been ${drug.drugStatus === DrugStatus.Approved ? 'approved' : 'rejected'
+            }.`,
+          timestamp: drug.timestamp,
+          drugStatus: drug.drugStatus,
+          drugID: drug.drugID,
+          isRead: drug.isRead
+        }))
+      );
+    }
+
+    tempList.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+
+    this.activityList.set(tempList);
+  }
+
+  private getStartOfDay(date: Date): number {
+    const d = new Date(date);
+    d.setHours(0, 0, 0, 0);
+    return d.getTime();
+  }
 }
