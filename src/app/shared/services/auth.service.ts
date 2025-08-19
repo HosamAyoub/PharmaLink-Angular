@@ -193,8 +193,11 @@ signUpPharmacyJson(data: any) {
         console.error(`Validation error on ${field}: ${errorResponse.error.errors[field]}`);
       });
     }
-
     // Return the full error response so we can see what's happening
     return throwError(() => errorResponse);
   }
+   confirmEmail(userId: string, token: string) {
+      const url = this.config.getApiUrl('Account/confirm-email');
+      return this.http.get<ResponseData>(url, { params: { userId, token } });
+    }
 }
