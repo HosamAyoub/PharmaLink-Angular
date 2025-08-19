@@ -1,6 +1,10 @@
 <div class="confirm-email">
   <h2>Email Confirmation</h2>
-  <p [ngClass]="{ success: isSuccess(), error: isSuccess() === false }">
-    {{ statusMessage() }}
-  </p>
+  @if (state() === UiStateType.Loading) {
+    <app-loading-spinner></app-loading-spinner>
+  } @else if (state() === UiStateType.Success) {
+    <p class="success-message">{{ statusMessage() }}</p>
+  } @else if (state() === UiStateType.Error) {
+    <p class="error-message">{{ statusMessage() }}</p>
+  }
 </div>

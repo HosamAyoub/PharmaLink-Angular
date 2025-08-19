@@ -170,7 +170,7 @@ export class PharmacyStock {
   onCategoryNameSelected(category: string) {
     this.selectedCategory = category;
     this.currentPage.set(1); // Reset to first page on category change
-    if(this.selectedCategory== '') {
+    if (this.selectedCategory == '') {
       this.loadPharmacyProducts();
     } else {
       this.loadPharmacyProductsByCategory();
@@ -179,6 +179,6 @@ export class PharmacyStock {
 
   // Navigate to product details page
   navigateToProduct(drugId: number) {
-  this.router.navigate(['/client/pharmacyProduct', drugId]);
+    this.router.navigate(['/client/pharmacyProduct', drugId]);
   }
 }

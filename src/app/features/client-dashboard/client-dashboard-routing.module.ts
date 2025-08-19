@@ -62,9 +62,11 @@ const routes: Routes = [
   },
   { path: 'success', component: SuccessPage },
   { path: 'cancel', component: CancelPage },
-  { path: 'favorites', component: FavoritePage,
+  {
+    path: 'favorites',
+    component: FavoritePage,
     //  canActivate: [AuthGuard]
-     },
+  },
   { path: 'profile', component: Profile },
 ];
 

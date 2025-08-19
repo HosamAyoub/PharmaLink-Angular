@@ -4,6 +4,7 @@ import { Router, RouterLink } from '@angular/router';
 import { FormsModule, NgForm } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { LoadingSpinner } from '../../../shared/components/loading-spinner/loading-spinner';
+import { ToastService } from '../../../shared/services/toast.service';
 
 @Component({
   selector: 'app-signup',
@@ -34,6 +35,7 @@ export class SignUp {
 
   private authService = inject(AuthService);
   private router = inject(Router);
+  private toast = inject(ToastService);
 
   // Clear error message when user starts typing
   clearError() {
@@ -268,14 +270,15 @@ export class SignUp {
       next: (resData) => {
         this.isLoading.set(false);
         form.reset();
+        this.toast.showSuccess(
+          'Registration successful! Please check your email to confirm your account'
+        );
         this.router.navigate(['/login']);
       },
       error: (error) => {
-
-
+        console.error('Sign-up error:', error);
         // Show the specific validation errors
         if (error.error && error.error.errors) {
-
           // Extract first validation error for display
           const errors = error.error.errors;
           const firstError = Object.values(errors)[0];
