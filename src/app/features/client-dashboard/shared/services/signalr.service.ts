@@ -69,7 +69,7 @@ export class SignalrService {
   }
 
   markAllAsRead() {
-    this.http.post(this.config.getApiUrl('notifications/markAllAsRead'), {})
+    this.http.post(this.config.getApiUrl('notifications/markAllAsReadForPatient'), {})
       .subscribe({
         next: () => {
           const updated = this.patientNotifications().map(n => ({ ...n, isRead: true }));
