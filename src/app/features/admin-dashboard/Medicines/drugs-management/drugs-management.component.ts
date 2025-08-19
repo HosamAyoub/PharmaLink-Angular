@@ -9,6 +9,7 @@ import { AdminService } from './Services/admin.service';
 import { FormsModule } from '@angular/forms';
 import { AdminSignalRService } from '../../Shared/admin-signal-r.service';
 import { DrugStatus } from '../../../../shared/enums/drug-status';
+import { AdminNotificationsService } from '../../Shared/admin-notifications.service';
 
 interface ResponseStatus {
   approved: number;
@@ -41,6 +42,7 @@ export class DrugsManagementComponent {
   Status: ResponseStatus = {} as ResponseStatus;
   Active_Pharmacies: number = 0;
   AdminSignalRService: AdminSignalRService = inject(AdminSignalRService);
+  AdminNotifications: AdminNotificationsService = inject(AdminNotificationsService);
 
   constructor(private cd: ChangeDetectorRef) { }
 

@@ -288,7 +288,7 @@ export class SignupPharmacyComponent {
         formData.append('pharmacy.ownerName', this.formModel.pharmacy.ownerName);
         formData.append('pharmacy.country', this.formModel.pharmacy.country);
         formData.append('pharmacy.address', this.formModel.pharmacy.address);
-        
+
         if (this.formModel.pharmacy.doc) {
           formData.append('pharmacy.doc', this.formModel.pharmacy.doc);
         }
@@ -303,7 +303,7 @@ export class SignupPharmacyComponent {
         result = await this.authService.signUpPharmacy(formData).subscribe({
           next: (response) => {
             console.log('Pharmacy registration successful:', response);
-            this.requestsignalrservice.sendRegistrationRequest(response);
+            // this.requestsignalrservice.sendRegistrationRequest(response);
           },
           error: (error) => {
             console.error('Pharmacy registration failed:', error);
