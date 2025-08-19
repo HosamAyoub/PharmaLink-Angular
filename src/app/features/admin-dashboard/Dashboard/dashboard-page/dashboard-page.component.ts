@@ -29,8 +29,8 @@ export class DashboardPageComponent implements OnInit {
   protected pharmacySummary: AdminAnalysisInterface | null = null;
   protected errorMessage: string | null = null;
   protected loading: boolean = true;
-  AdminNotifications : AdminNotificationsService = inject(AdminNotificationsService);
-  Notifications = signal(this.AdminNotifications.Notifications());
+  AdminNotifi : AdminNotificationsService = inject(AdminNotificationsService);
+  Notifications = signal(this.AdminNotifi.Notifications());
    protected trends: {
     ordersTrend: string;
     revenueTrend: string;
@@ -46,7 +46,7 @@ export class DashboardPageComponent implements OnInit {
   constructor(private adminAnalysisService: AdminAnalysisServiceService, private pharmacyService: PharmacyService, private sidebarService: SidebarStateServiceService) 
   { 
     effect(() => {
-      this.Notifications.set(this.AdminNotifications.Notifications());
+      this.Notifications.set(this.AdminNotifi.Notifications());
     });
   }
 
@@ -56,8 +56,8 @@ export class DashboardPageComponent implements OnInit {
       this.isSidebarOpen = isOpen;
       this.cdr.detectChanges(); // Trigger change detection
     });
-    this.AdminNotifications.GetAdminNotifications();
-    this.Notifications.set(this.AdminNotifications.Notifications());
+    this.AdminNotifi.GetAdminNotifications();
+    this.Notifications.set(this.AdminNotifi.Notifications());
     console.log('At Dashboard Notifications:', this.Notifications());
     this.loadAnalysisData();
     this.loadPharmacyData();

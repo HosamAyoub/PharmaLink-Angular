@@ -10,7 +10,7 @@ import { AdminNotificationsService } from './admin-notifications.service';
 export class AdminSignalRService {
 
   toastservice: ToastService = inject(ToastService);
-  AdminNotifications : AdminNotificationsService = inject(AdminNotificationsService);
+  AdminNotifi : AdminNotificationsService = inject(AdminNotificationsService);
   private hubConnection!: signalR.HubConnection;
 
   startConnection() {
@@ -48,7 +48,7 @@ export class AdminSignalRService {
         next: () => {
           console.log("New drug request received");
           this.toastservice.showSuccess("New drug request received");
-          this.AdminNotifications.GetAdminNotifications();
+          this.AdminNotifi.GetAdminNotifications();
         }
       });
       this.newUserRegistration().subscribe({

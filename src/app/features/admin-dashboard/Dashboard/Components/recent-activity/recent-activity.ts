@@ -2,7 +2,9 @@ import { Component, Input, OnInit, OnChanges, effect, signal, inject, WritableSi
 import { DatePipe } from '@angular/common';
 import { DrugStatus } from '../../../../../shared/enums/drug-status';
 import { Router } from '@angular/router';
-import { DrugRequestNotification } from '../../../../pharmacy-dashboard/Dashboard/Interface/activity-notification';
+import { AdminNotification, DrugRequestNotification, PharmacyRegistrationNotification } from '../../../../pharmacy-dashboard/Dashboard/Interface/activity-notification';
+import { th } from 'date-fns/locale';
+import { PharmacyStatus } from '../../../../../shared/enums/pharmacy-status';
 
 @Component({
   selector: 'app-recent-activity',
@@ -13,9 +15,9 @@ import { DrugRequestNotification } from '../../../../pharmacy-dashboard/Dashboar
 export class RecentActivity {
   activityList: any[] = [];
   router: Router = inject(Router);
-  private _notifications = signal<DrugRequestNotification[] | null>(null);
+  private _notifications = signal<AdminNotification | null>(null);
 
-  @Input() set notifications(value: DrugRequestNotification[] | null) {
+  @Input() set notifications(value: AdminNotification | null) {
     this._notifications.set(value);
   }
 
@@ -32,11 +34,19 @@ export class RecentActivity {
 
     // Add drug request notifications
     if (this._notifications()) {
-      this.activityList.push(...(this._notifications()?.map((drug: DrugRequestNotification) => ({
+      this.activityList.push(...(this._notifications()?.drugRequests.map((drug: DrugRequestNotification) => ({
+        type: 'DrugRequest',
         drugID: drug.drugID,
         message: `${drug.pharmacyName} send a request to add ${drug.commonName} to PharmaLink Medicines`,
         isRead: drug.isRead,
         timestamp: drug.timestamp
+      })) ?? []));
+      this.activityList.push(...(this._notifications()?.pharmaciesRequests.map((pharmacy: PharmacyRegistrationNotification) => ({
+        type: 'PharmacyRequest',
+        pharmacyID: pharmacy.pharmacyID,
+        message: `${pharmacy.name} has sent you a registration request on PharmaLink`,
+        isRead: false,
+        timestamp: pharmacy.joinedDate
       })) ?? []));
     }
 
@@ -46,7 +56,11 @@ export class RecentActivity {
 
 
   onNotificationClick(notif: any) {
-    this.router.navigate(['admin/medicinesmanagement']);
+    if (notif.type === 'DrugRequest') {
+      this.router.navigate(['admin/medicinesmanagement']);
+    } else if (notif.type === 'PharmacyRequest') {
+      this.router.navigate(['admin/PharmaciesManagement']);
+    }
   }
 
 

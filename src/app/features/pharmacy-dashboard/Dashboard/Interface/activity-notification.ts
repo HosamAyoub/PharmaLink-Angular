@@ -17,6 +17,20 @@ export interface DrugRequestNotification {
   timestamp: string
 }
 
+export interface PharmacyRegistrationNotification {
+  pharmacyID: number;
+  name: string;
+  status: string;
+  joinedDate: Date;
+  address: string;
+  phoneNumber: string;
+}
+
+
+export interface AdminNotification {
+  drugRequests: DrugRequestNotification[];
+  pharmaciesRequests: PharmacyRegistrationNotification[];
+}
 
 export interface ActivityNotification {
   orderNotifications: OrderNotification[];

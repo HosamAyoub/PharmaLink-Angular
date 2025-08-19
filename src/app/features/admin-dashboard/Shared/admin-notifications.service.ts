@@ -3,7 +3,7 @@ import { ConfigService } from '../../../shared/services/config.service';
 import { HttpClient } from '@angular/common/http';
 import { APP_CONSTANTS } from '../../../shared/constants/app.constants';
 import { error } from 'console';
-import { DrugRequestNotification } from '../../pharmacy-dashboard/Dashboard/Interface/activity-notification';
+import { AdminNotification } from '../../pharmacy-dashboard/Dashboard/Interface/activity-notification';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +11,7 @@ import { DrugRequestNotification } from '../../pharmacy-dashboard/Dashboard/Inte
 export class AdminNotificationsService {
 
   private ENDPOINTS = APP_CONSTANTS.API.ENDPOINTS;
-  Notifications = signal<DrugRequestNotification[]>([]);
+  Notifications = signal<AdminNotification | null>(null);
   constructor(private http: HttpClient, private config: ConfigService) { }
 
   GetAdminNotifications() {
