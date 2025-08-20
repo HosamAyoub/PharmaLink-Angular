@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as signalR from '@microsoft/signalr';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -48,9 +49,15 @@ export class RequestsSignalRService {
       .catch(err => console.error('Error sending drug request:', err));
   }
 
-  sendRegistrationRequest(message: string) {
-    return this.hubConnection.invoke('SendRegistrationRequest', message)
-      .catch(err => console.error('Error sending registration request:', err));
+  sendRegistrationRequest(message: string) : Observable<void> {
+    return new Observable((observer) => {
+      this.hubConnection.invoke('SendRegistrationRequest', message)
+        .then(() => observer.next())
+        .catch(err => {
+          console.error('Error sending registration request:', err);
+          observer.error(err);
+        });
+    });
   }
 
 }

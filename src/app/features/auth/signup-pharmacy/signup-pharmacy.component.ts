@@ -303,7 +303,6 @@ export class SignupPharmacyComponent {
         result = await this.authService.signUpPharmacy(formData).subscribe({
           next: (response) => {
             console.log('Pharmacy registration successful:', response);
-            // this.requestsignalrservice.sendRegistrationRequest(response);
           },
           error: (error) => {
             console.error('Pharmacy registration failed:', error);
@@ -329,7 +328,14 @@ export class SignupPharmacyComponent {
 
         result = await this.authService.signUpPharmacyJson(signUpData).toPromise();
       }
-
+      this.requestsignalrservice.sendRegistrationRequest(`${this.formModel.pharmacy.name} has sent your registration request !`).subscribe({
+              next: () => {
+                console.log('Registration request sent successfully');
+              },
+              error: (err) => {
+                console.error('Error sending registration request:', err);
+              }
+            });
       console.log('Registration successful:', result);
       form.reset();
       this.router.navigate(['/login']);

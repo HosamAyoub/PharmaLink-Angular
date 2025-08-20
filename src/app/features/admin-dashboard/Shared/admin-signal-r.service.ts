@@ -10,7 +10,7 @@ import { AdminNotificationsService } from './admin-notifications.service';
 export class AdminSignalRService {
 
   toastservice: ToastService = inject(ToastService);
-  AdminNotifi : AdminNotificationsService = inject(AdminNotificationsService);
+  AdminNotifi: AdminNotificationsService = inject(AdminNotificationsService);
   private hubConnection!: signalR.HubConnection;
 
   startConnection() {
@@ -46,15 +46,16 @@ export class AdminSignalRService {
 
       this.receiveRequestsFromPharmacy().subscribe({
         next: () => {
-          console.log("New drug request received");
+          //console.log("New drug request received");
           this.toastservice.showSuccess("New drug request received");
           this.AdminNotifi.GetAdminNotifications();
         }
       });
       this.newUserRegistration().subscribe({
-        next: () => {
-          console.log("New user registration received");
-          this.toastservice.showSuccess("New Pharmacy registration received");
+        next: (message) => {
+          //console.log("New pharmacy registration received:", message);
+          this.toastservice.showSuccess(`${message}`);
+          this.AdminNotifi.GetAdminNotifications();
         }
       });
     }
@@ -68,8 +69,8 @@ export class AdminSignalRService {
   newUserRegistration(): Observable<void> {
     return new Observable((observer) => {
       this.hubConnection.on('NewUserRegistration', (message) => {
-        console.log('Admin got new user registration:', message);
-        observer.next();
+        //console.log('Admin got new user registration:', message);
+        observer.next(message);
       });
     });
   }
@@ -87,7 +88,7 @@ export class AdminSignalRService {
   receiveRequestsFromPharmacy(): Observable<void> {
     return new Observable((observer) => {
       this.hubConnection.on('NewDrugRequest', (message) => {
-        console.log('Admin got request:', message);
+        //console.log('Admin got request:', message);
         observer.next();
       });
     });
