@@ -49,7 +49,6 @@ export class DrugsManagementComponent {
     // load inventory stats
     this.getStatus();
     this.getActivePharmacies();
-    this.AdminSignalRService.startConnection();
     this.AdminSignalRService.receiveRequestsFromPharmacy().subscribe(() => {
       this.getStatus();
     });

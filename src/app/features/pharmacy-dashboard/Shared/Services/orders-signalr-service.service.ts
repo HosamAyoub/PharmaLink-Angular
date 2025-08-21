@@ -27,7 +27,7 @@ export class OrdersSignalrServiceService {
   http = inject(HttpClient);
   // Notifications = signal<ActivityNotification | null>(null);
 
-  activityList = signal<any[]>([]);  
+  activityList = signal<any[]>([]);
   _notifications = signal<ActivityNotification | null>(null);
   today = this.getStartOfDay(new Date());
 
@@ -69,7 +69,7 @@ export class OrdersSignalrServiceService {
   prepareActivityList() {
     console.log('Received notifications:', this._notifications());
     if (!this._notifications()) {
-      this.activityList.set([]); 
+      this.activityList.set([]);
       return;
     }
 
@@ -94,16 +94,17 @@ export class OrdersSignalrServiceService {
     // Add drug request notifications
     if (this._notifications()?.drugRequestNotifications) {
       tempList.push(
-        ...(this._notifications()?.drugRequestNotifications as Array<any> ?? []).map((drug: any) => ({
-          type: 'drug',
-          title: 'Drug Request',
-          message: `Your Request for "${drug.commonName}" has been ${drug.drugStatus === DrugStatus.Approved ? 'approved' : 'rejected'
-            }.`,
-          timestamp: drug.timestamp,
-          drugStatus: drug.drugStatus,
-          drugID: drug.drugID,
-          isRead: drug.isRead
-        }))
+        ...(this._notifications()?.drugRequestNotifications as Array<any> ?? []).filter((drug: any) => this.getStartOfDay(new Date(drug.timestamp)) === this.today)
+          .map((drug: any) => ({
+            type: 'drug',
+            title: 'Drug Request',
+            message: `Your Request for "${drug.commonName}" has been ${drug.drugStatus === DrugStatus.Approved ? 'approved' : 'rejected'
+              }.`,
+            timestamp: drug.timestamp,
+            drugStatus: drug.drugStatus,
+            drugID: drug.drugID,
+            isRead: drug.isRead
+          }))
       );
     }
 
