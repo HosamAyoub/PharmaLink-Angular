@@ -1,12 +1,17 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import * as signalR from '@microsoft/signalr';
 import { Observable } from 'rxjs';
+import { Config } from '@fortawesome/fontawesome-svg-core';
+import { ConfigService } from '../../../../shared/services/config.service';
+import { App } from './../../../../app';
+import { APP_CONSTANTS } from '../../../../shared/constants/app.constants';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RequestsSignalRService {
 
+  config: ConfigService = inject(ConfigService);
   constructor() { }
 
   hubConnection!: signalR.HubConnection;
@@ -14,9 +19,11 @@ export class RequestsSignalRService {
   async startConnection() {
     const userData = localStorage.getItem('userData');
     const token = userData ? JSON.parse(userData)._token : '';
+    const AdminUrl = this.config.getHubUrl(APP_CONSTANTS.API.ENDPOINTS.ADMIN_HUB);
+
 
     this.hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl('http://localhost:5278/hubs/adminhub', {
+      .withUrl(AdminUrl, {
         accessTokenFactory: () => token || ''
       })
       .withAutomaticReconnect()
@@ -49,7 +56,7 @@ export class RequestsSignalRService {
       .catch(err => console.error('Error sending drug request:', err));
   }
 
-  sendRegistrationRequest(message: string) : Observable<void> {
+  sendRegistrationRequest(message: string): Observable<void> {
     return new Observable((observer) => {
       this.hubConnection.invoke('SendRegistrationRequest', message)
         .then(() => observer.next())

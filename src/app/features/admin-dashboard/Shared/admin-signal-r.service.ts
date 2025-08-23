@@ -3,6 +3,8 @@ import * as signalR from '@microsoft/signalr';
 import { Observable } from 'rxjs';
 import { ToastService } from '../../../shared/services/toast.service';
 import { AdminNotificationsService } from './admin-notifications.service';
+import { APP_CONSTANTS } from '../../../shared/constants/app.constants';
+import { ConfigService } from '../../../shared/services/config.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,13 +13,15 @@ export class AdminSignalRService {
 
   toastservice: ToastService = inject(ToastService);
   AdminNotifi: AdminNotificationsService = inject(AdminNotificationsService);
+  config: ConfigService = inject(ConfigService);
   private hubConnection!: signalR.HubConnection;
 
   startConnection() {
     const userData = localStorage.getItem('userData');
     const token = userData ? JSON.parse(userData)._token : '';
+    const AdminReqUrl = this.config.getHubUrl(APP_CONSTANTS.API.ENDPOINTS.ADMIN_HUB);
     this.hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl('http://localhost:5278/hubs/adminhub', {
+      .withUrl(AdminReqUrl, {
         accessTokenFactory: () => token || ''
       })
       .withAutomaticReconnect()

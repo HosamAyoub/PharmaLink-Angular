@@ -3,6 +3,7 @@ import * as signalR from '@microsoft/signalr';
 import { HttpClient } from '@angular/common/http';
 import { APP_CONSTANTS } from '../../../../shared/constants/app.constants';
 import { ConfigService } from '../../../../shared/services/config.service';
+import { th } from 'date-fns/locale';
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +20,8 @@ export class SignalrService {
   );
   startConnection() {
     const userData = localStorage.getItem('userData');
+    const config = inject(ConfigService);
+    const StatusChangeUrl = config.getHubUrl(this.endPoint.STATUSCHANGE_HUB);
     let token = '';
 
     if (userData) {
@@ -32,7 +35,7 @@ export class SignalrService {
     console.log('Token being sent to SignalR:', token);
 
     this.connection = new signalR.HubConnectionBuilder()
-      .withUrl('http://localhost:5278/hubs/statusChangeHub', {
+      .withUrl(StatusChangeUrl, {
         accessTokenFactory: () => token
       })
       .withAutomaticReconnect()
