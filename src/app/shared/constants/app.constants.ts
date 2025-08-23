@@ -43,13 +43,13 @@ export const APP_CONSTANTS = {
       REJECT_PHARMACY: 'Pharmacy/RejectPharmacy',
       CHANGE_ROLE: 'Role/changeRoleByPharmacy',
       ADMIN_NOTIFICATIONS: 'Notifications/AdminNotifications',
-      PHARMACY_NOTIFICATIONS: 'notifications/pharmacyOrdersNotifications'
-
+      PHARMACY_NOTIFICATIONS: 'notifications/pharmacyOrdersNotifications',
     },
   },
   environment: {
     production: true,
-    apiBaseUrl: 'http://localhost:5278/api',
+    // apiBaseUrl: 'http://localhost:5278/api',
+    apiBaseUrl: 'https://pharma-link-apis.runasp.net/api',
     apiVersion: 'v1',
     appName: 'PharmaLink',
     googleApiKey: 'AIzaSyCsSmpYJNb9htQSnH1NM-yHmM4bOSzZnUU',
