@@ -39,8 +39,9 @@ export class OrdersSignalrServiceService {
 
 
   startConnection(pharmacyId: number) {
+    const OrderHubUrl = this.config.getHubUrl(APP_CONSTANTS.API.ENDPOINTS.ORDER_HUB);
     this.hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl('http://localhost:5278/orderHub')
+      .withUrl(OrderHubUrl)
       .withAutomaticReconnect()
       .build();
 
