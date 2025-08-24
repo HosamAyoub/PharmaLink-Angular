@@ -123,10 +123,10 @@ export class AuthService {
     this.validateToken()?.subscribe({
       next: () => {
         // User state is updated in validateToken's tap operator
-        const returnUrl = this.route.snapshot.queryParams['returnUrl'];
-        if (returnUrl) {
-          this.router.navigate([returnUrl]);
-        }
+        // const returnUrl = this.route.snapshot.queryParams['returnUrl'];
+        // if (returnUrl) {
+        //   this.router.navigate([returnUrl]);
+        // }
       },
       error: (e) => {
         // If token is invalid, log out the user
