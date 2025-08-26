@@ -8,11 +8,12 @@ import { DrugDetails } from '../drug-details/drug-details';
 import { IDrugDetails } from '../../model/IDrugDetials';
 import { ToastService } from '../../../../../shared/services/toast.service';
 import { APP_CONSTANTS } from '../../../../../shared/constants/app.constants';
+import { AddressPipe } from '../../Pipes/Address.pipe';
 
 @Component({
   selector: 'app-pharmacy-available',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule , AddressPipe],
   templateUrl: './pharmacy-available.html',
   styleUrls: ['./pharmacy-available.css'],
 })
