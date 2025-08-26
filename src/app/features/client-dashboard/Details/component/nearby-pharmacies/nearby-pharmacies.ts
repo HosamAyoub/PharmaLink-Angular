@@ -313,16 +313,18 @@ export class NearbyPharmacies implements OnInit, AfterViewInit, OnChanges {
               <p style="margin: 5px 0;"><strong>Address:</strong> ${
                 pharmacy.pharma_Address
               }</p>
-              <p style="margin: 5px 0;"><strong>Price:</strong> $${
-                pharmacy.price
-              }</p>
+              ${
+                pharmacy.price > 0
+                  ? `<p style="margin: 5px 0;"><strong>Price:</strong> $${pharmacy.price}</p>`
+                  : ''
+              }
               <p style="margin: 5px 0;"><strong>Distance:</strong> ${distance.toFixed(
                 2
               )} km from you</p>
               <p style="margin: 5px 0; color: ${
                 isNearby ? '#28a745' : '#ff9800'
               }; font-weight: bold;">
-                ${isNearby ? '📍 Nearby (within 2km)' : '🚗 Further away'}
+          ${isNearby ? '📍 Nearby (within 2km)' : '🚗 Further away'}
               </p>
             </div>
           `,

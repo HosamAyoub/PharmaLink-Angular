@@ -1,12 +1,28 @@
-<div class="container mt-4">
+<section
+  class="nearby-pharmacies-details-container"
+  style="
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 24px 24px 32px 24px;
+    min-height: 100vh;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+      sans-serif;
+  "
+>
   <h2 class="mb-4 fs-1">Nearby Pharmacies</h2>
-  <div class="row">
-    <!-- Remove the col-lg-8 to take full width -->
-    <div class="col-12">
+  <div
+    class="content-grid"
+    style="display: grid; grid-template-columns: 1fr 400px; gap: 32px"
+  >
+    <!-- Left Column: Pharmacy Cards List -->
+    <div
+      class="pharmacy-info-section"
+      style="display: flex; flex-direction: column; gap: 20px"
+    >
       @if (Loading) {
       <div class="text-center py-5">
         <div class="spinner-border text-primary" role="status">
-          <span class="visually-hidden">Loading...</span>
+          max-width: 1800px;
         </div>
         <p class="mt-2">Loading pharmacies...</p>
       </div>
@@ -39,5 +55,16 @@
       </div>
       } }
     </div>
+    <!-- Right Column: Nearby Pharmacies Map/List -->
+    <div
+      class="pharmacy-section"
+      style="display: flex; flex-direction: column; gap: 24px"
+    >
+      <div class="nearby-pharmacies-section">
+        <app-nearby-pharmacies
+          [pharmacies]="nearbyPharmacies()"
+        ></app-nearby-pharmacies>
+      </div>
+    </div>
   </div>
-</div>
+</section>

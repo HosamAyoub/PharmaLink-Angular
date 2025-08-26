@@ -177,9 +177,11 @@ export class AuthService {
   }
 
   logout() {
+    this.cartStore.clearCart();
     this.user.set(null);
-    this.router.navigate(['/client/home']);
+    this.favService.clearFavoritesLocally();
     localStorage.removeItem('userData');
+    this.router.navigate(['/client/home']);
     if (this.tokenExpirationDuration) {
       clearTimeout(this.tokenExpirationDuration);
     }
