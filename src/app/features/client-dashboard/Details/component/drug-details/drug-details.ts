@@ -12,10 +12,17 @@ import { DrugDetailsService } from '../../service/drug-details-service';
 import { IDrug } from '../../../Categories_Page/models/IDrug';
 import { DrugImageComponent } from '../../../../../shared/components/drug-image/drug-image';
 import { PharmacyProductDetialsService } from '../../../pharamcy-product-details/services/pharmacy-product-detials-service';
+import { getUserLocation } from '../../../../../shared/utils';
 
 @Component({
   selector: 'app-drug-details',
-  imports: [PharmacyAvailable, NearbyPharmacies, CommonModule, RouterLink, DrugImageComponent],
+  imports: [
+    PharmacyAvailable,
+    NearbyPharmacies,
+    CommonModule,
+    RouterLink,
+    DrugImageComponent,
+  ],
   templateUrl: './drug-details.html',
   styleUrl: './drug-details.css',
 })
@@ -35,6 +42,7 @@ export class DrugDetails {
   }
 
   ngOnInit() {
+    const userLocation = localStorage.getItem('userLocation');
     if (this.drugId) {
       this.drugservice
         .getDrugById(Number(this.drugId))
@@ -49,28 +57,35 @@ export class DrugDetails {
           this.cdr.detectChanges();
         });
 
-      this.pharmacyProductDetialsService.getNearestPharmacies(29.323496187410917, 30.838584748642194, Number(this.drugId)).subscribe({
-        next: (pharmacies) => {
-          console.log('Nearby pharmacies loaded:', pharmacies);
-          // Convert Ipharmacy[] to IPharmaStock[] with mock stock data
-          this.nearbyPharmacies = pharmacies.map(pharmacy => ({
-            pharma_Id: pharmacy.pharma_Id,
-            pharma_Name: pharmacy.pharma_Name,
-            pharma_Latitude: pharmacy.pharma_Latitude,
-            pharma_Longitude: pharmacy.pharma_Longitude,
-            pharma_Address: pharmacy.pharma_Address,
-            price: pharmacy.price, // Mock price since not available in Ipharmacy
-            quantityAvailable: pharmacy.quantityAvailable, // Mock quantity
-            distance: pharmacy.distance // Mock distance
-          }));
-          console.log('Converted nearby pharmacies for components:', this.nearbyPharmacies);
-          this.cdr.detectChanges();
-        },
-        error: (error) => {
-          console.error('Error fetching nearby pharmacies:', error);
-        }
-      });
-
+      if (userLocation) {
+        const { latitude, longitude } = JSON.parse(userLocation);
+        this.pharmacyProductDetialsService
+          .getNearestPharmacies(latitude, longitude, Number(this.drugId))
+          .subscribe({
+            next: (pharmacies) => {
+              console.log('Nearby pharmacies loaded:', pharmacies);
+              // Convert Ipharmacy[] to IPharmaStock[] with mock stock data
+              this.nearbyPharmacies = pharmacies.map((pharmacy) => ({
+                pharma_Id: pharmacy.pharma_Id,
+                pharma_Name: pharmacy.pharma_Name,
+                pharma_Latitude: pharmacy.pharma_Latitude,
+                pharma_Longitude: pharmacy.pharma_Longitude,
+                pharma_Address: pharmacy.pharma_Address,
+                price: pharmacy.price, // Mock price since not available in Ipharmacy
+                quantityAvailable: pharmacy.quantityAvailable, // Mock quantity
+                distance: pharmacy.distance, // Mock distance
+              }));
+              console.log(
+                'Converted nearby pharmacies for components:',
+                this.nearbyPharmacies
+              );
+              this.cdr.detectChanges();
+            },
+            error: (error) => {
+              console.error('Error fetching nearby pharmacies:', error);
+            },
+          });
+      }
     }
   }
 
@@ -91,18 +106,16 @@ export class DrugDetails {
     this.expandedSections[section] = !this.expandedSections[section];
   }
 
-  Details_ToggleFavorites()
-  {
+  Details_ToggleFavorites() {
     const druginfo = this.drugDetails.drug_Info;
-    const drug:IDrug =
-    {
+    const drug: IDrug = {
       name: druginfo.commonName,
       imageUrl: druginfo.drug_UrlImg,
       description: druginfo.description,
       drugId: druginfo.drugID,
-      drugCategory: druginfo.category
+      drugCategory: druginfo.category,
       // Add other properties as needed
-    }
+    };
     this.FavService.ToggleFavorites(drug);
   }
 
@@ -110,7 +123,7 @@ export class DrugDetails {
     // Use the computed property to make this reactive
     const favorites = this.favoriteDrugs();
     if (!Array.isArray(favorites)) return false;
-    return favorites.some(d => d.drugId === drugId);
+    return favorites.some((d) => d.drugId === drugId);
   }
 
   // Mock methods for converting Ipharmacy to IPharmaStock
