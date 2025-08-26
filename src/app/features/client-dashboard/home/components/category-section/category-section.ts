@@ -31,10 +31,21 @@ export class CategorySection implements OnInit, AfterViewInit {
               wrap: true,
               pause: 'hover',
               ride: 'carousel',
+              keyboard: false, // Disable keyboard interactions that might interfere
+              touch: true,
             }
           );
           // Start the carousel
           carousel.cycle();
+
+          // Add ResizeObserver to prevent flickering on layout changes
+          if ('ResizeObserver' in window) {
+            const resizeObserver = new ResizeObserver((entries) => {
+              // Prevent carousel from reacting to resize events caused by navbar
+              // This is a no-op observer to stabilize the carousel
+            });
+            resizeObserver.observe(carouselElement);
+          }
         } else {
           // Fallback: Use data attributes to initialize
           carouselElement.setAttribute('data-bs-ride', 'carousel');

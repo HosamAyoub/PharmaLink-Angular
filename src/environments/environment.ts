@@ -9,11 +9,15 @@ export const environment = {
   // API Keys - Use environment variables in production
   googleMapsApiKey: 'AIzaSyD-9tSrke72PouQMnMX-a7eZSW0jkFMBWY', // Demo API key - replace with your own
   googleApiKey: 'AIzaSyCsSmpYJNb9htQSnH1NM-yHmM4bOSzZnUU', // Demo API key - replace with your own
-  geminiApiKey: 'AIzaSyA8DdlgPt0JoXz-n-P26Ec5SYbJLeEMtBw', // Updated Gemini API key for new CSV data
+  geminiApiKey: 'AIzaSyBSXPpqjr1-2tlAqZmVSMYCDdL2Gb7SgxM', // Updated Gemini API key for new CSV data
 
   // External API URLs
   geminiApiUrl:
     'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:generateContent',
+  geminiApiUrlFlash:
+    'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent',
+  geminiApiUrlFlashLite:
+    'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent',
 
   features: {
     enableNotifications: true,
