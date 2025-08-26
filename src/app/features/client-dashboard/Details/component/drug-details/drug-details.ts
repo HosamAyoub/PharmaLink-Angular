@@ -12,7 +12,6 @@ import { DrugDetailsService } from '../../service/drug-details-service';
 import { IDrug } from '../../../Categories_Page/models/IDrug';
 import { DrugImageComponent } from '../../../../../shared/components/drug-image/drug-image';
 import { PharmacyProductDetialsService } from '../../../pharamcy-product-details/services/pharmacy-product-detials-service';
-import { getUserLocation } from '../../../../../shared/utils';
 
 @Component({
   selector: 'app-drug-details',
