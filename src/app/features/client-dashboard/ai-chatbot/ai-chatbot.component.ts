@@ -103,9 +103,7 @@ export class AIChatbotComponent implements OnInit, AfterViewChecked {
    * Constructor initializes the AI service and checks device type
    */
   constructor(private cdr: ChangeDetectorRef) {
-    this.genAI = new GoogleGenerativeAI(
-      APP_CONSTANTS.environment.GEMINI_API_KEY
-    );
+    this.genAI = new GoogleGenerativeAI(APP_CONSTANTS.environment.geminiApiKey);
     this.initializeAI();
     this.checkMobile();
   }
@@ -477,7 +475,7 @@ export class AIChatbotComponent implements OnInit, AfterViewChecked {
     userMessage: string,
     imageData?: { data: string; mimeType: string; name: string } | null
   ): Promise<Response> {
-    const apiUrl = APP_CONSTANTS.environment.GEMINI_API;
+    const apiUrl = APP_CONSTANTS.environment.geminiApiUrl;
 
     const requestBody = {
       contents: this.buildPrompt(userMessage, imageData),
@@ -485,7 +483,7 @@ export class AIChatbotComponent implements OnInit, AfterViewChecked {
     };
 
     const response = await fetch(
-      `${apiUrl}?key=${APP_CONSTANTS.environment.GEMINI_API_KEY}`,
+      `${apiUrl}?key=${APP_CONSTANTS.environment.geminiApiKey}`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

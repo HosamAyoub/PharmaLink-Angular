@@ -27,15 +27,15 @@
       </div>
 
       <!-- Profile Header Information -->
-      <div class="profile-header-info">
+      <div class="profile-header-info p-3">
         <!-- Header Content with Edit Button -->
-        <div class="profile-header-content">
-          <h1>My Profile</h1>
-          <button class="profile-edit-btn" (click)="toggleEditMode()">
+        <div class="profile-header-content d-flex flex-wrap justify-content-between align-items-center gap-2">
+          <h1 class="fs-4 fs-md-2 mb-0">My Profile</h1>
+          <button class="profile-edit-btn btn btn-outline-dark d-flex align-items-center gap-2 px-3 py-2"
+            (click)="toggleEditMode()">
             @if (editMode()) {
             <span class="edit-icon"><i class="bi bi-floppy"></i></span>
             <span>Save Changes</span>
-
             } @else {
             <span class="edit-icon"><i class="bi bi-pencil"></i></span>
             <span>Edit Profile</span>
@@ -45,12 +45,12 @@
 
         <!-- User Main Information Display -->
         <ng-container *ngIf="pharmacy() as pharmacyData">
-          <div class="d-flex align-items-center gap-2 flex-wrap">
-            <div class="profile-user-name">
+          <div class="d-flex flex-wrap align-items-center gap-2 mt-3">
+            <div class="profile-user-name fw-semibold fs-5">
               {{ pharmacyData.name || "User Name" }}
             </div>
 
-            <div class="rating-stars d-flex align-items-center">
+            <div class="rating-stars d-flex align-items-center flex-wrap">
               @for (star of [1.0, 2.0, 3.0, 4.0, 5.0]; track $index) {
               <i class="fa fa-star"
                 [ngClass]="{'fas text-warning': pharmacyRate >= star, 'far text-muted': pharmacyRate < star}"></i>
@@ -58,25 +58,25 @@
             </div>
           </div>
 
-          <div class="profile-user-email mt-1">
+          <div class="profile-user-email mt-2 d-flex align-items-center flex-wrap">
             <i class="fa-solid fa-location-dot text-muted me-2"></i>
-            <span>{{ pharmacyData.address || "Address" }}</span>
+            <span class="text-break">{{ pharmacyData.address || "Address" }}</span>
           </div>
         </ng-container>
-
       </div>
+
     </div>
 
 
     <div class="personal-info-section">
-      <div class="section-header">
+      <div class="section-header d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
         <h2>Pharmacy Information</h2>
 
         <!-- Edit Mode Actions -->
         @if (editMode()) {
-        <div class="edit-actions">
-          <button class="btn-cancel" (click)="cancelEdit()">Cancel</button>
-          <button class="btn-save" (click)="toggleEditMode()">Save</button>
+        <div class="edit-actions d-flex gap-2 w-sm-auto mt-2 mt-sm-0">
+          <button class="btn-cancel flex-fill flex-sm-grow-0" (click)="cancelEdit()">Cancel</button>
+          <button class="btn-save flex-fill flex-sm-grow-0" (click)="toggleEditMode()">Save</button>
         </div>
         }
       </div>
@@ -120,11 +120,12 @@
         </div>
 
         <!-- Email -->
-        <div class="col-md-6">
-          <div class="info-item">
-            <label>Email:</label>
+        <div class="col-12 col-md-6">
+          <div class="info-item d-flex flex-column">
+            <label class="form-label">Email:</label>
+
             @if (editMode() && pharmacy()) {
-            <input type="email" [(ngModel)]="pharmacy()!.email" name="email" class="profile-input form-control"
+            <input type="email" [(ngModel)]="pharmacy()!.email" name="email" class="profile-input form-control w-100"
               #emailRef="ngModel" required />
 
             @if (emailRef.invalid && (emailRef.touched || emailRef.dirty)) {
@@ -132,25 +133,27 @@
               Email is required.
             </div>
             }
-            } @else {
-            <span>{{ pharmacy()?.email || "Not provided" }}</span>
+            }
+            @else {
+            <span class="d-block text-truncate">{{ pharmacy()?.email || "Not provided" }}</span>
             }
           </div>
         </div>
+
 
         <!-- Photo Upload -->
         <div class="col-md-6">
           <div class="info-item image-upload-section">
             @if (!editMode()) {
-            <div class="d-flex justify-content-between align-items-center mb-2">
-              <label class="form-label fw-semibold mb-0">
+            <div class="mb-3">
+              <label class="form-label fw-semibold mb-2">
                 Current Photo:
               </label>
 
-              <div class="d-flex align-items-center gap-3">
+              <div class="d-flex flex-column flex-sm-row align-items-start align-items-sm-center gap-3">
                 @if (pharmacy()?.imgUrl) {
-                <img [src]="pharmacy()!.imgUrl" alt="Pharmacy Image" class="rounded border shadow-sm"
-                  style="width: 150px; height: auto;" />
+                <img [src]="pharmacy()!.imgUrl" alt="Pharmacy Image" class="rounded border shadow-sm img-fluid"
+                  style="max-width: 150px;" />
                 } @else {
                 <span class="text-muted">No photo uploaded</span>
                 }
@@ -161,20 +164,22 @@
             <label class="form-label fw-semibold mb-2">
               Upload Photo:
             </label>
-            <div class="d-flex justify-content-between align-items-center mb-2">
+            <div
+              class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-3">
               <input type="file" (change)="onPhotoSelected($event)" accept="image/*"
-                class="form-control form-control-sm mb-3" style="width: 200px; padding: 4px 8px;" />
+                class="form-control form-control-sm" style="max-width: 250px;" />
 
               <div class="d-flex justify-content-start align-items-center">
                 @if (imagePreviewUrl || pharmacy()?.imgUrl) {
-                <img [src]="imagePreviewUrl || pharmacy()?.imgUrl" alt="Selected Image" class="rounded border shadow-sm"
-                  style="width: 150px; height: auto;" />
+                <img [src]="imagePreviewUrl || pharmacy()?.imgUrl" alt="Selected Image"
+                  class="rounded border shadow-sm img-fluid" style="max-width: 150px;" />
                 }
               </div>
             </div>
             }
           </div>
         </div>
+
 
         <!-- Start Hour -->
         <div class="col-md-6">

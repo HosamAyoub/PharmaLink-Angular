@@ -6,21 +6,22 @@ import { ConfigService } from '../../../../shared/services/config.service';
 import { th } from 'date-fns/locale';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SignalrService {
   public connection!: signalR.HubConnection;
   patientNotifications = signal<any[]>([]);
+  config = inject(ConfigService);
   endPoint = APP_CONSTANTS.API.ENDPOINTS;
   http = inject(HttpClient)
-  config: ConfigService = inject(ConfigService);
 
-  unreadCount = computed(() =>
-    this.patientNotifications().filter(n => !n.read).length
+  unreadCount = computed(
+    () => this.patientNotifications().filter((n) => !n.read).length
   );
   startConnection() {
     const userData = localStorage.getItem('userData');
-    const StatusChangeUrl = this.config.getHubUrl(this.endPoint.STATUSCHANGE_HUB);
+    const config = inject(ConfigService);
+    const StatusChangeUrl = config.getHubUrl(this.endPoint.STATUSCHANGE_HUB);
     let token = '';
 
     if (userData) {
@@ -35,7 +36,7 @@ export class SignalrService {
 
     this.connection = new signalR.HubConnectionBuilder()
       .withUrl(StatusChangeUrl, {
-        accessTokenFactory: () => token
+        accessTokenFactory: () => token,
       })
       .withAutomaticReconnect()
       .build();
@@ -43,7 +44,7 @@ export class SignalrService {
     this.connection
       .start()
       .then(() => console.log('Notification hub connected'))
-      .catch(err => console.error('SignalR connection error:', err));
+      .catch((err) => console.error('SignalR connection error:', err));
   }
 
   stopConnection() {
@@ -53,34 +54,39 @@ export class SignalrService {
   }
 
   loadNotificationsFromApi() {
-    this.http.get<any[]>(this.config.getApiUrl('notifications/notifications'))
+    this.http
+      .get<any[]>(this.config.getApiUrl('notifications/notifications'))
       .subscribe({
         next: (res) => {
-          const mapped = res.map(n => ({
+          const mapped = res.map((n) => ({
             ...n,
             title: 'Order Update',
-            read: n.isRead
+            read: n.isRead,
           }));
           this.patientNotifications.set(mapped);
           console.log(this.patientNotifications());
         },
         error: (err) => {
           console.error('Error loading notifications:', err);
-        }
+        },
       });
   }
 
   markAllAsRead() {
-    this.http.post(this.config.getApiUrl('notifications/markAllAsReadForPatient'), {})
+    this.http
+      .post(this.config.getApiUrl('notifications/markAllAsReadForPatient'), {})
       .subscribe({
         next: () => {
-          const updated = this.patientNotifications().map(n => ({ ...n, isRead: true }));
+          const updated = this.patientNotifications().map((n) => ({
+            ...n,
+            isRead: true,
+          }));
           this.patientNotifications.set(updated);
           this.loadNotificationsFromApi();
         },
-        error: err => console.error('Error marking as read:', err)
+        error: (err) => console.error('Error marking as read:', err),
       });
   }
 
-
+  
 }

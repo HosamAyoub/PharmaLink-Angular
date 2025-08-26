@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { DrugsManagementComponent } from './Medicines/drugs-management/drugs-management.component';
 import { DashboardPageComponent } from '../admin-dashboard/Dashboard/dashboard-page/dashboard-page.component';
 import { OrdersPageComponent } from './Orders/orders-page/orders-page.component';
+import { UsersPageComponent } from './Users/users-page/users-page.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
@@ -14,7 +15,8 @@ const routes: Routes = [
   },
   { path : 'medicinesmanagement', component: DrugsManagementComponent },
 
-  { path: 'orders', component: OrdersPageComponent }
+  { path: 'orders', component: OrdersPageComponent },
+  { path: 'users', component: UsersPageComponent },
 ];
 
 @NgModule({

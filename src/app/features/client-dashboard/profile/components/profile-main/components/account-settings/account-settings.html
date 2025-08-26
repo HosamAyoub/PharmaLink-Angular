@@ -1,6 +1,6 @@
 <div class="settings-section">
   <div class="section-header">
-    <h2>Account Settings</h2>
+    <h2 class="section-title">Account Settings</h2>
   </div>
 
   <!-- Settings Options Grid -->
@@ -8,11 +8,17 @@
     <!-- Email Notifications Setting -->
     <div class="setting-item">
       <div class="setting-info">
-        <h4>Email Notifications</h4>
-        <p>Receive updates about your orders and promotions</p>
+        <h4 class="setting-title">Email Notifications</h4>
+        <p class="setting-description">
+          Receive updates about your orders and promotions
+        </p>
       </div>
       <label class="toggle-switch">
-        <input type="checkbox" checked />
+        <input
+          type="checkbox"
+          [checked]="getSettingById('email-notifications')?.enabled"
+          (change)="toggleSetting('email-notifications', $event)"
+        />
         <span class="slider"></span>
       </label>
     </div>
@@ -20,11 +26,17 @@
     <!-- SMS Notifications Setting -->
     <div class="setting-item">
       <div class="setting-info">
-        <h4>SMS Notifications</h4>
-        <p>Get SMS alerts for order status updates</p>
+        <h4 class="setting-title">SMS Notifications</h4>
+        <p class="setting-description">
+          Get SMS alerts for order status updates
+        </p>
       </div>
       <label class="toggle-switch">
-        <input type="checkbox" />
+        <input
+          type="checkbox"
+          [checked]="getSettingById('sms-notifications')?.enabled"
+          (change)="toggleSetting('sms-notifications', $event)"
+        />
         <span class="slider"></span>
       </label>
     </div>
@@ -32,11 +44,51 @@
     <!-- Privacy Mode Setting -->
     <div class="setting-item">
       <div class="setting-info">
-        <h4>Privacy Mode</h4>
-        <p>Hide your profile from other users</p>
+        <h4 class="setting-title">Privacy Mode</h4>
+        <p class="setting-description">Hide your profile from other users</p>
       </div>
       <label class="toggle-switch">
-        <input type="checkbox" />
+        <input
+          type="checkbox"
+          [checked]="getSettingById('privacy-mode')?.enabled"
+          (change)="toggleSetting('privacy-mode', $event)"
+        />
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <!-- Two-Factor Authentication Setting -->
+    <div class="setting-item">
+      <div class="setting-info">
+        <h4 class="setting-title">Two-Factor Authentication</h4>
+        <p class="setting-description">
+          Add an extra layer of security to your account
+        </p>
+      </div>
+      <label class="toggle-switch">
+        <input
+          type="checkbox"
+          [checked]="getSettingById('two-factor-auth')?.enabled"
+          (change)="toggleSetting('two-factor-auth', $event)"
+        />
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <!-- Marketing Emails Setting -->
+    <div class="setting-item">
+      <div class="setting-info">
+        <h4 class="setting-title">Marketing Emails</h4>
+        <p class="setting-description">
+          Receive promotional offers and health tips
+        </p>
+      </div>
+      <label class="toggle-switch">
+        <input
+          type="checkbox"
+          [checked]="getSettingById('marketing-emails')?.enabled"
+          (change)="toggleSetting('marketing-emails', $event)"
+        />
         <span class="slider"></span>
       </label>
     </div>

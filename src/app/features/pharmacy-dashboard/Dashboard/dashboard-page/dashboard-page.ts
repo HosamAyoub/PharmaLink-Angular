@@ -26,24 +26,19 @@ export class DashboardPage implements OnInit {
   protected stockAnalysisData: IPharmacystockAnalysis | null = null;
   protected errorMessage: string | null = null;
   protected loading: boolean = true;
-  Notifications : ActivityNotification | null = null;
+  Notifications: ActivityNotification | null = null;
   protected trends: {
     ordersTrend: string;
     revenueTrend: string;
     pharmacyTrend: string;
     DrugsTrend: string;
   } = {
-      ordersTrend: '6%',
-      revenueTrend: '-8%',
-      pharmacyTrend: '4%',
-      DrugsTrend: '25%'
+      ordersTrend: '-0%',
+      revenueTrend: '-0%',
+      pharmacyTrend: '-0%',
+      DrugsTrend: '-0%'
     };
-  constructor(private pharmacyAnalysisService: PharmacyAnalysisService)
-  {
-    // effect(() => {
-    //   this.Notifications = this.SignalRService.Notifications();
-    // });
-  }
+  constructor(private pharmacyAnalysisService: PharmacyAnalysisService) { }
 
   ngOnInit(): void {
     this.loadAnalysisData();
@@ -109,7 +104,7 @@ export class DashboardPage implements OnInit {
         description: 'Needs restocking',
         icon: 'triangle-exclamation',
         color: 'var(--error-red)',
-        trend: '-50%'
+        trend: '-0%'
       },
       {
         title: 'Total Revenue',

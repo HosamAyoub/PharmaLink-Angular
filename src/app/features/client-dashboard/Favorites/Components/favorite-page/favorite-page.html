@@ -1,34 +1,61 @@
 <div class="container py-4">
-  <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-2">
+  <div
+    class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-2"
+  >
     <h2 class="fw-bold m-0">❤️ My Favorites</h2>
-    <button class="btn btn-outline-danger rounded-pill px-4" (click)="onClear()">
+    <button
+      class="btn btn-outline-danger rounded-pill px-4"
+      (click)="onClear()"
+    >
       <i class="bi bi-x-circle-fill me-2"></i> Clear All
     </button>
   </div>
 
-  <div *ngIf="favoriteDrugs().length > 0" class="row">
-    <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4" *ngFor="let drug of favoriteDrugs()">
-      <app-favorite-card [drug]="drug" (remove)="onRemove($event)"></app-favorite-card>
+  <div *ngIf="favoriteDrugs().length > 0" class="row g-3">
+    <div
+      class="col-6 col-sm-4 col-md-3 col-lg-2 col-xl-2"
+      *ngFor="let drug of favoriteDrugs()"
+    >
+      <app-favorite-card
+        [drug]="drug"
+        (remove)="onRemove($event)"
+      ></app-favorite-card>
     </div>
   </div>
 
-  <div *ngIf="favoriteDrugs().length === 0" class="text-muted text-center mt-5 fs-5">
+  <div
+    *ngIf="favoriteDrugs().length === 0"
+    class="text-muted text-center mt-5 fs-5"
+  >
     <i class="bi bi-heartbreak-fill fs-1 d-block mb-3 text-danger"></i>
     No favorites yet. Start exploring and add some!
   </div>
 </div>
 
 <!-- Empty Favorites Modal -->
-<div class="modal fade" id="emptyFavoritesModal" tabindex="-1" aria-labelledby="emptyFavoritesModalLabel"
-  aria-hidden="true">
+<div
+  class="modal fade"
+  id="emptyFavoritesModal"
+  tabindex="-1"
+  aria-labelledby="emptyFavoritesModalLabel"
+  aria-hidden="true"
+>
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content border-0 shadow-lg rounded-4">
       <div class="modal-header border-0 bg-light rounded-top-4 px-4 pt-4">
-        <h5 class="modal-title d-flex align-items-center" id="emptyFavoritesModalLabel">
+        <h5
+          class="modal-title d-flex align-items-center"
+          id="emptyFavoritesModalLabel"
+        >
           <i class="bi bi-heartbreak-fill text-danger fs-3 me-2"></i>
           No Favorites to Clear
         </h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
       </div>
 
       <div class="modal-body text-center px-4 pb-0">
@@ -39,7 +66,11 @@
       </div>
 
       <div class="modal-footer border-0 justify-content-center pb-4">
-        <button type="button" class="btn btn-secondary rounded-pill px-4 py-2" data-bs-dismiss="modal">
+        <button
+          type="button"
+          class="btn btn-secondary rounded-pill px-4 py-2"
+          data-bs-dismiss="modal"
+        >
           <i class="bi bi-arrow-left me-1"></i>Back
         </button>
       </div>

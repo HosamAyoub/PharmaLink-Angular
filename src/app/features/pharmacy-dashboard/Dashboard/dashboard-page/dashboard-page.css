@@ -1,6 +1,7 @@
 .dashboard-page {
-    padding: 25px 100px;
+  padding: 25px 100px;
 }
+
 .dashboard-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 230px));
@@ -21,3 +22,71 @@
 }
 
 /* Add this to stats-card.css */
+
+
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .dashboard-grid {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  }
+}
+
+@media (max-width: 992px) {
+  .dashboard-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .actions-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-page {
+    padding: 15px;
+  }
+
+  .dashboard-header {
+    flex-direction: column;
+    text-align: center;
+    gap: 15px;
+  }
+
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .actions-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .content-row {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 576px) {
+  .actions-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .section-title {
+    font-size: 1.2rem;
+  }
+
+  .card-content h3 {
+    font-size: 1.5rem;
+  }
+
+  .user-menu {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
