@@ -27,6 +27,10 @@ export class App implements OnInit {
           const userLng = position.coords.longitude;
           // Use userLat and userLng as needed (e.g., center the map, add a marker, etc.)
           console.log('User location:', userLat, userLng);
+          localStorage.setItem(
+            'userLocation',
+            JSON.stringify({ latitude: userLat, longitude: userLng })
+          );
           // Get and print the accurate location (house_number, road, state, country)
           printFullAddress(userLat, userLng);
         },

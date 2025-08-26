@@ -3,6 +3,7 @@
     opacity: 0;
     transform: translateY(10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -14,6 +15,7 @@
 .cta-button {
   animation: fadeIn 0.5s ease-out;
 }
+
 /* Order History Section Styles */
 .order-history-section {
   background: var(--background-white);
@@ -193,6 +195,387 @@
 }
 
 .table-responsive-sm {
-  max-height: 450px; 
+  max-height: 450px;
   overflow-y: auto;
+}
+
+/* ========================================
+   RESPONSIVE DESIGN FOR ALL SCREEN SIZES
+   ======================================== */
+
+/* Large Desktop (1200px+) - Default styles above */
+
+/* Medium Desktop (992px - 1199px) */
+@media (max-width: 1199px) {
+  .order-history-section {
+    padding: 20px;
+  }
+
+  .section-header h2 {
+    font-size: 26px;
+  }
+
+  table {
+    font-size: 14px;
+  }
+}
+
+/* Tablet (768px - 991px) */
+@media (max-width: 991px) {
+  .order-history-section {
+    padding: 16px;
+  }
+
+  .section-header h2 {
+    font-size: 24px;
+  }
+
+  /* Stack statistics cards in 2x2 grid */
+  .row.g-3 .col-md-3 {
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
+
+  /* Adjust search and filter layout */
+  .d-flex.flex-column.flex-md-row {
+    flex-direction: column !important;
+    gap: 1rem;
+  }
+
+  .d-flex.align-items-center.ms-md-3 {
+    margin-left: 0 !important;
+    min-width: 100%;
+  }
+
+  /* Table adjustments */
+  table {
+    font-size: 13px;
+  }
+
+  .table th,
+  .table td {
+    padding: 0.5rem 0.3rem;
+  }
+}
+
+/* Small Tablet (576px - 767px) */
+@media (max-width: 767px) {
+  .order-history-section {
+    padding: 12px;
+  }
+
+  /* Header responsive */
+  .d-flex.justify-content-between.align-items-center.mb-4 {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+
+  .section-header h2 {
+    font-size: 22px;
+  }
+
+  /* Stack all statistics cards */
+  .row.g-3 .col-md-3 {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+
+  /* Compact statistics cards */
+  .card-body.d-flex.align-items-center {
+    padding: 1rem;
+  }
+
+  .card-body h2 {
+    font-size: 1.5rem !important;
+  }
+
+  /* CUSTOM TABLE FORMAT FOR SMALL SCREENS */
+  .table-responsive-sm {
+    max-height: none;
+  }
+
+  /* Hide table headers */
+  .table thead {
+    display: none;
+  }
+
+  /* Transform table rows into cards */
+  .table,
+  .table tbody,
+  .table tr {
+    display: block;
+    width: 100%;
+  }
+
+  .table tr {
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    background: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .table td {
+    display: block;
+    width: 100%;
+    text-align: left !important;
+    border: none;
+    padding: 0.5rem 0;
+    position: relative;
+    padding-left: 35%;
+  }
+
+  /* Add labels before each data cell */
+  .table td:before {
+    content: attr(data-label);
+    position: absolute;
+    left: 0;
+    width: 30%;
+    font-weight: bold;
+    color: #495057;
+  }
+
+  /* Specific styling for order cards */
+  .table tr td:first-child {
+    padding-left: 0;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: var(--primary-blue);
+    border-bottom: 1px solid #eee;
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+
+  .table tr td:first-child:before {
+    display: none;
+  }
+}
+
+/* Mobile Large (414px - 575px) */
+@media (max-width: 575px) {
+  .order-history-section {
+    padding: 8px;
+  }
+
+  .section-header h2 {
+    font-size: 20px;
+  }
+
+  /* More compact cards */
+  .card-body.d-flex.align-items-center {
+    padding: 0.75rem;
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .rounded-circle {
+    margin-bottom: 0.5rem;
+    margin-right: 0 !important;
+  }
+
+  .card-body h2 {
+    font-size: 1.3rem !important;
+  }
+
+  /* Adjust search input */
+  .input-group {
+    margin-bottom: 0.5rem;
+  }
+
+  /* Further customize mobile table cards */
+  .table tr {
+    padding: 0.75rem;
+  }
+
+  .table td {
+    padding: 0.3rem 0;
+    padding-left: 40%;
+  }
+
+  .table td:before {
+    width: 35%;
+    font-size: 0.85rem;
+  }
+
+  /* Mobile badges */
+  .badge {
+    font-size: 0.7rem;
+    padding: 0.3rem 0.5rem;
+  }
+
+  /* Action buttons */
+  .btn-sm {
+    padding: 0.2rem 0.4rem;
+    font-size: 0.8rem;
+  }
+}
+
+/* Mobile Medium (375px - 413px) */
+@media (max-width: 413px) {
+  .order-history-section {
+    padding: 6px;
+  }
+
+  .section-header h2 {
+    font-size: 18px;
+  }
+
+  .card-body h2 {
+    font-size: 1.2rem !important;
+  }
+
+  .table td {
+    padding-left: 45%;
+    font-size: 0.9rem;
+  }
+
+  .table td:before {
+    width: 40%;
+    font-size: 0.8rem;
+  }
+}
+
+/* Mobile Small (360px - 374px) */
+@media (max-width: 374px) {
+  .order-history-section {
+    padding: 4px;
+  }
+
+  .section-header h2 {
+    font-size: 16px;
+  }
+
+  .card-body h2 {
+    font-size: 1.1rem !important;
+  }
+
+  .table td {
+    padding-left: 50%;
+    font-size: 0.85rem;
+  }
+
+  .table td:before {
+    width: 45%;
+    font-size: 0.75rem;
+  }
+
+  .badge {
+    font-size: 0.65rem;
+    padding: 0.2rem 0.4rem;
+  }
+}
+
+/* Mobile Extra Small (below 360px) */
+@media (max-width: 359px) {
+  .order-history-section {
+    padding: 2px;
+  }
+
+  .section-header h2 {
+    font-size: 14px;
+  }
+
+  .card-body {
+    padding: 0.5rem !important;
+  }
+
+  .card-body h2 {
+    font-size: 1rem !important;
+  }
+
+  .table tr {
+    padding: 0.5rem;
+  }
+
+  .table td {
+    padding-left: 55%;
+    font-size: 0.8rem;
+  }
+
+  .table td:before {
+    width: 50%;
+    font-size: 0.7rem;
+  }
+}
+
+/* Modal Responsiveness */
+@media (max-width: 767px) {
+  .modal-lg {
+    max-width: 95%;
+    margin: 0.5rem auto;
+  }
+
+  .modal-body {
+    padding: 1rem;
+  }
+
+  .modal-header {
+    padding: 0.75rem 1rem;
+  }
+
+  .modal-title {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 575px) {
+  .modal-dialog {
+    margin: 0.25rem;
+  }
+
+  .modal-content {
+    border-radius: 8px;
+  }
+
+  .modal-body .row.g-3 .col-md-6 {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+}
+
+/* Export button responsiveness */
+@media (max-width: 767px) {
+  .btn.btn-outline-light {
+    width: 100%;
+    margin-top: 1rem;
+  }
+}
+
+/* Enhanced hover effects for larger screens */
+@media (min-width: 768px) {
+  .table-hover tbody tr:hover {
+    background-color: var(--primary-blue-light);
+    transform: scale(1.005);
+    transition: all 0.2s ease;
+  }
+}
+
+/* Print styles */
+@media print {
+  .order-history-section {
+    box-shadow: none;
+    border: none;
+    padding: 0;
+  }
+
+  .btn,
+  .modal {
+    display: none !important;
+  }
+
+  .table tr {
+    display: table-row !important;
+    border: 1px solid #000;
+  }
+
+  .table td {
+    display: table-cell !important;
+    padding: 0.5rem !important;
+  }
+
+  .table td:before {
+    display: none !important;
+  }
 }

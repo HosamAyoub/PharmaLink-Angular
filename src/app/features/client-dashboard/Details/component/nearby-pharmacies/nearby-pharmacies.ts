@@ -1,4 +1,13 @@
-import { Component, OnInit, AfterViewInit, OnChanges, SimpleChanges, signal, inject, Input } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  AfterViewInit,
+  OnChanges,
+  SimpleChanges,
+  signal,
+  inject,
+  Input,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Loader } from '@googlemaps/js-api-loader';
 import { Ipharmacy } from '../../../shared/models/ipharmacy';
@@ -6,7 +15,6 @@ import { PharmacyService } from '../../../Pharmacies/Service/pharmacy-service';
 import { PharmacyProductDetialsService } from '../../../pharamcy-product-details/services/pharmacy-product-detials-service';
 import { IPharmaStock } from '../../model/IPharmaDrug';
 import { environment } from '../../../../../../environments/environment';
-
 
 export interface NearbyPharmacy {
   id: number;
@@ -17,12 +25,11 @@ export interface NearbyPharmacy {
   statusText: string;
 }
 
-
 @Component({
   selector: 'app-nearby-pharmacies',
   imports: [CommonModule],
   templateUrl: './nearby-pharmacies.html',
-  styleUrl: './nearby-pharmacies.css'
+  styleUrl: './nearby-pharmacies.css',
 })
 export class NearbyPharmacies implements OnInit, AfterViewInit, OnChanges {
   nearestPharmacies = signal<IPharmaStock[]>([]);
@@ -30,23 +37,27 @@ export class NearbyPharmacies implements OnInit, AfterViewInit, OnChanges {
   @Input() selectedDrugId: number = 0;
   @Input() pharmacies: IPharmaStock[] = [];
   private mapInitialized = false;
+  private userPosition: { lat: number; lng: number } | null = null;
 
-  constructor(private pharmacyService: PharmacyService) { }
+  constructor(private pharmacyService: PharmacyService) {}
 
   ngOnInit(): void {
     console.log('NearbyPharmacies component initialized');
     console.log('Initial pharmacies input:', this.pharmacies);
+
+    // Get user location from localStorage or use default
+    this.getUserLocation();
+
     // Use input pharmacies data instead of fetching from service
     this.nearestPharmacies.set(this.pharmacies);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['pharmacies']) {
-
       this.nearestPharmacies.set(this.pharmacies);
 
       // Initialize or re-initialize map with new data
-      if (this.pharmacies && this.pharmacies.length > 0) {
+      if (this.pharmacies && this.pharmacies.length > 0 && this.userPosition) {
         setTimeout(() => {
           if (this.mapInitialized) {
             this.createMap();
@@ -62,138 +73,192 @@ export class NearbyPharmacies implements OnInit, AfterViewInit, OnChanges {
     console.log('NearbyPharmacies view initialized');
     console.log('Pharmacies available at view init:', this.nearestPharmacies());
 
-    // Only initialize map if we have pharmacy data, otherwise wait for ngOnChanges
-    if (this.pharmacies && this.pharmacies.length > 0) {
+    // Only initialize map if we have pharmacy data and user location
+    if (this.pharmacies && this.pharmacies.length > 0 && this.userPosition) {
       setTimeout(() => {
         this.initializeMap();
       }, 100);
     } else {
-      console.log('No pharmacy data available yet, waiting for input changes...');
+      console.log(
+        'No pharmacy data or location available yet, waiting for input changes...'
+      );
+    }
+  }
+
+  private getUserLocation(): void {
+    try {
+      const savedLocation = localStorage.getItem('userLocation');
+      if (savedLocation) {
+        const position = JSON.parse(savedLocation);
+        if (position.latitude && position.longitude) {
+          this.userPosition = {
+            lat: position.latitude,
+            lng: position.longitude,
+          };
+          console.log('User location from localStorage:', this.userPosition);
+        }
+      }
+
+      // If no saved location, use browser geolocation
+      if (!this.userPosition && navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            this.userPosition = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude,
+            };
+            console.log('User location from geolocation:', this.userPosition);
+
+            // Save to localStorage for future use
+            localStorage.setItem(
+              'userLocation',
+              JSON.stringify({
+                latitude: this.userPosition.lat,
+                longitude: this.userPosition.lng,
+              })
+            );
+
+            // Initialize map if we have pharmacy data
+            if (this.pharmacies && this.pharmacies.length > 0) {
+              this.initializeMap();
+            }
+          },
+          (error) => {
+            console.warn('Geolocation error, using default location:', error);
+            // Use a default location if geolocation fails
+            this.userPosition = {
+              lat: 29.32353360394058,
+              lng: 30.838584748642194,
+            };
+            this.initializeMap();
+          }
+        );
+      } else if (!this.userPosition) {
+        // Fallback to default location
+        this.userPosition = { lat: 29.32353360394058, lng: 30.838584748642194 };
+        console.log('Using default location:', this.userPosition);
+      }
+    } catch (error) {
+      console.error('Error getting user location:', error);
+      this.userPosition = { lat: 29.32353360394058, lng: 30.838584748642194 };
     }
   }
 
   initializeMap(): void {
-    if (this.mapInitialized) {
-      console.log('Map already initialized');
+    if (this.mapInitialized || !this.userPosition) {
+      console.log('Map already initialized or no user location');
       return;
     }
 
     // Check if Google Maps is already loaded globally
     if (typeof google !== 'undefined' && google.maps) {
-      console.log('Google Maps already loaded globally, initializing directly...');
+      console.log(
+        'Google Maps already loaded globally, initializing directly...'
+      );
       this.createMap();
       return;
     }
 
     // Use loader if Google Maps is not loaded
     let loader = new Loader({
-      apiKey: environment.googleMapsApiKey, // Use API key from environment
-      version: 'weekly'
+      apiKey: environment.googleMapsApiKey,
+      version: 'weekly',
     });
 
-    loader.load().then(() => {
-      console.log('Google Maps loaded via Loader...');
-      this.createMap();
-    }).catch(error => {
-      console.error('Error loading Google Maps:', error);
-      this.mapInitialized = false;
-    });
+    loader
+      .load()
+      .then(() => {
+        console.log('Google Maps loaded via Loader...');
+        this.createMap();
+      })
+      .catch((error) => {
+        console.error('Error loading Google Maps:', error);
+        this.mapInitialized = false;
+      });
   }
-
 
   private createMap(): void {
     const mapElement = document.getElementById('map');
 
-    if (mapElement) {
+    if (mapElement && this.userPosition) {
       console.log('Map element found, initializing map...');
       this.mapInitialized = true;
-      // ITI Fayoum Branch coordinates
-      const position = { lat: 29.323379349390862, lng: 30.838273256448545 };
+
+      // Set map container dimensions
+      mapElement.style.height = '400px'; // Set specific height
+      mapElement.style.width = '100%'; // Set specific width
 
       const map = new google.maps.Map(mapElement, {
-        center: position,
-        zoom: 16, // Higher zoom for tighter focus
-        maxZoom: 18, // Allow closer zoom if needed
-        minZoom: 15, // Prevent zooming out too far
+        center: this.userPosition,
+        zoom: 14, // Slightly lower zoom to see more area
+        maxZoom: 18,
+        // minZoom: 10, // Allow more zoom out to see distant pharmacies
         styles: [],
-        disableDefaultUI: false, // Keep default UI controls
-        mapTypeControl: false, // Remove map type selector
-        streetViewControl: false, // Remove street view control
+        disableDefaultUI: false,
+        mapTypeControl: false,
+        streetViewControl: false,
       });
 
-      // Add 1km radius circle around ITI location
+      // Add 2km radius circle around user location (increased from 1km)
       const circle = new google.maps.Circle({
-        strokeColor: '#2196F3', // Blue color for the circle
+        strokeColor: '#2196F3',
         strokeOpacity: 0.8,
         strokeWeight: 2,
         fillColor: '#2196F3',
         fillOpacity: 0.1,
         map: map,
-        center: position,
-        radius: 1000, // 1000 meters = 1km
+        center: this.userPosition,
+        radius: 2000, // 2000 meters = 2km (increased radius)
       });
 
-      // Main marker (ITI Fayoum) - more prominent
+      // User location marker
       const marker = new google.maps.Marker({
-        position: position,
+        position: this.userPosition,
         map: map,
-        title: 'معهد تكنولوجيا المعلومات ITI - Fayoum Branch',
+        title: 'Your Location',
         icon: {
-          url: 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png', // Blue marker for ITI
-          scaledSize: new google.maps.Size(40, 40) // Larger size for main location
-        }
+          url: 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png',
+          scaledSize: new google.maps.Size(40, 40),
+        },
       });
 
-      // Add label for ITI marker
-      this.createITILabel(map, position, 'ITI Fayoum');
+      // Add label for user marker
+      this.createUserLabel(map, this.userPosition, 'Your Location');
 
-      const mainInfoWindow = new google.maps.InfoWindow({
+      const userInfoWindow = new google.maps.InfoWindow({
         content: `
           <div style="font-family: Arial, sans-serif;">
-            <h4 style="margin: 0 0 5px 0; color: #333;"><b>معهد تكنولوجيا المعلومات ITI</b></h4>
-            <p style="margin: 0; color: #666; font-size: 12px;">Fayoum Branch</p>
+            <h4 style="margin: 0 0 5px 0; color: #333;"><b>Your Current Location</b></h4>
+            <p style="margin: 0; color: #666; font-size: 12px;">
+              Latitude: ${this.userPosition.lat.toFixed(6)}<br>
+              Longitude: ${this.userPosition.lng.toFixed(6)}
+            </p>
           </div>
         `,
       });
 
       marker.addListener('click', () => {
-        mainInfoWindow.open(map, marker);
+        userInfoWindow.open(map, marker);
       });
 
-      // Add markers for nearest pharmacies (only within 1km)
-      this.addPharmacyMarkers(map, position);
+      // Add markers for ALL pharmacies (not just within 2km)
+      this.addPharmacyMarkers(map, this.userPosition);
       console.log('Map initialized successfully');
 
       // Trigger resize event to ensure map renders correctly
       setTimeout(() => {
         google.maps.event.trigger(map, 'resize');
-        map.setCenter(position);
+        map.setCenter(this.userPosition!);
       }, 100);
     } else {
-      console.error("Map element with id 'map' not found.");
+      console.error("Map element with id 'map' not found or no user location.");
     }
   }
 
-  // Method commented out since we now use input data from parent component
-  // getNearestPharmacies(){
-  //   console.log('Getting nearest pharmacies...');
-  //   const position = { lat: 29.32353360394058, lng: 30.838584748642194 };
-  //   this.pharmacyProductDetialsService.getNearestPharmacies(position.lat, position.lng, this.selectedDrugId).subscribe({
-  //     next: (pharmacies) => {
-  //       this.nearestPharmacies.set(pharmacies);
-  //       console.log('Nearest pharmacies loaded:', this.nearestPharmacies());
-  //       // Initialize map after getting pharmacy data
-  //       this.initializeMap();
-  //     },
-  //     error: (error) => {
-  //       console.error('Error fetching nearest pharmacies:', error);
-  //       // Initialize map even if pharmacy data fails to load
-  //       this.initializeMap();
-  //     }
-  //   });
-  // }
-
-  private addPharmacyMarkers(map: google.maps.Map, centerPosition: { lat: number; lng: number }): void {
+  private addPharmacyMarkers(
+    map: google.maps.Map,
+    userPosition: { lat: number; lng: number }
+  ): void {
     const pharmacies = this.nearestPharmacies();
 
     if (pharmacies.length === 0) {
@@ -202,70 +267,98 @@ export class NearbyPharmacies implements OnInit, AfterViewInit, OnChanges {
     }
 
     let markerIndex = 1;
+    let displayedCount = 0;
 
     pharmacies.forEach((pharmacy) => {
-      // Check if pharmacy has valid coordinates
       const pharmacyPosition = this.getPharmacyCoordinates(pharmacy);
 
       if (pharmacyPosition) {
-        // Calculate distance and only show pharmacies within 1km
-        const distance = this.haversineDistance(centerPosition, pharmacyPosition);
+        const distance = this.haversineDistance(userPosition, pharmacyPosition);
 
-        if (distance <= 1.0) { // Only show pharmacies within 1km
-          const marker = new google.maps.Marker({
-            position: pharmacyPosition,
-            map: map,
-            title: pharmacy.pharma_Name,
-            label: markerIndex.toString(),
-            icon: {
-              url: 'https://maps.google.com/mapfiles/ms/icons/red-dot.png', // Pharmacy marker icon
-              scaledSize: new google.maps.Size(32, 32)
-            }
-          });
+        // Show ALL pharmacies regardless of distance, but use different styling
+        const isNearby = distance <= 2.0; // Within 2km
 
-          // Add pharmacy name label above the marker
-          this.createPharmacyLabel(map, pharmacyPosition, pharmacy.pharma_Name);
+        const marker = new google.maps.Marker({
+          position: pharmacyPosition,
+          map: map,
+          title: `${pharmacy.pharma_Name} (${distance.toFixed(2)} km away)`,
+          label: markerIndex.toString(),
+          icon: {
+            url: isNearby
+              ? 'https://maps.google.com/mapfiles/ms/icons/green-dot.png' // Nearby: green
+              : 'https://maps.google.com/mapfiles/ms/icons/red-dot.png', // Far: red
+            scaledSize: new google.maps.Size(32, 32),
+          },
+        });
 
-          const statusText = pharmacy.quantityAvailable > 0 ? 'In Stock' : 'Out of Stock';
-          const statusColor = pharmacy.quantityAvailable > 0 ? '#28a745' : '#dc3545';
+        // Add pharmacy name label above the marker
+        this.createPharmacyLabel(
+          map,
+          pharmacyPosition,
+          pharmacy.pharma_Name,
+          isNearby
+        );
 
-          const infoWindow = new google.maps.InfoWindow({
-            content: `
-              <div style="max-width: 250px; font-family: Arial, sans-serif;">
-                <h4 style="margin: 0 0 10px 0; color: #333;"><b>${pharmacy.pharma_Name}</b></h4>
-                <p style="margin: 5px 0;"><strong>Address:</strong> ${pharmacy.pharma_Address}</p>
-                <p style="margin: 5px 0;"><strong>Price:</strong> $${pharmacy.price}</p>
-                <p style="margin: 5px 0;"><strong>Available:</strong> <span style="color: ${statusColor}; font-weight: bold;">${pharmacy.quantityAvailable} units</span></p>
-                <p style="margin: 5px 0;"><strong>Distance:</strong> ${distance.toFixed(2)} km from ITI</p>
-              </div>
-            `,
-          });
+        const statusText =
+          pharmacy.quantityAvailable > 0 ? 'In Stock' : 'Out of Stock';
+        const statusColor =
+          pharmacy.quantityAvailable > 0 ? '#28a745' : '#dc3545';
 
-          marker.addListener('click', () => {
-            infoWindow.open(map, marker);
-          });
+        const infoWindow = new google.maps.InfoWindow({
+          content: `
+            <div style="max-width: 250px; font-family: Arial, sans-serif;">
+              <h4 style="margin: 0 0 10px 0; color: #333;"><b>${
+                pharmacy.pharma_Name
+              }</b></h4>
+              <p style="margin: 5px 0;"><strong>Address:</strong> ${
+                pharmacy.pharma_Address
+              }</p>
+              <p style="margin: 5px 0;"><strong>Price:</strong> $${
+                pharmacy.price
+              }</p>
+              <p style="margin: 5px 0;"><strong>Distance:</strong> ${distance.toFixed(
+                2
+              )} km from you</p>
+              <p style="margin: 5px 0; color: ${
+                isNearby ? '#28a745' : '#ff9800'
+              }; font-weight: bold;">
+                ${isNearby ? '📍 Nearby (within 2km)' : '🚗 Further away'}
+              </p>
+            </div>
+          `,
+        });
 
-          markerIndex++;
-        }
+        marker.addListener('click', () => {
+          infoWindow.open(map, marker);
+        });
+
+        markerIndex++;
+        displayedCount++;
       }
     });
 
-    console.log(`Displayed ${markerIndex - 1} pharmacies within 1km radius`);
+    console.log(`Displayed ${displayedCount} pharmacies on map`);
   }
 
-  private createPharmacyLabel(map: google.maps.Map, position: { lat: number; lng: number }, name: string): void {
-    // Create a custom overlay for the pharmacy name label
+  private createPharmacyLabel(
+    map: google.maps.Map,
+    position: { lat: number; lng: number },
+    name: string,
+    isNearby: boolean
+  ): void {
     const labelDiv = document.createElement('div');
     labelDiv.style.cssText = `
       position: absolute;
-      background: rgba(255, 255, 255, 0.95);
-      border: 1px solid #ddd;
+      background: ${
+        isNearby ? 'rgba(76, 175, 80, 0.95)' : 'rgba(244, 67, 54, 0.95)'
+      };
+      border: 1px solid ${isNearby ? '#4CAF50' : '#F44336'};
       border-radius: 6px;
       padding: 4px 8px;
       font-family: 'Segoe UI', Arial, sans-serif;
       font-size: 11px;
       font-weight: 600;
-      color: #333;
+      color: white;
       box-shadow: 0 2px 6px rgba(0,0,0,0.25);
       white-space: nowrap;
       z-index: 1000;
@@ -277,25 +370,9 @@ export class NearbyPharmacies implements OnInit, AfterViewInit, OnChanges {
       text-align: center;
     `;
 
-    // Truncate long names
     const displayName = name.length > 15 ? name.substring(0, 12) + '...' : name;
     labelDiv.textContent = displayName;
 
-    // Add hover effects
-    labelDiv.addEventListener('mouseenter', () => {
-      labelDiv.style.background = 'rgba(33, 150, 243, 0.95)';
-      labelDiv.style.color = 'white';
-      labelDiv.style.transform = 'translate(-50%, -100%) scale(1.05)';
-      labelDiv.style.transition = 'all 0.2s ease';
-    });
-
-    labelDiv.addEventListener('mouseleave', () => {
-      labelDiv.style.background = 'rgba(255, 255, 255, 0.95)';
-      labelDiv.style.color = '#333';
-      labelDiv.style.transform = 'translate(-50%, -100%) scale(1)';
-    });
-
-    // Create custom overlay class
     class CustomLabel extends google.maps.OverlayView {
       private div: HTMLElement;
       private position: google.maps.LatLng;
@@ -331,13 +408,18 @@ export class NearbyPharmacies implements OnInit, AfterViewInit, OnChanges {
       }
     }
 
-    // Create and add the label overlay
-    const label = new CustomLabel(new google.maps.LatLng(position.lat, position.lng), labelDiv);
+    const label = new CustomLabel(
+      new google.maps.LatLng(position.lat, position.lng),
+      labelDiv
+    );
     label.setMap(map);
   }
 
-  private createITILabel(map: google.maps.Map, position: { lat: number; lng: number }, name: string): void {
-    // Create a custom overlay for the ITI name label with distinctive styling
+  private createUserLabel(
+    map: google.maps.Map,
+    position: { lat: number; lng: number },
+    name: string
+  ): void {
     const labelDiv = document.createElement('div');
     labelDiv.style.cssText = `
       position: absolute;
@@ -358,7 +440,6 @@ export class NearbyPharmacies implements OnInit, AfterViewInit, OnChanges {
     `;
     labelDiv.textContent = name;
 
-    // Create custom overlay class (reuse the same class structure)
     class CustomLabel extends google.maps.OverlayView {
       private div: HTMLElement;
       private position: google.maps.LatLng;
@@ -394,59 +475,63 @@ export class NearbyPharmacies implements OnInit, AfterViewInit, OnChanges {
       }
     }
 
-    // Create and add the ITI label overlay
-    const label = new CustomLabel(new google.maps.LatLng(position.lat, position.lng), labelDiv);
+    const label = new CustomLabel(
+      new google.maps.LatLng(position.lat, position.lng),
+      labelDiv
+    );
     label.setMap(map);
   }
 
-  private getPharmacyCoordinates(pharmacy: IPharmaStock): { lat: number; lng: number } | null {
-    // Since IPharmaStock doesn't have coordinates, we'll generate mock coordinates
-    // based on pharmacy location for demo purposes
-    const mockCoordinates = this.generateMockCoordinates(pharmacy.pharma_Name);
-
-    if (mockCoordinates) {
-      return mockCoordinates;
+  private getPharmacyCoordinates(
+    pharmacy: IPharmaStock
+  ): { lat: number; lng: number } | null {
+    // Check if pharmacy has actual coordinates (modify this based on your actual data structure)
+    if (pharmacy.pharma_Latitude && pharmacy.pharma_Longitude) {
+      return {
+        lat: pharmacy.pharma_Latitude,
+        lng: pharmacy.pharma_Longitude,
+      };
     }
 
-    // If no coordinates are available, skip this pharmacy
-    console.warn(`Pharmacy ${pharmacy.pharma_Name} has no coordinate data`);
-    return null;
+    // Fallback to mock coordinates if no real coordinates available
+    return this.generateMockCoordinates(pharmacy.pharma_Name);
   }
 
-  private generateMockCoordinates(pharmacyName: string): { lat: number; lng: number } | null {
-    // Generate mock coordinates around ITI Fayoum (within 1km radius)
-    const ITI_LAT = 29.323379349390862;
-    const ITI_LNG = 30.838273256448545;
+  private generateMockCoordinates(pharmacyName: string): {
+    lat: number;
+    lng: number;
+  } {
+    // Use user location as center if available, otherwise use default
+    const centerLat = this.userPosition?.lat || 29.323379349390862;
+    const centerLng = this.userPosition?.lng || 30.838273256448545;
 
-    // Create a simple hash from pharmacy name to ensure consistent coordinates
+    // Create hash for consistent positioning
     let hash = 0;
     for (let i = 0; i < pharmacyName.length; i++) {
       const char = pharmacyName.charCodeAt(i);
-      hash = ((hash << 5) - hash) + char;
-      hash = hash & hash; // Convert to 32-bit integer
+      hash = (hash << 5) - hash + char;
+      hash = hash & hash;
     }
 
-    // Use hash to generate consistent random-like offsets
-    const random1 = (Math.abs(hash) % 1000) / 1000; // 0-1
-    const random2 = (Math.abs(hash * 31) % 1000) / 1000; // 0-1
+    const random1 = (Math.abs(hash) % 1000) / 1000;
+    const random2 = (Math.abs(hash * 31) % 1000) / 1000;
 
-    // Generate coordinates within ~1km radius
-    const latOffset = (random1 - 0.5) * 0.009; // ~0.009 degrees ≈ 1km
-    const lngOffset = (random2 - 0.5) * 0.009;
+    // Generate coordinates within ~5km radius (increased for distant pharmacies)
+    const latOffset = (random1 - 0.5) * 0.045; // ~0.045 degrees ≈ 5km
+    const lngOffset = (random2 - 0.5) * 0.045;
 
     return {
-      lat: ITI_LAT + latOffset,
-      lng: ITI_LNG + lngOffset
+      lat: centerLat + latOffset,
+      lng: centerLng + lngOffset,
     };
   }
 
-  // Haversine formula for straight-line distance in km
   private haversineDistance(
     coord1: { lat: number; lng: number },
     coord2: { lat: number; lng: number }
   ): number {
     const toRad = (x: number) => (x * Math.PI) / 180;
-    const R = 6371; // Earth's radius in km
+    const R = 6371;
     const dLat = toRad(coord2.lat - coord1.lat);
     const dLng = toRad(coord2.lng - coord1.lng);
     const a =

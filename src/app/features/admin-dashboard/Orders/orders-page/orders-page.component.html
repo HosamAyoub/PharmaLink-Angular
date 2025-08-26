@@ -131,13 +131,13 @@
                     <tbody>
                         @for (order of filteredOrders(); track order.orderId) {
                         <tr>
-                            <td class="px-4 py-3">
+                            <td class="px-4 py-3" data-label="Order Details">
                                 <div class="fw-semibold text-dark">ORD-{{ order.orderId }}</div>
                                 <div class="text-muted small">{{ order.orderDate | date: 'yyyy-MM-dd' }}</div>
                                 <div class="text-muted small">{{ order.orderDetails.length }} medicines</div>
                             </td>
                             <!-- Pharmacy Info -->
-                            <td>
+                            <td data-label="Pharmacy">
                                 <div class="fw-bold">{{ order.pharmacyName }}</div>
                                 <small class="text-muted d-block">
                                     <i class="bi bi-geo-alt me-1"></i>{{ order.pharmacyAddress }}
@@ -148,13 +148,13 @@
                             </td>
 
                             <!-- Date -->
-                            <td>
+                            <td data-label="Date">
                                 <i class="bi bi-calendar-event me-1 text-primary-blue-light"></i>
                                 {{ order.orderDate | date:'dd MMM yyyy, hh:mm a' }}
                             </td>
 
                             <!-- Order Status -->
-                            <td>
+                            <td data-label="Order Status">
                                 <span class="badge d-inline-flex align-items-center gap-1 px-2 py-1"
                                     [class.bg-success-green]="order.status === 'Delivered'"
                                     [class.bg-warning-custom]="order.status === 'Pending'"
@@ -173,7 +173,7 @@
                             </td> -->
 
                             <!-- Payment Status -->
-                            <td>
+                            <td data-label="Payment Status">
                                 @if(order.paymentStatus == 'Pending'){
                                 <span
                                     class="badge d-inline-flex align-items-center gap-1 px-2 py-1 bg-secondary-custom">
@@ -189,7 +189,7 @@
                             </td>
 
                             <!-- Actions -->
-                            <td class="text-center">
+                            <td class="text-center" data-label="Actions">
                                 <button class="btn btn-sm bg-primary-blue-light me-2" (click)="openDetails(order)">
                                     <i class="bi bi-eye"></i>
                                 </button>
