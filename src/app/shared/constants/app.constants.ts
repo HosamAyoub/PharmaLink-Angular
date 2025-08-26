@@ -1,3 +1,5 @@
+import { environment } from '../../../environments/environment';
+
 export const APP_CONSTANTS = {
   API: {
     ENDPOINTS: {
@@ -49,25 +51,9 @@ export const APP_CONSTANTS = {
       STATUSCHANGE_HUB: 'hubs/statusChangeHub',
     },
   },
-  environment: {
-    production: true,
-    apiBaseUrl: 'http://localhost:5278/api',
-    // apiBaseUrl: 'https://pharma-link-apis.runasp.net/api',
-    apiHubsUrl: 'http://localhost:5278',
-    // apiHubsUrl: 'https://pharma-link-apis.runasp.net',
-    apiVersion: 'v1',
-    appName: 'PharmaLink',
-    googleApiKey: 'AIzaSyCsSmpYJNb9htQSnH1NM-yHmM4bOSzZnUU',
-    GEMINI_API:
-      'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:generateContent',
-    GEMINI_API_KEY: 'AIzaSyCTmMYS8l_bl_H4G0FWTTkkWA-Jw_gLvEU',
 
-    features: {
-      enableNotifications: true,
-      enableGeolocation: true,
-      maxNearbyPharmacies: 10,
-    },
-  },
+  // Use environment variables instead of hardcoded values
+  environment: environment,
 
   ErrorCodes: {
     DIFFERENT_PHARMACY: 'DIFFERENT_PHARMACY',

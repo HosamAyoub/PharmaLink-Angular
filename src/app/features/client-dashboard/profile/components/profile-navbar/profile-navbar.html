@@ -5,8 +5,8 @@
     [class.active]="activeTab() === 'personal'"
     (click)="switchTab('personal')"
   >
-    <span class="tab-icon"><i class="bi bi-person me-2"></i></span>
-    Personal Info
+    <span class="tab-icon"><i class="bi bi-person"></i></span>
+    <span class="tab-text">Personal Info</span>
   </button>
 
   <!-- Medical Info Tab -->
@@ -16,7 +16,7 @@
     (click)="switchTab('medical')"
   >
     <span class="tab-icon"><i class="bi bi-hospital"></i></span>
-    Medical Info
+    <span class="tab-text">Medical Info</span>
   </button>
 
   <!-- Order History Tab -->
@@ -25,8 +25,8 @@
     [class.active]="activeTab() === 'orders'"
     (click)="switchTab('orders')"
   >
-    <span class="tab-icon"><i class="bi bi-bag me-2"></i></span>
-    Order History
+    <span class="tab-icon"><i class="bi bi-bag"></i></span>
+    <span class="tab-text">Order History</span>
   </button>
 
   <!-- Settings Tab -->
@@ -35,7 +35,7 @@
     [class.active]="activeTab() === 'settings'"
     (click)="switchTab('settings')"
   >
-    <span class="tab-icon"><i class="bi bi-gear me-2"></i></span>
-    Settings
+    <span class="tab-icon"><i class="bi bi-gear"></i></span>
+    <span class="tab-text">Settings</span>
   </button>
 </div>
