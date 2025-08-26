@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { Category } from "../../../shared/components/category/category";
+import { Category } from '../../../shared/components/category/category';
 import { CategoriesData } from '../../../../../shared/data/categories-data';
 
 @Component({
@@ -11,7 +11,7 @@ import { CategoriesData } from '../../../../../shared/data/categories-data';
 })
 export class CategorySection {
   // Categories array for the loop
- categories = CategoriesData.slice(0, 4); // Take only the first 4 categories
+  categories = CategoriesData.slice(8, 12); // Take only the first 4 categories
 
   viewAllCategories() {
     // TODO: Navigate to all categories page or implement desired functionality

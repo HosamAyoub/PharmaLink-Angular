@@ -9,7 +9,7 @@ export const environment = {
   // API Keys - Use environment variables in production
   googleMapsApiKey: 'AIzaSyD-9tSrke72PouQMnMX-a7eZSW0jkFMBWY', // Demo API key - replace with your own
   googleApiKey: 'AIzaSyCsSmpYJNb9htQSnH1NM-yHmM4bOSzZnUU', // Demo API key - replace with your own
-  geminiApiKey: 'AIzaSyBEIU9lQeUWqmXWfZrPBWqzjjR0mV0F-4k', // Updated Gemini API key for new CSV data
+  geminiApiKey: 'AIzaSyA8DdlgPt0JoXz-n-P26Ec5SYbJLeEMtBw', // Updated Gemini API key for new CSV data
 
   // External API URLs
   geminiApiUrl:
