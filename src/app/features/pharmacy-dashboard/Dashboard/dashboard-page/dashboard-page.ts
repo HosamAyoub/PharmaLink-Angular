@@ -26,19 +26,19 @@ export class DashboardPage implements OnInit {
   protected stockAnalysisData: IPharmacystockAnalysis | null = null;
   protected errorMessage: string | null = null;
   protected loading: boolean = true;
-  Notifications : ActivityNotification | null = null;
+  Notifications: ActivityNotification | null = null;
   protected trends: {
     ordersTrend: string;
     revenueTrend: string;
     pharmacyTrend: string;
     DrugsTrend: string;
   } = {
-    ordersTrend: '-0%',
-    revenueTrend: '-0%',
-    pharmacyTrend: '-0%',
-    DrugsTrend: '-0%'
-  };
-  constructor(private pharmacyAnalysisService: PharmacyAnalysisService, private cdr: ChangeDetectorRef) {}
+      ordersTrend: '-0%',
+      revenueTrend: '-0%',
+      pharmacyTrend: '-0%',
+      DrugsTrend: '-0%'
+    };
+  constructor(private pharmacyAnalysisService: PharmacyAnalysisService) { }
 
   ngOnInit(): void {
     this.loadAnalysisData();
@@ -89,51 +89,51 @@ export class DashboardPage implements OnInit {
 
   get cards() {
 
-  return [
-    {
-      title: 'Available Medicines',
-      value: this.stockAnalysisData?.inStockCount || 0,
-      description: 'In stock and ready',
-      icon: 'pills',
-      color: 'var(--light-green)',
-      trend: this.trends.DrugsTrend
-    },
-    {
-      title: 'Out of Stock',
-      value: this.stockAnalysisData?.outOfStockCount || 0,
-      description: 'Needs restocking',
-      icon: 'triangle-exclamation',
-      color: 'var(--error-red)',
-      trend: '-0%'
-    },
-    {
-      title: 'Total Revenue',
-      value: '$' + (this.analysisData?.totalRevenue?.toLocaleString() || '0'),
-      description: 'This month',
-      icon: 'dollar-sign',
-      color: 'var(--blue-200)',
-      trend: this.trends.revenueTrend
-    },
-    {
-      title: 'Total Customers',
-      value: this.analysisData?.totalUniqueCustomers || 0,
-      description: 'Registered users',
-      icon: 'users',
-      color: 'var(--violet)',
-      trend: this.trends.pharmacyTrend
-    },
-    {
-      title: 'Total Orders',
-      value: this.analysisData?.totalOrders || 0,
-      description: 'This month',
-      icon: 'cart-shopping',
-      color: 'var(--orange)',
-      trend: this.trends.ordersTrend
-    }
-  ];
-}
-private calculateTrends(): void {
-    if (this.analysisData ) {
+    return [
+      {
+        title: 'Available Medicines',
+        value: this.stockAnalysisData?.inStockCount || 0,
+        description: 'In stock and ready',
+        icon: 'pills',
+        color: 'var(--light-green)',
+        trend: this.trends.DrugsTrend
+      },
+      {
+        title: 'Out of Stock',
+        value: this.stockAnalysisData?.outOfStockCount || 0,
+        description: 'Needs restocking',
+        icon: 'triangle-exclamation',
+        color: 'var(--error-red)',
+        trend: '-0%'
+      },
+      {
+        title: 'Total Revenue',
+        value: '$' + (this.analysisData?.totalRevenue?.toLocaleString() || '0'),
+        description: 'This month',
+        icon: 'dollar-sign',
+        color: 'var(--blue-200)',
+        trend: this.trends.revenueTrend
+      },
+      {
+        title: 'Total Customers',
+        value: this.analysisData?.totalUniqueCustomers || 0,
+        description: 'Registered users',
+        icon: 'users',
+        color: 'var(--violet)',
+        trend: this.trends.pharmacyTrend
+      },
+      {
+        title: 'Total Orders',
+        value: this.analysisData?.totalOrders || 0,
+        description: 'This month',
+        icon: 'cart-shopping',
+        color: 'var(--orange)',
+        trend: this.trends.ordersTrend
+      }
+    ];
+  }
+  private calculateTrends(): void {
+    if (this.analysisData) {
       this.trends = calculateMonthlyTrend(
         this.analysisData.monthlyStats,
         null

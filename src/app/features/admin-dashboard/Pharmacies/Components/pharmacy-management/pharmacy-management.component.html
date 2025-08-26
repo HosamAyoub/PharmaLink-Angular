@@ -123,7 +123,7 @@
                         </button>
                         <button *ngIf="pharmacy.status === 3 || pharmacy.status === 0" class="action-btn activate-btn"
                             (click)="activatePharmacy(pharmacy)" title="Activate">
-                            ✅
+                            <i class="fa-regular fa-check-circle" [style.color]="'#16A34A'"></i>
                         </button>
                     </div>
                 </div>
