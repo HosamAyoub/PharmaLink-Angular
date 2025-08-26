@@ -9,6 +9,22 @@
             <h4><i class="fa-solid fa-user-plus" [style.color]="'var(--blue-200)'"></i> Users Controller</h4>
             <p [style.color]="'var(--gray-800)'">All Registered Users</p>
         </div>
+
+        <!-- Search and Filter Controls -->
+        <div class="search-filter-section">
+            <div class="search-container">
+                <i class="fa-solid fa-search search-icon"></i>
+                <input type="text" class="search-input" placeholder="Search users by name, email, or username..."
+                    #searchInput>
+            </div>
+            <div class="filter-container">
+                <select class="status-filter">
+                    <option value="">All Status</option>
+                    <option value="1">Active</option>
+                    <option value="0">Suspended</option>
+                </select>
+            </div>
+        </div>
     </div>
 
     <!-- Pharmacy Table -->
@@ -26,7 +42,7 @@
             @for(user of users; track user.patientId) {
             <div class="table-row">
                 <!-- Pharmacy Info -->
-                <div class="cell pharmacy-cell">
+                <div class="cell pharmacy-cell" data-label="USER">
                     <div class="pharmacy-info">
                         <h3 class="pharmacy-name">{{ user.userName }}</h3>
                         <div class="pharmacy-details">
@@ -44,7 +60,7 @@
                 </div>
 
                 <!-- Owner -->
-                <div class="performance-metrics">
+                <div class="performance-metrics cell" data-label="INFO">
                     <div class="metric-item">
                         <span class="metric-label">Name:</span>
                         <span class="metric-value">{{ user.name}}</span>
@@ -64,7 +80,7 @@
                 </div>
 
                 <!-- Contact -->
-                <div class="cell contact-cell">
+                <div class="cell contact-cell" data-label="CONTACT">
                     <div class="contact-info">
                         <div class="contact-item">
                             <i class="email-icon"><i class="fa-solid fa-envelope"></i></i>
@@ -78,7 +94,7 @@
                 </div>
 
                 <!-- Performance -->
-                <div class="cell performance-cell">
+                <div class="cell performance-cell" data-label="ORDERS COUNT">
                     <div class="performance-metrics">
                         <div class="metric-item">
                             <span class="metric-label">Orders:</span>
@@ -89,14 +105,14 @@
                 </div>
 
                 <!-- Status -->
-                <div class="cell status-cell">
+                <div class="cell status-cell" data-label="STATUS">
                     <span class="status-badge" [ngClass]="getStatusClass(user.status)">
                         {{ getStatusText(user.status) }}
                     </span>
                 </div>
 
                 <!-- Actions -->
-                <div class="cell actions-cell">
+                <div class="cell actions-cell" data-label="ACTIONS">
                     <div class="action-buttons">
                         <button class="action-btn view-btn" (click)="viewDetails(user)" title="View Details">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
