@@ -20,8 +20,7 @@ export class SignalrService {
   );
   startConnection() {
     const userData = localStorage.getItem('userData');
-    const config = inject(ConfigService);
-    const StatusChangeUrl = config.getHubUrl(this.endPoint.STATUSCHANGE_HUB);
+    const StatusChangeUrl = this.config.getHubUrl(this.endPoint.STATUSCHANGE_HUB);
     let token = '';
 
     if (userData) {
@@ -88,5 +87,5 @@ export class SignalrService {
       });
   }
 
-  
+
 }

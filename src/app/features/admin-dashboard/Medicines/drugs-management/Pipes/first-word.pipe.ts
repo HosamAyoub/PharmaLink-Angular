@@ -7,6 +7,6 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class FirstWordPipe implements PipeTransform {
   transform(value: string): string {
     if (!value) return '';
-    return value.trim().split(' ')[0] + (value.trim().split(' ')[1] ? ' ' + value.trim().split(' ')[1] : '');
+    return value.trim().split(' ')[0] + (value.trim().split(' ')[1] ? ' ' + value.trim().split(' ')[1] : '') + (value.trim().split(' ')[2] ? ' ' + value.trim().split(' ')[2] : '');
   }
 }
