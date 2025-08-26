@@ -80,15 +80,20 @@
     width: 100%;
     max-width: 400px;
     margin: 0 auto;
+    padding: 30px 0; /* Add vertical padding for shadows */
   }
 
   #servicesCarousel .carousel-item {
-    padding: 0 1rem;
+    padding: 20px 1rem; /* Add vertical padding to carousel items */
     transition: transform 0.8s ease-in-out;
   }
 
   #servicesCarousel .carousel-inner {
-    overflow: hidden;
+    overflow: visible; /* Allow shadows to be visible */
+  }
+
+  #servicesCarousel .carousel-item .d-flex {
+    padding: 10px 0; /* Add padding to the flex container */
   }
 
   #servicesCarousel .service-card-wrapper {
