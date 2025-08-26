@@ -11,9 +11,11 @@ export interface IPharmaStock
 {
     pharma_Id: number,
     pharma_Name: string,
-    pharma_Location: string,
+    pharma_Latitude: number,
+    pharma_Longitude: number,
     pharma_Address: string,
     price: number,
-    quantityAvailable: number
+    quantityAvailable: number,
+    distance: number
 }
 

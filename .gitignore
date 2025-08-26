@@ -45,3 +45,16 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+# Environment files with sensitive data
+# Keep environment.prod.template.ts but ignore any files with real API keys
+/src/environments/environment.prod.local.ts
+/src/environments/environment.local.ts
+.env
+.env.local
+.env.production
+*.env
+
+# API Keys and sensitive configuration
+/api-keys.json
+/secrets.json

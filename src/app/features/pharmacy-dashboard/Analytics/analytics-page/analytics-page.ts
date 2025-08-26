@@ -1,5 +1,5 @@
 import { TopCustomersSection } from './../../Dashboard/Components/top-customers-section/top-customers-section';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { IPharmacyAnalysis } from '../../Dashboard/Interface/pharmacy-analysis-interface';
 import { PharmacyAnalysisService } from '../../Dashboard/Services/pharmacy-analysis-service';
@@ -15,10 +15,11 @@ import { DecimalPipe } from '@angular/common';
   styleUrl: './analytics-page.css'
 })
 export class AnalyticsPage implements OnInit {
+  private cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
   protected analysisData: IPharmacyAnalysis | null = null;
   protected errorMessage: string | null = null;
   protected loading: boolean = true;
-  constructor(private pharmacyAnalysisService: PharmacyAnalysisService, private cdr: ChangeDetectorRef) {}
+  constructor(private pharmacyAnalysisService: PharmacyAnalysisService) {}
 
   ngOnInit(): void {
     this.loadAnalysisData();

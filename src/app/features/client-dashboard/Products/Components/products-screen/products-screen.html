@@ -7,32 +7,8 @@
   >
   </app-side-bar>
 
-  <!-- component for displaying loading spinner -->
-  <div
-    *ngIf="uiState() === UiState.Loading"
-    style="
-      flex-grow: 1;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    "
-  >
-    <app-loading-spinner></app-loading-spinner>
-  </div>
-
-  <!-- component for displaying error messages -->
-  <div *ngIf="uiState() === UiState.Error" style="flex-grow: 1">
-    <app-error-handling
-      [httpError]="httpError() || undefined"
-    ></app-error-handling>
-  </div>
-
   <!-- Main Content -->
-  <div
-    *ngIf="uiState() === UiState.Success"
-    class="flex-grow-1"
-    id="pageContent"
-  >
+  <div class="flex-grow-1" id="pageContent">
     <div class="container-fluid px-0">
       <div class="card-list-grid">
         @for (drug of Drugs(); track $index) {
@@ -41,12 +17,11 @@
             class="card drug-card border-0 shadow-sm w-100 h-100 rounded-3 transition hover-shadow position-relative"
           >
             <div class="card-body d-flex flex-column">
-              <div class="text-center mb-3">
+              <div class="text-center mb-3" style="width: 100%; height: 60%">
                 <app-drug-image
                   [src]="drug.imageUrl"
                   alt="Drug Image"
                   classes="img-fluid product-image"
-                  width="100%"
                 >
                 </app-drug-image>
               </div>
@@ -61,7 +36,7 @@
                 class="d-flex flex-column flex-sm-row justify-content-between align-items-stretch align-items-sm-center gap-2 mt-auto"
               >
                 <button
-                  class="btn btn-modern-primary btn-modern-square flex-grow-1 me-sm-2"
+                  class="btn btn-modern-primary btn-modern-square flex-grow-1 me-sm-2 rounded-2"
                   [routerLink]="['/client/DrugDetails', drug.drugId]"
                 >
                   View Details

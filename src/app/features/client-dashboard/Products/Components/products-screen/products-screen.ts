@@ -13,25 +13,13 @@ import { DrugService } from '../../Services/drug-service';
 import { IDrug } from '../../Models/IDrug';
 import { ActivatedRoute } from '@angular/router';
 import { DrugImageComponent } from '../../../../../shared/components/drug-image/drug-image';
-import { UiState } from '../../../../../shared/enums/UIState';
-import { LoadingSpinner } from '../../../../../shared/components/loading-spinner/loading-spinner';
-import { ErrorHandling } from '../../../../../shared/components/error-handling/error-handling';
-import { HttpErrorResponse } from '@angular/common/http';
 
 
 @Component({
   selector: 'client-products-screen',
   templateUrl: './products-screen.html',
   styleUrls: ['./products-screen.css'],
-  imports: [
-    SideBar,
-    CommonModule,
-    RouterLink,
-    NgClass,
-    DrugImageComponent,
-    LoadingSpinner,
-    ErrorHandling
-  ],
+  imports: [SideBar, CommonModule, RouterLink, NgClass, DrugImageComponent],
 })
 export class ProductsScreen {
   drugservice: DrugService = inject(DrugService);
@@ -39,11 +27,6 @@ export class ProductsScreen {
   categoryName: string = '';
 
   Drugs = signal<IDrug[]>([]);
-
-  // UI State management
-  public UiState = UiState;
-  uiState = signal<UiState>(UiState.Loading);
-  httpError = signal<HttpErrorResponse | null>(null);
 
   // Create a computed property that reactively tracks favorite changes
   favoriteDrugs = computed(() => this.FavDrug.favoriteDrugs());
@@ -65,32 +48,17 @@ export class ProductsScreen {
   }
 
   onCategoryNameSelected(category: string) {
-    this.uiState.set(UiState.Loading);
-    this.httpError.set(null);
-
     if (category === '') {
       this.drugservice.getRandomDrugs().subscribe({
         next: (data) => {
           this.Drugs.set(data);
-          this.uiState.set(UiState.Success);
         },
-        error: (error: HttpErrorResponse) => {
-          console.error('Error fetching random drugs:', error);
-          this.httpError.set(error);
-          this.uiState.set(UiState.Error);
-        }
       });
     } else {
       this.drugservice.getDrugsByCategory(category).subscribe({
         next: (data) => {
           this.Drugs.set(data);
-          this.uiState.set(UiState.Success);
         },
-        error: (error: HttpErrorResponse) => {
-          console.error('Error fetching drugs by category:', error);
-          this.httpError.set(error);
-          this.uiState.set(UiState.Error);
-        }
       });
     }
   }

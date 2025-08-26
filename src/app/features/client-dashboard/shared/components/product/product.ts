@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { Component, Input, signal, computed, inject } from '@angular/core';
 import { IProduct } from '../../models/IProduct';
 import { CartStore } from '../../../Cart/Services/cart-store';
@@ -16,6 +17,14 @@ import { DrugImageComponent } from '../../../../../shared/components/drug-image/
   styleUrl: './product.css'
 })
 export class Product {
+  router = inject(Router);
+
+  // Navigate to drug details page
+  goToDrugDetails() {
+    if (this.product && this.product.drugId) {
+      this.router.navigate([`/client/DrugDetails`, this.product.drugId]);
+    }
+  }
   @Input() product!: IProduct;
   @Input() showPharmacyName: boolean = false;
   @Input() index: number = 0;

@@ -14,6 +14,7 @@ import { Profile } from './profile/profile';
 import { ProductsScreen } from './Products/Components/products-screen/products-screen';
 import { Categories } from './Categories_Page/components/categories/categories';
 import { Maps } from './maps/maps.component';
+import { EmailConfirmationComponent } from '../auth/email-confirmation/email-confirmation.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -61,9 +62,11 @@ const routes: Routes = [
   },
   { path: 'success', component: SuccessPage },
   { path: 'cancel', component: CancelPage },
-  { path: 'favorites', component: FavoritePage,
+  {
+    path: 'favorites',
+    component: FavoritePage,
     //  canActivate: [AuthGuard]
-     },
+  },
   { path: 'profile', component: Profile },
 ];
 

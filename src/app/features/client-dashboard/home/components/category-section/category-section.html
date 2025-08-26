@@ -5,9 +5,11 @@
   <p style="font-weight: bold; font-size: 30px; margin-bottom: 32px">
     Shop by Category
   </p>
-  <!-- This section used to highlight the services offered by the pharmacy -->
+  <!-- This section used to highlight the categories offered by the pharmacy -->
+
+  <!-- Desktop/Tablet Layout (md and above) -->
   <div
-    class="d-flex justify-content-center align-items-stretch flex-wrap category-cards-container"
+    class="d-md-flex d-none justify-content-center align-items-stretch flex-wrap category-cards-container"
   >
     <!--category card -->
     @for (category of categories; track category.name) {
@@ -29,6 +31,55 @@
     </div> -->
     <app-category [category]="category"></app-category>
     }
+    <a
+      class="view-all-link"
+      (click)="viewAllCategories()"
+      [routerLink]="['/client/categories']"
+    >
+      View All Categories
+    </a>
+  </div>
+
+  <!-- Mobile Layout (sm and below) - Carousel -->
+  <div
+    id="categoriesCarousel"
+    class="carousel slide d-md-none"
+    data-bs-ride="carousel"
+    data-bs-interval="3000"
+    data-bs-pause="hover"
+    data-bs-wrap="true"
+  >
+    <div class="carousel-inner">
+      @for (category of categories; track category.name; let i = $index) {
+      <div class="carousel-item" [class.active]="i === 0">
+        <div class="d-flex justify-content-center">
+          <app-category [category]="category"></app-category>
+        </div>
+      </div>
+      }
+    </div>
+    <button
+      class="carousel-control-prev"
+      type="button"
+      data-bs-target="#categoriesCarousel"
+      data-bs-slide="prev"
+    >
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button
+      class="carousel-control-next"
+      type="button"
+      data-bs-target="#categoriesCarousel"
+      data-bs-slide="next"
+    >
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+
+  <!-- View All Link for Mobile -->
+  <div class="d-md-none mt-3">
     <a
       class="view-all-link"
       (click)="viewAllCategories()"

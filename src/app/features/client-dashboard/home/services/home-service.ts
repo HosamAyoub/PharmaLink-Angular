@@ -4,8 +4,9 @@ import { Observable } from 'rxjs';
 import { ConfigService } from '../../../../shared/services/config.service';
 import { APP_CONSTANTS } from '../../../../shared/constants/app.constants';
 import { HOME_CONSTANTS } from '../constants/home.constants';
-import { IPharmacy, Category, SearchResponse, ApiResponse, UserLocation } from '../models/home.types';
+import {Category, SearchResponse, ApiResponse, UserLocation } from '../models/home.types';
 import { IProduct } from '../../shared/models/IProduct';
+import { Ipharmacy } from '../../shared/models/ipharmacy';
 
 @Injectable({
   providedIn: 'root'
@@ -35,7 +36,7 @@ export class HomeService {
   // }
 
   // Nearby Pharmacies
-  getNearbyPharmacies(latitude?: number, longitude?: number): Observable<IPharmacy[]> {
+  getNearbyPharmacies(latitude?: number, longitude?: number): Observable<Ipharmacy[]> {
     const url = this.configService.getFullApiUrl('PHARMACY');
     let params = new HttpParams();
       // .set('limit', HOME_CONSTANTS.PHARMACIES.NEARBY_COUNT.toString())
@@ -45,7 +46,7 @@ export class HomeService {
       params = params.set('lat', latitude.toString()).set('lng', longitude.toString());
     }
 
-    return this.http.get<IPharmacy[]>(url, { params });
+    return this.http.get<Ipharmacy[]>(url, { params });
   }
 
   // Search functionality
@@ -72,11 +73,11 @@ export class HomeService {
   }
 
   // Get all pharmacies
-  getAllPharmacies(page: number = 1): Observable<SearchResponse<IPharmacy>> {
+  getAllPharmacies(page: number = 1): Observable<SearchResponse<Ipharmacy>> {
     const url = this.configService.getFullApiUrl('PHARMACIES');
     const params = new HttpParams()
       .set('page', page.toString());
-    return this.http.get<SearchResponse<IPharmacy>>(url, { params });
+    return this.http.get<SearchResponse<Ipharmacy>>(url, { params });
   }
 
   getUserLocation(): Observable<UserLocation> {

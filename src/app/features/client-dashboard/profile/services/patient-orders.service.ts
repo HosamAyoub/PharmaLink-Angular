@@ -18,15 +18,16 @@ export class PatientOrdersService {
     this.http.get<IPatientOrders[]>(this.config.getApiUrl('orders/PatientOrders'))
       .subscribe({
         next: (orders) => {
-          const sortedOrders = orders.sort((a, b) => 
-          new Date(b.orderDate).getTime() - new Date(a.orderDate).getTime()
-        );
-          this.patientOrders.set(sortedOrders);},
+          const sortedOrders = orders.sort((a, b) =>
+            new Date(b.orderDate).getTime() - new Date(a.orderDate).getTime()
+          );
+          this.patientOrders.set(sortedOrders);
+        },
         error: (err) => console.error('Error fetching patient orders', err)
       });
   }
 
   cancelOrder(orderId: number): Observable<any> {
-    return this.http.post<any>(this.config.getApiUrl(`orders/cancel/${orderId}`), {});
+    return this.http.post<any>(this.config.getApiUrl(`Orders/cancel/${orderId}`), {});
   }
 }

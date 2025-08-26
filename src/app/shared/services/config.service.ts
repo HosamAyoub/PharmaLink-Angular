@@ -30,6 +30,12 @@ export class ConfigService {
     return `${this.apiBaseUrl}/${endpoint}`;
   }
 
+  // Hub URL builders
+  getHubUrl(hub: string): string {
+    const apiHubsUrl = APP_CONSTANTS.environment.apiHubsUrl;
+    return `${apiHubsUrl}/${hub}`;
+  }
+
   getFullApiUrl(endpoint: string): string {
     const apiEndpoint = APP_CONSTANTS.API.ENDPOINTS[endpoint as keyof typeof APP_CONSTANTS.API.ENDPOINTS];
     return this.getApiUrl(apiEndpoint || endpoint);

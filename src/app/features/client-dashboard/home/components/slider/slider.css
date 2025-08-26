@@ -1,3 +1,24 @@
+/* Responsive Slider Content */
+.slider-content {
+  max-width: 100%;
+  padding: 0 20px;
+}
+
+.slider-title {
+  font-size: 72px;
+  font-weight: bold;
+  max-width: 670px;
+  width: 100%;
+  margin: 0 auto 20px;
+  line-height: 1.2;
+}
+
+.slider-subtitle {
+  font-size: 24px;
+  margin-bottom: 20px;
+  line-height: 1.4;
+}
+
 /* Shop Now Button Styling */
 .shop-now-btn {
   width: 232px;
@@ -13,7 +34,244 @@
   transition: all 0.3s ease;
   transform: scale(1);
 }
+
 .shop-now-btn:hover {
   transform: scale(1.05);
   box-shadow: 0 8px 20px var(--shadow-overlay-4);
+}
+
+.shop-text {
+  font-size: 20px;
+  font-weight: bold;
+  color: white;
+  margin-bottom: 5px;
+}
+
+.shop-icon {
+  width: 24px;
+  height: 24px;
+  color: white;
+}
+
+.shop-button-container {
+  max-width: 600px;
+  z-index: 10;
+  bottom: 150px;
+}
+
+/* Mobile Responsive Styles */
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+  .slider-title {
+    font-size: 28px;
+    max-width: 100%;
+    margin-bottom: 15px;
+    padding: 0 10px;
+  }
+
+  .slider-subtitle {
+    font-size: 16px;
+    margin-bottom: 15px;
+    padding: 0 10px;
+  }
+
+  .shop-now-btn {
+    width: 180px;
+    padding: 14px 0px;
+    margin-top: 20px;
+  }
+
+  .shop-text {
+    font-size: 16px;
+  }
+
+  .shop-icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  .shop-button-container {
+    bottom: 100px;
+    padding: 0 20px;
+  }
+
+  .carousel-caption {
+    margin-bottom: 50px !important;
+  }
+}
+
+/* Small devices (portrait tablets and large phones, 600px to 768px) */
+@media only screen and (min-width: 600px) and (max-width: 768px) {
+  .slider-title {
+    font-size: 36px;
+    max-width: 100%;
+    margin-bottom: 18px;
+    padding: 0 15px;
+  }
+
+  .slider-subtitle {
+    font-size: 18px;
+    margin-bottom: 18px;
+    padding: 0 15px;
+  }
+
+  .shop-now-btn {
+    width: 200px;
+    padding: 16px 0px;
+    margin-top: 25px;
+  }
+
+  .shop-text {
+    font-size: 18px;
+  }
+
+  .shop-icon {
+    width: 22px;
+    height: 22px;
+  }
+
+  .shop-button-container {
+    bottom: 120px;
+    padding: 0 30px;
+  }
+
+  .carousel-caption {
+    margin-bottom: 70px !important;
+  }
+}
+
+/* Medium devices (landscape tablets, 768px to 992px) */
+@media only screen and (min-width: 768px) and (max-width: 992px) {
+  .slider-title {
+    font-size: 48px;
+    max-width: 600px;
+    margin-bottom: 20px;
+  }
+
+  .slider-subtitle {
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+
+  .shop-now-btn {
+    width: 216px;
+    padding: 17px 0px;
+    margin-top: 28px;
+  }
+
+  .shop-text {
+    font-size: 19px;
+  }
+
+  .shop-icon {
+    width: 23px;
+    height: 23px;
+  }
+
+  .shop-button-container {
+    bottom: 130px;
+  }
+
+  .carousel-caption {
+    margin-bottom: 80px !important;
+  }
+}
+
+/* Large devices (laptops/desktops, 992px to 1200px) */
+@media only screen and (min-width: 992px) and (max-width: 1200px) {
+  .slider-title {
+    font-size: 56px;
+    max-width: 650px;
+  }
+
+  .slider-subtitle {
+    font-size: 22px;
+  }
+
+  .shop-now-btn {
+    width: 224px;
+    padding: 17px 0px;
+  }
+
+  .shop-text {
+    font-size: 19px;
+  }
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+  .slider-title {
+    font-size: 72px;
+    max-width: 670px;
+  }
+
+  .slider-subtitle {
+    font-size: 24px;
+  }
+
+  .shop-now-btn {
+    width: 232px;
+    padding: 18px 0px;
+  }
+
+  .shop-text {
+    font-size: 20px;
+  }
+}
+
+/* Carousel height adjustments for mobile */
+@media only screen and (max-width: 768px) {
+  #carouselExampleCaptions {
+    min-height: 100vh !important;
+  }
+
+  .carousel-item {
+    height: 100vh !important;
+  }
+
+  .carousel-item img {
+    object-fit: cover;
+    height: 100% !important;
+    object-position: center;
+  }
+}
+
+/* Carousel indicators responsive */
+@media only screen and (max-width: 600px) {
+  .carousel-indicators {
+    bottom: 10px;
+  }
+
+  .carousel-indicators [data-bs-target] {
+    width: 8px;
+    height: 8px;
+    margin: 0 3px;
+  }
+}
+
+/* Carousel controls responsive */
+@media only screen and (max-width: 600px) {
+  .carousel-control-prev,
+  .carousel-control-next {
+    width: 8%;
+  }
+
+  .carousel-control-prev-icon,
+  .carousel-control-next-icon {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+@media only screen and (min-width: 600px) and (max-width: 768px) {
+  .carousel-control-prev,
+  .carousel-control-next {
+    width: 10%;
+  }
+
+  .carousel-control-prev-icon,
+  .carousel-control-next-icon {
+    width: 18px;
+    height: 18px;
+  }
 }

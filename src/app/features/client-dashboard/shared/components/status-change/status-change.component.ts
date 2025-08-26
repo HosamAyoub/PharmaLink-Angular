@@ -1,6 +1,8 @@
 import { ChangeDetectorRef, Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { SignalrService } from '../../services/signalr.service';
 import { PatientOrdersService } from '../../../profile/services/patient-orders.service';
+import { ToastService } from '../../../../../shared/services/toast.service';
+import { th } from 'date-fns/locale';
 
 @Component({
   selector: 'app-status-change',
@@ -11,6 +13,7 @@ import { PatientOrdersService } from '../../../profile/services/patient-orders.s
 })
 export class StatusChangeComponent implements OnInit, OnDestroy {
   signalrService = inject(SignalrService)
+  toastservice = inject(ToastService);
   cd = inject(ChangeDetectorRef);
   ordersHistoryService = inject(PatientOrdersService)
   ngOnInit() {
@@ -25,8 +28,10 @@ export class StatusChangeComponent implements OnInit, OnDestroy {
   private subscribeToNewOrderStatus() {
     this.signalrService.connection.on('ReceiveNotification', (payload: any) => {
       console.log('Notification:', payload);
-      this.signalrService.notificationMessage = payload.message;
-      this.signalrService.showPopup = true;
+      if (payload.status == "Rejected")
+        this.toastservice.showError(payload.message);
+      else
+        this.toastservice.showSuccess(payload.message);
       this.playSound();
 
       this.signalrService.loadNotificationsFromApi();
@@ -36,7 +41,6 @@ export class StatusChangeComponent implements OnInit, OnDestroy {
       this.cd.detectChanges();
 
       setTimeout(() => {
-        this.signalrService.showPopup = false;
         this.cd.detectChanges();
       }, 5000);
     });

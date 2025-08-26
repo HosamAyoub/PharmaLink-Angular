@@ -2,16 +2,17 @@ import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, O
 import { Ipharmacy } from '../../../../client-dashboard/shared/models/ipharmacy';
 import { PharmaciesMangementService } from '../../Service/pharmacies-mangement.service';
 import { switchMap } from 'rxjs';
-import { AdminDashboardRoutingModule } from "../../../admin-dashboard-routing.module";
+import { AdminDashboardRoutingModule } from '../../../admin-dashboard-routing.module';
 import { DocumentViewerComponent } from '../document-viewer/document-viewer.component';
 import { CommonModule } from '@angular/common';
+import { APP_CONSTANTS } from '../../../../../shared/constants/app.constants';
 
 @Component({
   selector: 'app-pending-applications',
   standalone: true,
   imports: [AdminDashboardRoutingModule, DocumentViewerComponent, CommonModule],
   templateUrl: './pending-applications.component.html',
-  styleUrl: './pending-applications.component.css'
+  styleUrl: './pending-applications.component.css',
 })
 export class PendingApplicationsComponent implements OnInit, OnChanges {
   @Input() pendingPharmacyData: Ipharmacy[] | null = null;
@@ -106,7 +107,10 @@ export class PendingApplicationsComponent implements OnInit, OnChanges {
   viewDocument(url: string | undefined) {
    // console.log('Document URL:', url);
     if (url) {
-      const fullUrl = url.startsWith('http') ? url : `http://localhost:5278${url}`;
+      const fullUrl = url.startsWith('http')
+        ? url
+        : `${APP_CONSTANTS.environment.apiHubsUrl}${url}`;
+
       this.documentViewer.openViewer(fullUrl);
     }
   }
@@ -190,7 +194,7 @@ export class PendingApplicationsComponent implements OnInit, OnChanges {
     return new Date(date).toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'long',
-      day: 'numeric'
+      day: 'numeric',
     });
   }
 }

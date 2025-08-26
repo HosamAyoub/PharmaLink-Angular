@@ -1,7 +1,7 @@
 import { QuickActions } from './../Components/quick-actions/quick-actions';
 import { StatsCard } from './../Components/stats-card/stats-card';
 import { DashboardHeader } from './../Components/dashboard-header/dashboard-header';
-import { Component, ChangeDetectorRef, OnInit } from '@angular/core';
+import { Component, ChangeDetectorRef, OnInit, inject, signal, effect } from '@angular/core';
 import { PharmacyAnalysisService } from '../Services/pharmacy-analysis-service';
 import { IPharmacyAnalysis, IPharmacystockAnalysis } from '../Interface/pharmacy-analysis-interface';
 import { LoadingSpinner } from '../../../../shared/components/loading-spinner/loading-spinner';
@@ -10,23 +10,28 @@ import { MonthlyPerformanceSection } from '../Components/monthly-performance-sec
 import { RecentActivity } from '../Components/recent-activity/recent-activity';
 import { TopCustomersSection } from '../Components/top-customers-section/top-customers-section';
 import { calculateMonthlyTrend } from '../../../../shared/utils/trend-calc.util';
+import { OrdersSignalrServiceService } from '../../Shared/Services/orders-signalr-service.service';
+import { ActivityNotification } from '../Interface/activity-notification';
 
 @Component({
   selector: 'app-dashboard-page',
-  imports: [DashboardHeader,StatsCard,QuickActions,LoadingSpinner,TopSellingProductsSection,MonthlyPerformanceSection,RecentActivity],
+  imports: [DashboardHeader, StatsCard, QuickActions, LoadingSpinner, TopSellingProductsSection, MonthlyPerformanceSection, RecentActivity],
   templateUrl: './dashboard-page.html',
   styleUrl: './dashboard-page.css'
 })
 export class DashboardPage implements OnInit {
+  private cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
+  private SignalRService: OrdersSignalrServiceService = inject(OrdersSignalrServiceService);
   protected analysisData: IPharmacyAnalysis | null = null;
   protected stockAnalysisData: IPharmacystockAnalysis | null = null;
   protected errorMessage: string | null = null;
   protected loading: boolean = true;
+  Notifications : ActivityNotification | null = null;
   protected trends: {
     ordersTrend: string;
     revenueTrend: string;
     pharmacyTrend: string;
-    DrugsTrend:string;
+    DrugsTrend: string;
   } = {
     ordersTrend: '-0%',
     revenueTrend: '-0%',
@@ -38,6 +43,14 @@ export class DashboardPage implements OnInit {
   ngOnInit(): void {
     this.loadAnalysisData();
     this.loadPharmacyStockAnalysis();
+    // this.SignalRService.loadPharmacyOrdersNotifications().subscribe({
+    //   next: (res: ActivityNotification | null) => {
+    //     this.Notifications = res;
+    //     this.SignalRService.Notifications.set(res);
+    //     console.log('Received notifications:', this.Notifications);
+    //     this.cdr.detectChanges();
+    //   }
+    // });
   }
 
   private loadAnalysisData(): void {
@@ -61,7 +74,7 @@ export class DashboardPage implements OnInit {
     this.loading = true;
     this.errorMessage = null;
     this.pharmacyAnalysisService.getPharmacyStockAnalysis().subscribe({
-      next: (data:any) => {
+      next: (data: any) => {
         this.stockAnalysisData = data.data;
         this.loading = false;
         this.cdr.detectChanges();
@@ -73,7 +86,7 @@ export class DashboardPage implements OnInit {
       }
     });
   }
-  
+
   get cards() {
 
   return [

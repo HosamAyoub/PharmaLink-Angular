@@ -1,9 +1,8 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, effect, inject, OnInit, signal } from '@angular/core';
 import { DashboardHeaderComponent } from '../Components/dashboard-header/dashboard-header.component';
 import { IPharmacyAnalysis } from '../../../pharmacy-dashboard/Dashboard/Interface/pharmacy-analysis-interface';
 import { AdminAnalysisServiceService } from '../Services/admin-analysis-service.service';
 import { PharmacyService } from '../../../client-dashboard/Pharmacies/Service/pharmacy-service';
-import { IPharmacy } from '../../../client-dashboard/home/models/home.types';
 import { Ipharmacy } from '../../../client-dashboard/shared/models/ipharmacy';
 import { LoadingSpinner } from "../../../../shared/components/loading-spinner/loading-spinner";
 import { StatusCardComponent } from '../Components/status-card/status-card.component';
@@ -11,22 +10,27 @@ import { calculateMonthlyTrend } from '../../../../shared/utils/trend-calc.util'
 import { MonthlyPerformanceComponent } from '../Components/monthly-performance/monthly-performance.component';
 import { AdminAnalysisInterface } from '../Interface/admin-analysis-interface';
 import { PharmaciesSummaryComponent } from '../Components/pharmacies-summary/pharmacies-summary.component';
-import { RecentActivity } from '../../../pharmacy-dashboard/Dashboard/Components/recent-activity/recent-activity';
+import { RecentActivity } from '../../../admin-dashboard/Dashboard/Components/recent-activity/recent-activity';
 import { SidebarStateServiceService } from '../../Shared/sidebar-state-service.service';
+import { AdminNotificationsService } from '../../Shared/admin-notifications.service';
+import { DrugRequestNotification } from '../../../pharmacy-dashboard/Dashboard/Interface/activity-notification';
 
 @Component({
   selector: 'app-dashboard-page',
   standalone: true,
   imports: [DashboardHeaderComponent, LoadingSpinner, StatusCardComponent,MonthlyPerformanceComponent,PharmaciesSummaryComponent,RecentActivity],
-  templateUrl: './dashboard-page.component.html',
+templateUrl: './dashboard-page.component.html',
   styleUrl: './dashboard-page.component.css'
 })
 export class DashboardPageComponent implements OnInit {
+  private cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
   protected analysisData: IPharmacyAnalysis | null = null;
   protected pharmacyData: Ipharmacy[] | null = null;
   protected pharmacySummary: AdminAnalysisInterface | null = null;
   protected errorMessage: string | null = null;
   protected loading: boolean = true;
+  AdminNotifi : AdminNotificationsService = inject(AdminNotificationsService);
+  Notifications = signal(this.AdminNotifi.Notifications());
    protected trends: {
     ordersTrend: string;
     revenueTrend: string;
@@ -39,13 +43,22 @@ export class DashboardPageComponent implements OnInit {
     DrugsTrend: '0%'
   };
   isSidebarOpen = true;
-  constructor(private adminAnalysisService: AdminAnalysisServiceService, private cdr: ChangeDetectorRef, private pharmacyService: PharmacyService, private sidebarService: SidebarStateServiceService) { }
+  constructor(private adminAnalysisService: AdminAnalysisServiceService, private pharmacyService: PharmacyService, private sidebarService: SidebarStateServiceService) 
+  { 
+    effect(() => {
+      this.Notifications.set(this.AdminNotifi.Notifications());
+    });
+  }
+
 
   ngOnInit(): void {
     this.sidebarService.isOpen$.subscribe(isOpen => {
       this.isSidebarOpen = isOpen;
       this.cdr.detectChanges(); // Trigger change detection
     });
+    this.AdminNotifi.GetAdminNotifications();
+    this.Notifications.set(this.AdminNotifi.Notifications());
+    console.log('At Dashboard Notifications:', this.Notifications());
     this.loadAnalysisData();
     this.loadPharmacyData();
     this.loadPharmacySummary();
@@ -132,7 +145,7 @@ export class DashboardPageComponent implements OnInit {
         icon: 'cart-shopping',
         color: 'var(--violet)',
         trend: this.trends.ordersTrend
-      },      
+      },
       {
         title: 'Total Revenue',
         value: '$' + (this.analysisData?.totalRevenue?.toLocaleString() || '0'),

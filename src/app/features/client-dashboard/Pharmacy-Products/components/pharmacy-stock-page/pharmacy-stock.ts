@@ -135,26 +135,44 @@ export class PharmacyStock {
           next: (response) => {
             if (response.success) {
               this.uiState.set(UiState.Success);
-              this.pharmacyProducts.set(response.data.items);
-              this.totalPages.set(response.data.totalPages);
+              this.pharmacyProducts.set(response.data.items || []);
+              this.totalPages.set(response.data.totalPages || 0);
               console.log(
                 'Pharmacy products by category loaded:',
                 response.data.items
               );
             } else {
-              console.error(
-                'Failed to load pharmacy products by category:',
+              // Handle unsuccessful response but don't show error for empty categories
+              this.uiState.set(UiState.Success);
+              this.pharmacyProducts.set([]);
+              this.totalPages.set(0);
+              console.log(
+                'No products found for category:',
+                this.selectedCategory,
+                'Errors:',
                 response.errors
               );
             }
           },
           error: (error: HttpErrorResponse) => {
-            this.httpError.set(error);
-            this.uiState.set(UiState.Error);
-            console.error(
-              'Error fetching pharmacy products by category:',
-              error
-            );
+            // Check if it's a 404 (not found) error for category
+            if (error.status === 404) {
+              // Show empty state instead of error for category not found
+              this.uiState.set(UiState.Success);
+              this.pharmacyProducts.set([]);
+              this.totalPages.set(0);
+              console.log(
+                'No products found for category:',
+                this.selectedCategory
+              );
+            } else {
+              this.httpError.set(error);
+              this.uiState.set(UiState.Error);
+              console.error(
+                'Error fetching pharmacy products by category:',
+                error
+              );
+            }
           },
         });
     } else {
@@ -170,7 +188,7 @@ export class PharmacyStock {
   onCategoryNameSelected(category: string) {
     this.selectedCategory = category;
     this.currentPage.set(1); // Reset to first page on category change
-    if(this.selectedCategory== '') {
+    if (this.selectedCategory == '') {
       this.loadPharmacyProducts();
     } else {
       this.loadPharmacyProductsByCategory();

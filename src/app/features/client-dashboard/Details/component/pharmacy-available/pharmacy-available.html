@@ -5,11 +5,11 @@
   <h2 class="section-title">Available at Pharmacies</h2>
 
   <div class="pharmacy-table-container">
-    <div class="table-header">
+    <div class="table-header justify-content-center">
       <div class="header-cell pharmacy-col">Pharmacy</div>
       <div class="header-cell status-col">Quantity</div>
       <div class="header-cell price-col">Price</div>
-      <div class="header-cell action-col">Add To Cart</div>
+      <div class="header-cell action-col">Cart</div>
     </div>
 
     <div class="pharmacy-list">
@@ -17,29 +17,43 @@
         <!-- Desktop Layout -->
         <div class="desktop-layout">
           <div class="pharmacy-info">
-            <div class="pharmacy-name">{{pharmacy.pharma_Name}}</div>
+            <div class="pharmacy-name">{{ pharmacy.pharma_Name }}</div>
             <div class="pharmacy-location">
-              <span class="location-icon">📍</span>
+              <span class="location-icon">
+                <i class="bi bi-geo-alt me-1"></i>
+              </span>
               {{ pharmacy.pharma_Address }}
             </div>
           </div>
 
-          <div class="pharmacy-status">
+          <div class="pharmacy-status mx-auto">
             <span class="status-badge">
-              <input #QuantityInput type="number" class="form-control quantity-input shadow-sm" min="1"
-                max="{{ pharmacy.quantityAvailable }}" value="1" />
+              <input
+                #quantityDesktop
+                type="number"
+                (change)="changeprice($event, pharmacy)"
+                class="form-control quantity-input shadow-sm"
+                min="1"
+                max="{{ pharmacy.quantityAvailable }}"
+                value="1"
+              />
             </span>
           </div>
 
-
           <div class="pharmacy-price">
-            {{ pharmacy.price }}<span class="currency text-primary"> $</span>
+            {{ getTotal(pharmacy) }}
+            <span class="currency"> EGP</span>
           </div>
 
-
           <div class="pharmacy-action">
-            <button class="buy-button" [disabled]="pharmacy.quantityAvailable === 0"
-              (click)="SendToCart(pharmacy)">+</button>
+            <button
+              class="buy-button"
+              [disabled]="pharmacy.quantityAvailable === 0"
+              (click)="SendToCart(pharmacy, quantityDesktop)"
+              title="Add to Cart"
+            >
+              <i class="fas fa-cart-plus me-1"></i>
+            </button>
           </div>
         </div>
 
@@ -48,29 +62,43 @@
           <div class="pharmacy-info">
             <div class="pharmacy-name">{{ pharmacy.pharma_Name }}</div>
             <div class="pharmacy-location">
-              <span class="location-icon">📍</span>
-              {{ pharmacy.pharma_Location }}
+              <span class="location-icon">
+                <i class="bi bi-geo-alt me-1"></i>
+              </span>
+              {{ pharmacy.pharma_Address }}
             </div>
           </div>
-
 
           <div class="mobile-row">
             <span class="mobile-label">Quantity:</span>
             <span class="status-badge">
-              <input #QuantityInput type="number" class="form-control quantity-input shadow-sm" min="1" value="1" />
+              <input
+                #quantityMobile
+                type="number"
+                class="form-control quantity-input shadow-sm"
+                min="1"
+                max="{{ pharmacy.quantityAvailable }}"
+                value="1"
+              />
             </span>
           </div>
 
           <div class="mobile-row">
             <span class="mobile-label">Price:</span>
             <div class="pharmacy-price">
-              {{ pharmacy.price }}<span class="currency text-primary"> $</span>
+              {{ pharmacy.price }}<span class="currency"> EGP</span>
             </div>
           </div>
 
-
-
-          <button class="buy-button" (click)="SendToCart(pharmacy)">+</button>
+          <button
+            class="buy-button"
+            [disabled]="pharmacy.quantityAvailable === 0"
+            (click)="SendToCart(pharmacy, quantityMobile)"
+            title="Add to Cart"
+          >
+            <i class="fas fa-cart-plus me-1"></i>
+            Add to Cart
+          </button>
         </div>
       </div>
     </div>

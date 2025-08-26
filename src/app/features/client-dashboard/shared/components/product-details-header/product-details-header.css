@@ -15,6 +15,21 @@
   align-items: stretch;
 }
 
+    .drug-icon--fixed {
+      width: 180px;
+      height: 180px;
+      min-width: 180px;
+      min-height: 180px;
+      max-width: 180px;
+      max-height: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f5f5f5;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
 .drug-icon app-drug-image {
   display: flex !important;
   width: 100% !important;

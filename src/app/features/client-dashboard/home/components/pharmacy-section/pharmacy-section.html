@@ -10,7 +10,10 @@
   >
     <!--pharmacy card -->
     @for (pharmacy of pharmacies(); track pharmacy.name) {
-    <div class="pharmacy-card-wrapper">
+    <div
+      class="pharmacy-card-wrapper"
+      [routerLink]="['/client/pharmacyStock', pharmacy.pharmacyID]"
+    >
       <div class="card">
         <div class="card-body text-start">
           <h5 class="card-title mb-3">{{ pharmacy.name }}</h5>

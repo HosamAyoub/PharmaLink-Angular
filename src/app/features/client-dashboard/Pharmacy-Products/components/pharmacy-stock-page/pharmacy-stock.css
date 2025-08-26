@@ -13,3 +13,26 @@
 .product-card-container:hover .card {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+
+/* Empty State Styling */
+.empty-state {
+  background-color: #f8f9fa;
+  border-radius: 12px;
+  padding: 3rem 2rem;
+  margin: 2rem 0;
+  border: 2px dashed #dee2e6;
+}
+
+.empty-icon {
+  opacity: 0.6;
+}
+
+.empty-state h4 {
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.empty-state p {
+  font-size: 1rem;
+  line-height: 1.5;
+}

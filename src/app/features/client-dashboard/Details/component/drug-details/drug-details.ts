@@ -6,11 +6,12 @@ import { map } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef } from '@angular/core';
 import { FavoriteService } from '../../../Favorites/Services/favorite-service';
-import { IPharmaDrug } from '../../model/IPharmaDrug';
+import { IPharmaDrug, IPharmaStock } from '../../model/IPharmaDrug';
 import { DrugService } from '../../../Categories_Page/service/drug-service';
 import { DrugDetailsService } from '../../service/drug-details-service';
 import { IDrug } from '../../../Categories_Page/models/IDrug';
 import { DrugImageComponent } from '../../../../../shared/components/drug-image/drug-image';
+import { PharmacyProductDetialsService } from '../../../pharamcy-product-details/services/pharmacy-product-detials-service';
 
 @Component({
   selector: 'app-drug-details',
@@ -21,8 +22,10 @@ import { DrugImageComponent } from '../../../../../shared/components/drug-image/
 export class DrugDetails {
   drugId: any;
   drugDetails!: IPharmaDrug;
+  nearbyPharmacies: IPharmaStock[] = [];
   drugservice: DrugDetailsService = inject(DrugDetailsService);
   FavService: FavoriteService = inject(FavoriteService);
+  pharmacyProductDetialsService = inject(PharmacyProductDetialsService);
 
   // Create a computed property that reactively tracks favorite changes
   favoriteDrugs = computed(() => this.FavService.favoriteDrugs());
@@ -38,13 +41,36 @@ export class DrugDetails {
         .pipe(
           map((drug) => ({
             drug_Info: drug.drug_Info,
-            pharma_Info: drug.pharma_Info,
+            pharma_Info: [],
           }))
         )
         .subscribe((map) => {
           this.drugDetails = map;
           this.cdr.detectChanges();
         });
+
+      this.pharmacyProductDetialsService.getNearestPharmacies(29.323496187410917, 30.838584748642194, Number(this.drugId)).subscribe({
+        next: (pharmacies) => {
+          console.log('Nearby pharmacies loaded:', pharmacies);
+          // Convert Ipharmacy[] to IPharmaStock[] with mock stock data
+          this.nearbyPharmacies = pharmacies.map(pharmacy => ({
+            pharma_Id: pharmacy.pharma_Id,
+            pharma_Name: pharmacy.pharma_Name,
+            pharma_Latitude: pharmacy.pharma_Latitude,
+            pharma_Longitude: pharmacy.pharma_Longitude,
+            pharma_Address: pharmacy.pharma_Address,
+            price: pharmacy.price, // Mock price since not available in Ipharmacy
+            quantityAvailable: pharmacy.quantityAvailable, // Mock quantity
+            distance: pharmacy.distance // Mock distance
+          }));
+          console.log('Converted nearby pharmacies for components:', this.nearbyPharmacies);
+          this.cdr.detectChanges();
+        },
+        error: (error) => {
+          console.error('Error fetching nearby pharmacies:', error);
+        }
+      });
+
     }
   }
 
@@ -87,4 +113,19 @@ export class DrugDetails {
     return favorites.some(d => d.drugId === drugId);
   }
 
+  // Mock methods for converting Ipharmacy to IPharmaStock
+  private calculateMockDistance(): number {
+    // Generate random distance between 0.5 and 2.0 km
+    return Math.round((Math.random() * 1.5 + 0.5) * 100) / 100;
+  }
+
+  private calculateMockPrice(): number {
+    // Generate random price between 10 and 100
+    return Math.round((Math.random() * 90 + 10) * 100) / 100;
+  }
+
+  private calculateMockQuantity(): number {
+    // Generate random quantity between 0 and 50
+    return Math.floor(Math.random() * 51);
+  }
 }

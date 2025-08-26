@@ -1,3 +1,5 @@
+import { environment } from '../../../environments/environment';
+
 export const APP_CONSTANTS = {
   API: {
     ENDPOINTS: {
@@ -34,6 +36,7 @@ export const APP_CONSTANTS = {
       PHARMACY_STOCK_ANALYSIS: 'PharmacyStock/InventoryStatusByID',
       ORDERS_VALIDATE_SESSION: 'Orders/validate-session',
       MULTIPLE_FAVORITES: 'Favorites/AddMultiple',
+      SHARED: 'Shared',
       ADMIN_ANALYSIS: 'Orders/allOrdersAnalysis',
       PHARMACY_STATUS: 'Pharmacy/GetPharmaciesByStatus',
       PHARMACIES_SUMMARY: 'Orders/pharmacies-summary',
@@ -45,24 +48,16 @@ export const APP_CONSTANTS = {
       CHANGE_ROLE_ID: 'Role/changeRole',
       CONFIRM_USER: 'Patient/ConfirmPatient',
       SUSPEND_USER: 'Patient/SuspendedPatient',
+      ADMIN_NOTIFICATIONS: 'Notifications/AdminNotifications',
+      PHARMACY_NOTIFICATIONS: 'notifications/pharmacyOrdersNotifications',
+      ADMIN_HUB: 'hubs/adminHub',
+      ORDER_HUB: 'orderHub',
+      STATUSCHANGE_HUB: 'hubs/statusChangeHub',
     },
   },
-  environment: {
-    production: true,
-    apiBaseUrl: 'http://localhost:5278/api',
-    apiVersion: 'v1',
-    appName: 'PharmaLink',
-    googleApiKey: 'AIzaSyCsSmpYJNb9htQSnH1NM-yHmM4bOSzZnUU',
-    GEMINI_API:
-      'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:generateContent',
-    GEMINI_API_KEY: 'AIzaSyCTmMYS8l_bl_H4G0FWTTkkWA-Jw_gLvEU',
 
-    features: {
-      enableNotifications: true,
-      enableGeolocation: true,
-      maxNearbyPharmacies: 10,
-    },
-  },
+  // Use environment variables instead of hardcoded values
+  environment: environment,
 
   ErrorCodes: {
     DIFFERENT_PHARMACY: 'DIFFERENT_PHARMACY',

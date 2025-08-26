@@ -34,12 +34,54 @@
           type="text"
           class="form-control border-2 rounded-end ps-5 navbar-search-input"
           placeholder="Search medicines, pharmacies..."
+          [(ngModel)]="searchQuery"
+          (input)="onSearch($any($event.target).value)"
+          (focus)="onSearchFocus()"
+          (blur)="onSearchBlur()"
         />
         <span
           class="position-absolute top-50 start-0 translate-middle-y ms-3 navbar-search-icon"
         >
           <i class="fa-solid fa-magnifying-glass"></i>
         </span>
+        @if (showResults) {
+        <ul class="search-dropdown">
+          @if (drugs().length > 0) {
+          <li class="dropdown-header">Drugs</li>
+          @for(item of drugs(); track $index) {
+          <li
+            (click)="
+              onSelectDrug(item.Id || item.id || item.drugId || item.drugID)
+            "
+          >
+            {{ item.name }}
+            <!-- Debug: {{ item | json }} -->
+          </li>
+          }
+          <li class="see-more" (click)="onSeeMoreDrugs()">See more drugs</li>
+          } @if (pharmacies().length > 0) {
+          <li class="dropdown-header">Pharmacies</li>
+          @for(pharmacy of pharmacies(); track $index) {
+          <li
+            (click)="
+              onSelectPharmacy(
+                pharmacy.Id ||
+                  pharmacy.id ||
+                  pharmacy.pharmaId ||
+                  pharmacy.pharmacyId
+              )
+            "
+          >
+            {{ pharmacy.name }}
+            <!-- Debug: {{ pharmacy | json }} -->
+          </li>
+          }
+          <li class="see-more" (click)="onSeeMorePharmacies()">
+            See more pharmacies
+          </li>
+          }
+        </ul>
+        }
       </div>
     </div>
 
@@ -71,12 +113,56 @@
               type="text"
               class="form-control border-2 rounded-end ps-5 navbar-search-input navbar-search-input-lg"
               placeholder="Search medicines, pharmacies, or health products..."
+              [(ngModel)]="searchQuery"
+              (input)="onSearch($any($event.target).value)"
+              (focus)="onSearchFocus()"
+              (blur)="onSearchBlur()"
             />
             <span
               class="position-absolute top-50 start-0 translate-middle-y ms-3 navbar-search-icon"
             >
               <i class="fa-solid fa-magnifying-glass"></i>
             </span>
+            @if (showResults) {
+            <ul class="search-dropdown">
+              @if (drugs().length > 0) {
+              <li class="dropdown-header">Drugs</li>
+              @for(drug of drugs(); track $index) {
+              <li
+                (click)="
+                  onSelectDrug(drug.Id || drug.id || drug.drugId || drug.drugID)
+                "
+              >
+                {{ drug.name }}
+                <!-- Debug: {{ drug | json }} -->
+              </li>
+              }
+              <li class="see-more" (click)="onSeeMoreDrugs()">
+                See more drugs
+              </li>
+              } @if (pharmacies().length > 0) {
+              <li class="dropdown-header">Pharmacies</li>
+              @for(pharmacy of pharmacies(); track $index) {
+              <li
+                (click)="
+                  onSelectPharmacy(
+                    pharmacy.Id ||
+                      pharmacy.id ||
+                      pharmacy.pharmaId ||
+                      pharmacy.pharmacyId
+                  )
+                "
+              >
+                {{ pharmacy.name }}
+                <!-- Debug: {{ pharmacy | json }} -->
+              </li>
+              }
+              <li class="see-more" (click)="onSeeMorePharmacies()">
+                See more pharmacies
+              </li>
+              }
+            </ul>
+            }
           </div>
         </div>
 
@@ -87,12 +173,56 @@
               type="text"
               class="form-control border-2 rounded-end ps-5 navbar-search-input navbar-search-input-full"
               placeholder="Search medicines, pharmacies..."
+              [(ngModel)]="searchQuery"
+              (input)="onSearch($any($event.target).value)"
+              (focus)="onSearchFocus()"
+              (blur)="onSearchBlur()"
             />
             <span
               class="position-absolute top-50 start-0 translate-middle-y ms-3 navbar-search-icon"
             >
               <i class="fa-solid fa-magnifying-glass"></i>
             </span>
+            @if (showResults) {
+            <ul class="search-dropdown">
+              @if (drugs().length > 0) {
+              <li class="dropdown-header">Drugs</li>
+              @for(drug of drugs(); track $index) {
+              <li
+                (click)="
+                  onSelectDrug(drug.Id || drug.id || drug.drugId || drug.drugID)
+                "
+              >
+                {{ drug.name }}
+                <!-- Debug: {{ drug | json }} -->
+              </li>
+              }
+              <li class="see-more" (click)="onSeeMoreDrugs()">
+                See more drugs
+              </li>
+              } @if (pharmacies().length > 0) {
+              <li class="dropdown-header">Pharmacies</li>
+              @for(pharmacy of pharmacies(); track $index) {
+              <li
+                (click)="
+                  onSelectPharmacy(
+                    pharmacy.Id ||
+                      pharmacy.id ||
+                      pharmacy.pharmaId ||
+                      pharmacy.pharmacyId
+                  )
+                "
+              >
+                {{ pharmacy.name }}
+                <!-- Debug: {{ pharmacy | json }} -->
+              </li>
+              }
+              <li class="see-more" (click)="onSeeMorePharmacies()">
+                See more pharmacies
+              </li>
+              }
+            </ul>
+            }
           </div>
         </div>
 
