@@ -27,7 +27,7 @@ export class MonthlyPerformanceSection implements OnInit {
         beginAtZero: true,
         title: {
           display: true,
-          text: 'Revenue ($)'
+          text: 'Revenue (EGP)'
         }
       },
       y1: {
@@ -111,7 +111,7 @@ private processChartData(): void {
     this.barChartData = {
       labels: this.allMonths.map(m => `${m} ${this.selectedYear}`),
       datasets: [
-        { data: [0], label: 'Revenue ($)' },
+        { data: [0], label: 'Revenue (EGP)' },
         { data: [0], label: 'Orders' }
       ]
     };
@@ -163,7 +163,7 @@ private processChartData(): void {
     labels: allMonths,
     datasets: [
       {
-        label: 'Revenue ($)',
+        label: 'Revenue (EGP)',
         data: revenueData,
         backgroundColor: 'rgb(59, 130, 246)',
         yAxisID: 'y'

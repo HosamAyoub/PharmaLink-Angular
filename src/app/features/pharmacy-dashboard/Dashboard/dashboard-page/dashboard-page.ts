@@ -113,7 +113,7 @@ export class DashboardPage implements OnInit {
       },
       {
         title: 'Total Revenue',
-        value: '$' + (this.analysisData?.totalRevenue?.toLocaleString() || '0'),
+        value: 'EGP' + (this.analysisData?.totalRevenue?.toLocaleString() || '0'),
         description: 'This month',
         icon: 'dollar-sign',
         color: 'var(--blue-200)',
