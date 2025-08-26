@@ -11,17 +11,16 @@ import { th } from 'date-fns/locale';
 export class SignalrService {
   public connection!: signalR.HubConnection;
   patientNotifications = signal<any[]>([]);
-  config = inject(ConfigService);
   endPoint = APP_CONSTANTS.API.ENDPOINTS;
   http = inject(HttpClient)
+  config: ConfigService = inject(ConfigService);
 
   unreadCount = computed(() =>
     this.patientNotifications().filter(n => !n.read).length
   );
   startConnection() {
     const userData = localStorage.getItem('userData');
-    const config = inject(ConfigService);
-    const StatusChangeUrl = config.getHubUrl(this.endPoint.STATUSCHANGE_HUB);
+    const StatusChangeUrl = this.config.getHubUrl(this.endPoint.STATUSCHANGE_HUB);
     let token = '';
 
     if (userData) {
@@ -83,5 +82,5 @@ export class SignalrService {
       });
   }
 
-  
+
 }

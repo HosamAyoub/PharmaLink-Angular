@@ -46,9 +46,122 @@
 }
 
 /* Responsive for small screens */
-@media (max-width: 640px) {
+@media (max-width: 992px) {
+  .recent-activity-section {
+    height: 350px;
+    padding: 15px;
+    margin-top: 25px;
+  }
+
+  .recent-activity-title {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .recent-activity-section {
+    height: 300px;
+    margin-top: 20px;
+  }
+
+  .notifications-list .notification-item {
+    padding: 6px 8px;
+  }
+}
+
+@media (max-width: 576px) {
   .recent-activity-section {
     height: 220px;
     padding: 12px;
+    margin-top: 15px;
+  }
+
+  .recent-activity-title {
+    font-size: 1.1rem;
+  }
+
+  .notifications-list {
+    margin-top: 5px;
+  }
+
+  .notifications-list .notification-item {
+    padding: 5px 6px;
+    font-size: 0.85rem;
+  }
+}
+
+/* Specific mobile device sizes */
+@media (max-width: 430px) {
+  .recent-activity-section {
+    height: 200px;
+    padding: 10px;
+    margin-top: 14px;
+  }
+
+  .recent-activity-title {
+    font-size: 1rem;
+  }
+
+  .notifications-list .notification-item {
+    padding: 4px 5px;
+    font-size: 0.82rem;
+  }
+}
+
+@media (max-width: 414px) {
+  .recent-activity-section {
+    height: 190px;
+  }
+
+  .notifications-list {
+    margin-top: 4px;
+  }
+}
+
+@media (max-width: 412px) {
+  .notifications-list .notification-item {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 390px) {
+  .recent-activity-section {
+    height: 180px;
+    padding: 8px;
+  }
+
+  .notifications-list .notification-item {
+    padding: 3px 4px;
+  }
+}
+
+@media (max-width: 375px) {
+  .recent-activity-section {
+    height: 170px;
+  }
+
+  .recent-activity-title {
+    font-size: 0.95rem;
+  }
+
+  .notifications-list .notification-item {
+    font-size: 0.78rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .recent-activity-section {
+    height: 160px;
+    padding: 7px;
+    margin-top: 12px;
+  }
+
+  .notifications-list {
+    margin-top: 3px;
+  }
+
+  .notifications-list .notification-item {
+    padding: 3px;
+    font-size: 0.75rem;
   }
 }

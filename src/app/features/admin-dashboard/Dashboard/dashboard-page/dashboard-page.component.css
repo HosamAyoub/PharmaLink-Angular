@@ -4,7 +4,8 @@
 }
 
 .dashboard-page.sidebar-closed {
-  padding-left: 30px; /* Reduced padding when sidebar is closed */
+  padding-left: 30px;
+  /* Reduced padding when sidebar is closed */
 }
 
 .dashboard-grid {
@@ -32,11 +33,110 @@
   padding: 20px;
   text-align: center;
 }
+
 @media (max-width: 768px) {
   .dashboard-page {
     padding: 15px;
   }
+
   .dashboard-grid {
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+}
+
+@media (max-width: 576px) {
+  .dashboard-page {
+    padding: 12px;
+  }
+
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+    padding: 10px;
+  }
+
+  .loading-spinner {
+    padding: 20px;
+  }
+}
+
+/* Specific mobile device sizes */
+@media screen and (max-width: 430px) {
+  .dashboard-page {
+    padding: 10px;
+    font-size: 13.5px;
+  }
+
+  .dashboard-grid {
+    gap: 12px;
+    padding: 8px;
+  }
+
+  .loading-spinner {
+    padding: 18px;
+  }
+}
+
+@media screen and (max-width: 414px) {
+  .dashboard-page {
+    padding: 10px;
+  }
+
+  .dashboard-grid {
+    gap: 10px;
+  }
+}
+
+@media screen and (max-width: 412px) {
+  .loading-spinner {
+    padding: 16px;
+  }
+}
+
+@media screen and (max-width: 390px) {
+  .dashboard-page {
+    padding: 8px;
+    font-size: 13px;
+  }
+
+  .dashboard-grid {
+    gap: 10px;
+    padding: 6px;
+  }
+}
+
+@media screen and (max-width: 375px) {
+  .dashboard-page {
+    padding: 8px;
+  }
+
+  .dashboard-grid {
+    gap: 8px;
+    padding: 6px;
+  }
+
+  .loading-spinner {
+    padding: 14px;
+  }
+}
+
+@media screen and (max-width: 360px) {
+  .dashboard-page {
+    padding: 6px;
+    font-size: 12.5px;
+  }
+
+  .dashboard-grid {
+    gap: 8px;
+    padding: 5px;
+  }
+
+  .loading-spinner {
+    padding: 12px;
+  }
+
+  .error-message {
+    padding: 15px;
+    font-size: 13px;
   }
 }

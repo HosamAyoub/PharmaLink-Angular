@@ -3,11 +3,115 @@
   color: var(--text-dark);
   font-weight: 700;
   padding-bottom: 5px;
+  font-size: 2rem;
 }
+
 .pharmacy-header h6 {
-    color: var(--text-muted);
-    font-weight: 400;
+  color: var(--text-muted);
+  font-weight: 400;
+  font-size: 1rem;
 }
-.pharmacy-header{
+
+.pharmacy-header {
   margin-left: 25px;
+  margin-bottom: 15px;
+}
+
+/* Responsive font sizes */
+@media screen and (max-width: 992px) {
+  .pharmacy-header h1 {
+    font-size: 1.8rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .pharmacy-header {
+    margin-left: 15px;
+  }
+
+  .pharmacy-header h1 {
+    font-size: 1.75rem;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .pharmacy-header {
+    margin-left: 10px;
+  }
+
+  .pharmacy-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .pharmacy-header h6 {
+    font-size: 0.9rem;
+  }
+}
+
+/* Specific mobile device sizes */
+@media screen and (max-width: 430px) {
+  .pharmacy-header {
+    margin-left: 8px;
+    margin-bottom: 12px;
+  }
+
+  .pharmacy-header h1 {
+    font-size: 1.4rem;
+    padding-bottom: 3px;
+  }
+
+  .pharmacy-header h6 {
+    font-size: 0.85rem;
+  }
+}
+
+@media screen and (max-width: 414px) {
+  .pharmacy-header h1 {
+    font-size: 1.35rem;
+  }
+}
+
+@media screen and (max-width: 412px) {
+  .pharmacy-header {
+    margin-bottom: 10px;
+  }
+}
+
+@media screen and (max-width: 390px) {
+  .pharmacy-header {
+    margin-left: 6px;
+  }
+
+  .pharmacy-header h1 {
+    font-size: 1.3rem;
+  }
+
+  .pharmacy-header h6 {
+    font-size: 0.8rem;
+  }
+}
+
+@media screen and (max-width: 375px) {
+  .pharmacy-header h1 {
+    font-size: 1.25rem;
+    padding-bottom: 2px;
+  }
+
+  .pharmacy-header {
+    margin-bottom: 8px;
+  }
+}
+
+@media screen and (max-width: 360px) {
+  .pharmacy-header {
+    margin-left: 5px;
+  }
+
+  .pharmacy-header h1 {
+    font-size: 1.2rem;
+  }
+
+  .pharmacy-header h6 {
+    font-size: 0.75rem;
+  }
 }

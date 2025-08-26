@@ -809,3 +809,190 @@
 .modal-footer .btn.submit-button:hover {
   box-shadow: 0 4px 16px rgba(37, 99, 235, 0.18);
 }
+
+@media (max-width: 768px) {
+
+  /* Minimize font in request modal except buttons - small screens only */
+  #requestAdminModal .modal-content {
+    font-size: 0.85rem;
+  }
+
+  #requestAdminModal .modal-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #222;
+  }
+
+  #requestAdminModal .form-label {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #222;
+  }
+
+  #requestAdminModal .form-control {
+    font-size: 0.8rem;
+    padding: 0.5rem 0.8rem;
+  }
+
+  #requestAdminModal .form-control::placeholder {
+    font-size: 0.75rem;
+  }
+
+  /* Keep button font size normal */
+  #requestAdminModal .btn {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  #requestAdminModal .modal-content {
+    font-size: 0.8rem;
+  }
+
+  #requestAdminModal .modal-title {
+    font-size: 0.95rem;
+  }
+
+  #requestAdminModal .form-label {
+    font-size: 0.75rem;
+  }
+
+  #requestAdminModal .form-control {
+    font-size: 0.75rem;
+    padding: 0.4rem 0.6rem;
+  }
+
+  #requestAdminModal .form-control::placeholder {
+    font-size: 0.7rem;
+  }
+}
+
+@media (max-width: 360px) {
+  #requestAdminModal .modal-content {
+    font-size: 0.75rem;
+  }
+
+  #requestAdminModal .modal-title {
+    font-size: 0.9rem;
+  }
+
+  #requestAdminModal .form-label {
+    font-size: 0.7rem;
+  }
+
+  #requestAdminModal .form-control {
+    font-size: 0.7rem;
+    padding: 0.3rem 0.5rem;
+  }
+
+  #requestAdminModal .form-control::placeholder {
+    font-size: 0.65rem;
+  }
+}
+
+@media (max-width: 768px) {
+
+  .medicine-action-btn,
+  .medicine-edit-btn,
+  .medicine-delete-btn,
+  .medicine-view-btn {
+    font-size: 0.85rem;
+    padding: 0.35rem 0.7rem;
+    border-radius: 8px;
+    min-width: 2rem;
+    width: auto;
+    gap: 0.3rem;
+  }
+}
+
+@media (max-width: 480px) {
+
+  .medicine-action-btn,
+  .medicine-edit-btn,
+  .medicine-delete-btn,
+  .medicine-view-btn {
+    font-size: 0.75rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: 7px;
+    min-width: 1.7rem;
+    gap: 0.2rem;
+  }
+
+  @media (max-width: 360px) {
+
+    .add-button,
+    .back-btn,
+    .action-button,
+    .medicine-action-btn,
+    .medicine-edit-btn,
+    .medicine-delete-btn,
+    .medicine-view-btn {
+      font-size: 0.65rem;
+      padding: 0.12rem 0.3rem;
+      border-radius: 6px;
+      min-width: 1.3rem;
+      gap: 0.1rem;
+    }
+
+    .medicines-grid,
+    .medicines-grid * {
+      font-size: 0.75rem !important;
+    }
+  }
+}
+
+@media (max-width: 360px) {
+  .medicine-card {
+    padding: 0.3rem;
+    min-height: auto;
+    font-size: 0.65rem;
+  }
+
+  .medicine-card-content {
+    gap: 0.2rem;
+    padding: 0.2rem;
+  }
+
+  .medicine-card .medicine-name,
+  .medicine-card .medicine-ingredient {
+    font-size: 1rem;
+    line-height: 1.1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+  }
+
+  .medicine-card .alert.alert-success {
+    font-size: 0.65rem;
+    padding: 0.1rem 0.2rem;
+    width: 2.8rem;
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+
+  .medicine-card img {
+    width: 5rem;
+    height: 5rem;
+    object-fit: cover;
+    border-radius: 4px;
+  }
+
+  .back-btn {
+    font-size: 0.75rem;
+    font-weight: bold;
+    padding: 0.3rem 0.6rem;
+    border-radius: 6px;
+    min-width: 2rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .header-content p {
+    font-size: 0.75rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 1rem;
+  }
+}

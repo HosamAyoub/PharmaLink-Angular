@@ -1,20 +1,160 @@
 .chart-container {
- background: white;
+  background: white;
   border-radius: 12px;
-   padding: 20px; 
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   transition: box-shadow 0.3s ease, transform 0.3s ease;
+  overflow: hidden;
 }
-.chart-container:hover{
-box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+
+.chart-container h3 {
+  font-size: 1.5rem;
+  margin-bottom: 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.chart-container p {
+  font-size: 0.9rem;
+  margin-bottom: 15px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.chart-container:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
 
 .chart-wrapper {
   position: relative;
   width: 85%;
+  margin: 0 auto;
+  /* Center the chart */
 }
+
 canvas {
   display: block;
   width: 100% !important;
   height: 100% !important;
+}
+
+/* Responsive styles */
+@media screen and (max-width: 992px) {
+  .chart-container {
+    padding: 15px;
+  }
+
+  .chart-wrapper {
+    width: 90%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .chart-wrapper {
+    width: 95%;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .chart-container {
+    padding: 12px;
+  }
+
+  .chart-wrapper {
+    width: 100%;
+    margin-left: 0 !important;
+    /* Override the ms-5 class from the HTML */
+  }
+
+  .chart-container h3 {
+    font-size: 1.4rem;
+  }
+
+  .chart-container p {
+    font-size: 0.85rem;
+  }
+}
+
+/* Specific mobile device sizes */
+@media screen and (max-width: 430px) {
+  .chart-container {
+    padding: 10px;
+  }
+
+  .chart-container h3 {
+    font-size: 1.3rem;
+  }
+
+  .chart-container p {
+    font-size: 0.85rem;
+    margin-bottom: 12px;
+  }
+}
+
+@media screen and (max-width: 414px) {
+  .chart-container {
+    border-radius: 10px;
+  }
+
+  .chart-container h3 {
+    font-size: 1.25rem;
+  }
+
+  .chart-container p {
+    font-size: 0.82rem;
+  }
+}
+
+@media screen and (max-width: 412px) {
+  .chart-wrapper {
+    margin-left: 0 !important;
+    /* Override the ms-5 class from the HTML */
+  }
+}
+
+@media screen and (max-width: 390px) {
+  .chart-container {
+    padding: 8px;
+  }
+
+  .chart-container h3 {
+    font-size: 1.2rem;
+    margin-bottom: 3px;
+  }
+
+  .chart-container p {
+    font-size: 0.8rem;
+    margin-bottom: 10px;
+  }
+}
+
+@media screen and (max-width: 375px) {
+  .chart-container {
+    border-radius: 8px;
+  }
+
+  .chart-container h3 {
+    font-size: 1.15rem;
+  }
+
+  .chart-container p {
+    font-size: 0.78rem;
+  }
+}
+
+@media screen and (max-width: 360px) {
+  .chart-container {
+    padding: 6px;
+  }
+
+  .chart-container h3 {
+    font-size: 1.1rem;
+  }
+
+  .chart-container p {
+    font-size: 0.75rem;
+    margin-bottom: 8px;
+  }
 }
