@@ -22,21 +22,15 @@
               <span class="location-icon">
                 <i class="bi bi-geo-alt me-1"></i>
               </span>
-              {{ pharmacy.pharma_Address }}
+              {{ pharmacy.pharma_Address | AddressPipe }}
             </div>
           </div>
 
           <div class="pharmacy-status mx-auto">
             <span class="status-badge">
-              <input
-                #quantityDesktop
-                type="number"
-                (change)="changeprice($event, pharmacy)"
-                class="form-control quantity-input shadow-sm"
-                min="1"
-                max="{{ pharmacy.quantityAvailable }}"
-                value="1"
-              />
+              <input #quantityDesktop type="number" (change)="changeprice($event, pharmacy)"
+                class="form-control quantity-input shadow-sm" min="1" max="{{ pharmacy.quantityAvailable }}"
+                value="1" />
             </span>
           </div>
 
@@ -46,12 +40,8 @@
           </div>
 
           <div class="pharmacy-action">
-            <button
-              class="buy-button"
-              [disabled]="pharmacy.quantityAvailable === 0"
-              (click)="SendToCart(pharmacy, quantityDesktop)"
-              title="Add to Cart"
-            >
+            <button class="buy-button" [disabled]="pharmacy.quantityAvailable === 0"
+              (click)="SendToCart(pharmacy, quantityDesktop)" title="Add to Cart">
               <i class="fas fa-cart-plus me-1"></i>
             </button>
           </div>
@@ -72,14 +62,8 @@
           <div class="mobile-row">
             <span class="mobile-label">Quantity:</span>
             <span class="status-badge">
-              <input
-                #quantityMobile
-                type="number"
-                class="form-control quantity-input shadow-sm"
-                min="1"
-                max="{{ pharmacy.quantityAvailable }}"
-                value="1"
-              />
+              <input #quantityMobile type="number" class="form-control quantity-input shadow-sm" min="1"
+                max="{{ pharmacy.quantityAvailable }}" value="1" />
             </span>
           </div>
 
@@ -90,12 +74,8 @@
             </div>
           </div>
 
-          <button
-            class="buy-button"
-            [disabled]="pharmacy.quantityAvailable === 0"
-            (click)="SendToCart(pharmacy, quantityMobile)"
-            title="Add to Cart"
-          >
+          <button class="buy-button" [disabled]="pharmacy.quantityAvailable === 0"
+            (click)="SendToCart(pharmacy, quantityMobile)" title="Add to Cart">
             <i class="fas fa-cart-plus me-1"></i>
             Add to Cart
           </button>

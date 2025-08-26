@@ -345,6 +345,17 @@
   }
 }
 
+/* Modal table responsive images */
+.modal-content .table img {
+  height: 80px;
+  width: auto;
+  max-width: 80px;
+  object-fit: contain;
+  border-radius: 6px;
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+}
+
 /* Prevent table cell text from wrapping in modal */
 .modal-content .table th,
 .modal-content .table td {
@@ -355,6 +366,11 @@
 }
 
 @media (max-width: 640px) {
+  /* Responsive modal table images */
+  .modal-content .table img {
+    height: 50px;
+    max-width: 50px;
+  }
 
   .modal-content .table th,
   .modal-content .table td {
@@ -364,6 +380,21 @@
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: 80px;
+  }
+}
+
+/* Extra responsive styles for very small modal screens */
+@media (max-width: 480px) {
+  .modal-content .table img {
+    height: 40px;
+    max-width: 40px;
+  }
+}
+
+@media (max-width: 360px) {
+  .modal-content .table img {
+    height: 35px;
+    max-width: 35px;
   }
 }
 
