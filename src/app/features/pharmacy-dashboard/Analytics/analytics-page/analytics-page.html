@@ -32,7 +32,7 @@
                 <div class="card-body d-flex justify-content-between">
                     <div>
                         <h6 class="card-title" [style.color]="'var(--gray-800)'">{{card.title}}</h6>
-                        <h2 class="card-subtitle mb-2">{{card.value}}</h2>
+                        <h2 class="card-subtitle mb-2">{{ card.value }}</h2>
                     </div>
                     @if (card.trend) {
                     <div class="trend d-flex pt-4" [class.positive]="card.trend.startsWith('+')"

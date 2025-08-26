@@ -6,6 +6,7 @@ import { PharmacyAnalysisService } from '../../Dashboard/Services/pharmacy-analy
 import { LoadingSpinner } from '../../../../shared/components/loading-spinner/loading-spinner';
 import { TopSellingProductsSection } from '../../Dashboard/Components/top-selling-products-section/top-selling-products-section';
 import { MonthlyPerformanceSection } from '../../Dashboard/Components/monthly-performance-section/monthly-performance-section';
+import { DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-analytics-page',
@@ -53,7 +54,7 @@ export class AnalyticsPage implements OnInit {
     },
     {
       title: 'Avg Order Value',
-      value: '$' + (this.analysisData.totalRevenue/this.analysisData.totalOrders) || 0,
+      value: '$' + ((this.analysisData.totalRevenue/this.analysisData.totalOrders).toFixed(2)) || 0,
       trend: '+15%'
     },
     {

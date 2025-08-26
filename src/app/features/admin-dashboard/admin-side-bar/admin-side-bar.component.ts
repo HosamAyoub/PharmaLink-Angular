@@ -48,6 +48,7 @@ export class AdminSideBarComponent implements OnInit {
     { id: 'orders', label: 'Orders', icon: 'cart', route: '/admin/orders' },
     { id: 'medicines', label: 'Medicines', icon: 'capsule', route: '/admin/medicinesmanagement' },
     { id: 'pharmacies', label: 'Pharmacies', icon: 'shop', route: '/admin/PharmaciesManagement' },
+    { id: 'Users', label: 'Users', icon: 'people-fill', route: '/admin/users' }
   ];
 
  toggleSidebar() {

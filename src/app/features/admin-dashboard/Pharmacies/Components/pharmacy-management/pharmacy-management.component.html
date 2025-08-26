@@ -30,7 +30,7 @@
         </div>
 
         <div class="table-body">
-            @for(pharmacy of filteredPharmacies; track pharmacy.pharmacyID){
+            @for(pharmacy of filteredPharmacies; track $index){
             <div class="table-row">
                 <!-- Pharmacy Info -->
                 <div class="cell pharmacy-cell">

@@ -28,10 +28,10 @@ export class DashboardPage implements OnInit {
     pharmacyTrend: string;
     DrugsTrend:string;
   } = {
-    ordersTrend: '6%',
-    revenueTrend: '-8%',
-    pharmacyTrend: '4%',
-    DrugsTrend: '25%'
+    ordersTrend: '-0%',
+    revenueTrend: '-0%',
+    pharmacyTrend: '-0%',
+    DrugsTrend: '-0%'
   };
   constructor(private pharmacyAnalysisService: PharmacyAnalysisService, private cdr: ChangeDetectorRef) {}
 
@@ -91,7 +91,7 @@ export class DashboardPage implements OnInit {
       description: 'Needs restocking',
       icon: 'triangle-exclamation',
       color: 'var(--error-red)',
-      trend: '-50%'
+      trend: '-0%'
     },
     {
       title: 'Total Revenue',

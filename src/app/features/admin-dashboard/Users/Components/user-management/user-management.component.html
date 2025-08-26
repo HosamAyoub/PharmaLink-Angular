@@ -1,0 +1,217 @@
+<div class="pharmacy-management">
+    <!-- Header with Search and Filter -->
+    <div *ngIf="loading" class="loading-overlay">
+        <app-loading-spinner></app-loading-spinner>
+    </div>
+
+    <div class="header-controls">
+        <div class="card-header">
+            <h4><i class="fa-solid fa-user-plus" [style.color]="'var(--blue-200)'"></i> Users Controller</h4>
+            <p [style.color]="'var(--gray-800)'">All Registered Users</p>
+        </div>
+    </div>
+
+    <!-- Pharmacy Table -->
+    <div class="pharmacy-table">
+        <div class="table-header">
+            <div class="header-cell pharmacy-col">USER</div>
+            <div class="header-cell owner-col">INFO</div>
+            <div class="header-cell contact-col">CONTACT</div>
+            <div class="header-cell performance-col">ORDERS COUNT</div>
+            <div class="header-cell status-col">STATUS</div>
+            <div class="header-cell actions-col">ACTIONS</div>
+        </div>
+
+        <div class="table-body">
+            @for(user of users; track user.patientId) {
+            <div class="table-row">
+                <!-- Pharmacy Info -->
+                <div class="cell pharmacy-cell">
+                    <div class="pharmacy-info">
+                        <h3 class="pharmacy-name">{{ user.userName }}</h3>
+                        <div class="pharmacy-details">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24"
+                                fill="none" stroke="var(--orange)" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="lucide lucide-map-pin h-3 w-3 mr-1">
+                                <path
+                                    d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0">
+                                </path>
+                                <circle cx="12" cy="10" r="3"></circle>
+                            </svg>
+                            <span class="address">{{ user.address }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Owner -->
+                <div class="performance-metrics">
+                    <div class="metric-item">
+                        <span class="metric-label">Name:</span>
+                        <span class="metric-value">{{ user.name}}</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">Gender:</span>
+                        @if(user.gender == 0){
+                        <span class="metric-value">Male</span>
+                        }@else{
+                        <span class="metric-value">Female</span>
+                        }
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">Birth Date:</span>
+                        <span class="metric-value">{{user.dateOfBirth | date}}</span>
+                    </div>
+                </div>
+
+                <!-- Contact -->
+                <div class="cell contact-cell">
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <i class="email-icon"><i class="fa-solid fa-envelope"></i></i>
+                            <span>{{ user.email }}</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="phone-icon"><i class="fa-solid fa-phone"></i></i>
+                            <span>{{ user.phoneNumber }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Performance -->
+                <div class="cell performance-cell">
+                    <div class="performance-metrics">
+                        <div class="metric-item">
+                            <span class="metric-label">Orders:</span>
+                            <span class="metric-value">{{ user.orderCount }}</span>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Status -->
+                <div class="cell status-cell">
+                    <span class="status-badge" [ngClass]="getStatusClass(user.status)">
+                        {{ getStatusText(user.status) }}
+                    </span>
+                </div>
+
+                <!-- Actions -->
+                <div class="cell actions-cell">
+                    <div class="action-buttons">
+                        <button class="action-btn view-btn" (click)="viewDetails(user)" title="View Details">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                fill="none" stroke="#3B82F6" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="lucide lucide-eye h-4 w-4">
+                                <path
+                                    d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0">
+                                </path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                        </button>
+                        <button *ngIf="user.status === 1" class="action-btn suspend-btn" (click)="suspendUser(user)"
+                            title="Suspend">
+                            <i class="fa-regular fa-circle-xmark"></i>
+                        </button>
+                        <button *ngIf="user.status === 0" class="action-btn activate-btn" (click)="activateUser(user)"
+                            title="Activate">
+                            ✅
+                        </button>
+                    </div>
+                </div>
+            </div>
+            }
+        </div>
+    </div>
+
+    <!-- No results message -->
+    <div *ngIf="users.length === 0" class="no-results">
+        <p>No users found matching your criteria.</p>
+    </div>
+</div>
+
+<!-- Details Modal -->
+<div *ngIf="showDetailsModal" class="modal-overlay" (click)="closeModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+            <h2>User Details - {{ selectedUser?.userName }}</h2>
+            <button class="close-btn" (click)="closeModal()">✕</button>
+        </div>
+
+        <div class="modal-body" *ngIf="selectedUser">
+            <div class="details-grid">
+                <!-- Basic Information -->
+                <div class="detail-section">
+                    <h3>Basic Information</h3>
+                    <div class="detail-item">
+                        <label>Name:</label>
+                        <span>{{ selectedUser.name }}</span>
+                    </div>
+                    <div class="detail-item">
+                        <label>UserName:</label>
+                        <span>{{ selectedUser.userName }}</span>
+                    </div>
+                    <div class="detail-item">
+                        <label>Gender:</label>
+                        @if(selectedUser.gender == 0){
+                        <span>Gender: Male</span>
+                        }@else {
+                        <span>Gender: Female</span>
+                        }
+                    </div>
+                    <div class="detail-item">
+                        <label>Birth Date:</label>
+                        <span>{{ formatDate(selectedUser.dateOfBirth) }}</span>
+                    </div>
+                </div>
+
+                <!-- Contact Information -->
+                <div class="detail-section">
+                    <h3>Contact Information</h3>
+                    <div class="detail-item">
+                        <label>Email:</label>
+                        <span>{{ selectedUser.email }}</span>
+                    </div>
+                    <div class="detail-item">
+                        <label>Phone:</label>
+                        <span>{{ selectedUser.phoneNumber }}</span>
+                    </div>
+                    <div class="detail-item">
+                        <label>Address:</label>
+                        <span>{{ selectedUser.address }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Performance Metrics -->
+            <div class="performance-section">
+                <h3>Performance Metrics</h3>
+                <div class="metrics-grid">
+                    <div class="metric-card orders">
+                        <div class="metric-number">{{ selectedUser.orderCount }}</div>
+                        <div class="metric-label">Orders</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Status and Actions -->
+            <div class="status-section">
+                <div class="current-status">
+                    <label>Current Status:</label>
+                    <span class="status-badge" [ngClass]="getStatusClass(selectedUser.status)">
+                        {{ getStatusText(selectedUser.status) }}
+                    </span>
+                </div>
+                <div class="modal-actions">
+                    <button *ngIf="selectedUser.status == 1 " class="btn btn-danger"
+                        (click)="suspendUser(selectedUser)">
+                        Suspend
+                    </button>
+                    <button *ngIf="selectedUser.status == 0 " class="btn btn-success"
+                        (click)="activateUser(selectedUser)">
+                        Activate
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

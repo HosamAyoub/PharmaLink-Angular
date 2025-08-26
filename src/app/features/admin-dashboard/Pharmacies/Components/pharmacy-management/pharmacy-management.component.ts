@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, OnInit, OnChanges, Input, Output, EventEmitter, SimpleChanges, ChangeDetectionStrategy, signal, computed, effect, inject } from '@angular/core';
 import { Ipharmacy } from '../../../../client-dashboard/shared/models/ipharmacy';
 import { AdminAnalysisInterface } from '../../../Dashboard/Interface/admin-analysis-interface';
 import { PharmacyDisplayData } from '../../Interface/pharmacy-display-data'
@@ -6,7 +6,6 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { PharmaciesMangementService } from '../../Service/pharmacies-mangement.service';
 import { finalize, switchMap } from 'rxjs';
-
 
 @Component({
   selector: 'app-pharmacy-management',
@@ -16,6 +15,9 @@ import { finalize, switchMap } from 'rxjs';
   styleUrl: './pharmacy-management.component.css'
 })
 export class PharmacyManagementComponent implements OnInit, OnChanges {
+  clearLocalState() {
+    throw new Error('Method not implemented.');
+  }
   @Input() activePharmacyData: Ipharmacy[] | null = null;
   @Input() pendingPharmacyData: Ipharmacy[] | null = null;
   @Input() suspendedPharmacyData: Ipharmacy[] | null = null;
@@ -140,67 +142,67 @@ export class PharmacyManagementComponent implements OnInit, OnChanges {
     this.selectedPharmacy = null;
   }
   suspendPharmacy(pharmacy: PharmacyDisplayData) {
-  if (!pharmacy) return;
+    if (!pharmacy) return;
 
-  this.isLoading = true;
-  const pharmacyId = pharmacy.pharmacyID;
+    this.isLoading = true;
+    const pharmacyId = pharmacy.pharmacyID;
 
-  this.pharmacyService.suspendPharmacy(pharmacyId).pipe(
-    switchMap((suspendResponse) => {
-      //console.log('Suspend response:', suspendResponse);
-      return this.pharmacyService.changePharmacyUserRole(pharmacyId, 'Suspended');
-    })
-  ).subscribe({
-    next: (roleChangeResponse) => {
-      //console.log('Role change response:', roleChangeResponse);
-      // Update the local state immediately for better UX
-      pharmacy.status = 0; // Assuming 0 is suspended status
-      this.reloadData();
-      this.closeModal();
-    },
-    error: (error) => {
-      //console.error(`Error: ${error.status}, ${error.error}`);
-      this.isLoading = false;
-    },
-    complete: () => {
-      this.isLoading = false;
-    }
-  });
-}
-
-activatePharmacy(pharmacy: PharmacyDisplayData) {
-  this.isLoading = true;
-  const pharmacyId = pharmacy.pharmacyID;
-
-  this.pharmacyService.confirmPharmacy(pharmacyId).pipe(
-    switchMap((confirmResponse) => {
-      console.log('Confirm response:', confirmResponse);
-      return this.pharmacyService.changePharmacyUserRole(pharmacyId, 'Pharmacy');
-    })
-  ).subscribe({
-    next: (roleChangeResponse) => {
-      console.log('Role change response:', roleChangeResponse);
-      // Update the local state immediately for better UX
-      pharmacy.status = 1; // Assuming 1 is active status
-      this.reloadData();
-      this.closeModal();
-    },
-    error: (error) => {
-      console.error(`Error: ${error.status}, ${error.error}`);
-      this.isLoading = false;
-    },
-    complete: () => {
-      this.isLoading = false;
-    }
-  });
-}
-  private reloadData() {
-  if (this.refreshData) {
-    this.refreshData.emit();
+    this.pharmacyService.suspendPharmacy(pharmacyId).pipe(
+      switchMap((suspendResponse) => {
+        //console.log('Suspend response:', suspendResponse);
+        return this.pharmacyService.changePharmacyUserRole(pharmacyId, 'Suspended');
+      })
+    ).subscribe({
+      next: (roleChangeResponse) => {
+        //console.log('Role change response:', roleChangeResponse);
+        // Update the local state immediately for better UX
+        pharmacy.status = 0; // Assuming 0 is suspended status
+        this.reloadData();
+        this.closeModal();
+      },
+      error: (error) => {
+        //console.error(`Error: ${error.status}, ${error.error}`);
+        this.isLoading = false;
+      },
+      complete: () => {
+        this.isLoading = false;
+      }
+    });
   }
-  this.buildPharmacyData();
-  this.filterPharmacies();
-}
+
+  activatePharmacy(pharmacy: PharmacyDisplayData) {
+    this.isLoading = true;
+    const pharmacyId = pharmacy.pharmacyID;
+
+    this.pharmacyService.confirmPharmacy(pharmacyId).pipe(
+      switchMap((confirmResponse) => {
+        //console.log('Confirm response:', confirmResponse);
+        return this.pharmacyService.changePharmacyUserRole(pharmacyId, 'Pharmacy');
+      })
+    ).subscribe({
+      next: (roleChangeResponse) => {
+      //  console.log('Role change response:', roleChangeResponse);
+        // Update the local state immediately for better UX
+        pharmacy.status = 1; // Assuming 1 is active status
+        this.reloadData();
+        this.closeModal();
+      },
+      error: (error) => {
+      //  console.error(`Error: ${error.status}, ${error.error}`);
+        this.isLoading = false;
+      },
+      complete: () => {
+        this.isLoading = false;
+      }
+    });
+  }
+  private reloadData() {
+    if (this.refreshData) {
+      this.refreshData.emit();
+    }
+    this.buildPharmacyData();
+    this.filterPharmacies();
+  }
 
 
   formatDate(date: Date | undefined): string {

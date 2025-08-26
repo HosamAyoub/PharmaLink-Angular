@@ -41,6 +41,10 @@ export const APP_CONSTANTS = {
       SUSPEND_PHARMACY: 'Pharmacy/SuspendedPharmacy',
       REJECT_PHARMACY: 'Pharmacy/RejectPharmacy',
       CHANGE_ROLE: 'Role/changeRoleByPharmacy',
+      PATIENTS_DATA: 'Patient/AllPatients',
+      CHANGE_ROLE_ID: 'Role/changeRole',
+      CONFIRM_USER: 'Patient/ConfirmPatient',
+      SUSPEND_USER: 'Patient/SuspendedPatient',
     },
   },
   environment: {
