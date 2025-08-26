@@ -4,7 +4,8 @@
 }
 
 .Pharmacies-page.sidebar-closed {
-  padding-left: 30px; /* Reduced padding when sidebar is closed */
+  padding-left: 30px;
+  /* Reduced padding when sidebar is closed */
 }
 
 .dashboard-grid {
@@ -30,4 +31,122 @@
   color: var(--error-red);
   padding: 20px;
   text-align: center;
+}
+
+/* Responsive styles */
+@media screen and (max-width: 992px) {
+  .Pharmacies-page {
+    padding: 20px 25px;
+  }
+
+  .dashboard-grid {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 20px;
+    padding: 15px;
+  }
+
+  .dashboard-grid.sidebar-closed {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 20px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .Pharmacies-page {
+    padding: 15px 20px;
+  }
+
+  .dashboard-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 15px;
+    padding: 12px;
+  }
+
+  .loading-spinner {
+    padding: 30px;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .Pharmacies-page {
+    padding: 12px 15px;
+  }
+
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 10px;
+  }
+
+  .loading-spinner {
+    padding: 25px;
+  }
+}
+
+/* Specific mobile device sizes */
+@media screen and (max-width: 430px) {
+  .Pharmacies-page {
+    padding: 10px;
+  }
+
+  .dashboard-grid {
+    gap: 10px;
+    padding: 8px;
+  }
+
+  .loading-spinner {
+    padding: 20px;
+  }
+}
+
+@media screen and (max-width: 414px) {
+  .dashboard-grid {
+    padding: 8px;
+  }
+}
+
+@media screen and (max-width: 390px) {
+  .Pharmacies-page {
+    padding: 8px;
+  }
+
+  .dashboard-grid {
+    gap: 8px;
+    padding: 6px;
+  }
+
+  .loading-spinner {
+    padding: 15px;
+  }
+}
+
+@media screen and (max-width: 375px) {
+  .Pharmacies-page {
+    padding: 7px;
+  }
+
+  .dashboard-grid {
+    gap: 7px;
+    padding: 5px;
+  }
+}
+
+@media screen and (max-width: 360px) {
+  .Pharmacies-page {
+    padding: 6px;
+  }
+
+  .dashboard-grid {
+    gap: 6px;
+    padding: 4px;
+  }
+
+  .loading-spinner {
+    padding: 12px;
+  }
+
+  .error-message {
+    padding: 15px;
+    font-size: 14px;
+  }
 }

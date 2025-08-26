@@ -10,7 +10,7 @@ import { APP_CONSTANTS } from '../../../../../shared/constants/app.constants';
   selector: 'app-success-page',
   imports: [CommonModule, RouterLink],
   templateUrl: './success-page.html',
-  styleUrl: './success-page.css'
+  styleUrl: './success-page.css',
 })
 export class SuccessPage implements OnInit, OnDestroy {
   sessionId!: string;
@@ -26,7 +26,7 @@ export class SuccessPage implements OnInit, OnDestroy {
     private http: HttpClient,
     private router: Router,
     private cdr: ChangeDetectorRef
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((params) => {
@@ -34,7 +34,7 @@ export class SuccessPage implements OnInit, OnDestroy {
       const paymentMethod = params['paymentMethod'];
 
       if (paymentMethod === 'cash') {
-        this.status = 'success'; 
+        this.status = 'success';
         return;
       }
       if (this.sessionId) {
@@ -51,7 +51,9 @@ export class SuccessPage implements OnInit, OnDestroy {
   startPolling() {
     this.pollingSubscription = interval(5000).subscribe(() => {
       this.http
-        .get<any>(`http://localhost:5278/api/orders/validate-session?sessionId=${this.sessionId}`)
+        .get<any>(
+          `${APP_CONSTANTS.environment.apiBaseUrl}/orders/validate-session?sessionId=${this.sessionId}`
+        )
         .subscribe({
           next: (res) => {
             this.orderData = res;
@@ -72,18 +74,16 @@ export class SuccessPage implements OnInit, OnDestroy {
                 this.status = 'pending';
                 this.cdr.detectChanges();
               }
-
             } else {
               this.status = 'error';
               this.cdr.detectChanges();
 
               this.pollingSubscription.unsubscribe();
             }
-          }
+          },
         });
     });
   }
-
 
   ngOnDestroy(): void {
     if (this.pollingSubscription) {
@@ -91,4 +91,3 @@ export class SuccessPage implements OnInit, OnDestroy {
     }
   }
 }
-

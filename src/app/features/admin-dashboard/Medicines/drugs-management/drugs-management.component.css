@@ -55,6 +55,12 @@
   font-size: 1rem;
 }
 
+/* Add data attributes for mobile form-like layout */
+.table th[data-column],
+.table td[data-column] {
+  position: relative;
+}
+
 .table th,
 .table td {
   white-space: nowrap;
@@ -64,19 +70,441 @@
   padding: 0.5rem;
 }
 
-/* Search & filter section */
+/* Search & filter section - NEW DESIGN */
 .search-filter-card {
   background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 2px 12px rgba(37, 99, 235, 0.07);
-  padding: 1rem 1.5rem;
-  margin-bottom: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.07);
+  border: 1px solid rgba(37, 99, 235, 0.05);
+  padding: 20px;
+  margin-bottom: 20px;
+  transition: all 0.3s ease;
 }
 
-.input-group-text,
-.form-select,
-.form-control {
-  font-size: 1rem;
+.search-filter-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  width: 100%;
+}
+
+.search-box {
+  flex: 1 1 300px;
+  min-width: 200px;
+}
+
+.filter-box {
+  flex: 0 1 220px;
+  min-width: 180px;
+}
+
+/* Input group styling */
+.search-filter-card .input-group {
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 46px;
+  border-radius: 8px;
+  background: #fff;
+  border: 1px solid #dfe3ea;
+  overflow: visible;
+  /* Changed from hidden to prevent clipping */
+  transition: all 0.2s ease;
+  align-items: stretch;
+}
+
+/* Input group hover effect */
+.search-filter-card .input-group:hover {
+  border-color: #b8c2cc;
+  box-shadow: 0 8px 12px rgba(37, 99, 235, 0.08);
+}
+
+/* Input group focus effect */
+.search-filter-card .input-group:focus-within {
+  border-color: var(--primary-blue);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+/* Icon container */
+.search-filter-card .input-group-text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  min-width: 46px;
+  /* Prevent shrinking */
+  background-color: #fff;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  padding-top: 4px;
+  /* Shift icon down slightly */
+}
+
+/* Icon styling */
+.search-filter-card .input-group-text i {
+  color: var(--primary-blue);
+  font-size: 18px;
+  /* Slightly larger icon */
+  margin: 0;
+  display: flex;
+  /* Ensure proper centering */
+  align-items: center;
+  justify-content: center;
+  transform: translateY(1px);
+  /* Fine-tune vertical position */
+}
+
+/* Form inputs */
+.search-filter-card .form-control,
+.search-filter-card .form-select {
+  flex: 1;
+  padding: 10px 12px;
+  font-size: 16px;
+  /* Increased font size */
+  font-weight: 500;
+  /* Slightly bolder text */
+  color: #333;
+  border: none;
+  background-color: transparent;
+  box-shadow: none;
+  outline: none;
+  height: 100%;
+  z-index: 1;
+  width: calc(100% - 46px);
+  /* Ensure proper width accounting for the icon */
+  min-width: 0;
+  /* Allow text truncation */
+  text-overflow: ellipsis;
+  /* Add ellipsis for overflow text */
+  padding-top: 12px;
+  /* Align text vertically with the icon */
+}
+
+/* Placeholder styling */
+.search-filter-card .form-control::placeholder {
+  color: #333;
+  /* Darker color for better visibility */
+  opacity: 1;
+  /* Full opacity */
+  font-size: 16px;
+  font-weight: 600;
+  /* Bold placeholder text */
+  letter-spacing: 0.2px;
+  /* Slightly improve readability */
+}
+
+/* Select dropdown styling */
+.search-filter-card .form-select {
+  cursor: pointer;
+  appearance: auto;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%232563eb' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 14px 12px;
+  padding-right: 32px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+/* Fix for click issues */
+.search-filter-card .form-control,
+.search-filter-card .form-select,
+.search-filter-card .input-group-text {
+  position: relative;
+  z-index: 2;
+}
+
+/* Ensure consistent appearance on all browsers */
+.search-filter-card .form-control:-webkit-autofill,
+.search-filter-card .form-control:-webkit-autofill:hover,
+.search-filter-card .form-control:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0px 1000px white inset;
+  -webkit-text-fill-color: #000;
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  .search-filter-card {
+    padding: 18px;
+  }
+
+  .search-filter-container {
+    gap: 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .search-filter-card {
+    padding: 16px;
+  }
+
+  .search-filter-container {
+    gap: 14px;
+  }
+
+  .search-box,
+  .filter-box {
+    flex: 1 1 100%;
+  }
+
+  .search-filter-card .input-group {
+    height: 44px;
+  }
+}
+
+@media (max-width: 576px) {
+  .search-filter-card {
+    padding: 14px;
+  }
+
+  .search-filter-container {
+    gap: 12px;
+  }
+
+  .search-filter-card .input-group {
+    height: 42px;
+    display: flex;
+    align-items: stretch;
+  }
+
+  .search-filter-card .form-control,
+  .search-filter-card .form-select {
+    font-size: 15px;
+    padding: 8px 10px;
+    padding-top: 12px;
+    /* Align text vertically */
+    color: #000;
+    /* Black text for maximum visibility */
+    font-weight: 600;
+    /* Make text bolder */
+    width: calc(100% - 42px);
+  }
+
+  .search-filter-card .input-group-text {
+    width: 42px;
+    min-width: 42px;
+    /* Prevent icon container from shrinking */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 4px;
+    /* Maintain icon alignment */
+  }
+
+  .search-filter-card .input-group-text i {
+    transform: translateY(1px);
+    /* Keep icon centered */
+  }
+
+  .search-filter-card .form-control::placeholder {
+    font-size: 15px;
+    opacity: 1;
+    color: #333;
+    /* Darker placeholder */
+    font-weight: 600;
+    letter-spacing: 0.2px;
+  }
+
+  /* Ensure text is visible */
+  .search-filter-card .form-select option {
+    color: #000;
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  /* Fix icon alignment */
+  .search-filter-card .input-group-text i {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+}
+
+@media (max-width: 414px) {
+  .search-filter-card {
+    padding: 12px;
+  }
+
+  .search-filter-container {
+    gap: 10px;
+  }
+
+  .search-filter-card .input-group {
+    height: 42px;
+    overflow: visible;
+  }
+
+  .search-filter-card .input-group-text {
+    width: 38px;
+    min-width: 38px;
+    padding-top: 4px;
+  }
+
+  /* Ensure text remains visible */
+  .search-filter-card .form-control,
+  .search-filter-card .form-select {
+    font-weight: 600;
+    color: #000;
+    width: calc(100% - 38px);
+    padding: 8px 8px;
+    padding-top: 11px;
+    font-size: 15px;
+  }
+
+  .search-filter-card .form-control::placeholder {
+    color: #333;
+    opacity: 1;
+    font-weight: 600;
+    font-size: 15px;
+    letter-spacing: 0.1px;
+  }
+
+  /* Fix icon shifting */
+  .search-filter-card .input-group-text i {
+    font-size: 16px;
+    transform: translateY(1px);
+  }
+}
+
+@media (max-width: 390px) {
+  .search-filter-card {
+    padding: 12px;
+  }
+
+  .search-filter-container {
+    gap: 10px;
+  }
+
+  .search-filter-card .input-group {
+    height: 40px;
+    overflow: visible;
+  }
+
+  .search-filter-card .input-group-text {
+    width: 36px;
+    min-width: 36px;
+    padding-top: 3px;
+  }
+
+  /* Ensure text remains visible */
+  .search-filter-card .form-control,
+  .search-filter-card .form-select {
+    font-weight: 600;
+    color: #000;
+    width: calc(100% - 36px);
+    padding: 8px 6px;
+    padding-top: 10px;
+    font-size: 14px;
+  }
+
+  .search-filter-card .form-control::placeholder {
+    color: #333;
+    opacity: 1;
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 0.1px;
+  }
+
+  /* Fix icon shifting */
+  .search-filter-card .input-group-text i {
+    font-size: 16px;
+    transform: translateY(2px);
+  }
+}
+
+@media (max-width: 375px) {
+  .search-filter-card {
+    padding: 11px;
+  }
+
+  .search-filter-card .input-group {
+    height: 40px;
+  }
+
+  .search-filter-card .input-group-text {
+    width: 35px;
+    min-width: 35px;
+    padding-top: 3px;
+  }
+
+  .search-filter-card .form-control,
+  .search-filter-card .form-select {
+    width: calc(100% - 35px);
+    padding-top: 10px;
+    font-size: 14px;
+  }
+
+  .search-filter-card .input-group-text i {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 360px) {
+  .search-filter-card {
+    padding: 10px;
+  }
+
+  .search-filter-container {
+    gap: 8px;
+  }
+
+  .search-filter-card .input-group {
+    height: 38px;
+  }
+
+  .search-filter-card .input-group-text {
+    width: 34px;
+    min-width: 34px;
+    padding-top: 2px;
+  }
+
+  .search-filter-card .form-control,
+  .search-filter-card .form-select {
+    width: calc(100% - 34px);
+    padding: 8px 5px;
+    padding-top: 9px;
+    font-size: 14px;
+  }
+
+  .search-filter-card .form-control::placeholder {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 345px) {
+  .search-filter-card {
+    padding: 9px;
+  }
+
+  .search-filter-card .input-group {
+    height: 36px;
+  }
+
+  .search-filter-card .input-group-text {
+    width: 32px;
+    min-width: 32px;
+    padding-top: 2px;
+  }
+
+  .search-filter-card .form-control,
+  .search-filter-card .form-select {
+    width: calc(100% - 32px);
+    padding: 6px 4px;
+    padding-top: 9px;
+    font-size: 13px;
+  }
+
+  .search-filter-card .input-group-text i {
+    font-size: 14px;
+    transform: translateY(1px);
+  }
+
+  .search-filter-card .form-control::placeholder {
+    font-size: 12px;
+  }
 }
 
 /* Modal responsiveness */
@@ -86,13 +514,100 @@
   margin: 1.2rem auto;
 }
 
+/* Enhanced modal styles for better responsiveness */
+.modal-content {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.modal-header {
+  padding: 1rem 1.5rem;
+}
+
+.modal-body {
+  padding: 1.5rem;
+}
+
+.modal-footer {
+  padding: 1rem 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .modal-header {
+    padding: 0.9rem 1.2rem;
+  }
+
+  .modal-body {
+    padding: 1.2rem;
+  }
+
+  .modal-footer {
+    padding: 0.9rem 1.2rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .modal-header {
+    padding: 0.8rem 1rem;
+  }
+
+  .modal-body {
+    padding: 1rem;
+  }
+
+  .modal-footer {
+    padding: 0.8rem 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .modal-header {
+    padding: 0.7rem 0.9rem;
+  }
+
+  .modal-body {
+    padding: 0.9rem;
+  }
+
+  .modal-footer {
+    padding: 0.7rem 0.9rem;
+  }
+
+  .modal-title {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 375px) {
+  .modal-header {
+    padding: 0.6rem 0.8rem;
+  }
+
+  .modal-body {
+    padding: 0.8rem;
+  }
+
+  .modal-footer {
+    padding: 0.6rem 0.8rem;
+  }
+
+  .modal-title {
+    font-size: 1rem;
+  }
+}
+
+/* Responsive Styles */
 @media (max-width: 1024px) {
   .container {
-    padding: 12px;
+    padding: 16px;
   }
 
   .title-group h2 {
-    font-size: 1.5rem;
+    font-size: 1.7rem;
+  }
+
+  .title-group p {
+    font-size: 0.95rem;
   }
 
   .table {
@@ -105,29 +620,118 @@
     font-size: 0.95rem;
     padding: 0.4rem;
   }
+
+  .stat-card {
+    padding: 14px;
+  }
+
+  .search-filter-card {
+    padding: 0.9rem 1.3rem;
+  }
+}
+
+@media (max-width: 992px) {
+  .container {
+    padding: 14px;
+  }
+
+  .title-group h2 {
+    font-size: 1.5rem;
+  }
+
+  .add-button {
+    min-width: 110px;
+    font-size: 0.95rem;
+    padding: 0.45rem 1rem;
+  }
+
+  .stat-card {
+    padding: 12px;
+    min-width: 130px;
+  }
+
+  .stat-number {
+    font-size: 1.3rem;
+  }
+
+  .search-filter-card {
+    padding: 0.8rem 1.2rem;
+    margin-bottom: 1.3rem;
+  }
 }
 
 @media (max-width: 768px) {
   .header {
     flex-direction: column;
-    align-items: stretch;
-    gap: 10px;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .title-group h2 {
+    font-size: 1.4rem;
+  }
+
+  .title-group p {
+    font-size: 0.9rem;
+  }
+
+  /* Modern search & filter for tablets */
+  .search-filter-card {
+    padding: 0.9rem 1.2rem;
+  }
+
+  .search-filter-card .d-flex {
+    gap: 12px;
+  }
+
+  .search-filter-card .input-group {
+    margin-bottom: 0;
+  }
+
+  .search-filter-card .input-group-text {
+    padding: 0.65rem 0.9rem;
+  }
+
+  .search-filter-card .form-control,
+  .search-filter-card .form-select {
+    padding: 0.65rem 0.9rem;
+    font-size: 0.95rem;
+  }
+
+  .search-filter-card .ms-md-3 {
+    min-width: 180px;
   }
 
   .stats {
-    flex-direction: column;
-    gap: 10px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
   }
 
   .stat-card {
     min-width: 0;
     width: 100%;
-    margin-bottom: 10px;
+    margin-bottom: 0;
+  }
+
+  .stat-card i {
+    font-size: 1.8rem !important;
+  }
+
+  .stat-number {
+    font-size: 1.2rem;
   }
 
   .search-filter-card {
-    padding: 0.7rem 0.5rem;
-    border-radius: 10px;
+    padding: 0.7rem 0.8rem;
+    border-radius: 12px;
+    margin-bottom: 1.2rem;
+  }
+
+  .input-group-text,
+  .form-select,
+  .form-control {
+    font-size: 0.95rem;
   }
 
   .table {
@@ -150,31 +754,284 @@
     flex: 0 0 100%;
     max-width: 100%;
   }
-}
 
-@media (max-width: 480px) {
-  .container {
-    padding: 4px;
-  }
-
-  .title-group h2 {
+  .card-header h5 {
     font-size: 1.1rem;
   }
 
-  .add-button {
+  .card-header small {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .container {
+    padding: 10px;
+  }
+
+  .title-group h2 {
+    font-size: 1.3rem;
+  }
+
+  .title-group p {
+    font-size: 0.85rem;
+  }
+
+  /* Modern search & filter for small screens */
+  .search-filter-card {
+    padding: 0.8rem 1rem;
+    border-radius: 12px;
+    margin-bottom: 1.2rem;
+  }
+
+  .search-filter-card .d-flex {
+    flex-direction: column !important;
+  }
+
+  .search-filter-card .input-group {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .search-filter-card .input-group:last-child {
+    margin-bottom: 0;
+  }
+
+  .search-filter-card .ms-md-3 {
+    margin-left: 0 !important;
+    min-width: 100%;
+  }
+
+  .search-filter-card .input-group-text {
+    padding: 0.6rem 0.8rem;
+  }
+
+  .search-filter-card .input-group-text i {
     font-size: 0.9rem;
-    padding: 0.4rem 0.8rem;
+  }
+
+  .search-filter-card .form-control,
+  .search-filter-card .form-select {
+    padding: 0.6rem 0.8rem;
+    font-size: 0.9rem;
+    height: auto;
+  }
+
+  .search-filter-card .form-control::placeholder {
+    font-size: 0.85rem;
+  }
+
+  .add-button {
+    min-width: 100px;
+    font-size: 0.9rem;
+    padding: 0.4rem 0.9rem;
+  }
+
+  .stats {
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+
+  .stat-card {
+    padding: 10px;
+  }
+
+  .stat-card i {
+    font-size: 1.6rem !important;
+  }
+
+  .stat-number {
+    font-size: 1.1rem;
+  }
+
+  .search-filter-card {
+    padding: 0.6rem 0.7rem;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+  }
+
+  .d-flex.flex-column.flex-md-row {
+    gap: 2 !important;
+  }
+
+  .input-group-text,
+  .form-select,
+  .form-control {
+    font-size: 0.9rem;
   }
 
   .table {
-    font-size: 0.8rem;
-    min-width: 320px;
+    font-size: 0.85rem;
+    min-width: 350px;
   }
 
   .table th,
   .table td {
+    font-size: 0.8rem;
+    padding: 0.25rem;
+  }
+
+  .card-header h5 {
+    font-size: 1rem;
+  }
+
+  .card-header small {
+    font-size: 0.8rem;
+  }
+
+  .btn {
+    font-size: 0.85rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 8px;
+  }
+
+  .title-group h2 {
+    font-size: 1.2rem;
+  }
+
+  .title-group p {
+    font-size: 0.8rem;
+  }
+
+  /* Even more compact search & filter for mobile */
+  .search-filter-card {
+    padding: 0.7rem 0.85rem;
+    border-radius: 10px;
+    box-shadow: 0 1px 8px rgba(37, 99, 235, 0.05);
+    margin-bottom: 1rem;
+  }
+
+  .search-filter-card .input-group {
+    margin-bottom: 8px;
+    border-radius: 8px;
+  }
+
+  .search-filter-card .input-group-text {
+    padding: 0.5rem 0.7rem;
+  }
+
+  .search-filter-card .input-group-text i {
+    font-size: 0.85rem;
+  }
+
+  .search-filter-card .form-control,
+  .search-filter-card .form-select {
+    padding: 0.5rem 0.7rem;
+    font-size: 0.85rem;
+  }
+
+  .search-filter-card .form-control::placeholder {
+    font-size: 0.8rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .add-button {
+    font-size: 0.85rem;
+    padding: 0.35rem 0.8rem;
+  }
+
+  .stats {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+
+  .stat-card {
+    padding: 10px;
+    margin-bottom: 0;
+  }
+
+  .stat-card i {
+    font-size: 1.5rem !important;
+  }
+
+  .stat-number {
+    font-size: 1rem;
+  }
+
+  /* Form-like table styles for small screens */
+  .table-responsive-sm {
+    overflow-x: visible;
+  }
+
+  .table {
+    min-width: unset;
+    width: 100%;
+    font-size: 0.8rem;
+  }
+
+  .table thead {
+    display: none;
+    /* Hide table headers */
+  }
+
+  .table,
+  .table tbody,
+  .table tr,
+  .table td {
+    display: block;
+    width: 100%;
+  }
+
+  .table tr {
+    margin-bottom: 1rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 0.5rem;
+    background-color: #ffffff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+
+  .table td {
+    position: relative;
+    padding: 0.5rem 0.5rem 0.5rem 40%;
+    text-align: left;
+    border: none;
+    border-bottom: 1px solid #f0f0f0;
+    white-space: normal;
+    overflow: visible;
+  }
+
+  .table td:last-child {
+    border-bottom: none;
+  }
+
+  /* Add column headers as data labels */
+  .table td:before {
+    content: attr(data-label);
+    position: absolute;
+    left: 0.5rem;
+    width: 35%;
+    padding-right: 10px;
+    white-space: nowrap;
+    font-weight: 600;
+    color: #495057;
     font-size: 0.75rem;
-    padding: 0.2rem;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+
+  /* Adjust action buttons in card to be more mobile-friendly */
+  .table td:last-child {
+    padding: 0.5rem;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.25rem;
+  }
+
+  /* Set explicit widths for action buttons */
+  .table td:last-child .btn {
+    min-width: 2.5rem;
+    margin: 0.1rem;
   }
 
   .medicine-modal {
@@ -182,9 +1039,377 @@
     padding: 0.2rem;
   }
 
+  .card-header {
+    padding: 0.6rem !important;
+  }
+
+  .card-body {
+    padding: 0.5rem !important;
+  }
+
+  .badge {
+    font-size: 65% !important;
+  }
+
   .form-section .row.g-3>div {
     flex: 0 0 100%;
     max-width: 100%;
+  }
+}
+
+/* Specific mobile device sizes */
+@media (max-width: 430px) {
+  .container {
+    padding: 6px;
+  }
+
+  .title-group h2 {
+    font-size: 1.1rem;
+  }
+
+  .title-group p {
+    font-size: 0.75rem;
+  }
+
+  /* Ultra-compact search & filter for small mobile */
+  .search-filter-card {
+    padding: 0.65rem 0.75rem;
+    border-radius: 9px;
+    margin-bottom: 0.9rem;
+  }
+
+  .search-filter-card .input-group {
+    margin-bottom: 7px;
+    border-radius: 7px;
+  }
+
+  .search-filter-card .input-group-text {
+    padding: 0.45rem 0.65rem;
+  }
+
+  .search-filter-card .input-group-text i {
+    font-size: 0.8rem;
+  }
+
+  .search-filter-card .form-control,
+  .search-filter-card .form-select {
+    padding: 0.45rem 0.65rem;
+    font-size: 0.8rem;
+    height: 36px;
+  }
+
+  .search-filter-card .form-control::placeholder {
+    font-size: 0.75rem;
+  }
+
+  .add-button {
+    font-size: 0.8rem;
+    padding: 0.3rem 0.7rem;
+    min-width: 90px;
+  }
+
+  .stat-card {
+    padding: 8px;
+  }
+
+  .stat-card i {
+    font-size: 1.4rem !important;
+  }
+
+  .search-filter-card {
+    padding: 0.5rem 0.6rem;
+  }
+
+  .input-group-text,
+  .form-select,
+  .form-control {
+    font-size: 0.8rem;
+  }
+
+  /* Refining form-like table appearance */
+  .table tr {
+    margin-bottom: 0.8rem;
+    padding: 0.4rem;
+  }
+
+  .table td {
+    padding: 0.4rem 0.4rem 0.4rem 40%;
+    font-size: 0.7rem;
+  }
+
+  .table td:before {
+    font-size: 0.7rem;
+  }
+
+  .table td:last-child {
+    padding: 0.4rem;
+    gap: 0.4rem;
+  }
+
+  .btn {
+    font-size: 0.75rem !important;
+    padding: 0.25rem 0.5rem !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .title-group h2 {
+    font-size: 1rem;
+  }
+
+  .stat-card i {
+    font-size: 1.3rem !important;
+  }
+
+  /* Minimal search & filter for extra small mobile */
+  .search-filter-card {
+    padding: 0.7rem;
+    border-radius: 8px;
+    margin-bottom: 0.8rem;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+  }
+
+  .search-filter-container {
+    gap: 8px;
+  }
+
+  .search-filter-card .input-group {
+    height: 38px;
+    border-radius: 6px;
+  }
+
+  .search-filter-card .input-group-text {
+    padding: 0 0.5rem;
+    width: 36px;
+    border-radius: 6px 0 0 6px !important;
+  }
+
+  .search-filter-card .input-group-text i {
+    font-size: 0.8rem;
+  }
+
+  .search-filter-card .form-control,
+  .search-filter-card .form-select {
+    padding: 0.4rem 0.6rem;
+    font-size: 0.8rem;
+    border-radius: 0 6px 6px 0 !important;
+  }
+
+  /* Change placeholder to shorter text */
+  .search-filter-card .form-control::placeholder {
+    content: "Search...";
+    font-size: 0.72rem;
+  }
+
+  .stat-number {
+    font-size: 0.9rem;
+  }
+
+  .card-header h5 {
+    font-size: 0.9rem;
+  }
+
+  .card-header small {
+    font-size: 0.7rem;
+  }
+
+  /* Further refinements to form-like table */
+  .table tr {
+    margin-bottom: 0.7rem;
+    padding: 0.35rem;
+  }
+
+  .table td {
+    padding: 0.35rem 0.35rem 0.35rem 42%;
+    font-size: 0.65rem;
+  }
+
+  .table td:before {
+    font-size: 0.65rem;
+    width: 38%;
+  }
+
+  .table td:last-child .btn {
+    min-width: 2.2rem;
+    margin: 0.08rem;
+  }
+}
+
+@media (max-width: 375px) {
+  .add-button {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.6rem;
+    min-width: 80px;
+  }
+
+  .stat-card {
+    padding: 6px;
+  }
+
+  .input-group-text,
+  .form-select,
+  .form-control {
+    font-size: 0.75rem;
+    padding: 0.35rem 0.45rem;
+    /* Keep text within bounds */
+  }
+
+  .form-control::placeholder {
+    text-indent: 0;
+    /* Ensure placeholder starts from the beginning */
+    font-size: 0.7rem;
+  }
+
+  .table {
+    min-width: 260px;
+  }
+
+  .btn {
+    font-size: 0.7rem !important;
+    padding: 0.2rem 0.4rem !important;
+  }
+}
+
+@media (max-width: 360px) {
+  .title-group h2 {
+    font-size: 0.9rem;
+  }
+
+  .title-group p {
+    font-size: 0.7rem;
+  }
+
+  /* Ultra-minimal search & filter for tiny screens */
+  .search-filter-card {
+    padding: 0.6rem;
+    margin-bottom: 0.7rem;
+  }
+
+  .search-filter-container {
+    gap: 6px;
+  }
+
+  .search-filter-card .input-group {
+    height: 36px;
+  }
+
+  .search-filter-card .input-group-text {
+    width: 32px;
+  }
+
+  .search-filter-card .input-group-text {
+    padding: 0 0.4rem;
+    width: 30px;
+  }
+
+  .search-filter-card .input-group-text i {
+    font-size: 0.75rem;
+  }
+
+  .search-filter-card .form-control,
+  .search-filter-card .form-select {
+    padding: 0.35rem 0.45rem;
+    font-size: 0.75rem;
+    border-radius: 0 6px 6px 0 !important;
+  }
+
+  .search-filter-card .form-control::placeholder {
+    font-size: 0.75rem;
+    opacity: 0.7;
+    content: "Search...";
+  }
+
+  .stat-card i {
+    font-size: 1.2rem !important;
+  }
+
+  .stat-number {
+    font-size: 0.85rem;
+  }
+
+  /* Smallest screen adjustments for form-like table */
+  .table tr {
+    margin-bottom: 0.6rem;
+    padding: 0.3rem;
+  }
+
+  .table td {
+    padding: 0.3rem 0.3rem 0.3rem 44%;
+    font-size: 0.6rem;
+  }
+
+  .table td:before {
+    font-size: 0.6rem;
+    width: 40%;
+  }
+
+  .table td:last-child {
+    padding: 0.3rem;
+    gap: 0.3rem;
+  }
+
+  /* Fix for search and filter text visibility in very small screens */
+  .search-filter-card .row>div {
+    min-width: 160px;
+    /* Ensure column has enough width */
+    max-width: 100%;
+    /* Don't exceed container width */
+  }
+
+  .search-filter-card .form-select {
+    background-position: right 8px center;
+    /* Position dropdown arrow */
+    appearance: auto;
+    /* Native select appearance for better control */
+    text-indent: 0;
+    /* Prevent text from being hidden */
+    width: 100%;
+  }
+
+  /* Special treatment for the search inputs to ensure text visibility */
+  .search-filter-card .input-group {
+    width: 100%;
+    display: flex !important;
+    max-width: 100%;
+    /* Ensure container fits */
+  }
+
+  .search-filter-card .input-group-text {
+    width: 28px;
+    /* Reduced fixed width for icon */
+    flex: 0 0 auto;
+    padding: 0.25rem;
+    /* Smaller padding */
+  }
+
+  .search-filter-card .form-control,
+  .search-filter-card .form-select {
+    flex: 1 1 auto;
+    width: 1%;
+    /* This trick helps with flex distribution */
+    min-width: 0;
+    /* Allow shrinking below min-content */
+    padding-left: 4px;
+    /* Smaller left padding */
+    padding-right: 4px;
+    /* Smaller right padding */
+    text-indent: 0;
+    /* Prevent hidden text */
+  }
+
+  /* Fix placeholder positioning */
+  .search-filter-card .form-control::placeholder {
+    position: static;
+    /* Reset position */
+    text-indent: 0;
+    font-size: 0.7rem;
+    opacity: 0.8;
+  }
+
+  .table td:last-child .btn {
+    min-width: 2rem;
+    margin: 0.06rem;
+    padding: 0.15rem 0.3rem !important;
   }
 }
 
@@ -1130,4 +2355,51 @@ thead th {
 .card .table .btn i,
 .card .table .delete i {
   font-size: 1rem;
+}
+
+/* Responsive button styles for drug requests */
+.btn-success,
+.btn-danger {
+  transition: all 0.2s;
+}
+
+@media (max-width: 768px) {
+
+  .btn-success,
+  .btn-danger {
+    min-width: 4.5rem !important;
+    width: 4.5rem !important;
+    font-size: 0.85rem !important;
+  }
+}
+
+@media (max-width: 576px) {
+
+  .btn-success,
+  .btn-danger {
+    min-width: 4rem !important;
+    width: 4rem !important;
+    font-size: 0.8rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+
+  .btn-success,
+  .btn-danger {
+    min-width: 3.5rem !important;
+    width: 3.5rem !important;
+    font-size: 0.75rem !important;
+    padding: 0.15rem !important;
+  }
+}
+
+@media (max-width: 375px) {
+
+  .btn-success,
+  .btn-danger {
+    min-width: 3rem !important;
+    width: 3rem !important;
+    font-size: 0.7rem !important;
+  }
 }

@@ -186,3 +186,8 @@
 .card-shadow-light {
   box-shadow: 0 1px 4px var(--shadow-overlay-075);
 }
+
+.table-responsive {
+  max-height: 450px; 
+  overflow-y: auto;
+}

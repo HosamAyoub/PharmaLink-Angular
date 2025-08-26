@@ -17,9 +17,8 @@
             <div class="header-cell status-col">DOCUMENTS</div>
             <div class="header-cell actions-col">ACTIONS</div>
         </div>
-
         <div class="table-body">
-            @for(pharmacy of pendingPharmacyData; track pharmacy.pharmacyID){
+            @for(pharmacy of computedPendingPharmacies(); track pharmacy.pharmacyID){
             <div class="table-row">
                 <!-- Pharmacy Info -->
                 <div class="cell pharmacy-cell">
@@ -60,7 +59,7 @@
 
                 <!-- Performance -->
                 <div class="cell performance-cell">
-                    <span>{{pharmacy.joinedDate}}</span>
+                    <span>{{formatDate(pharmacy.joinedDate)}}</span>
                 </div>
 
                 <!-- Status -->
@@ -100,7 +99,7 @@
     <app-document-viewer></app-document-viewer>
     <!-- No results message -->
     <div *ngIf="pendingPharmacyData?.length === 0" class="no-results">
-        <p>No pharmacies found matching your criteria.</p>
+        <p>No Pending pharmacies requests found...</p>
     </div>
 </div>
 
@@ -162,7 +161,7 @@
                 </div>
                 <div class="modal-actions">
                     <button class="btn btn-danger" (click)="rejectPharmacy(selectedPharmacy)">
-                        Suspend
+                        Reject
                     </button>
                     <button class="btn btn-success" (click)="activatePharmacy(selectedPharmacy)">
                         Activate

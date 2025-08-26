@@ -3,15 +3,129 @@
   color: var(--text-dark);
   font-weight: 700;
   padding-bottom: 5px;
+  font-size: 2rem;
 }
+
 .pharmacy-header h6 {
-    color: var(--text-muted);
-    font-weight: 400;
+  color: var(--text-muted);
+  font-weight: 400;
+  font-size: 1rem;
 }
+
 .pharmacy-header {
   display: flex;
   flex-direction: column;
   gap: 8px;
   padding: 20px;
   margin-left: 25px;
+}
+
+/* Responsive styles */
+@media screen and (max-width: 992px) {
+  .pharmacy-header h1 {
+    font-size: 1.8rem;
+  }
+
+  .pharmacy-header {
+    padding: 15px;
+    margin-left: 20px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .pharmacy-header h1 {
+    font-size: 1.6rem;
+  }
+
+  .pharmacy-header h6 {
+    font-size: 0.95rem;
+  }
+
+  .pharmacy-header {
+    padding: 12px;
+    margin-left: 15px;
+    gap: 6px;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .pharmacy-header h1 {
+    font-size: 1.4rem;
+  }
+
+  .pharmacy-header h6 {
+    font-size: 0.9rem;
+  }
+
+  .pharmacy-header {
+    padding: 10px;
+    margin-left: 10px;
+    gap: 4px;
+  }
+}
+
+/* Specific mobile device sizes */
+@media screen and (max-width: 430px) {
+  .pharmacy-header h1 {
+    font-size: 1.3rem;
+  }
+
+  .pharmacy-header {
+    padding: 8px;
+    margin-left: 8px;
+  }
+}
+
+@media screen and (max-width: 414px) {
+  .pharmacy-header h1 {
+    font-size: 1.25rem;
+  }
+
+  .pharmacy-header h6 {
+    font-size: 0.85rem;
+  }
+}
+
+@media screen and (max-width: 390px) {
+  .pharmacy-header {
+    padding: 7px;
+    margin-left: 7px;
+    gap: 3px;
+  }
+
+  .pharmacy-header h1 {
+    font-size: 1.2rem;
+    padding-bottom: 3px;
+  }
+
+  .pharmacy-header h6 {
+    font-size: 0.8rem;
+  }
+}
+
+@media screen and (max-width: 375px) {
+  .pharmacy-header {
+    padding: 6px;
+    margin-left: 6px;
+  }
+
+  .pharmacy-header h1 {
+    font-size: 1.15rem;
+  }
+}
+
+@media screen and (max-width: 360px) {
+  .pharmacy-header {
+    padding: 5px;
+    margin-left: 5px;
+  }
+
+  .pharmacy-header h1 {
+    font-size: 1.1rem;
+    padding-bottom: 2px;
+  }
+
+  .pharmacy-header h6 {
+    font-size: 0.75rem;
+  }
 }

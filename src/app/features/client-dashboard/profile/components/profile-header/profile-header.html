@@ -12,15 +12,24 @@
   <div class="profile-header-info">
     <!-- Header Content with Edit Button -->
     <div class="profile-header-content">
-      <h1>My Profile</h1>
+      <h1 class="profile-title">My Profile</h1>
+
+      @if (editMode()) {
+      <div class="edit-actions">
+        <button class="btn-cancel" (click)="cancelEdit()">
+          <span class="btn-icon">X</span>
+          <span class="btn-text">Cancel</span>
+        </button>
+      </div>
+      }
+
       <button class="profile-edit-btn" (click)="toggleEditMode()">
         @if (editMode()) {
         <span class="edit-icon"><i class="bi bi-floppy"></i></span>
-        <span>Save Changes</span>
-
+        <span class="edit-text">Save</span>
         } @else {
         <span class="edit-icon"><i class="bi bi-pencil"></i></span>
-        <span>Edit Profile</span>
+        <span class="edit-text">Edit</span>
         }
       </button>
     </div>
@@ -33,8 +42,12 @@
 
       <div class="profile-user-email">
         <i class="fa-solid fa-location-dot text-muted me-2"></i>
-        <span>{{ (profile() && profile()?.country) || "Country" }}, </span>
-        <span> {{ (profile() && profile()?.address) || "Address" }}</span>
+        <span class="location-text"
+          >{{ (profile() && profile()?.country) || "Country" }},
+        </span>
+        <span class="address-text">
+          {{ (profile() && profile()?.address) || "Address" }}</span
+        >
       </div>
     </div>
   </div>

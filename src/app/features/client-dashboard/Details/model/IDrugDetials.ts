@@ -19,5 +19,7 @@ export interface IDrugDetails
         adverse_reactions: string,
         drug_UrlImg: string,
         drugStatus : DrugStatus.Rejected | DrugStatus.Pending | DrugStatus.Approved,
-        createdByPharmacy:number
+        createdByPharmacy:number,
+        createdAt: Date,
+        isread: boolean
 }

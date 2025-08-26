@@ -1,9 +1,18 @@
 import { Injectable, signal, inject } from '@angular/core';
 import { catchError, tap } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
-import { HttpErrorResponse, HttpClient, HttpHeaders } from '@angular/common/http';
+import {
+  HttpErrorResponse,
+  HttpClient,
+  HttpHeaders,
+} from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
-import { IsignupPharmacy, ResponseData, SignUpData, User } from '../models/user.model';
+import {
+  IsignupPharmacy,
+  ResponseData,
+  SignUpData,
+  User,
+} from '../models/user.model';
 import { ConfigService } from './config.service';
 import { APP_CONSTANTS } from '../constants/app.constants';
 import { CartStore } from '../../features/client-dashboard/Cart/Services/cart-store';
@@ -41,34 +50,35 @@ export class AuthService {
       },
     };
     const url = this.config.getApiUrl(this.ENDPOINTS.ACCOUNT_REGISTER);
-    return this.http.post(url, payload).pipe(
-      catchError(this.handleError));
+    return this.http.post(url, payload).pipe(catchError(this.handleError));
   }
   signUpPharmacy(formData: FormData): Observable<any> {
-  // Remove Content-Type header - let browser set it automatically with boundary
-  const headers = new HttpHeaders();
-  //headers.delete('Content-Type');
-  const url = this.config.getApiUrl(this.ENDPOINTS.PHARMACY_REGISTER);
-  return this.http.post(url, formData, {
-    headers: headers,
-    reportProgress: true,
-    observe: 'response'
-  }).pipe(
-    catchError(error => {
-      console.error('API Error:', error);
-      return throwError(() => error);
-    })
-  );
-}
-signUpPharmacyJson(data: any) {
-  const headers = new HttpHeaders({
-    'Content-Type': 'application/json'
-  });
-  const url = this.config.getApiUrl(this.ENDPOINTS.ACCOUNT_REGISTER);
-  return this.http.post(url, data, {
-    headers: headers
-  });
-}
+    // Remove Content-Type header - let browser set it automatically with boundary
+    const headers = new HttpHeaders();
+    //headers.delete('Content-Type');
+    const url = this.config.getApiUrl(this.ENDPOINTS.PHARMACY_REGISTER);
+    return this.http
+      .post(url, formData, {
+        headers: headers,
+        reportProgress: true,
+        observe: 'response',
+      })
+      .pipe(
+        catchError((error) => {
+          console.error('API Error:', error);
+          return throwError(() => error);
+        })
+      );
+  }
+  signUpPharmacyJson(data: any) {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+    const url = this.config.getApiUrl(this.ENDPOINTS.ACCOUNT_REGISTER);
+    return this.http.post(url, data, {
+      headers: headers,
+    });
+  }
 
   login(email: string, password: string, rememberMe: boolean) {
     const url = this.config.getApiUrl(this.ENDPOINTS.ACCOUNT_LOGIN);
@@ -98,7 +108,7 @@ signUpPharmacyJson(data: any) {
           this.cartStore.syncCartAfterLogin();
           this.favService.syncFavoritesAfterLogin().subscribe({
             next: () => console.log('Favorites sync completed'),
-            error: (err) => console.error('Favorites sync failed:', err)
+            error: (err) => console.error('Favorites sync failed:', err),
           });
         })
       );
@@ -141,7 +151,6 @@ signUpPharmacyJson(data: any) {
         'Content-Type': 'application/json', // or 'application/json' if sending as object
       };
 
-
       return this.http
         .post<ResponseData>(url, JSON.stringify(userData._token), { headers })
         .pipe(
@@ -155,9 +164,7 @@ signUpPharmacyJson(data: any) {
               resData.value.role
             );
 
-
             this.user.set(user);
-
 
             localStorage.setItem('userData', JSON.stringify(user));
             const expirationDate = new Date(resData.value.expiration);
@@ -186,18 +193,19 @@ signUpPharmacyJson(data: any) {
   }
 
   private handleError(errorResponse: HttpErrorResponse) {
-
     // Log specific validation errors
     if (errorResponse.error && errorResponse.error.errors) {
       Object.keys(errorResponse.error.errors).forEach((field) => {
-        console.error(`Validation error on ${field}: ${errorResponse.error.errors[field]}`);
+        console.error(
+          `Validation error on ${field}: ${errorResponse.error.errors[field]}`
+        );
       });
     }
     // Return the full error response so we can see what's happening
     return throwError(() => errorResponse);
   }
-   confirmEmail(userId: string, token: string) {
-      const url = this.config.getApiUrl('Account/confirm-email');
-      return this.http.get<ResponseData>(url, { params: { userId, token } });
-    }
+  confirmEmail(userId: string, token: string) {
+    const url = this.config.getApiUrl('Account/confirm-email');
+    return this.http.get<ResponseData>(url, { params: { userId, token } });
+  }
 }

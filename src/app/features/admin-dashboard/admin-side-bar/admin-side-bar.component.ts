@@ -1,8 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { SidebarStateServiceService } from '../Shared/sidebar-state-service.service';
 import { AuthService } from '../../../shared/services/auth.service';
+import { AdminSignalRService } from '../Shared/admin-signal-r.service';
 
 
 @Component({
@@ -17,11 +18,13 @@ export class AdminSideBarComponent implements OnInit {
 
   activeItem: string = 'dashboard';
   systemStatus: string = 'Online';
+  AdminSignalRService: AdminSignalRService = inject(AdminSignalRService);
 
   constructor(private router: Router,public sidebarService: SidebarStateServiceService,private authservice: AuthService) {}
 
   ngOnInit() {
     this.checkScreen();
+    this.AdminSignalRService.startConnection();
     window.addEventListener('resize', this.checkScreen.bind(this));
     this.setActiveItemByRoute();
     this.router.events.subscribe(() => {
@@ -48,6 +51,7 @@ export class AdminSideBarComponent implements OnInit {
     { id: 'orders', label: 'Orders', icon: 'cart', route: '/admin/orders' },
     { id: 'medicines', label: 'Medicines', icon: 'capsule', route: '/admin/medicinesmanagement' },
     { id: 'pharmacies', label: 'Pharmacies', icon: 'shop', route: '/admin/PharmaciesManagement' },
+    { id: 'Users', label: 'Users', icon: 'people-fill', route: '/admin/users' }
   ];
 
  toggleSidebar() {
