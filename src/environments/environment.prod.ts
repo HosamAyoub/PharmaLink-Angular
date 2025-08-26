@@ -14,6 +14,10 @@ export const environment = {
   // External API URLs
   geminiApiUrl:
     'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:generateContent',
+  geminiApiUrlFlash:
+    'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent',
+  geminiApiUrlFlashLite:
+    'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent',
 
   features: {
     enableNotifications: true,
