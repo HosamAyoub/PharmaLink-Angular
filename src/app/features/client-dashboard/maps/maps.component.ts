@@ -12,7 +12,7 @@ import { Ipharmacy } from '../shared/models/ipharmacy';
 })
 export class Maps implements OnInit {
   nearestPharmacies = signal<Ipharmacy[]>([]);
-  constructor(private pharmacyService: PharmacyService) { }
+  constructor(private pharmacyService: PharmacyService) {}
 
   ngOnInit(): void {
     // this.getNearestPharmacies();
@@ -27,7 +27,9 @@ export class Maps implements OnInit {
 
       if (mapElement) {
         // ITI Fayoum Branch coordinates
-        const position = { lat: 29.323379349390862, lng: 30.838273256448545 };
+        const position = JSON.parse(
+          localStorage.getItem('userLocation') || '{}'
+        );
 
         const map = new google.maps.Map(mapElement, {
           center: position,
@@ -56,21 +58,21 @@ export class Maps implements OnInit {
         const marker = new google.maps.Marker({
           position: position,
           map: map,
-          title: 'معهد تكنولوجيا المعلومات ITI - Fayoum Branch',
+          title: 'Your Location',
           icon: {
             url: 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png', // Blue marker for ITI
-            scaledSize: new google.maps.Size(40, 40) // Larger size for main location
-          }
+            scaledSize: new google.maps.Size(40, 40), // Larger size for main location
+          },
         });
 
         // Add label for ITI marker
-        this.createITILabel(map, position, 'ITI Fayoum');
+        this.createITILabel(map, position, 'Your Location');
 
         const mainInfoWindow = new google.maps.InfoWindow({
           content: `
             <div style="font-family: Arial, sans-serif;">
-              <h4 style="margin: 0 0 5px 0; color: #333;"><b>معهد تكنولوجيا المعلومات ITI</b></h4>
-              <p style="margin: 0; color: #666; font-size: 12px;">Fayoum Branch</p>
+              <h4 style="margin: 0 0 5px 0; color: #333;"><b>Your Location</b></h4>
+              <p style="margin: 0; color: #666; font-size: 12px;">Your Location</p>
             </div>
           `,
         });
@@ -104,7 +106,10 @@ export class Maps implements OnInit {
   //   });
   // }
 
-  private addPharmacyMarkers(map: google.maps.Map, centerPosition: { lat: number; lng: number }): void {
+  private addPharmacyMarkers(
+    map: google.maps.Map,
+    centerPosition: { lat: number; lng: number }
+  ): void {
     const pharmacies = this.nearestPharmacies();
 
     if (pharmacies.length === 0) {
@@ -119,53 +124,64 @@ export class Maps implements OnInit {
       const pharmacyPosition = this.getPharmacyCoordinates(pharmacy);
 
       if (pharmacyPosition) {
-        // Calculate distance and only show pharmacies within 1km
-        const distance = this.haversineDistance(centerPosition, pharmacyPosition);
+        // Only show pharmacies within 1km
+        const marker = new google.maps.Marker({
+          position: pharmacyPosition,
+          map: map,
+          title: pharmacy.name,
+          label: markerIndex.toString(),
+          icon: {
+            url: 'https://maps.google.com/mapfiles/ms/icons/red-dot.png', // Pharmacy marker icon
+            scaledSize: new google.maps.Size(32, 32),
+          },
+        });
 
-        if (distance <= 1.0) { // Only show pharmacies within 1km
-          const marker = new google.maps.Marker({
-            position: pharmacyPosition,
-            map: map,
-            title: pharmacy.name,
-            label: markerIndex.toString(),
-            icon: {
-              url: 'https://maps.google.com/mapfiles/ms/icons/red-dot.png', // Pharmacy marker icon
-              scaledSize: new google.maps.Size(32, 32)
-            }
-          });
+        // Add pharmacy name label above the marker
+        this.createPharmacyLabel(map, pharmacyPosition, pharmacy.name);
 
-          // Add pharmacy name label above the marker
-          this.createPharmacyLabel(map, pharmacyPosition, pharmacy.name);
+        const statusText = pharmacy.isOpen ? 'Open Now' : 'Closed';
+        const statusColor = pharmacy.isOpen ? '#28a745' : '#dc3545';
 
-          const statusText = pharmacy.isOpen ? 'Open Now' : 'Closed';
-          const statusColor = pharmacy.isOpen ? '#28a745' : '#dc3545';
-
-          const infoWindow = new google.maps.InfoWindow({
-            content: `
+        const infoWindow = new google.maps.InfoWindow({
+          content: `
               <div style="max-width: 250px; font-family: Arial, sans-serif;">
-                <h4 style="margin: 0 0 10px 0; color: #333;"><b>${pharmacy.name}</b></h4>
-                <p style="margin: 5px 0;"><strong>Address:</strong> ${pharmacy.address}</p>
-                ${pharmacy.phoneNumber ? `<p style="margin: 5px 0;"><strong>Phone:</strong> ${pharmacy.phoneNumber}</p>` : ''}
-                ${pharmacy.rate ? `<p style="margin: 5px 0;"><strong>Rating:</strong> ${pharmacy.rate}/5 ⭐</p>` : ''}
+                <h4 style="margin: 0 0 10px 0; color: #333;"><b>${
+                  pharmacy.name
+                }</b></h4>
+                <p style="margin: 5px 0;"><strong>Address:</strong> ${
+                  pharmacy.address
+                }</p>
+                ${
+                  pharmacy.phoneNumber
+                    ? `<p style="margin: 5px 0;"><strong>Phone:</strong> ${pharmacy.phoneNumber}</p>`
+                    : ''
+                }
+                ${
+                  pharmacy.rate
+                    ? `<p style="margin: 5px 0;"><strong>Rating:</strong> ${pharmacy.rate}/5 ⭐</p>`
+                    : ''
+                }
                 <p style="margin: 5px 0;"><strong>Status:</strong> <span style="color: ${statusColor}; font-weight: bold;">${statusText}</span></p>
-                <p style="margin: 5px 0;"><strong>Distance:</strong> ${distance.toFixed(2)} km from ITI</p>
               </div>
             `,
-          });
+        });
 
-          marker.addListener('click', () => {
-            infoWindow.open(map, marker);
-          });
+        marker.addListener('click', () => {
+          infoWindow.open(map, marker);
+        });
 
-          markerIndex++;
-        }
+        markerIndex++;
       }
     });
 
     console.log(`Displayed ${markerIndex - 1} pharmacies within 1km radius`);
   }
 
-  private createPharmacyLabel(map: google.maps.Map, position: { lat: number; lng: number }, name: string): void {
+  private createPharmacyLabel(
+    map: google.maps.Map,
+    position: { lat: number; lng: number },
+    name: string
+  ): void {
     // Create a custom overlay for the pharmacy name label
     const labelDiv = document.createElement('div');
     labelDiv.style.cssText = `
@@ -244,11 +260,18 @@ export class Maps implements OnInit {
     }
 
     // Create and add the label overlay
-    const label = new CustomLabel(new google.maps.LatLng(position.lat, position.lng), labelDiv);
+    const label = new CustomLabel(
+      new google.maps.LatLng(position.lat, position.lng),
+      labelDiv
+    );
     label.setMap(map);
   }
 
-  private createITILabel(map: google.maps.Map, position: { lat: number; lng: number }, name: string): void {
+  private createITILabel(
+    map: google.maps.Map,
+    position: { lat: number; lng: number },
+    name: string
+  ): void {
     // Create a custom overlay for the ITI name label with distinctive styling
     const labelDiv = document.createElement('div');
     labelDiv.style.cssText = `
@@ -307,40 +330,26 @@ export class Maps implements OnInit {
     }
 
     // Create and add the ITI label overlay
-    const label = new CustomLabel(new google.maps.LatLng(position.lat, position.lng), labelDiv);
+    const label = new CustomLabel(
+      new google.maps.LatLng(position.lat, position.lng),
+      labelDiv
+    );
     label.setMap(map);
   }
 
-  private getPharmacyCoordinates(pharmacy: Ipharmacy): { lat: number; lng: number } | null {
+  private getPharmacyCoordinates(
+    pharmacy: Ipharmacy
+  ): { lat: number; lng: number } | null {
     // Check if pharmacy has valid latitude and longitude
     if (pharmacy.latitude && pharmacy.longitude) {
       return {
         lat: pharmacy.latitude,
-        lng: pharmacy.longitude
+        lng: pharmacy.longitude,
       };
     }
 
     // If no coordinates are available, skip this pharmacy
     console.warn(`Pharmacy ${pharmacy.name} has no coordinate data`);
     return null;
-  }
-
-  // Haversine formula for straight-line distance in km
-  private haversineDistance(
-    coord1: { lat: number; lng: number },
-    coord2: { lat: number; lng: number }
-  ): number {
-    const toRad = (x: number) => (x * Math.PI) / 180;
-    const R = 6371; // Earth's radius in km
-    const dLat = toRad(coord2.lat - coord1.lat);
-    const dLng = toRad(coord2.lng - coord1.lng);
-    const a =
-      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.cos(toRad(coord1.lat)) *
-        Math.cos(toRad(coord2.lat)) *
-        Math.sin(dLng / 2) *
-        Math.sin(dLng / 2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    return R * c;
   }
 }

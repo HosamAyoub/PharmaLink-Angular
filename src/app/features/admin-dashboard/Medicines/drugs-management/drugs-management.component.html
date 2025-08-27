@@ -113,10 +113,11 @@
       <div class="search-box">
         <div class="input-group">
           <span class="input-group-text">
-            <i class="bi bi-search "></i>
+            <i class="bi bi-search"></i>
           </span>
           <input type="search" class="form-control" placeholder="Search medicines..." #SearchInput
-            (input)="onSearchChange(SearchInput.value)" aria-label="Search Medicines" />
+            (input)="onSearchChange($event)" (keyup)="onSearchChange($event)" (focus)="onSearchChange($event)"
+            (blur)="onSearchChange($event)" aria-label="Search Medicines" autocomplete="off" spellcheck="false" />
         </div>
       </div>
 
@@ -126,11 +127,10 @@
           <span class="input-group-text">
             <i class="fas fa-filter"></i>
           </span>
-          <select class="form-select" #filterSelect (change)="onSearchChange(SearchInput.value)"
-            aria-label="Filter by Category">
-            <option value="All" selected>All Categories</option>
+          <select class="form-select" #filterSelect (change)="onFilterChange($event)" aria-label="Filter by Category">
+            <option  value="All" selected>All Categories</option>
             @for (category of Categories; track $index) {
-            <option value="{{ category.name }}">{{ category.name }}</option>
+            <option  value="{{ category.name }}">{{ category.name }}</option>
             }
           </select>
         </div>

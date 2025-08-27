@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ElementRef, inject, ViewChild, viewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, inject, ViewChild, viewChild, OnDestroy } from '@angular/core';
 import { DrugDetailsService } from '../../../client-dashboard/Details/service/drug-details-service';
 import { MedicineService } from '../../../pharmacy-dashboard/inventory/Services/medicine-service';
 import { CategoriesData } from '../../../../shared/data/categories-data';
@@ -25,7 +25,7 @@ interface ResponseStatus {
   templateUrl: './drugs-management.component.html',
   styleUrls: ['./drugs-management.component.css']
 })
-export class DrugsManagementComponent {
+export class DrugsManagementComponent implements OnDestroy {
 
   NewDrug: IDrugDetails = {} as IDrugDetails;
   selectedMedicine: IDrugDetails = {} as IDrugDetails;
@@ -43,15 +43,31 @@ export class DrugsManagementComponent {
   Active_Pharmacies: number = 0;
   AdminSignalRService: AdminSignalRService = inject(AdminSignalRService);
 
+  // Search and filter properties
+  private searchTimeout: any;
+  private currentSearchTerm: string = '';
+  private currentFilterValue: string = 'All';
+
   constructor(private cd: ChangeDetectorRef) { }
 
   ngOnInit() {
     // load inventory stats
     this.getStatus();
     this.getActivePharmacies();
+    // Initialize search and filter values
+    this.currentSearchTerm = '';
+    this.currentFilterValue = 'All';
+
     this.AdminSignalRService.receiveRequestsFromPharmacy().subscribe(() => {
       this.getStatus();
     });
+  }
+
+  ngOnDestroy() {
+    // Clean up timeout to prevent memory leaks
+    if (this.searchTimeout) {
+      clearTimeout(this.searchTimeout);
+    }
   }
 
   getStatus() {
@@ -73,27 +89,52 @@ export class DrugsManagementComponent {
     });
   }
 
-  onSearchChange(searchTerm: any) {
-    this.loadMedicines(searchTerm);
+  onSearchChange(event: any) {
+    // Clear previous timeout to prevent lag
+    if (this.searchTimeout) {
+      clearTimeout(this.searchTimeout);
+    }
+
+    const searchTerm = event.target?.value || '';
+    this.currentSearchTerm = searchTerm;
+
+    // Add debounce to prevent rapid API calls
+    this.searchTimeout = setTimeout(() => {
+      this.performSearch();
+    }, 300); // 300ms delay
+  }
+
+  onFilterChange(event?: any) {
+    if (event) {
+      this.currentFilterValue = event.target?.value || 'All';
+    }
+    this.performSearch();
+  }
+
+  private performSearch() {
+    if (this.currentSearchTerm && this.currentSearchTerm.length > 0) {
+      this.medicineService.SearchForDrugs(this.currentSearchTerm).subscribe((med) => {
+        this.medicines = med || [];
+        this.applyFilter();
+        this.cd.detectChanges();
+      });
+    } else {
+      this.medicines = [];
+      this.cd.detectChanges();
+    }
+  }
+
+  private applyFilter() {
+    if (this.currentFilterValue && this.currentFilterValue !== 'All') {
+      this.medicines = this.medicines.filter(medicine =>
+        medicine.category === this.currentFilterValue
+      );
+    }
   }
 
   loadMedicines(searchTerm: string) {
-    if (searchTerm) {
-      this.medicineService.SearchForDrugs(searchTerm).subscribe((med) => {
-        this.medicines = med;
-        this.onFilterChange();
-        this.cd.detectChanges();
-      });
-    }
-    else {
-      this.medicines = [];
-    }
-  }
-
-  onFilterChange() {
-    if (this.filterselect.nativeElement.value !== 'All') {
-      this.medicines = this.medicines.filter(medicine => medicine.category === this.filterselect.nativeElement.value);
-    }
+    this.currentSearchTerm = searchTerm;
+    this.performSearch();
   }
 
 

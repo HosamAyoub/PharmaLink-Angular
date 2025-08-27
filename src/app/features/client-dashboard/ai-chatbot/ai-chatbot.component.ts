@@ -97,6 +97,12 @@ export class AIChatbotComponent implements OnInit, AfterViewChecked {
   // AI Configuration
   private genAI: GoogleGenerativeAI;
   private model: any;
+  private currentModelType: 'pro' | 'flash' | 'flash-lite' = 'pro';
+  private fallbackModels: ('pro' | 'flash' | 'flash-lite')[] = [
+    'pro',
+    'flash',
+    'flash-lite',
+  ];
   private shouldScrollToBottom = false; // Auto-scroll trigger flag
 
   /**
@@ -145,23 +151,58 @@ export class AIChatbotComponent implements OnInit, AfterViewChecked {
   }
 
   /**
-   * Initializes the Google Gemini AI model
-   * Configures generation parameters for pharmaceutical assistance
+   * Initializes the Google Gemini AI model with fallback mechanism
+   * Tries gemini-2.5-pro first, then gemini-2.5-flash, then gemini-2.5-flash-lite
    */
   private async initializeAI() {
+    const models = [
+      { name: 'gemini-2.5-pro', type: 'pro' as const },
+      { name: 'gemini-2.5-flash', type: 'flash' as const },
+      { name: 'gemini-2.5-flash-lite', type: 'flash-lite' as const },
+    ];
+
+    for (const modelInfo of models) {
+      try {
+        console.log(`Attempting to initialize ${modelInfo.name}...`);
+
+        this.model = this.genAI.getGenerativeModel({
+          model: modelInfo.name,
+          generationConfig: {
+            temperature: 0.75, // Balanced creativity/accuracy
+            topP: 0.8, // Nucleus sampling
+            topK: 40, // Top-k sampling
+            maxOutputTokens: 2048, // Response length limit
+          },
+        });
+
+        // Test the model with a simple request
+        await this.testModel();
+
+        this.currentModelType = modelInfo.type;
+        this.isOnline.set(true);
+        console.log(`Successfully initialized ${modelInfo.name}`);
+        return; // Success, exit the loop
+      } catch (error) {
+        console.warn(`Failed to initialize ${modelInfo.name}:`, error);
+
+        // If this is the last model, set offline
+        if (modelInfo === models[models.length - 1]) {
+          this.isOnline.set(false);
+          console.error('All Gemini models failed to initialize');
+        }
+      }
+    }
+  }
+
+  /**
+   * Tests the current model with a simple request to verify it's working
+   */
+  private async testModel(): Promise<void> {
     try {
-      this.model = this.genAI.getGenerativeModel({
-        model: 'gemini-2.5-pro',
-        // generationConfig: {
-        //   temperature: 0.75, // Balanced creativity/accuracy
-        //   topP: 0.8, // Nucleus sampling
-        //   topK: 40, // Top-k sampling
-        //   maxOutputTokens: 2048, // Response length limit
-        // },
-      });
-      this.isOnline.set(true);
+      const result = await this.model.generateContent('Hello');
+      // If we get here without error, the model is working
     } catch (error) {
-      this.isOnline.set(false);
+      throw new Error(`Model test failed: ${error}`);
     }
   }
 
@@ -465,7 +506,47 @@ export class AIChatbotComponent implements OnInit, AfterViewChecked {
   }
 
   /**
-   * Sends the actual HTTP request to Google Gemini API
+   * Gets the current API URL based on the current model type
+   */
+  private getCurrentApiUrl(): string {
+    switch (this.currentModelType) {
+      case 'pro':
+        return APP_CONSTANTS.environment.geminiApiUrl;
+      case 'flash':
+        return APP_CONSTANTS.environment.geminiApiUrlFlash;
+      case 'flash-lite':
+        return APP_CONSTANTS.environment.geminiApiUrlFlashLite;
+      default:
+        return APP_CONSTANTS.environment.geminiApiUrl;
+    }
+  }
+
+  /**
+   * Gets the current model index in the fallback models array
+   */
+  private getCurrentModelIndex(): number {
+    return this.fallbackModels.indexOf(this.currentModelType);
+  }
+
+  /**
+   * Tries to switch to the next fallback model
+   */
+  private tryFallbackModel(): boolean {
+    const currentIndex = this.getCurrentModelIndex();
+    const nextIndex = currentIndex + 1;
+
+    if (nextIndex < this.fallbackModels.length) {
+      this.currentModelType = this.fallbackModels[nextIndex];
+      console.log(`Switching to fallback model: ${this.currentModelType}`);
+      return true;
+    }
+
+    console.log('No more fallback models available');
+    return false;
+  }
+
+  /**
+   * Sends the actual HTTP request to Google Gemini API with fallback mechanism
    *
    * @param userMessage - User's text message
    * @param imageData - Optional image data
@@ -475,30 +556,70 @@ export class AIChatbotComponent implements OnInit, AfterViewChecked {
     userMessage: string,
     imageData?: { data: string; mimeType: string; name: string } | null
   ): Promise<Response> {
-    const apiUrl = APP_CONSTANTS.environment.geminiApiUrl;
-
     const requestBody = {
       contents: this.buildPrompt(userMessage, imageData),
       generationConfig: this.getGenerationConfig(),
     };
 
-    const response = await fetch(
-      `${apiUrl}?key=${APP_CONSTANTS.environment.geminiApiKey}`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(requestBody),
-      }
-    );
+    let lastError: Error | null = null;
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(
-        `HTTP error! status: ${response.status}, details: ${errorText}`
-      );
+    // Try current model and fallbacks
+    while (true) {
+      try {
+        const apiUrl = this.getCurrentApiUrl();
+        console.log(`Attempting request with model: ${this.currentModelType}`);
+
+        const response = await fetch(
+          `${apiUrl}?key=${APP_CONSTANTS.environment.geminiApiKey}`,
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(requestBody),
+          }
+        );
+
+        if (response.ok) {
+          return response;
+        }
+
+        // If we get 500 or 404 errors, try fallback
+        if (response.status === 500 || response.status === 404) {
+          const errorText = await response.text();
+          lastError = new Error(
+            `HTTP error! status: ${response.status}, details: ${errorText}`
+          );
+
+          console.log(
+            `Model ${this.currentModelType} failed with status ${response.status}, trying fallback...`
+          );
+
+          if (!this.tryFallbackModel()) {
+            break; // No more fallbacks available
+          }
+
+          continue; // Try next model
+        }
+
+        // For other errors, don't try fallback
+        const errorText = await response.text();
+        throw new Error(
+          `HTTP error! status: ${response.status}, details: ${errorText}`
+        );
+      } catch (error) {
+        console.log(
+          `Request failed for model ${this.currentModelType}:`,
+          error
+        );
+        lastError = error as Error;
+
+        if (!this.tryFallbackModel()) {
+          break; // No more fallbacks available
+        }
+      }
     }
 
-    return response;
+    // If we get here, all models failed
+    throw lastError || new Error('All Gemini models failed to respond');
   }
 
   /**
