@@ -120,7 +120,7 @@ export class DashboardPage implements OnInit {
         description: 'Registered users',
         icon: 'users',
         color: 'var(--violet)',
-        trend: this.trends.pharmacyTrend
+        trend: this.trends.ordersTrend
       },
       {
         title: 'Total Orders',
