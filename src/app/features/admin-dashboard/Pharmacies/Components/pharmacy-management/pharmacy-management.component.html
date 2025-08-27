@@ -88,11 +88,11 @@
                         </div>
                         <div class="metric-item">
                             <span class="metric-label">Revenue:</span>
-                            <span class="metric-value">${{ pharmacy.totalRevenue }}</span>
+                            <span class="metric-value">EGP {{ pharmacy.totalRevenue }}</span>
                         </div>
                         <div class="metric-item revenue">
                             <span class="metric-label">Site Profit:</span>
-                            <span class="revenue-amount">${{ (pharmacy.totalRevenue * 0.08).toLocaleString() }}</span>
+                            <span class="revenue-amount">EGP {{ (pharmacy.totalRevenue * 0.08).toLocaleString() }}</span>
                         </div>
                     </div>
                 </div>
