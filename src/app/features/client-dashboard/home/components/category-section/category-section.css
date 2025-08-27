@@ -156,6 +156,9 @@
     max-width: 400px;
     margin: 0 auto;
     padding: 30px 0; /* Add vertical padding for shadows */
+    /* Isolate carousel from external layout changes */
+    contain: layout;
+    will-change: auto;
   }
 
   #categoriesCarousel .carousel-item {
@@ -165,6 +168,9 @@
 
   #categoriesCarousel .carousel-inner {
     overflow: visible; /* Allow shadows to be visible */
+    /* Prevent interference from navbar transitions */
+    transform: translateZ(0);
+    backface-visibility: hidden;
   }
 
   #categoriesCarousel .carousel-item .d-flex {
@@ -180,6 +186,18 @@
     width: 100%;
     max-width: none !important;
     padding: 25px 40px !important;
+  }
+
+  /* Stabilize carousel during navbar state changes */
+  .navbar-collapse.collapsing ~ * #categoriesCarousel,
+  .navbar-collapse.show ~ * #categoriesCarousel {
+    animation-play-state: paused;
+  }
+
+  /* Ensure carousel maintains its position */
+  #categoriesCarousel .carousel-item {
+    backface-visibility: hidden;
+    perspective: 1000px;
   }
 
   /* Carousel controls styling */

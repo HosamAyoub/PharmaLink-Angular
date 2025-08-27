@@ -179,6 +179,7 @@ export class PharmaciesPageComponent implements OnInit {
         this.loading.set(false);
       },
       error: (error) => {
+        this.suspendedPharmacyData.set([]);
         this.errorMessage.set('Error loading suspended pharmacy data');
         this.loading.set(false);
       }
@@ -212,6 +213,7 @@ export class PharmaciesPageComponent implements OnInit {
         this.loading.set(false);
       },
       error: (error) => {
+        this.rejectedPharmacyData.set([]);
         this.errorMessage.set(error.message);
         this.loading.set(false);
       }

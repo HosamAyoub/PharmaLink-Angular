@@ -9,7 +9,39 @@
       <h2 class="fw-bold mb-1">Medicine Management</h2>
       <p class="text-muted mb-0">Manage your pharmacy inventory</p>
     </div>
-    <button class="add-button" routerLink="/pharmacy/addmedicines">+ Add Medicine</button>
+    <div class="header-actions">
+      <button class="upload-button me-2" (click)="triggerFileInput()" [disabled]="isUploading">
+        <i class="fas fa-upload me-2"></i>Update Store
+      </button>
+      <button class="template-button me-2" (click)="downloadTemplate()">
+        <i class="fas fa-download me-2"></i>Download Store
+      </button>
+      <button class="add-button" routerLink="/pharmacy/addmedicines">+ Add Medicine</button>
+    </div>
+    <!-- Hidden file input -->
+    <input type="file" #fileInput (change)="onFileSelected($event)" accept=".xlsx,.xls" style="display: none;">
+  </div>
+
+  <!-- Upload Progress and Messages -->
+  <div *ngIf="isUploading" class="upload-progress-card mb-3">
+    <div class="d-flex align-items-center mb-2">
+      <i class="fas fa-spinner fa-spin me-2"></i>
+      <span>Processing Excel file...</span>
+    </div>
+    <div class="progress">
+      <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+        [style.width.%]="uploadProgress">
+        {{uploadProgress}}%
+      </div>
+    </div>
+  </div>
+
+  <!-- Upload Message -->
+  <div *ngIf="showUploadMessage" class="alert" [class.alert-success]="uploadMessage.includes('successfully')"
+    [class.alert-danger]="!uploadMessage.includes('successfully')" class="mb-3">
+    <i class="fas" [class.fa-check-circle]="uploadMessage.includes('successfully')"
+      [class.fa-exclamation-triangle]="!uploadMessage.includes('successfully')" class="me-2"></i>
+    {{uploadMessage}}
   </div>
 
   <!-- Statistics -->
@@ -97,16 +129,16 @@
           <tbody>
             <tr *ngFor="let med of medicines" class="border-bottom">
               <!-- Drug Details -->
-              <td class="px-4 py-3">
-                <div class="fw-semibold text-dark">{{ med.pharmaproduct.drugName }}</div>
+              <td class="px-4 py-3" data-label="Drug">
+                <div class="fw-semibold text-dark drug-name">{{ med.pharmaproduct.drugName }}</div>
                 <div class="text-muted small">{{ med.pharmaproduct.drugActiveIngredient }}</div>
               </td>
               <!-- Category -->
-              <td class="py-3">
+              <td class="py-3" data-label="Category">
                 <span class="badge bg-primary-blue-light text-blue-navbar">{{ med.pharmaproduct.drugCategory }}</span>
               </td>
               <!-- Price -->
-              <td class="py-3">
+              <td class="py-3" data-label="Price">
                 <div *ngIf="med.isediting" class="input-group">
                   <input type="number" class="form-control" min="0" id="price-{{ med.pharmaproduct.drugId }}"
                     style="width: 2rem; height: 2rem; padding: 0.5rem;" value="{{ med.pharmaproduct.price }}" />
@@ -116,7 +148,7 @@
                 </div>
               </td>
               <!-- Quantity -->
-              <td class="py-3">
+              <td class="py-3" data-label="Quantity">
                 <div *ngIf="med.isediting" class="input-group">
                   <input type="number" class="form-control" min="0" id="quantity-{{ med.pharmaproduct.drugId }}"
                     style="width: 2rem ; height: 2rem; padding: 0.5rem;"
@@ -127,21 +159,21 @@
                 </div>
               </td>
               <!-- Status -->
-              <td class="py-3">
+              <td class="py-3" data-label="Status">
                 <span *ngIf="med.pharmaproduct.quantityAvailable === 0 " class="out-of-stock">Out of Stock</span>
                 <span *ngIf="med.pharmaproduct.quantityAvailable < 12 && med.pharmaproduct.quantityAvailable > 0 "
                   class="low-stock">Low Stock</span>
                 <span *ngIf="med.pharmaproduct.quantityAvailable >= 12 " class="in-stock">In Stock</span>
               </td>
               <!-- Toggle -->
-              <td class="py-3">
+              <td class="py-3" data-label="Available">
                 <div class="form-check form-switch">
                   <input class="form-check-input" type="checkbox" [checked]="med.pharmaproduct.status===1"
                     (change)="toggleMedicineStatus(med)" id="toggle-{{ med.pharmaproduct.drugId }}" />
                 </div>
               </td>
               <!-- Actions -->
-              <td class="py-3">
+              <td class="py-3" data-label="Actions">
                 <div class="d-flex gap-2">
                   <button class="btn btn-sm btn-light border-0" title="Edit" (click)="editMedicine(med)"
                     *ngIf="!med.isediting">

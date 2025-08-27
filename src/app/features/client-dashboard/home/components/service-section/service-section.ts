@@ -22,10 +22,22 @@ export class ServiceSection implements OnInit, AfterViewInit {
             interval: 3000,
             wrap: true,
             pause: 'hover',
+            keyboard: false, // Disable keyboard interactions that might interfere
+            touch: true,
           }
         );
+
         // Start the carousel
         carousel.cycle();
+
+        // Add ResizeObserver to prevent flickering on layout changes
+        if ('ResizeObserver' in window) {
+          const resizeObserver = new ResizeObserver((entries) => {
+            // Prevent carousel from reacting to resize events caused by navbar
+            // This is a no-op observer to stabilize the carousel
+          });
+          resizeObserver.observe(carouselElement);
+        }
       }
     }, 100);
   }

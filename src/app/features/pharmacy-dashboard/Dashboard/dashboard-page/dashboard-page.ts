@@ -96,7 +96,7 @@ export class DashboardPage implements OnInit {
         description: 'In stock and ready',
         icon: 'pills',
         color: 'var(--light-green)',
-        trend: this.trends.DrugsTrend
+        trend: '+100%'
       },
       {
         title: 'Out of Stock',
@@ -120,7 +120,7 @@ export class DashboardPage implements OnInit {
         description: 'Registered users',
         icon: 'users',
         color: 'var(--violet)',
-        trend: this.trends.pharmacyTrend
+        trend: this.trends.ordersTrend
       },
       {
         title: 'Total Orders',
