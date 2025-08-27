@@ -143,20 +143,20 @@
             <tbody>
               @for(order of filteredOrders(); track order.orderID) {
               <tr>
-                <td class="px-4 py-3">
-                  <div class="fw-semibold text-dark">ORD-{{ order.orderID }}</div>
+                <td class="px-4 py-3" data-label="Order Details">
+                  <div class="fw-semibold text-dark order-id">ORD-{{ order.orderID }}</div>
                   <div class="text-muted small">{{ order.orderDate | date: 'yyyy-MM-dd' }}</div>
                   <div class="text-muted small">{{ order.orderDetails.length }} medicines</div>
                 </td>
 
                 <!-- Patient Info -->
-                <td class="py-3">
+                <td class="py-3" data-label="Patient">
                   <div class="fw-medium">{{ order.name }}</div>
                   <small class="text-muted">{{ order.phoneNumber }}</small>
                 </td>
 
                 <!-- Status & Progress -->
-                <td class="py-3">
+                <td class="py-3" data-label="Progress">
                   <div class="d-flex align-items-center gap-2 mb-2">
                     <i class="me-1" [ngClass]="getStatusIcon(order.status)"></i>
                     <span class="badge rounded-pill fw-normal px-2 py-1 small"
@@ -175,13 +175,13 @@
                 </td>
 
                 <!-- Total -->
-                <td class="py-3">
+                <td class="py-3" data-label="Total">
                   <div class="fw-semibold">{{ order.totalPrice | currency:'EGP':'symbol' }}</div>
                   <small class="text-muted">{{ order.paymentStatus }}</small>
                 </td>
 
                 <!-- Actions -->
-                <td class="py-3">
+                <td class="py-3" data-label="Actions">
                   <div class="d-flex gap-2">
                     <!-- View -->
                     <button class="btn btn-sm btn-light border-0" (click)="viewOrder(order.orderID)" title="View Order">
