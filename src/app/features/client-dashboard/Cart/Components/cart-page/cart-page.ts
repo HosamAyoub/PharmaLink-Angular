@@ -3,7 +3,7 @@ import { CartStore } from '../../Services/cart-store';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { CartItem } from '../../Interfaces/cart-item';
-import { CartCard } from "../cart-card/cart-card";
+import { CartCard } from '../cart-card/cart-card';
 import { CommonModule } from '@angular/common';
 import { signal, computed } from '@angular/core';
 import { LoadingSpinner } from '../../../../../shared/components/loading-spinner/loading-spinner';
@@ -13,7 +13,7 @@ declare var bootstrap: any;
   selector: 'app-cart-page',
   imports: [CartCard, CommonModule, LoadingSpinner],
   templateUrl: './cart-page.html',
-  styleUrl: './cart-page.css'
+  styleUrl: './cart-page.css',
 })
 export class CartPage {
   displayedError = '';
@@ -24,8 +24,8 @@ export class CartPage {
   http = inject(HttpClient);
   router = inject(Router);
   authService = inject(AuthService);
-  isLoading = this.cartStore.isLoading;
-  
+  isLoading = computed(() => this.cartStore.isLoading());
+
   // Check if user is authenticated using reactive signal
   isAuthenticated = computed(() => !!this.authService.user());
   ngOnInit(): void {
@@ -64,7 +64,6 @@ export class CartPage {
     this.cartStore.clearCart();
   }
 
-
   checkout() {
     if (this.cartItems().length === 0) {
       const modalElement = document.getElementById('emptyCartModal');
@@ -78,14 +77,17 @@ export class CartPage {
     // Check if user is authenticated
     if (!this.isAuthenticated()) {
       // Redirect to login page with return URL
-      this.router.navigate(['/login'], { 
-        queryParams: { returnUrl: '/client/cart' } 
+      this.router.navigate(['/login'], {
+        queryParams: { returnUrl: '/client/cart' },
       });
       return;
     }
 
-    const paymentMethod = (document.querySelector('input[name="paymentMethod"]:checked') as HTMLInputElement)?.value;
+    const paymentMethod = (
+      document.querySelector(
+        'input[name="paymentMethod"]:checked'
+      ) as HTMLInputElement
+    )?.value;
     this.cartStore.checkout(paymentMethod);
   }
-
 }

@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { CartStore } from '../../Services/cart-store';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
@@ -25,18 +26,22 @@ export class SuccessPage implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private http: HttpClient,
     private router: Router,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private cartStore: CartStore
   ) {}
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((params) => {
       this.sessionId = params['session_id'];
       const paymentMethod = params['paymentMethod'];
-
+      this.cartStore.clearCartUI();
       if (paymentMethod === 'cash') {
         this.status = 'success';
         return;
       }
+
+      // Clear cart UI for credit/stripe payments
+
       if (this.sessionId) {
         this.status = 'pending';
         this.startPolling();

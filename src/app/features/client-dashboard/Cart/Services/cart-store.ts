@@ -15,7 +15,7 @@ import { AuthUtils } from '../../../../core/utils';
 declare var bootstrap: any;
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CartStore {
   private ENDPOINTS = APP_CONSTANTS.API.ENDPOINTS;
@@ -26,8 +26,12 @@ export class CartStore {
   toastService = inject(ToastService);
   modalMessage: string = '';
 
-
-  constructor(private cartService: CartService, private http: HttpClient, private router: Router, private config: ConfigService) {
+  constructor(
+    private cartService: CartService,
+    private http: HttpClient,
+    private router: Router,
+    private config: ConfigService
+  ) {
     // Initialize cart on service creation
     this.loadCart();
   }
@@ -38,7 +42,7 @@ export class CartStore {
     return this.cartService.getCartItems().subscribe({
       next: (data: CartItem[]) => {
         this.cartItems.set(data);
-        // get summery 
+        // get summery
         this.getOrderSummary();
 
         // Calculate totals manually for both authenticated and non-authenticated users
@@ -54,10 +58,10 @@ export class CartStore {
           this.orderSummary.set({
             ...currentSummary,
             subtotal: 0,
-            total: currentSummary.deliveryFee
+            total: currentSummary.deliveryFee,
           });
         }
-      }
+      },
     });
   }
 
@@ -69,16 +73,17 @@ export class CartStore {
       error: (err: any) => {
         console.error('Failed to load order summary:', err);
         this.orderSummary.set(null); // Clear summary on error
-      }
+      },
     });
   }
-
-
 
   // Calculate totals for cart items
   private calculateTotals() {
     const items = this.cartItems();
-    const subtotal = items.reduce((sum, item) => sum + (item.unitPrice * item.quantity), 0);
+    const subtotal = items.reduce(
+      (sum, item) => sum + item.unitPrice * item.quantity,
+      0
+    );
     const deliveryFee = 15; // Default delivery fee
     const total = subtotal + deliveryFee;
 
@@ -91,7 +96,7 @@ export class CartStore {
       country: '',
       subtotal: subtotal,
       deliveryFee: deliveryFee,
-      total: total
+      total: total,
     };
 
     this.orderSummary.set(orderSummary);
@@ -102,27 +107,28 @@ export class CartStore {
    * Call this method when user successfully logs in
    */
   syncCartAfterLogin(): void {
-
     this.cartService.syncCartAfterLogin().subscribe({
       next: () => {
         // Reload cart from database after sync
         this.loadCart();
       },
       error: (error) => {
-        this.toastService.showError('Failed to sync cart items. Please try again.');
+        this.toastService.showError(
+          'Failed to sync cart items. Please try again.'
+        );
         console.error('Cart sync failed:', error);
-      }
+      },
     });
   }
-
-
 
   /**
    * Check if user has items in local storage
    * Useful for showing merge prompts to users
    */
   hasLocalCartItems(): boolean {
-    const localCart = JSON.parse(localStorage.getItem(APP_CONSTANTS.Cart) || '[]');
+    const localCart = JSON.parse(
+      localStorage.getItem(APP_CONSTANTS.Cart) || '[]'
+    );
     return localCart.length > 0;
   }
 
@@ -130,7 +136,9 @@ export class CartStore {
    * Get count of local cart items
    */
   getLocalCartItemsCount(): number {
-    const localCart = JSON.parse(localStorage.getItem(APP_CONSTANTS.Cart) || '[]');
+    const localCart = JSON.parse(
+      localStorage.getItem(APP_CONSTANTS.Cart) || '[]'
+    );
     return localCart.length;
   }
 
@@ -139,7 +147,7 @@ export class CartStore {
    * This is the preferred method for adding items to cart as it updates the UI automatically
    */
   addToCart(cartItem: CartItem): Observable<void> {
-    return new Observable<void>(observer => {
+    return new Observable<void>((observer) => {
       this.cartService.addToCart(cartItem).subscribe({
         next: () => {
           // Reload cart data to refresh the UI
@@ -149,7 +157,7 @@ export class CartStore {
         },
         error: (error) => {
           observer.error(error);
-        }
+        },
       });
     });
   }
@@ -159,7 +167,7 @@ export class CartStore {
     const dto: CartUpdateDto = {
       drugId: item.drugId,
       pharmacyId: item.pharmacyId,
-      quantity: 1 // Always increment by 1
+      quantity: 1, // Always increment by 1
     };
     this.cartService.incrementItem(dto).subscribe({
       next: () => this.loadCart(),
@@ -167,9 +175,9 @@ export class CartStore {
         if (err.error?.type === 'StockLimitExceeded') {
           this.showStockLimitModal(err.error.message);
         } else {
-          console.error('Increment error:', err)
+          console.error('Increment error:', err);
         }
-      }
+      },
     });
   }
 
@@ -182,12 +190,11 @@ export class CartStore {
     }
   }
 
-
   decrement(item: CartItem) {
     const dto: CartUpdateDto = {
       drugId: item.drugId,
       pharmacyId: item.pharmacyId,
-      quantity: 1 // Always decrement by 1
+      quantity: 1, // Always decrement by 1
     };
 
     if (item.quantity === 1) {
@@ -196,17 +203,16 @@ export class CartStore {
     } else {
       this.cartService.decrementItem(dto).subscribe({
         next: () => this.loadCart(),
-        error: (err: any) => console.error('Decrement error:', err)
+        error: (err: any) => console.error('Decrement error:', err),
       });
     }
   }
-
 
   remove(item: CartItem) {
     const dto: CartUpdateDto = {
       drugId: item.drugId,
       pharmacyId: item.pharmacyId,
-      quantity: item.quantity
+      quantity: item.quantity,
     };
 
     if (AuthUtils.isUserLoggedIn()) {
@@ -220,12 +226,17 @@ export class CartStore {
           if (err.status === 404) {
             this.loadCart(); // This will clear the cart items from UI
           }
-        }
+        },
       });
     } else {
       // Handle local storage
-      let cartItems = JSON.parse(localStorage.getItem(APP_CONSTANTS.Cart) || '[]');
-      cartItems = cartItems.filter((x: CartUpdateDto) => !(x.drugId === dto.drugId && x.pharmacyId === dto.pharmacyId));
+      let cartItems = JSON.parse(
+        localStorage.getItem(APP_CONSTANTS.Cart) || '[]'
+      );
+      cartItems = cartItems.filter(
+        (x: CartUpdateDto) =>
+          !(x.drugId === dto.drugId && x.pharmacyId === dto.pharmacyId)
+      );
       localStorage.setItem(APP_CONSTANTS.Cart, JSON.stringify(cartItems));
       this.loadCart(); // Refresh the cart display
     }
@@ -235,6 +246,7 @@ export class CartStore {
     if (AuthUtils.isUserLoggedIn()) {
       return this.cartService.clearCart().subscribe({
         next: () => {
+          console.log('Cart cleared successfully');
           this.cartItems.set([]);
           const summary = this.orderSummary();
           if (summary) {
@@ -249,7 +261,7 @@ export class CartStore {
           if (err.status === 404) {
             this.clearCartUI();
           }
-        }
+        },
       });
     } else {
       // Handle local storage
@@ -275,7 +287,7 @@ export class CartStore {
       this.orderSummary.set({
         ...summary,
         subtotal: 0,
-        total: summary.deliveryFee
+        total: summary.deliveryFee,
       });
     }
   }
@@ -286,7 +298,10 @@ export class CartStore {
     const summary = this.orderSummary();
     if (!summary) return;
 
-    const subtotal = items.reduce((sum, item) => sum + (item.unitPrice * item.quantity), 0);
+    const subtotal = items.reduce(
+      (sum, item) => sum + item.unitPrice * item.quantity,
+      0
+    );
     summary.subtotal = subtotal;
     summary.total = subtotal + summary.deliveryFee;
 
@@ -298,38 +313,47 @@ export class CartStore {
     if (!summary) return;
 
     if (summary.total < 30) {
-      const modal = new bootstrap.Modal(document.getElementById('minOrderModal')!);
+      const modal = new bootstrap.Modal(
+        document.getElementById('minOrderModal')!
+      );
       modal.show();
       return;
     }
 
     this.isLoading.set(true);
 
-    return this.http.post<any>(this.config.getApiUrl(this.ENDPOINTS.ORDERS_SUBMIT), { paymentMethod }).subscribe({
-      next: (res) => {
-        if (paymentMethod === 'cash') {
-          this.router.navigate(['/client/success'], { queryParams: { orderId: res.orderId, paymentMethod: 'cash' } });
-        } else {
-          this.createStripeSession();
-        }
-        this.isLoading.set(false);
-      },
-      error: (err) => {
-        if (err.error?.errorType === 'Validation') {
-          this.showStockLimitModal(err.error.message);
-        } else {
-          console.error('Order submission failed', err);
-          alert("Order submission failed");
-        }
-        this.isLoading.set(false);
-      }
+    return this.http
+      .post<any>(this.config.getApiUrl(this.ENDPOINTS.ORDERS_SUBMIT), {
+        paymentMethod,
+      })
+      .subscribe({
+        next: (res) => {
+          if (paymentMethod === 'cash') {
+            this.router.navigate(['/client/success'], {
+              queryParams: { orderId: res.orderId, paymentMethod: 'cash' },
+            });
+          } else {
+            this.createStripeSession();
+          }
 
-    });
+          this.isLoading.set(false);
+        },
+        error: (err) => {
+          if (err.error?.errorType === 'Validation') {
+            this.showStockLimitModal(err.error.message);
+          } else {
+            console.error('Order submission failed', err);
+            alert('Order submission failed');
+          }
+          this.isLoading.set(false);
+        },
+      });
   }
 
-
   private createStripeSession() {
-    const url = this.config.getApiUrl(this.ENDPOINTS.ORDERS_CREATE_CHECKOUT_SESSION);
+    const url = this.config.getApiUrl(
+      this.ENDPOINTS.ORDERS_CREATE_CHECKOUT_SESSION
+    );
     const deliveryFee = this.orderSummary()?.deliveryFee ?? 0;
 
     this.http.post<any>(url, { deliveryFee }).subscribe({
@@ -340,9 +364,8 @@ export class CartStore {
       },
       error: (err) => {
         console.error('Stripe session creation failed', err);
-        alert("Failed to create Stripe session");
-      }
+        alert('Failed to create Stripe session');
+      },
     });
   }
-
 }
