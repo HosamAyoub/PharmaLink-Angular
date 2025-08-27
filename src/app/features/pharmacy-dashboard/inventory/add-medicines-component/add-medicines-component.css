@@ -230,6 +230,7 @@
   background: #fff;
 }
 
+/* Uniform card size and responsive */
 .medicine-card {
   background: #fff;
   border: 1.5px solid #e5e7eb;
@@ -240,75 +241,32 @@
   transition: box-shadow 0.2s, border-color 0.2s;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   position: relative;
+  min-height: 160px;
+  height: 100%;
+  box-sizing: border-box;
 }
 
+/* Consistent content alignment */
 .medicine-card-content {
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 10px;
+  gap: 16px;
   min-width: 0;
+  width: 100%;
 }
 
-/* Medicine Image Styling */
+
+/* Uniform medicine image in card */
 .medicine-image {
-  flex-shrink: 0;
-  width: 100px;
-  height: 100px;
-  object-fit: cover;
-  object-position: center;
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
   border-radius: 8px;
-  background: #f8f9fa;
-  border: 1px solid #e9ecef;
-  transition: all 0.2s ease;
+  background: #f3f4f6;
+  margin-right: 0.5rem;
   display: block;
-  max-width: 100%;
-  height: auto;
-  aspect-ratio: 1 / 1;
-}
-
-.medicine-image:hover {
-  transform: scale(1.02);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-/* Fallback for broken or missing images */
-.medicine-image[src=""],
-.medicine-image:not([src]),
-.medicine-image[src*="null"],
-.medicine-image[src*="undefined"] {
-  background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23f3f4f6"/><path d="M50 30c5.5 0 10 4.5 10 10s-4.5 10-10 10-10-4.5-10-10 4.5-10 10-10zm-25 40h50l-12-15-8 10-8-5z" fill="%239ca3af"/></svg>');
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 60%;
-}
-
-/* Error handling for failed image loads */
-.medicine-image:error {
-  background-color: #f3f4f6;
-  border: 1px solid #d1d5db;
-}
-
-/* Legacy support for medicine-icon structure */
-.medicine-icon {
-  flex-shrink: 0;
-  width: 100px;
-  height: 100px;
-  border-radius: 8px;
-  background: #eff6ff;
-  padding: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  img {
-    width: 80px;
-    height: 80px;
-    object-fit: contain;
-    border-radius: 8px;
-    background: #f3f4f6;
-    margin: 0 0 0 0;
-  }
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
 }
 
 .medicine-info {
@@ -462,26 +420,19 @@
   .medicine-card {
     padding: 10px;
     border-radius: 10px;
+    min-height: 120px;
   }
 
   .medicine-card-content {
     display: flex;
     align-items: center;
-    gap: 18px;
+    gap: 10px;
   }
 
-  .medicine-icon img {
-    width: 60px;
-    height: 60px;
-    margin-bottom: 8px;
-  }
-
-  /* Enhanced responsive medicine image for mobile */
   .medicine-image {
     width: 60px;
     height: 60px;
-    border-radius: 6px;
-    object-fit: cover;
+    margin-bottom: 0;
   }
 
   .medicine-info {
@@ -540,7 +491,6 @@
     padding: 0.5rem 0.8rem;
     border-radius: 8px;
   }
-
 }
 
 @media (max-width: 1024px) {
@@ -1073,193 +1023,5 @@
     overflow: hidden;
     text-overflow: ellipsis;
     margin-bottom: 1rem;
-  }
-}
-
-/* ==================== ENHANCED RESPONSIVE DESIGN FOR MEDICINE IMAGES ==================== */
-
-/* Large screens (1200px and down) */
-@media (max-width: 1199px) {
-  .medicine-image {
-    width: 90px;
-    height: 90px;
-  }
-
-  .medicine-icon {
-    width: 90px;
-    height: 90px;
-  }
-
-  .medicine-icon img {
-    width: 70px;
-    height: 70px;
-  }
-
-  .medicines-grid {
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 14px;
-  }
-}
-
-/* Medium screens (992px and down) */
-@media (max-width: 991px) {
-  .medicine-image {
-    width: 80px;
-    height: 80px;
-  }
-
-  .medicine-icon {
-    width: 80px;
-    height: 80px;
-  }
-
-  .medicine-icon img {
-    width: 60px;
-    height: 60px;
-  }
-
-  .medicines-grid {
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 12px;
-  }
-}
-
-/* Small screens (768px and down) */
-@media (max-width: 767px) {
-  .medicine-image {
-    width: 70px;
-    height: 70px;
-    border-radius: 6px;
-  }
-
-  .medicine-icon {
-    width: 70px;
-    height: 70px;
-  }
-
-  .medicine-icon img {
-    width: 55px;
-    height: 55px;
-  }
-
-  .medicines-grid {
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 10px;
-  }
-}
-
-/* Extra small screens (576px and down) */
-@media (max-width: 575px) {
-  .medicine-image {
-    width: 60px;
-    height: 60px;
-    border-radius: 4px;
-  }
-
-  .medicine-icon {
-    width: 60px;
-    height: 60px;
-  }
-
-  .medicine-icon img {
-    width: 45px;
-    height: 45px;
-  }
-}
-
-/* Very small screens (414px and down) */
-@media (max-width: 413px) {
-  .medicine-image {
-    width: 50px;
-    height: 50px;
-  }
-
-  .medicine-icon {
-    width: 50px;
-    height: 50px;
-  }
-
-  .medicine-icon img {
-    width: 40px;
-    height: 40px;
-  }
-}
-
-/* Ultra small screens (375px and down) */
-@media (max-width: 374px) {
-  .medicine-image {
-    width: 45px;
-    height: 45px;
-  }
-
-  .medicine-icon {
-    width: 45px;
-    height: 45px;
-  }
-
-  .medicine-icon img {
-    width: 35px;
-    height: 35px;
-  }
-}
-
-/* Micro screens (360px and down) */
-@media (max-width: 359px) {
-  .medicine-image {
-    width: 40px;
-    height: 40px;
-  }
-
-  .medicine-icon {
-    width: 40px;
-    height: 40px;
-  }
-
-  .medicine-icon img {
-    width: 30px;
-    height: 30px;
-  }
-}
-
-/* Image quality improvements for all screen sizes */
-.medicine-image {
-  object-fit: cover;
-  object-position: center;
-  background-color: #f8f9fa;
-  border: 1px solid #e9ecef;
-  transition: all 0.2s ease;
-}
-
-.medicine-image:hover {
-  transform: scale(1.02);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-/* Fallback for broken images */
-.medicine-image:not([src]),
-.medicine-image[src=""],
-.medicine-image[src="null"],
-.medicine-image[src="undefined"] {
-  background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Ik0yMCAxNUMyMC44MjMgMTUgMjEuNSAxNS42NzcgMjEuNSAxNi41QzIxLjUgMTcuMzIzIDIwLjgyMyAxOCAyMCAxOEMxOS4xNzcgMTggMTguNSAxNy4zMjMgMTguNSAxNi41QzE4LjUgMTUuNjc3IDE5LjE3NyAxNSAyMCAxNVoiIGZpbGw9IiM5Q0EzQUYiLz4KPHBhdGggZD0iTTEyIDEySDI4VjI4SDEyVjEyWiIgc3Ryb2tlPSIjOUNBM0FGIiBzdHJva2Utd2lkdGg9IjIiIGZpbGw9Im5vbmUiLz4KPHBhdGggZD0iTTE2IDI0TDIwIDIwTDI0IDI0IiBzdHJva2U9IiM5Q0EzQUYiIHN0cm9rZS13aWR0aD0iMiIgZmlsbD0ibm9uZSIvPgo8L3N2Zz4K');
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 50%;
-}
-
-/* High DPI screens (Retina displays) */
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
-  .medicine-image {
-    image-rendering: -webkit-optimize-contrast;
-    image-rendering: crisp-edges;
-  }
-}
-
-/* Print styles */
-@media print {
-  .medicine-image {
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
-    border: 1px solid #000;
-    background: white;
   }
 }
