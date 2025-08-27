@@ -13,14 +13,17 @@ export class SignalrService {
   patientNotifications = signal<any[]>([]);
   config = inject(ConfigService);
   endPoint = APP_CONSTANTS.API.ENDPOINTS;
-  http = inject(HttpClient)
+  http = inject(HttpClient);
 
   unreadCount = computed(
     () => this.patientNotifications().filter((n) => !n.read).length
   );
   startConnection() {
     const userData = localStorage.getItem('userData');
-    const StatusChangeUrl = this.config.getHubUrl(this.endPoint.STATUSCHANGE_HUB);
+    // const config = inject(ConfigService);
+    const StatusChangeUrl = this.config.getHubUrl(
+      this.endPoint.STATUSCHANGE_HUB
+    );
     let token = '';
 
     if (userData) {
@@ -86,6 +89,4 @@ export class SignalrService {
         error: (err) => console.error('Error marking as read:', err),
       });
   }
-
-
 }
