@@ -605,10 +605,11 @@
 @media (max-width: 480px) {
   .chat-window {
     width: 100vw;
-    height: 100vh;
+    height: calc(100vh - 60px);
     right: 0;
     left: 0;
     bottom: 0;
+    top: 60px;
     border-radius: 0;
   }
 
