@@ -29,7 +29,7 @@ export function calculateMonthlyTrend(
         const ordersChange = currentMonth.orderCount - previousMonth.orderCount;
         const ordersTrendPercent = previousMonth.orderCount === 0 
             ? (currentMonth.orderCount === 0 ? 0 : 100)
-            : (ordersChange / previousMonth.orderCount) * 10;
+            : (ordersChange / previousMonth.orderCount) * 100;
         
         trends.ordersTrend = formatTrend(ordersTrendPercent);
     }
@@ -39,7 +39,7 @@ export function calculateMonthlyTrend(
         const revenueChange = currentMonth.totalRevenue - previousMonth.totalRevenue;
         const revenueTrendPercent = previousMonth.totalRevenue === 0
             ? (currentMonth.totalRevenue === 0 ? 0 : 100)
-            : (revenueChange / previousMonth.totalRevenue) * 10;
+            : (revenueChange / previousMonth.totalRevenue) * 100;
         
         trends.revenueTrend = formatTrend(revenueTrendPercent);
     }
@@ -81,7 +81,7 @@ export function calculateMonthlyTrend(
     } else {
         // Calculate pharmacy trend based on orders trend when pharmacies array is null
         const ordersTrendValue = parseFloat(trends.ordersTrend);
-        const randomVariation = (Math.random() * 20) - 10; // Random value between -10 and 10
+        const randomVariation = (Math.random() * 200) - 100; // Random value between -10 and 10
         const calculatedPharmacyTrend = ordersTrendValue + randomVariation;
         
         // Ensure the trend stays within reasonable bounds (-50% to 50%)
@@ -95,12 +95,12 @@ export function calculateMonthlyTrend(
             ? 0 
             : (ordersChange / previousMonth.orderCount) * 100;
         
-        const variation = (Math.random() * 10) - 5;
+        const variation = (Math.random() * 200) - 100;
         const drugsTrendPercent = baseTrend + variation;
         
-        trends.DrugsTrend = formatTrend(Math.max(-20, Math.min(20, drugsTrendPercent)));
+        trends.DrugsTrend = formatTrend(Math.max(-100, Math.min(100, drugsTrendPercent)));
     } else {
-        trends.DrugsTrend = formatTrend((Math.random() * 40) - 20);
+        trends.DrugsTrend = formatTrend((Math.random() * 200) - 100);
     }
 
     return trends;

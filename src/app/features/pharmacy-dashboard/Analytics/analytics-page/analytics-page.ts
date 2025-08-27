@@ -7,6 +7,7 @@ import { LoadingSpinner } from '../../../../shared/components/loading-spinner/lo
 import { TopSellingProductsSection } from '../../Dashboard/Components/top-selling-products-section/top-selling-products-section';
 import { MonthlyPerformanceSection } from '../../Dashboard/Components/monthly-performance-section/monthly-performance-section';
 import { DecimalPipe } from '@angular/common';
+import { calculateMonthlyTrend } from '../../../../shared/utils/trend-calc.util';
 
 @Component({
   selector: 'app-analytics-page',
@@ -19,6 +20,17 @@ export class AnalyticsPage implements OnInit {
   protected analysisData: IPharmacyAnalysis | null = null;
   protected errorMessage: string | null = null;
   protected loading: boolean = true;
+  protected trends: {
+    ordersTrend: string;
+    revenueTrend: string;
+    pharmacyTrend: string;
+    DrugsTrend: string;
+  } = {
+      ordersTrend: '-0%',
+      revenueTrend: '-0%',
+      pharmacyTrend: '-0%',
+      DrugsTrend: '-0%'
+    };
   constructor(private pharmacyAnalysisService: PharmacyAnalysisService) {}
 
   ngOnInit(): void {
@@ -31,6 +43,7 @@ export class AnalyticsPage implements OnInit {
     this.pharmacyAnalysisService.getPharmacyAnalysis().subscribe({
       next: (data) => {
         this.analysisData = data;
+        this.calculateTrends();
         this.loading = false;
         this.cdr.detectChanges();
         // console.log('Pharmacy analysis data loaded:', this.analysisData);
@@ -51,25 +64,33 @@ export class AnalyticsPage implements OnInit {
     {
       title: 'Total Revenue',
       value: '$' + (this.analysisData.totalRevenue?.toLocaleString() || '0'),
-      trend: '+4.2%'
+      trend: this.trends.revenueTrend
     },
     {
       title: 'Avg Order Value',
       value: '$' + ((this.analysisData.totalRevenue/this.analysisData.totalOrders).toFixed(2)) || 0,
-      trend: '+15%'
+      trend:  '+18.4%'
     },
     {
       title: 'Total Orders',
       value: this.analysisData.totalOrders.toLocaleString() || '0',
-      trend: '+12.5%'
+      trend: this.trends.ordersTrend
     },  
     {
       title: 'Total Customers',
       value: this.analysisData.totalUniqueCustomers || 0,
-      trend: '-10%'
+      trend: this.trends.pharmacyTrend
     }
   ];
 }
+private calculateTrends(): void {
+    if (this.analysisData) {
+      this.trends = calculateMonthlyTrend(
+        this.analysisData.monthlyStats,
+        null
+      );
+    }
+  }
 
   exportOrdersAsCSV() {
     const analysis = this.analysisData;
