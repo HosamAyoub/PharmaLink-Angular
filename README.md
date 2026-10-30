@@ -1,59 +1,80 @@
-# PharmaLink-Angular
+# PharmaLink - Angular front end
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.0.4.
+[![Angular 20](https://img.shields.io/badge/Angular-20-DD0031?logo=angular&logoColor=white)](https://angular.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Bootstrap 5](https://img.shields.io/badge/Bootstrap-5-7952B3?logo=bootstrap&logoColor=white)](https://getbootstrap.com/)
+[![API](https://img.shields.io/badge/Backend-.NET_API-512BD4?logo=dotnet&logoColor=white)](https://github.com/HosamAyoub/PharmaLink)
 
-## Development server
+PharmaLink brings pharmacies into one place: find a medicine, see which nearby pharmacy has it in stock, get AI-suggested alternatives when it's out, and order it.
 
-To start a local development server, run:
+This repository is the **Angular front end**. The ASP.NET Core Web API lives in **[HosamAyoub/PharmaLink](https://github.com/HosamAyoub/PharmaLink)**.
 
-```bash
-ng serve
+**Live demo:** https://pharma-link.runasp.net
+
+## One app, three roles
+
+**Customers**
+- Browse medicines by category, search, and view drug details
+- Find pharmacies on a Google Map and browse each pharmacy's products
+- Favorites, cart and checkout (cash on delivery or Stripe)
+- AI chatbot (Google Gemini) that suggests alternative medicines
+- Profile page
+
+**Pharmacies**
+- Dashboard and analytics charts (Chart.js)
+- Inventory management
+- Incoming orders and requests in real time (SignalR)
+
+**Admins**
+- Dashboard across the whole platform
+- Manage medicines, pharmacies, users and orders, with live order updates (SignalR)
+
+**Accounts**
+- Customer and pharmacy sign-up, email confirmation, login with JWT
+- Pending and suspended states for pharmacy accounts
+- Role-based route guards
+
+## Tech stack
+
+| Area | Tools |
+|---|---|
+| Framework | Angular 20, TypeScript, RxJS |
+| UI | Bootstrap 5, custom shared components (toasts, alerts, loaders) |
+| Real time | SignalR (`@microsoft/signalr`) |
+| Maps | Google Maps (`@angular/google-maps`) |
+| AI | Google Gemini API |
+| Charts | Chart.js |
+| Backend | [PharmaLink .NET API](https://github.com/HosamAyoub/PharmaLink) with JWT auth |
+
+## Project structure
+
+```text
+src/app/
+  core/                 checkout service, environment helpers, guards
+  features/
+    auth/               login, sign-up, pharmacy sign-up, email confirmation
+    client-dashboard/   home, products, pharmacies, maps, cart, favorites, AI chatbot
+    pharmacy-dashboard/ dashboard, inventory, orders, analytics
+    admin-dashboard/    dashboard, medicines, pharmacies, users, orders
+  shared/               reusable components, directives, guards, enums
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Getting started
 
 ```bash
-ng generate component component-name
+npm install
+npm start          # ng serve, opens http://localhost:4200
+npm run build      # production build in dist/
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Set your own keys and API URL in `src/environments/environment.ts` (see `environment.prod.template.ts`):
 
-```bash
-ng generate --help
-```
+- `apiBaseUrl` and `apiHubsUrl` - the PharmaLink API
+- `googleMapsApiKey` - Google Maps
+- `geminiApiKey` - Google Gemini
 
-## Building
+Never commit real keys.
 
-To build the project run:
+## Team
 
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Built as the graduation project of ITI's Full-Stack .NET program by a team of six, led by [Hosam Ayoub](https://github.com/HosamAyoub). See the [contributors](https://github.com/HosamAyoub/PharmaLink-Angular/graphs/contributors).
