@@ -77,4 +77,4 @@ Never commit real keys.
 
 ## Team
 
-Built as the graduation project of ITI's Full-Stack .NET program by a team of six, led by [Hosam Ayoub](https://github.com/HosamAyoub). See the [contributors](https://github.com/HosamAyoub/PharmaLink-Angular/graphs/contributors).
+Built as the graduation project of ITI's Full-Stack .NET program by a team led by [Hosam Ayoub](https://github.com/HosamAyoub). See the [contributors](https://github.com/HosamAyoub/PharmaLink-Angular/graphs/contributors).
